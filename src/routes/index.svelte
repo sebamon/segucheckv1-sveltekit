@@ -1,103 +1,90 @@
-<script>
-	// Activar menú hamburguesa - Seguramente se puede implementar algo con Svelte
-	import { onMount } from 'svelte';
-	onMount(() => {
-		// The following code is based off a toggle menu by @Bradcomp
-		// source: https://gist.github.com/Bradcomp/a9ef2ef322a8e8017443b626208999c1
-		var burger = document.querySelector('.burger');
-		var menu = document.querySelector('#' + burger.dataset.target);
-		burger.addEventListener('click', function () {
-			burger.classList.toggle('is-active');
-			menu.classList.toggle('is-active');
-		});
-	});
+<script lang="ts">
+	// Importar por nombre de componentes: https://sveltestrap.js.org/
+	import {
+		Collapse,
+		Navbar,
+		NavbarToggler,
+		NavbarBrand,
+		Nav,
+		NavItem,
+		NavLink,
+		Button
+	} from 'sveltestrap';
+
+	// Menú hamburguesa navbar
+	let isOpen = false;
+	function handleUpdate(event) {
+		isOpen = event.detail.isOpen;
+	}
 </script>
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Hero - Plantilla Bulma</title>
-	<link
-		rel="stylesheet"
-		href="https://use.fontawesome.com/releases/v5.15.4/css/all.css"
-		integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm"
-		crossorigin="anonymous"
-	/>
+	<title>Inicio - Bootstrap</title>
 </svelte:head>
 
-<section class="hero is-fullheight">
-	<!-- Hero head: will stick at the top -->
-	<div class="hero-head">
-		<header class="navbar">
-			<div class="container">
-				<div class="navbar-brand">
-					<a class="navbar-item">
-						<img src="https://bulma.io/images/bulma-logo.png" alt="Logo" />
-					</a>
-					<span class="navbar-burger" data-target="navbarMenuHeroC">
-						<span />
-						<span />
-						<span />
-					</span>
-				</div>
-				<div id="navbarMenuHeroC" class="navbar-menu">
-					<div class="navbar-end">
-						<a class="navbar-item is-active" href="#sistema"> Nuestro sistema </a>
-						<a class="navbar-item" href="#tutoriales"> Tutoriales </a>
-						<a class="navbar-item" href="#contacto"> Contacto </a>
-						<span class="navbar-item">
-							<a class="button is-primary is-inverted">
-								<span class="icon">
-									<i class="fab fa-github" />
-								</span>
-								<span>Iniciar sesión</span>
-							</a>
-						</span>
-					</div>
-				</div>
-			</div>
-		</header>
-	</div>
+<!-- Menú de navegación -->
+<Navbar color="light" light expand="md">
+	<NavbarBrand href="/">SeguCheck</NavbarBrand>
+	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
+	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+		<Nav class="ms-auto" navbar>
+			<NavItem>
+				<NavLink href="#sistema">Nuestro sistema</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="#tutoriales">Tutoriales</NavLink>
+			</NavItem>
+			<NavItem>
+				<NavLink href="#contacto">Contacto</NavLink>
+			</NavItem>
+			<NavItem>
+				<Button color="primary">Iniciar sesión</Button>
+			</NavItem>
+		</Nav>
+	</Collapse>
+</Navbar>
 
-	<!-- Hero content: will be in the middle -->
-	<div class="hero-body">
-		<div class="container has-text-centered">
-			<div class="columns is-vcentered">
-				<div class="column is-6 is-offset-1">
-					<h1 class="title is-2">Tus documentos de forma más eficiente</h1>
-					<h2 class="subtitle is-4">
-						Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
-					</h2>
-					<br />
-					<p class="has-text-centered">
-						<a class="button is-medium is-primary"> Iniciar sesión </a>
-						<a class="button is-medium is-primary is-outlined"> Descarga la app </a>
-					</p>
-				</div>
-				<div class="column is-5">
-					<figure class="image is-4by3">
-						<img src="https://picsum.photos/800/600/?random" alt="Description" />
-					</figure>
-				</div>
-			</div>
+<!-- Hero a pantalla completa -->
+<header class="container py-4">
+	<h1>Tus documentos de forma más eficiente</h1>
+	<h3 class="fs-5 col-md-8">
+		Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
+	</h3>
+	<div class="mb-5">
+		<a href="#login" class="btn btn-primary btn-lg px-4">Iniciar sesión</a>
+		<a href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</a>
+	</div>
+	<hr class="col-3 col-md-2 mb-5" />
+</header>
+
+<!-- Más info al scrollear -->
+<main class="container py-4">
+	<div class="row g-5">
+		<div class="col-md-6">
+			<h2>Plataforma web</h2>
+			<p>
+				Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus clientes
+			</p>
+			<a href="/info/movil">
+				Conocé más
+			</a>
+		</div>
+		<div class="col-md-6">
+			<h2>Plataforma móvil</h2>
+			<p>
+				Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
+			</p>
+			<a href="/info/movil">
+				Conocé más
+			</a>
 		</div>
 	</div>
+</main>
 
-	<!-- Hero footer: will stick at the bottom -->
-	<div class="hero-foot is-centered">
-		<h3 class="subtitle is-4 has-text-centered">
-			Conocé más
-			<span class="icon">
-				<i class="fas fa-chevron-down" />
-			</span>
-		</h3>
-	</div>
-</section>
-
-<footer class="footer">
-	<div class="content has-text-centered">
-		<p>
-			<strong>SeguCheck</strong> © 2021 - Desarrollado por
-			<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
-		</p>
-	</div>
+<footer class="container pt-5 my-5 text-muted border-top">
+	<p>
+		<strong>SeguCheck</strong> © 2021 - Desarrollado por
+		<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
+	</p>
 </footer>
