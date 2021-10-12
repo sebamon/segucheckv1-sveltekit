@@ -1,16 +1,9 @@
 <script>
-	// Activar menú hamburguesa - Seguramente se puede implementar algo con Svelte
+	/* Activar menú hamburguesa - Seguramente se puede implementar algo con Svelte
 	import { onMount } from 'svelte';
 	onMount(() => {
-		// The following code is based off a toggle menu by @Bradcomp
-		// source: https://gist.github.com/Bradcomp/a9ef2ef322a8e8017443b626208999c1
-		var burger = document.querySelector('.burger');
-		var menu = document.querySelector('#' + burger.dataset.target);
-		burger.addEventListener('click', function () {
-			burger.classList.toggle('is-active');
-			menu.classList.toggle('is-active');
-		});
 	});
+    */
 </script>
 
 <svelte:head>
@@ -30,9 +23,7 @@
 		<header class="navbar">
 			<div class="container">
 				<div class="navbar-brand">
-					<a class="navbar-item">
 						<img src="https://bulma.io/images/bulma-logo.png" alt="Logo" />
-					</a>
 					<span class="navbar-burger" data-target="navbarMenuHeroC">
 						<span />
 						<span />
@@ -45,7 +36,7 @@
 						<a class="navbar-item" href="#tutoriales"> Tutoriales </a>
 						<a class="navbar-item" href="#contacto"> Contacto </a>
 						<span class="navbar-item">
-							<a class="button is-primary is-inverted">
+							<a href="#login" class="button is-primary is-inverted">
 								<span class="icon">
 									<i class="fab fa-github" />
 								</span>
@@ -69,8 +60,8 @@
 					</h2>
 					<br />
 					<p class="has-text-centered">
-						<a class="button is-medium is-primary"> Iniciar sesión </a>
-						<a class="button is-medium is-primary is-outlined"> Descarga la app </a>
+						<a href="#login" class="button is-medium is-primary"> Iniciar sesión </a>
+						<a href="#descarga" class="button is-medium is-primary is-outlined"> Descarga la app </a>
 					</p>
 				</div>
 				<div class="column is-5">

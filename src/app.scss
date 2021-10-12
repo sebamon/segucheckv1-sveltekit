@@ -1,9 +1,11 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing *//* Import only what you need from Bulma */
-@import "bulma/sass/utilities/_all";
-@import "bulma/sass/base/_all";
-@import "bulma/sass/elements/_all";
-@import "bulma/sass/form/_all";
-@import "bulma/sass/components/_all";
-@import "bulma/sass/grid/_all";
-@import "bulma/sass/helpers/_all";
-@import "bulma/sass/layout/_all"
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */ /* Import only what you need from Bootstrap */
+@import 'bootstrap/scss/root';
+@import 'bootstrap/scss/reboot';
+@import 'bootstrap/scss/type';
+@import 'bootstrap/scss/card';
+@import 'bootstrap/scss/buttons';
+@import 'bootstrap/scss/images';
+@import 'bootstrap/scss/containers';
+@import 'bootstrap/scss/grid';
+@import 'bootstrap/scss/utilities';
+@import 'bootstrap/scss/utilities/api';
