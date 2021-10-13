@@ -8,7 +8,23 @@
 		Nav,
 		NavItem,
 		NavLink,
-		Button
+		Button,
+		Modal,
+		ModalBody,
+		ModalFooter,
+		ModalHeader,
+		Form,
+		FormGroup,
+		Input,
+		Label,
+		Card,
+		CardBody,
+		CardFooter,
+		CardHeader,
+		CardSubtitle,
+		CardText,
+		CardTitle,
+		Image
 	} from 'sveltestrap';
 
 	// Menú hamburguesa navbar
@@ -16,6 +32,9 @@
 	function handleUpdate(event) {
 		isOpen = event.detail.isOpen;
 	}
+
+	let open = false;
+	const toggle = () => (open = !open);
 </script>
 
 <svelte:head>
@@ -39,52 +58,110 @@
 				<NavLink href="#contacto">Contacto</NavLink>
 			</NavItem>
 			<NavItem>
-				<Button color="primary">Iniciar sesión</Button>
+				<Button color="primary" on:click={toggle}>Iniciar sesión</Button>
 			</NavItem>
 		</Nav>
 	</Collapse>
 </Navbar>
 
+<!-- Modal login -->
+<Modal isOpen={open} {toggle}>
+	<ModalHeader {toggle}>Ingresar a SeguCheck</ModalHeader>
+	<ModalBody>
+		<Form action="/checklogin" method="post">
+			<FormGroup>
+				<Label for="user" class="small mb-1">DNI</Label>
+				<Input class="py-3" type="text" name="user" id="user" placeholder="Ingresa tu DNI" />
+			</FormGroup>
+			<FormGroup>
+				<Label for="pass" class="small mb-1">Contraseña</Label>
+				<Input
+					class="py-3"
+					type="password"
+					name="pass"
+					id="pass"
+					placeholder="Ingresa tu contraseña"
+				/>
+			</FormGroup>
+			<FormGroup>
+				<Input type="checkbox" id="rec" label="Recordar contraseña" />
+			</FormGroup>
+			<FormGroup class="d-flex align-items-center justify-content-between mt-4 mb-0">
+				<Button color="primary" href="/login">Ingresar</Button>
+				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
+			</FormGroup>
+		</Form>
+	</ModalBody>
+	<ModalFooter>
+		<p class="text-md-center small">
+			Los usuarios deben estar previamente registrados por su empleador.
+		</p>
+	</ModalFooter>
+</Modal>
+
 <!-- Hero a pantalla completa -->
-<header class="container py-4">
-	<h1>Tus documentos de forma más eficiente</h1>
-	<h3 class="fs-5 col-md-8">
-		Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
-	</h3>
-	<div class="mb-5">
-		<a href="#login" class="btn btn-primary btn-lg px-4">Iniciar sesión</a>
-		<a href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</a>
+<header class="py-4">
+	<div class="container mt-4">
+		<div class="row col-6">
+			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
+			<h3 class="lead col-md-8">
+				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
+			</h3>
+			<div class="mb-5 g-3">
+				<Button color="primary" on:click={toggle} class="btn-lg px-4">Iniciar sesión</Button>
+				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
+			</div>
+		</div>
+		<hr class="m-5" />
 	</div>
-	<hr class="col-3 col-md-2 mb-5" />
+	<div class="d-flex justify-content-center">
+		<h6>Conocé más</h6>
+		<i class="fas fa-chevron-down mx-2 fs-1" />
+	</div>
 </header>
 
 <!-- Más info al scrollear -->
 <main class="container py-4">
+	<h1 id="sistema">Este es nuestro sistema</h1>
+	<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
 	<div class="row g-5">
-		<div class="col-md-6">
-			<h2>Plataforma web</h2>
-			<p>
-				Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus clientes
-			</p>
-			<a href="/info/movil">
-				Conocé más
-			</a>
-		</div>
-		<div class="col-md-6">
-			<h2>Plataforma móvil</h2>
-			<p>
-				Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
-			</p>
-			<a href="/info/movil">
-				Conocé más
-			</a>
-		</div>
+		<Card class="col-md-6">
+			<CardBody>
+				<CardTitle class="fw-bold">Plataforma web</CardTitle>
+				<Image style="height:200px;" />
+				<CardSubtitle
+					>Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
+					tus clientes</CardSubtitle
+				>
+				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+			</CardBody>
+		</Card>
+		<Card class="col-md-6">
+			<CardBody>
+				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
+				<Image style="height:200px;" />
+				<CardSubtitle
+					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
+				>
+				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+			</CardBody>
+		</Card>
 	</div>
+	<hr class="m-5" />
 </main>
 
-<footer class="container pt-5 my-5 text-muted border-top">
+<footer class="container pt-5 my-5 text-muted border-top" id="contacto">
 	<p>
 		<strong>SeguCheck</strong> © 2021 - Desarrollado por
 		<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
 	</p>
 </footer>
+
+<style>
+	header {
+		height: 90vh;
+		background: #ededed url('/hero-bg.jpg');
+		background-position: center; /* Center the image */
+		background-repeat: no-repeat; /* Do not repeat the image */
+	}
+</style>
