@@ -1,2 +1,6 @@
-<script>import "../app.scss";</script>
-<slot></slot>
+<script>import "../app.scss";
+
+</script>
+<slot>
+    
+</slot>

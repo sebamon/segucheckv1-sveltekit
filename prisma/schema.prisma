@@ -277,3 +277,4 @@ model OperatorOnJobs{
 
   @@id([job_id,operator_id])
 }
+
