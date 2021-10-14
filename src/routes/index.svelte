@@ -161,7 +161,8 @@
 	header {
 		height: 90vh;
 		background: #ededed url('/hero-bg.jpg');
-		background-position: center; /* Center the image */
-		background-repeat: no-repeat; /* Do not repeat the image */
+  		background-attachment: fixed; /* Efecto parallax */
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 </style>

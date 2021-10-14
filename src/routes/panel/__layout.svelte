@@ -1,5 +1,4 @@
 <!-- Encabezado y pie de página panel -->
-
 <slot></slot>
 
 <footer class="container pt-5 my-5 text-muted border-top">

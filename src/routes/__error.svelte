@@ -10,9 +10,8 @@
 </script>
 
 <script>
-	// REVISAR
-	import Error404 from '$lib/Error404.svelte'; // Página no encontrada
-	import OtroError from '$lib/OtroError.svelte'; // Otra página
+	import Error404 from '$lib/Error/Error404.svelte'; // Página no encontrada
+	import OtroError from '$lib/Error/OtroError.svelte'; // Otra página
 
 	export let status;
 	console.log(status);
@@ -20,7 +19,6 @@
 </script>
 
 {#if status == 404}
-	<!-- Used '==' instead of '===' to match string/number status code (just to be sure) -->
 	<Error404 {status} {message} />
 {:else}
 	<OtroError {status} {message} />
