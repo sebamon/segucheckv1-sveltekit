@@ -158,7 +158,7 @@
 </footer>
 
 <style>
-	header {
+	header { /* Estilo de portada */
 		height: 90vh;
 		background: #ededed url('/hero-bg.jpg');
   		background-attachment: fixed; /* Efecto parallax */

@@ -16,12 +16,12 @@
 	function handleUpdate(event) {
 		isOpen = event.detail.isOpen;
 	}
-
 	let open = false;
 	const toggle = () => (open = !open);
 
 	import { onMount } from 'svelte';
 	/* https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/js/scripts.js#L12
+	 *
 	 * Start Bootstrap - Simple Sidebar v6.0.3 (https://startbootstrap.com/template/simple-sidebar)
 	 * Copyright 2013-2021 Start Bootstrap
 	 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/LICENSE)
@@ -44,37 +44,40 @@
 			});
 		}
 	});
+
+	let showSidebar = true;
+	const toggleSidebar = () => (showSidebar = !showSidebar);
 </script>
 
-<div id="wrapper">
+<div class="d-flex" id="wrapper">
 	<!-- Sidebar: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
 	<div class="border-end bg-white" id="sidebar-wrapper">
-		<div class="sidebar-heading border-bottom bg-light">Start Bootstrap</div>
+		<div class="sidebar-heading border-bottom bg-light fs-4">Menú lateral</div>
 		<div class="list-group list-group-flush">
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Dashboard</a
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-home mx-2" />Resumen</a>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-walking mx-2" />Operarios</a
 			>
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Shortcuts</a
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-car mx-2" />Vehículos</a>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-briefcase mx-2" />Trabajos</a
 			>
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Overview</a
-			>
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Events</a
-			>
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Profile</a
-			>
-			<a class="list-group-item list-group-item-action list-group-item-light p-3" href="#!"
-				>Status</a
-			>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-clipboard-check mx-2" />Checklists</a>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-users mx-2" />Usuarios</a>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
+				<i class="fas fa-map-marked mx-2" />Locaciones</a>
 		</div>
 	</div>
+
+	<div id="page-content-wrapper">
 		<!-- Menú de navegación -->
 		<Navbar color="light" light expand="md">
+			<Button color="secondary" id="#sidebarToggle" class="me-3"><i class="fas fa-bars fs-6" on:click={toggleSidebar}/></Button>
 			<NavbarBrand href="/">SeguCheck</NavbarBrand>
-			<Button color="primary" id="#sidebarToggle">Expandir</Button>
 			<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 			<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 				<Nav class="ms-auto" navbar>
@@ -93,8 +96,6 @@
 				</Nav>
 			</Collapse>
 		</Navbar>
-
-        <div id="page-content-wrapper">
 		<!-- Contenido principal -->
 		<main class="container py-4">
 			<h1>Panel Administrativo</h1>
