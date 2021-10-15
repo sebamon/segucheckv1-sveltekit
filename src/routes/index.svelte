@@ -39,7 +39,7 @@
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Inicio - Bootstrap</title>
+	<title>Inicio - SeguCheck</title>
 </svelte:head>
 
 <!-- Menú de navegación -->
@@ -114,7 +114,7 @@
 		</div>
 		<hr class="m-5" />
 	</div>
-	<div class="d-flex justify-content-center">
+	<div class="d-flex justify-content-center align-self-end text-center">
 		<a href="#sistema">
 			<h6>Conocé más</h6>
 			<i class="fas fa-chevron-down mx-2 fs-1" />
