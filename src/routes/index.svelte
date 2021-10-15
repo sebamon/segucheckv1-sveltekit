@@ -94,28 +94,30 @@
 
 <!-- Más info al scrollear -->
 <main class="container py-4">
-	<h1 id="sistema">Este es nuestro sistema</h1>
-	<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
-	<div class="row g-5">
+	<div class="py-5">
+		<h1 id="sistema">Este es nuestro sistema</h1>
+		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
+	</div>
+	<div class="row g-2">
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<Image style="height:200px;" />
-				<CardSubtitle
-					>Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
-					tus clientes</CardSubtitle
-				>
-				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+				<Image fluid thumbnail src="/thumb-dashboard.jpg" alt="Panel Administrativo" class="my-4"/>
+				<CardSubtitle>
+					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
+					tus clientes
+				</CardSubtitle>
+				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<Image style="height:200px;" />
+				<Image fluid thumbnail src="/thumb-screen-app.jpg" alt="Aplicación móvil" class="my-4" />
 				<CardSubtitle
 					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
 				>
-				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>
 	</div>
@@ -125,7 +127,7 @@
 <style>
 	header { /* Estilo de portada */
 		height: 90vh;
-		background: #ededed url('/hero-bg.jpg');
+		background: #ededed url('/bg-hero.jpg');
   		background-attachment: fixed; /* Efecto parallax */
 		background-position: center;
 		background-repeat: no-repeat;
