@@ -7,8 +7,13 @@
 		NavbarBrand,
 		Nav,
 		NavItem,
-		NavLink,
-		Button
+		Dropdown,
+		DropdownItem,
+		DropdownMenu,
+		DropdownToggle,
+		Button,
+		Breadcrumb,
+		BreadcrumbItem
 	} from 'sveltestrap';
 
 	// Menú hamburguesa navbar
@@ -27,7 +32,7 @@
 	 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/LICENSE)
 	 */
 	onMount(() => {
-		// Toggle the side navigation
+		// Alternar el menú lateral - Hacer con Svelte
 		const sidebarToggle = document.body.querySelector('#sidebarToggle');
 		if (sidebarToggle) {
 			// Uncomment Below to persist sidebar toggle between refreshes
@@ -45,62 +50,79 @@
 		}
 	});
 
+	// Armar versión Svelte:
 	let showSidebar = true;
 	const toggleSidebar = () => (showSidebar = !showSidebar);
+
+	// Datos de usuario - Ver si esto lo maneja un hook
+	let actualUser = 'Juan Perez';
 </script>
 
 <div class="d-flex" id="wrapper">
 	<!-- Sidebar: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
-	<div class="border-end bg-white" id="sidebar-wrapper">
-		<div class="sidebar-heading border-bottom bg-light fs-4">Menú lateral</div>
+	<div class="border-end bg-light" id="sidebar-wrapper">
+		<div class="sidebar-heading border-bottom fs-4">Menú lateral</div>
 		<div class="list-group list-group-flush">
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
-				<i class="fas fa-home mx-2" />Resumen</a>
+				<i class="fas fa-home mx-2" />Resumen</a
+			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
 				<i class="fas fa-walking mx-2" />Operarios</a
 			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
-				<i class="fas fa-car mx-2" />Vehículos</a>
+				<i class="fas fa-car mx-2" />Vehículos</a
+			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
 				<i class="fas fa-briefcase mx-2" />Trabajos</a
 			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
-				<i class="fas fa-clipboard-check mx-2" />Checklists</a>
+				<i class="fas fa-clipboard-check mx-2" />Checklists</a
+			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
-				<i class="fas fa-users mx-2" />Usuarios</a>
+				<i class="fas fa-users mx-2" />Usuarios</a
+			>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="#!">
-				<i class="fas fa-map-marked mx-2" />Locaciones</a>
+				<i class="fas fa-map-marked mx-2" />Locaciones</a
+			>
 		</div>
 	</div>
 
 	<div id="page-content-wrapper">
 		<!-- Menú de navegación -->
 		<Navbar color="light" light expand="md">
-			<Button color="secondary" id="#sidebarToggle" class="me-3"><i class="fas fa-bars fs-6" on:click={toggleSidebar}/></Button>
+			<Button color="secondary" id="#sidebarToggle" class="me-3"
+				><i class="fas fa-bars fs-6" on:click={toggleSidebar} /></Button
+			>
 			<NavbarBrand href="/">SeguCheck</NavbarBrand>
 			<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 			<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 				<Nav class="ms-auto" navbar>
+					<Dropdown nav inNavbar>
+						<DropdownToggle nav caret><i class="fas fa-user mx-2" />{actualUser}</DropdownToggle>
+						<DropdownMenu end>
+							<DropdownItem>Ver tu perfil</DropdownItem>
+							<DropdownItem>Preferencias</DropdownItem>
+							<DropdownItem divider />
+							<DropdownItem>Ayuda</DropdownItem>
+						</DropdownMenu>
+					</Dropdown>
 					<NavItem>
-						<NavLink href="#sistema">Nuestro sistema</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink href="#tutoriales">Tutoriales</NavLink>
-					</NavItem>
-					<NavItem>
-						<NavLink href="#contacto">Contacto</NavLink>
-					</NavItem>
-					<NavItem>
-						<Button color="primary" on:click={toggle}>Iniciar sesión</Button>
+						<Button color="secondary" on:click={toggle}>Cerrar sesión</Button>
 					</NavItem>
 				</Nav>
 			</Collapse>
 		</Navbar>
 		<!-- Contenido principal -->
 		<main class="container py-4">
-			<h1>Panel Administrativo</h1>
-			<h2>Aquí se supone que debe haber algo...</h2>
-			<button class="btn btn-primary">Hola</button>
+			<!-- Posición -->
+			<Breadcrumb>
+				<BreadcrumbItem active>Resumen</BreadcrumbItem>
+			</Breadcrumb>
+			<h1>Resumen</h1>
+			<p class="lead">Bienvenido de nuevo, {actualUser}</p>
+			<p>
+				<button class="btn btn-primary">Hola</button>
+			</p>
 		</main>
 	</div>
 </div>
