@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ModalLogin from '$lib/ModalLogin.svelte';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Collapse,
@@ -32,9 +34,9 @@
 	function handleUpdate(event) {
 		isOpen = event.detail.isOpen;
 	}
-
-	let open = false;
-	const toggle = () => (open = !open);
+	// Abrir modal login
+	let modalOpen = false;
+	const toggle = () => (modalOpen = !modalOpen);
 </script>
 
 <svelte:head>
@@ -65,39 +67,7 @@
 </Navbar>
 
 <!-- Modal login -->
-<Modal isOpen={open} {toggle}>
-	<ModalHeader {toggle}>Ingresar a SeguCheck</ModalHeader>
-	<ModalBody>
-		<Form action="/checklogin" method="post">
-			<FormGroup>
-				<Label for="user" class="small mb-1">DNI</Label>
-				<Input class="py-3" type="text" name="user" id="user" placeholder="Ingresa tu DNI" />
-			</FormGroup>
-			<FormGroup>
-				<Label for="pass" class="small mb-1">Contraseña</Label>
-				<Input
-					class="py-3"
-					type="password"
-					name="pass"
-					id="pass"
-					placeholder="Ingresa tu contraseña"
-				/>
-			</FormGroup>
-			<FormGroup>
-				<Input type="checkbox" id="rec" label="Recordar contraseña" />
-			</FormGroup>
-			<FormGroup class="d-flex align-items-center justify-content-between mt-4 mb-0">
-				<Button color="primary" href="/login">Ingresar</Button>
-				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
-			</FormGroup>
-		</Form>
-	</ModalBody>
-	<ModalFooter>
-		<p class="text-md-center small">
-			Los usuarios deben estar previamente registrados por su empleador.
-		</p>
-	</ModalFooter>
-</Modal>
+<ModalLogin {modalOpen} {toggle}/>
 
 <!-- Hero a pantalla completa -->
 <header class="py-4">
@@ -115,8 +85,8 @@
 		<hr class="m-5" />
 	</div>
 	<div class="d-flex justify-content-center align-self-end text-center">
-		<a href="#sistema">
-			<h6>Conocé más</h6>
+		<a href="#sistema" class="text-decoration-none">
+			<h5 class="fw-bold">Conocé más</h5>
 			<i class="fas fa-chevron-down mx-2 fs-1" />
 		</a>
 	</div>
