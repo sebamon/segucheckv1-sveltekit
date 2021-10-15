@@ -86,7 +86,7 @@
 			<FormGroup>
 				<Input type="checkbox" id="rec" label="Recordar contraseña" />
 			</FormGroup>
-			<FormGroup class="d-flex align-items-center justify-content-between mt-4 mb-0">
+			<FormGroup >
 				<Button color="primary" href="/login">Ingresar</Button>
 				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
 			</FormGroup>

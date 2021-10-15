@@ -12,6 +12,7 @@
 	},
 	"devDependencies": {
 		"@sveltejs/kit": "next",
+		"@types/cookie": "^0.4.1",
 		"@typescript-eslint/eslint-plugin": "^4.31.1",
 		"@typescript-eslint/parser": "^4.31.1",
 		"bootstrap": "^5.1.3",
@@ -32,6 +33,7 @@
 	"type": "module",
 	"dependencies": {
 		"@prisma/client": "^3.2.1",
+		"cookie": "^0.4.1",
 		"dotenv": "^10.0.0",
 		"filepond": "^4.30.3",
 		"svelte-filepond": "^0.2.0",

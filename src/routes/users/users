@@ -18,7 +18,7 @@ const dogs:dog[]=[{name:"German Shepherd"},{name:"BullDog"},{name:"Poodle"}]
 export const get:RequestHandler = async () =>{
     const res:Response={
         body:{
-            dogs
+            //dogs
         }
     }
     return res;
