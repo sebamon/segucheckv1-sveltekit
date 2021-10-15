@@ -44,38 +44,30 @@ $dark:          $gray-900 !default;
 $min-contrast-ratio:   2.1 !default;
 
 // Options
-
 $enable-rounded: false !default;
 
 // Body
-
 $body-color:                $gray-700 !default;
 
 // Links
-
 $link-hover-color:          $primary !default;
 
 // Tables
-
 $table-border-color:          rgba(0, 0, 0, .05) !default;
 
 // Forms
-
 $input-focus-border-color:              $primary !default;
 
 // Dropdowns
-
 $dropdown-link-color:               $gray-700 !default;
 $dropdown-link-hover-color:         $white !default;
 $dropdown-link-hover-bg:            $primary !default;
 
 // Navs
-
 $nav-tabs-border-color:             $gray-300 !default;
 $nav-tabs-link-hover-border-color:  $primary !default;
 
 // Navbar
-
 $navbar-padding-y:                  1.2rem !default;
 $navbar-dark-hover-color:           rgba($white, .9) !default;
 $navbar-dark-active-color:          rgba($white, .9) !default;
@@ -84,12 +76,10 @@ $navbar-light-active-color:         rgba($black, .7) !default;
 $navbar-light-disabled-color:       rgba($black, .2) !default;
 
 // Progress bars
-
 $progress-bg:                       $gray-300 !default;
 $progress-bar-bg:                   $primary !default;
 
 // List group
-
 $list-group-bg:                     $gray-900 !default;
 $list-group-border-color:           transparent !default;
 $list-group-hover-bg:               lighten($list-group-bg, 10%) !default;
