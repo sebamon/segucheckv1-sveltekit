@@ -13,3 +13,14 @@
 
 <!-- <script>import "../app.scss";</script> -->
 <slot></slot>
+
+
+<!-- eeste es el de arian -->
+<script lang="ts">
+    import "../app.scss";
+    // import NavbarHome from "$lib/NavbarHome.svelte";
+	import Footer from "$lib/Footer.svelte";
+</script>
+<slot></slot>
+
+<Footer/>

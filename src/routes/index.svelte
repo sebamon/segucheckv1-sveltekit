@@ -39,7 +39,7 @@
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Inicio - Bootstrap</title>
+	<title>Inicio - SeguCheck</title>
 </svelte:head>
 
 <!-- Menú de navegación -->
@@ -114,9 +114,11 @@
 		</div>
 		<hr class="m-5" />
 	</div>
-	<div class="d-flex justify-content-center">
-		<h6>Conocé más</h6>
-		<i class="fas fa-chevron-down mx-2 fs-1" />
+	<div class="d-flex justify-content-center align-self-end text-center">
+		<a href="#sistema">
+			<h6>Conocé más</h6>
+			<i class="fas fa-chevron-down mx-2 fs-1" />
+		</a>
 	</div>
 </header>
 
@@ -150,18 +152,12 @@
 	<hr class="m-5" />
 </main>
 
-<footer class="container pt-5 my-5 text-muted border-top" id="contacto">
-	<p>
-		<strong>SeguCheck</strong> © 2021 - Desarrollado por
-		<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
-	</p>
-</footer>
-
 <style>
-	header {
+	header { /* Estilo de portada */
 		height: 90vh;
 		background: #ededed url('/hero-bg.jpg');
-		background-position: center; /* Center the image */
-		background-repeat: no-repeat; /* Do not repeat the image */
+  		background-attachment: fixed; /* Efecto parallax */
+		background-position: center;
+		background-repeat: no-repeat;
 	}
 </style>
