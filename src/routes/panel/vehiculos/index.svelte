@@ -35,7 +35,7 @@
 		<p class="lead">Descripción breve</p>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus mx-2" />Nuevo</Button>
+		<Button color="primary" href="/panel/vehiculos/nuevo"><i class="fas fa-plus mx-2" />Nuevo</Button>
 	</div>
 </div>
 <p />

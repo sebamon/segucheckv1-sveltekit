@@ -31,7 +31,9 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">18</p>
+				<a href="/panel/operarios?filter=vencePronto">
+					<p class="fs-1 text-center text-primary fw-bolder">18</p>
+				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en operarios</CardTitle>
 			<CardSubtitle>Operarios con documentación a expirar en menos de una semana</CardSubtitle>
@@ -43,7 +45,9 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">18</p>
+				<a href="/panel/vehiculos?filter=vencePronto">
+					<p class="fs-1 text-center text-primary fw-bolder">15</p>
+				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en vehículos</CardTitle>
 			<CardSubtitle>Vehículos con documentación a expirar en menos de una semana</CardSubtitle>
