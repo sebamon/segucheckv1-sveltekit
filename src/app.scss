@@ -1,9 +1,186 @@
-/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing *//* Import only what you need from Bulma */
-@import "bulma/sass/utilities/_all";
-@import "bulma/sass/base/_all";
-@import "bulma/sass/elements/_all";
-@import "bulma/sass/form/_all";
-@import "bulma/sass/components/_all";
-@import "bulma/sass/grid/_all";
-@import "bulma/sass/helpers/_all";
-@import "bulma/sass/layout/_all"
+/* Write your global styles here, in SCSS syntax. Variables and mixins from the src/variables.scss file are available here without importing */
+
+// --- Fuentes Poppins (títulos) y Archivo (cuerpo) ---
+@import url('https://fonts.googleapis.com/css2?family=Archivo:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&family=Poppins:ital,wght@0,300;0,400;0,700;0,900;1,300;1,400;1,700&display=swap');
+body {
+	font-family: 'Archivo', 'sans-serif';
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: 'Poppins', 'sans-serif';
+}
+
+// --- Sidenav tema ---
+// https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/css/styles.css#L11276
+#wrapper {
+  overflow-x: hidden;
+}
+#sidebar-wrapper {
+  min-height: 100vh;
+  margin-left: -15rem;
+  transition: margin 0.25s ease-out;
+}
+#sidebar-wrapper .sidebar-heading {
+  padding: 0.875rem 1.25rem;
+  font-size: 1.2rem;
+}
+#sidebar-wrapper .list-group {
+  width: 15rem;
+}
+#page-content-wrapper {
+  min-width: 100vw;
+}
+body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+  margin-left: 0;
+}
+@media (min-width: 768px) {
+  #sidebar-wrapper {
+    margin-left: 0;
+  }
+  #page-content-wrapper {
+    min-width: 0;
+    width: 100%;
+  }
+  body.sb-sidenav-toggled #wrapper #sidebar-wrapper {
+    margin-left: -15rem;
+  }
+}
+
+// --- Bootswatch - Pulse 5.1.2 ---
+
+// Buttons
+.btn {
+	&:focus,
+	&:active,
+	&:active:focus,
+	&.active:focus {
+		outline: none;
+	}
+
+	&-secondary {
+		background-color: $white;
+		border-color: #ccc;
+		color: $gray-900;
+
+		&:hover {
+			background-color: $gray-300;
+			border-color: $gray-500;
+			color: $gray-900;
+		}
+
+		&.disabled {
+			background-color: $white;
+			border-color: tint-color(#ccc, 5%);
+			color: tint-color($gray-900, 5%);
+		}
+	}
+
+	&-warning {
+		color: $white;
+	}
+
+	&-primary:focus {
+		box-shadow: 0 0 5px tint-color($primary, 10%);
+	}
+
+	&-secondary:focus {
+		box-shadow: 0 0 5px $gray-400;
+	}
+
+	&-success:focus {
+		box-shadow: 0 0 5px tint-color($success, 10%);
+	}
+
+	&-info:focus {
+		box-shadow: 0 0 5px tint-color($info, 10%);
+	}
+
+	&-warning:focus {
+		box-shadow: 0 0 5px tint-color($warning, 10%);
+	}
+
+	&-danger:focus {
+		box-shadow: 0 0 5px tint-color($danger, 10%);
+	}
+
+	&.disabled:focus {
+		box-shadow: none;
+	}
+}
+
+// Tables
+.table .thead-dark th {
+	background-color: $secondary;
+	border-color: $table-border-color;
+}
+
+// Forms
+.form-control:focus {
+	box-shadow: 0 0 5px rgba(100, 65, 164, 0.4);
+}
+
+// Navs
+.nav-tabs {
+	.nav-link,
+	.nav-link.active {
+		border-width: 0 0 1px;
+	}
+
+	.nav-link:hover,
+	.nav-link.active,
+	.nav-link.active:hover,
+	.nav-link.active:focus {
+		border-bottom: 1px solid $primary;
+	}
+
+	.nav-item + .nav-item {
+		margin-left: 0;
+	}
+}
+
+.breadcrumb {
+	&-item.active {
+		color: $gray-700;
+	}
+}
+
+// Indicators
+.badge {
+	&.bg-light {
+		color: $dark;
+	}
+}
+
+// Progress bars
+.progress {
+	height: 8px;
+}
+
+// Containers
+.list-group {
+	&-item {
+		color: rgba(255, 255, 255, 0.8);
+
+		&.active,
+		&:hover,
+		&:focus {
+			color: $white;
+		}
+
+		&.active {
+			font-weight: 700;
+
+			&:hover {
+				background-color: $list-group-hover-bg;
+			}
+		}
+
+		&.disabled:hover {
+			color: $list-group-disabled-color;
+		}
+	}
+}
