@@ -1,4 +1,6 @@
 <script lang="ts">
+	import ModalLogin from '$lib/ModalLogin.svelte';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Collapse,
@@ -32,9 +34,9 @@
 	function handleUpdate(event) {
 		isOpen = event.detail.isOpen;
 	}
-
-	let open = false;
-	const toggle = () => (open = !open);
+	// Abrir modal login
+	let modalOpen = false;
+	const toggle = () => (modalOpen = !modalOpen);
 </script>
 
 <svelte:head>
@@ -65,39 +67,7 @@
 </Navbar>
 
 <!-- Modal login -->
-<Modal isOpen={open} {toggle}>
-	<ModalHeader {toggle}>Ingresar a SeguCheck</ModalHeader>
-	<ModalBody>
-		<Form action="/checklogin" method="post">
-			<FormGroup>
-				<Label for="user" class="small mb-1">DNI</Label>
-				<Input class="py-3" type="text" name="user" id="user" placeholder="Ingresa tu DNI" />
-			</FormGroup>
-			<FormGroup>
-				<Label for="pass" class="small mb-1">Contraseña</Label>
-				<Input
-					class="py-3"
-					type="password"
-					name="pass"
-					id="pass"
-					placeholder="Ingresa tu contraseña"
-				/>
-			</FormGroup>
-			<FormGroup>
-				<Input type="checkbox" id="rec" label="Recordar contraseña" />
-			</FormGroup>
-			<FormGroup >
-				<Button color="primary" href="/login">Ingresar</Button>
-				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
-			</FormGroup>
-		</Form>
-	</ModalBody>
-	<ModalFooter>
-		<p class="text-md-center small">
-			Los usuarios deben estar previamente registrados por su empleador.
-		</p>
-	</ModalFooter>
-</Modal>
+<ModalLogin {modalOpen} {toggle}/>
 
 <!-- Hero a pantalla completa -->
 <header class="py-4">
@@ -115,8 +85,8 @@
 		<hr class="m-5" />
 	</div>
 	<div class="d-flex justify-content-center align-self-end text-center">
-		<a href="#sistema">
-			<h6>Conocé más</h6>
+		<a href="#sistema" class="text-decoration-none">
+			<h5 class="fw-bold">Conocé más</h5>
 			<i class="fas fa-chevron-down mx-2 fs-1" />
 		</a>
 	</div>
@@ -124,28 +94,30 @@
 
 <!-- Más info al scrollear -->
 <main class="container py-4">
-	<h1 id="sistema">Este es nuestro sistema</h1>
-	<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
-	<div class="row g-5">
+	<div class="py-5">
+		<h1 id="sistema">Este es nuestro sistema</h1>
+		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
+	</div>
+	<div class="row g-2">
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<Image style="height:200px;" />
-				<CardSubtitle
-					>Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
-					tus clientes</CardSubtitle
-				>
-				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+				<Image fluid thumbnail src="/thumb-dashboard.jpg" alt="Panel Administrativo" class="my-4"/>
+				<CardSubtitle>
+					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
+					tus clientes
+				</CardSubtitle>
+				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<Image style="height:200px;" />
+				<Image fluid thumbnail src="/thumb-screen-app.jpg" alt="Aplicación móvil" class="my-4" />
 				<CardSubtitle
 					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
 				>
-				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right mx-2" /></a>
+				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>
 	</div>
@@ -155,7 +127,7 @@
 <style>
 	header { /* Estilo de portada */
 		height: 90vh;
-		background: #ededed url('/hero-bg.jpg');
+		background: #ededed url('/bg-hero.jpg');
   		background-attachment: fixed; /* Efecto parallax */
 		background-position: center;
 		background-repeat: no-repeat;
