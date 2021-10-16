@@ -22,27 +22,17 @@
 	<title>Nuevo operario - SeguCheck</title>
 </svelte:head>
 
-<!-- Encabezado -->
-<header class="row">
-	<Breadcrumb>
-		<BreadcrumbItem>
-			<a href="/panel/">Inicio</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem>
-			<a href="/panel/operarios">Operarios</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
-	</Breadcrumb>
-	<div class="col-auto">
-		<h1>Operarios</h1>
-		<p class="lead">Descripción breve</p>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
-	</div>
-</header>
-
-<!-- Prueba form -->
+<!-- Posición -->
+<Breadcrumb>
+	<BreadcrumbItem>
+		<a href="/panel/">Inicio</a>
+	</BreadcrumbItem>
+	<BreadcrumbItem>
+		<a href="/panel/operarios">Operarios</a>
+	</BreadcrumbItem>
+	<BreadcrumbItem active>Nuevo</BreadcrumbItem>
+</Breadcrumb>
+<input type="text" placeholder="Nuevo operario..."/>
 <form action="/newop" method="post">
 	<div class="mb-3">
 	  <label for="exampleInputEmail1" class="form-label">Email address</label>

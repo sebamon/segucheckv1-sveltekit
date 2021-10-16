@@ -118,8 +118,8 @@
 			</Collapse>
 		</Navbar>
 		<!-- Contenido principal -->
-		<main class="container p-4">
+		<div class="container p-4">
 			<slot />
-		</main>
+		</div>
 	</div>
 </div>

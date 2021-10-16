@@ -17,7 +17,7 @@
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Operarios - SeguCheck</title>
+	<title>Usuarios - SeguCheck</title>
 </svelte:head>
 
 <!-- Posición -->
@@ -27,7 +27,7 @@
 	</BreadcrumbItem>
 	<BreadcrumbItem active>Operarios</BreadcrumbItem>
 </Breadcrumb>
-<header class="row">
+<div class="row">
 	<div class="col-auto">
 		<h1>Operarios</h1>
 		<p class="lead">Descripción breve</p>
@@ -35,7 +35,7 @@
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
 	</div>
-</header>
+</div>
 
 <div class="table-responsive">
 	<table class="table table-striped table-hover align-middle">
