@@ -13,13 +13,13 @@ const userDetails={name:"Deb",age:45}
 //         token:cookies['token']
 //     };
 // }
-// export const getSession:GetSession=async ({context})=>{
-//     let initialState={...defaultState};
-//     if (context['token']===auth_token){
-//         console.log("tokens match");
-//         initialState.authenticated=true
-//         initialState.user=userDetails;
-//     }
-//     console.log(initialState)
-//     return initialState
-// }
+export const getSession:getSession=async ({context})=>{
+    let initialState={...defaultState};
+    if (context['token']===auth_token){
+        console.log("tokens match");
+        initialState.authenticated=true
+        initialState.user=userDetails;
+    }
+    console.log(initialState)
+    return initialState
+}

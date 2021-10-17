@@ -7,68 +7,165 @@ datasource db {
   url      = "mysql://root:@localhost:3306/segucheck"
 }
 
-model Users {
-  user_id     Int            @id @default(autoincrement())
-  email       String         @unique(map: "User_email_key")
-  name        String
-  lastName    String
-  cuit        String
-  gender      String
-  dateOfBirth DateTime
-  nationality String
-  studyLevel  String
-  degree      String
-  profilePic  String
-  // dni   String
-  password    String
-  roles       UsersOnRoles[]
-
-  operator Operator?
+model checkitem {
+  checkItem_id   Int              @id @default(autoincrement())
+  item           String
+  description    String
+  checkitemgroup checkitemgroup[]
 }
 
-model Roles {
-  rol_id         Int    @id @default(autoincrement())
-  rolDescription String
+model checkitemgroup {
+  checkItemGroup_id Int       @id @default(autoincrement())
+  groupName         String
+  checkItem_id      Int
+  checkitem         checkitem @relation(fields: [checkItem_id], references: [checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
+  jobs              jobs[]
 
-  user UsersOnRoles[]
+  @@index([checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
 }
 
-model UsersOnRoles {
-  user_id    Int
-  user       Users    @relation(fields: [user_id], references: [user_id])
-  rol_id     Int
-  rol        Roles    @relation(fields: [rol_id], references: [rol_id])
-  assignedAt DateTime @default(now())
-  assignedBy String
-
-  @@id([user_id, rol_id])
+model customer {
+  customer_id            Int                      @id @default(autoincrement())
+  bussinesName           String
+  contact                String
+  phone                  String
+  email                  String
+  jobs                   jobs[]
+  location               location[]
+  requiereddocumentation requiereddocumentation[]
 }
 
-model Operator {
-  operator_id Int   @id @default(autoincrement())
-  user        Users @relation(references: [user_id], fields: [user_id])
-  user_id     Int   @unique
+model documentation {
+  documentation_id Int          @id @default(autoincrement())
+  documentType_id  Int
+  urlPdf           String
+  status           String
+  created_at       DateTime     @default(now())
+  updated_at       DateTime?
+  expirated_at     DateTime?
+  documenttype     documenttype @relation(fields: [documentType_id], references: [documentType_id], map: "Documentation_documentType_id_fkey")
+  folder           folder[]
 
-  userHealthInfo UserHealthInfo?
-  userAddress    UserAddress?
-  userWorkInfo   UserWorkInfo?
-  folder         Folder[]
-  operatorOnJobs OperatorOnJobs[]
+  @@index([documentType_id], map: "Documentation_documentType_id_fkey")
 }
 
-model UserHealthInfo {
+model documenttype {
+  documentType_id Int             @id @default(autoincrement())
+  description     String
+  documentation   documentation[]
+}
+
+model folder {
+  operator_id      Int
+  documentation_id Int
+  documentation    documentation @relation(fields: [documentation_id], references: [documentation_id], map: "Folder_documentation_id_fkey")
+  operator         operator      @relation(fields: [operator_id], references: [operator_id], map: "Folder_operator_id_fkey")
+
+  @@id([operator_id, documentation_id])
+  @@index([documentation_id], map: "Folder_documentation_id_fkey")
+}
+
+model jobs {
+  job_id                   Int                    @id @default(autoincrement())
+  startDate                DateTime
+  finishDate               DateTime
+  status                   String
+  riskAnalysis_id          Int
+  location_id              Int
+  customer_id              Int
+  vehicle_id               Int
+  checkItemGroup_id        Int
+  requiredDocumentation_id Int
+  created_at               DateTime               @default(now())
+  updated_at               DateTime?
+  checkitemgroup           checkitemgroup         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
+  customer                 customer               @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
+  location                 location               @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
+  requiereddocumentation   requiereddocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
+  riskanalysis             riskanalysis           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
+  vehicle                  vehicle                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
+  operatoronjobs           operatoronjobs[]
+
+  @@index([checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
+  @@index([customer_id], map: "Jobs_customer_id_fkey")
+  @@index([location_id], map: "Jobs_location_id_fkey")
+  @@index([requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
+  @@index([riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
+  @@index([vehicle_id], map: "Jobs_vehicle_id_fkey")
+}
+
+model location {
+  location_id  Int      @id @default(autoincrement())
+  locationName String
+  coordenates  String
+  customer_id  Int
+  customer     customer @relation(fields: [customer_id], references: [customer_id], map: "Location_customer_id_fkey")
+  jobs         jobs[]
+
+  @@index([customer_id], map: "Location_customer_id_fkey")
+}
+
+model operator {
+  operator_id    Int              @id @default(autoincrement())
+  user_id        Int              @unique(map: "Operator_user_id_key")
+  users          users            @relation(fields: [user_id], references: [user_id], map: "Operator_user_id_fkey")
+  folder         folder[]
+  operatoronjobs operatoronjobs[]
+  useraddress    useraddress?
+  userhealthinfo userhealthinfo?
+  userworkinfo   userworkinfo?
+}
+
+model operatoronjobs {
+  job_id      Int
   operator_id Int
-  operator    Operator @relation(references: [operator_id], fields: [operator_id])
-  bloodType   String
-  rh          Boolean
-  allergies   String
+  jobs        jobs     @relation(fields: [job_id], references: [job_id], map: "OperatorOnJobs_job_id_fkey")
+  operator    operator @relation(fields: [operator_id], references: [operator_id], map: "OperatorOnJobs_operator_id_fkey")
 
-  @@id([operator_id])
+  @@id([job_id, operator_id])
+  @@index([operator_id], map: "OperatorOnJobs_operator_id_fkey")
 }
 
-model UserAddress {
-  operator_id        Int
-  operator           Operator @relation(references: [operator_id], fields: [operator_id])
+model requierddocumentationitem {
+  requiredDocumentationItem_id Int                    @id @default(autoincrement())
+  name                         String
+  description                  String
+  requiredDocumentation_id     Int
+  created_at                   DateTime               @default(now())
+  updated_at                   DateTime?
+  requiereddocumentation       requiereddocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "RequierdDocumentationItem_requiredDocumentation_id_fkey")
+
+  @@index([requiredDocumentation_id], map: "RequierdDocumentationItem_requiredDocumentation_id_fkey")
+}
+
+model requiereddocumentation {
+  requiredDocumentation_id  Int                         @id @default(autoincrement())
+  name                      String
+  description               String
+  customer_id               Int
+  customer                  customer                    @relation(fields: [customer_id], references: [customer_id], map: "RequieredDocumentation_customer_id_fkey")
+  jobs                      jobs[]
+  requierddocumentationitem requierddocumentationitem[]
+
+  @@index([customer_id], map: "RequieredDocumentation_customer_id_fkey")
+}
+
+model riskanalysis {
+  riskAnalysis_id Int     @id @default(autoincrement())
+  riskName        String
+  riskUrl         String
+  description     String?
+  jobs            jobs[]
+}
+
+model roles {
+  rol_id         Int            @id @default(autoincrement())
+  rolDescription String
+  usersonroles   usersonroles[]
+}
+
+model useraddress {
+  operator_id        Int      @id
   countryOfOrigin    String
   stateOfOrigin      String
   cityOfOrigin       String
@@ -81,199 +178,92 @@ model UserAddress {
   zipCodeOfResidence Int
   addressOfResidence String
   phoneOfResidence   String
-
-  @@id([operator_id])
+  operator           operator @relation(fields: [operator_id], references: [operator_id], map: "UserAddress_operator_id_fkey")
 }
 
-model UserWorkInfo {
-  operator_id    Int
-  operator       Operator @relation(references: [operator_id], fields: [operator_id])
-  dischargeDate  DateTime //que es esto
-  employementRel String
-  hiringMode     String //que es esto
-  unionAgreement String //que es esto
-  job            String
-
-  @@id([operator_id])
+model userhealthinfo {
+  operator_id Int      @id
+  bloodType   String
+  rh          Boolean
+  allergies   String
+  operator    operator @relation(fields: [operator_id], references: [operator_id], map: "UserHealthInfo_operator_id_fkey")
 }
 
-model DocumentType {
-  documentType_id Int    @id @default(autoincrement())
-  description     String
-
-  Documentation Documentation[]
-}
-
-model Documentation {
-  documentation_id Int          @id @default(autoincrement())
-  documentType     DocumentType @relation(fields: [documentType_id], references: [documentType_id])
-  documentType_id  Int
-  urlPdf           String
-  status           String
-  created_at       DateTime     @default(now())
-  updated_at       DateTime?
-  expirated_at     DateTime?
-
-  folder Folder[]
-
-}
-
-model Folder {
-  operator_id      Int
-  operator         Operator      @relation(fields: [operator_id], references: [operator_id])
-  documentation_id Int
-  documentation    Documentation @relation(fields: [documentation_id], references: [documentation_id])
-
-  @@id([operator_id, documentation_id])
-}
-
-model RiskAnalysis {
-  riskAnalysis_id Int     @id @default(autoincrement())
-  riskName        String
-  riskUrl         String
-  description     String?
-
-  Jobs Jobs[]
-}
-
-model Customer {
-  customer_id  Int    @id @default(autoincrement())
-  bussinesName String
-  contact      String
+model users {
+  user_id      Int            @id @default(autoincrement())
+  email        String         @unique(map: "User_email_key")
+  firstName    String
+  lastName     String
+  cuit         String
+  gender       String
+  dateOfBirth  DateTime
   phone        String
-  email        String
-
-  // job Job[]
-  Location               Location[]
-  RequieredDocumentation RequieredDocumentation[]
-  Jobs                   Jobs[]
+  nationality  String
+  studyLevel   String
+  degree       String
+  profilePic   String
+  password     String
+  operator     operator?
+  usersonroles usersonroles[]
 }
 
-model Location {
-  location_id  Int    @id @default(autoincrement())
-  locationName String
-  coordenates  String
+model usersonroles {
+  user_id    Int
+  rol_id     Int
+  assignedAt DateTime @default(now())
+  assignedBy String
+  roles      roles    @relation(fields: [rol_id], references: [rol_id], map: "UsersOnRoles_rol_id_fkey")
+  users      users    @relation(fields: [user_id], references: [user_id], map: "UsersOnRoles_user_id_fkey")
 
-  customer_id Int
-  customer    Customer @relation(fields: [customer_id], references: [customer_id])
-
-  Jobs Jobs[]
+  @@id([user_id, rol_id])
+  @@index([rol_id], map: "UsersOnRoles_rol_id_fkey")
 }
 
-model Vehicle {
-  vehicle_id      Int     @id @default(autoincrement())
-  domain          String
-  brand           String
-  model           Int
-  type            String
-  year            Int
-  chasisNumber    String?
-  motorNumber     String?
-  frontPicUrl     String?
-  leftSidePicUrl  String?
-  rigthSidePicUrl String?
-  backPicUrl      String?
-
-  vehicleOnVehicleRequirement VehicleOnVehicleRequirement[]
-
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-  Jobs       Jobs[]
+model userworkinfo {
+  operator_id    Int      @id
+  dischargeDate  DateTime
+  employementRel String
+  hiringMode     String
+  unionAgreement String
+  job            String
+  operator       operator @relation(fields: [operator_id], references: [operator_id], map: "UserWorkInfo_operator_id_fkey")
 }
 
-model VehicleRequirements {
-  vehicleRequiriment_id  Int      @id @default(autoincrement())
-  requirimentName        String
-  requirementDescription String
-  urlPdf                 String
-  created_at             DateTime @default(now())
-  expirated_At           DateTime
-
-  vehicleOnVehicleRequirement VehicleOnVehicleRequirement[]
+model vehicle {
+  vehicle_id                  Int                           @id @default(autoincrement())
+  domain                      String
+  brand                       String
+  model                       String
+  type                        String
+  year                        Int
+  chasisNumber                String?
+  motorNumber                 String?
+  frontPicUrl                 String?
+  leftSidePicUrl              String?
+  rigthSidePicUrl             String?
+  backPicUrl                  String?
+  created_at                  DateTime                      @default(now())
+  updated_at                  DateTime?
+  jobs                        jobs[]
+  vehicleonvehiclerequirement vehicleonvehiclerequirement[]
 }
 
-model VehicleOnVehicleRequirement {
+model vehicleonvehiclerequirement {
   vehicle_id            Int
-  vehicle               Vehicle             @relation(fields: [vehicle_id], references: [vehicle_id])
   vehicleRequiriment_id Int
-  vehicleRequirement    VehicleRequirements @relation(fields: [vehicleRequiriment_id], references: [vehicleRequiriment_id])
-
+  vehiclerequirements   vehiclerequirements @relation(fields: [vehicleRequiriment_id], references: [vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
+  vehicle               vehicle             @relation(fields: [vehicle_id], references: [vehicle_id], map: "VehicleOnVehicleRequirement_vehicle_id_fkey")
 
   @@id([vehicle_id, vehicleRequiriment_id])
+  @@index([vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
 }
 
-model RequieredDocumentation {
-  requiredDocumentation_id Int    @id @default(autoincrement())
-  name                     String
-  description              String
-
-  customer_id Int
-  customer    Customer @relation(fields: [customer_id], references: [customer_id])
-
-
-  RequierdDocumentationItem RequierdDocumentationItem[]
-  Jobs                      Jobs[]
-}
-
-model RequierdDocumentationItem {
-  requiredDocumentationItem_id Int    @id @default(autoincrement())
-  name                         String
-  description                  String
-
-  requiredDocumentation_id Int
-  requiredDocumentarion    RequieredDocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id])
-
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-}
-
-model CheckItem {
-  checkItem_id Int    @id @default(autoincrement())
-  item         String
-  description  String
-
-  CheckItemGroup CheckItemGroup[]
-}
-
-model CheckItemGroup {
-  checkItemGroup_id Int       @id @default(autoincrement())
-  groupName         String
-  checkItem_id      Int
-  checkItem         CheckItem @relation(fields: [checkItem_id], references: [checkItem_id])
-  Jobs              Jobs[]
-}
-
-model Jobs {
-  job_id     Int      @id @default(autoincrement())
-  startDate  DateTime
-  finishDate DateTime
-  status     String
-
-  riskAnalysis_id          Int
-  riskAnalysis             RiskAnalysis           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id])
-  location_id              Int
-  location                 Location               @relation(fields: [location_id], references: [location_id])
-  customer_id              Int
-  customer                 Customer               @relation(fields: [ customer_id], references: [customer_id])
-  vehicle_id               Int
-  vehicle                  Vehicle                @relation(fields: [vehicle_id], references: [vehicle_id])
-  checkItemGroup_id        Int
-  checkItemGroup           CheckItemGroup         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id])
-  requiredDocumentation_id Int
-  requierdDocumentation    RequieredDocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id])
-
-  operatorOnJobs OperatorOnJobs[]
-
-  created_at DateTime  @default(now())
-  updated_at DateTime?
-
-}
-
-model OperatorOnJobs{
-  job_id Int
-  job Jobs @relation(fields:[job_id], references:[job_id])
-  operator_id Int
-  operator Operator @relation(fields:[operator_id], references:[operator_id])
-
-  @@id([job_id,operator_id])
+model vehiclerequirements {
+  vehicleRequiriment_id       Int                           @id @default(autoincrement())
+  requirimentName             String
+  requirementDescription      String
+  urlPdf                      String
+  created_at                  DateTime                      @default(now())
+  expirated_At                DateTime
+  vehicleonvehiclerequirement vehicleonvehiclerequirement[]
 }

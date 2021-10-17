@@ -3,6 +3,7 @@
 <script context="module" lang="ts">
     import Store from '$lib/store';
     import {setContext} from 'svelte';
+    import Footer from '$lib/Footer.svelte';
 </script>
 <script lang="ts">
     import '../app.scss';
@@ -15,13 +16,6 @@
 <slot></slot>
 
 
-<!-- eeste es el de arian -->
-<script lang="ts">
-	import '../app.scss';
-	// import NavbarHome from "$lib/NavbarHome.svelte";
-	import Footer from '$lib/Footer.svelte';
-</script>
-
-<slot />
+<!-- <slot /> -->
 
 <Footer />

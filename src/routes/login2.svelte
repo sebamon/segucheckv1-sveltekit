@@ -5,7 +5,7 @@
 
                 if(session.authenticated){
                     return{  
-                        redirect:'/counter1',
+                        redirect:'/panel',
                         status:302
                     }
                 }   
@@ -13,7 +13,19 @@
     }
 </script>
 <script lang="ts">
-    import type Store from '$lib/store';
+    // import type Store from '$app/store';
+    import {
+    // a function to get access to navigating, page, or session
+    getStores,
+    // The current navigation status
+    navigating,
+    // Information about the current page
+    page,
+    // session information - we'll get to this later
+    session,
+    // deprecated - use getStores() or the other three directly
+} from '$app/stores';
+
     import {goto} from '$app/navigation';
     import {setContext,getContext} from 'svelte';
     const store=getContext<Store>('store');
