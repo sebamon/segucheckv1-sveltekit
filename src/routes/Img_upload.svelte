@@ -1,6 +1,14 @@
 <script>
-	export let height = 184, width = 184, file_name = "img.png";
-	let avatar, fileInput;
+    import "fs";
+	export let height = 184,
+		width = 184,
+		size_bytes = 90000,
+		file_name = 'img_test.png',
+        save_route = '../static/user_pics/';
+	let avatar,
+		fileInput,
+		ready_to_save = false;
+	let size_kb = size_bytes / 100;
 
 	const onFileSelected = (e) => {
 		let image = e.target.files[0];
@@ -14,30 +22,41 @@
 			var img = new Image();
 			img.onload = function () {
 				if (this.width.toFixed(0) != width && this.height.toFixed(0) != height) {
-					alert('Las medidas deben ser: 184 * 184');
-				} else if (image.size > 20000) {
-					alert('El peso de la imagen no puede exceder los 200kb');
+					alert(
+						`Las medidas deben ser: ${width} x ${height}px \nEl peso de la imagen no puede exceder los ${size_kb}kb`
+					);
+				} else if (image.size > size_bytes) {
+					alert(
+						`Las medidas deben ser: ${width} x ${height}px \nEl peso de la imagen no puede exceder los ${size_kb}kb`
+					);
 				} else {
-					alert('Imagen correcta :)');
+					console.log('Imagen correcta');
+					ready_to_save = true;
+					document.getElementById('info_upload').innerHTML = 'El archivo fue subido con éxito.';
+                    var fs = require('fs');
+					fs.writeFile( save_route + file_name, img, function (err) {
+						console.log('Archivo guardado como '+save_route + file_name);
+					});
 				}
 			};
 			img.src = URL.createObjectURL(image);
 		}
-		console.log(image);
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
-		console.log(reader);
 		reader.onload = (e) => {
 			avatar = e.target.result;
 		};
 	};
-
 </script>
 
 <div id="file_upload">
-	<h1>Subir una foto para el perfil del operario</h1>
-	<h2>Subir foto carnet de 184 x 184 px. Los formatos permitidos son JPG y PNG.</h2>
-	{#if avatar}
+	<p id="info_upload">
+		<strong>Subir una foto para el perfil del operario</strong>
+		<br />
+		Subir foto carnet de 184 x 184 px, máximo 900 Kb.
+		<br />Los formatos permitidos son JPG y PNG.
+	</p>
+	{#if avatar && ready_to_save}
 		<img class="avatar" src={avatar} alt="foto de perfil" />
 	{:else}
 		<img
