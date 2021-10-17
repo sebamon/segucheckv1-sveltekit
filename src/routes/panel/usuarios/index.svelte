@@ -41,11 +41,11 @@
 	<table class="table table-striped table-hover align-middle">
 		<thead>
 			<tr>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
 			</tr>
 			<tr>
 				<th scope="col">ID Cuenta</th>
