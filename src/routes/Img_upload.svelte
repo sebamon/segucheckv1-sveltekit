@@ -13,7 +13,7 @@
 		} else {
 			var img = new Image();
 			img.onload = function () {
-				if (this.width.toFixed(0) != 184 && this.height.toFixed(0) != 184) {
+				if (this.width.toFixed(0) != width && this.height.toFixed(0) != height) {
 					alert('Las medidas deben ser: 184 * 184');
 				} else if (image.size > 20000) {
 					alert('El peso de la imagen no puede exceder los 200kb');
@@ -70,9 +70,6 @@
 		on:change={(e) => onFileSelected(e)}
 		bind:this={fileInput}
 	/>
-</div>
-<div id="probando_img">
-	<img src={'avatar-usuario.png'} alt="" />
 </div>
 
 <style>
