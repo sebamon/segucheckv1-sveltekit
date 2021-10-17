@@ -13,13 +13,11 @@
 		CardTitle
 	} from 'sveltestrap';
 
-	// Datos de usuario - Ver si esto lo maneja un hook
-	let actualUser = 'Juan Perez';
 </script>
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Vehículos - SeguCheck</title>
+	<title>Usuarios - SeguCheck</title>
 </svelte:head>
 
 <!-- Posición -->
@@ -27,18 +25,17 @@
 	<BreadcrumbItem>
 		<a href="/panel/">Inicio</a>
 	</BreadcrumbItem>
-	<BreadcrumbItem active>Vehículos</BreadcrumbItem>
+	<BreadcrumbItem active>Usuarios</BreadcrumbItem>
 </Breadcrumb>
 <div class="row">
 	<div class="col-auto">
-		<h1>Vehículos</h1>
+		<h1>Usuarios</h1>
 		<p class="lead">Descripción breve</p>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/vehiculos/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
+		<Button color="primary" href="/panel/usuarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
 	</div>
 </div>
-<p />
 
 <div class="table-responsive">
 	<table class="table table-striped table-hover align-middle">
@@ -51,10 +48,10 @@
 				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
 			</tr>
 			<tr>
-				<th scope="col">Patente</th>
-				<th scope="col">Tipo</th>
-				<th scope="col">Marca</th>
-				<th scope="col">Modelo</th>
+				<th scope="col">ID Cuenta</th>
+				<th scope="col">DNI</th>
+				<th scope="col">Nombre</th>
+				<th scope="col">Apellido</th>
 				<th scope="col">Estado Habilitación</th>
 			</tr>
 		</thead>

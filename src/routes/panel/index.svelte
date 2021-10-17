@@ -23,7 +23,7 @@
 
 <!-- Posición -->
 <Breadcrumb>
-	<BreadcrumbItem active>Resumen</BreadcrumbItem>
+	<BreadcrumbItem active>Inicio</BreadcrumbItem>
 </Breadcrumb>
 <h1>Resumen</h1>
 <p class="lead">Bienvenido de nuevo, {actualUser}</p>
@@ -38,7 +38,7 @@
 			<CardTitle class="fw-bold">Próximos vencimientos en operarios</CardTitle>
 			<CardSubtitle>Operarios con documentación a expirar en menos de una semana</CardSubtitle>
 			<a href="/panel/operarios?filter=vencePronto" class="text-decoration-none fw-bold">
-				Ver operarios <i class="fas fa-arrow-right mx-2" />
+				Ver operarios <i class="fas fa-arrow-right me-2" />
 			</a>
 		</CardBody>
 	</Card>
@@ -52,7 +52,7 @@
 			<CardTitle class="fw-bold">Próximos vencimientos en vehículos</CardTitle>
 			<CardSubtitle>Vehículos con documentación a expirar en menos de una semana</CardSubtitle>
 			<a href="/panel/vehiculos?filter=vencePronto" class="text-decoration-none fw-bold">
-				Ver vehículos <i class="fas fa-arrow-right mx-2" />
+				Ver vehículos <i class="fas fa-arrow-right me-2" />
 			</a>
 		</CardBody>
 	</Card>
@@ -66,7 +66,7 @@
 				Puede registrar nuevos usuarios, modificar sus datos o realizar la baja de los mismos
 			</CardSubtitle>
 			<a href="/info/plataforma" class="text-decoration-none fw-bold">
-				Gestionar usuarios <i class="fas fa-arrow-right mx-2" />
+				Gestionar usuarios <i class="fas fa-arrow-right me-2" />
 			</a>
 		</CardBody>
 	</Card>
@@ -78,7 +78,7 @@
 			<CardTitle class="fw-bold">Historial de trabajos</CardTitle>
 			<CardSubtitle>Últimas órdenes de trabajo vigentes</CardSubtitle>
 			<a href="/info/plataforma" class="text-decoration-none fw-bold">
-				Ver historial <i class="fas fa-arrow-right mx-2" />
+				Ver historial <i class="fas fa-arrow-right me-2" />
 			</a>
 		</CardBody>
 	</Card>
