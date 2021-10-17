@@ -47,6 +47,7 @@
 <!-- Menú de navegación -->
 <Navbar color="light" light expand="md">
 	<NavbarBrand href="/">SeguCheck</NavbarBrand>
+	<Button color="warning" href="/panel" title="placeholder">Ir al panel</Button>
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>

@@ -21,7 +21,7 @@
 <Modal isOpen={modalOpen} {toggle}>
 	<ModalHeader {toggle}>Ingresar a SeguCheck</ModalHeader>
 	<ModalBody>
-		<Form action="/checklogin" method="post">
+		<Form name="modalLogin" id="modalLogin" action="/checklogin" method="post">
 			<FormGroup>
 				<Label for="user" class="small mb-1">DNI</Label>
 				<Input class="py-3" type="text" name="user" id="user" placeholder="Ingresa tu DNI" />

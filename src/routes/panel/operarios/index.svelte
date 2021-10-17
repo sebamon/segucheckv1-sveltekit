@@ -13,8 +13,6 @@
 		CardTitle
 	} from 'sveltestrap';
 
-	// Datos de usuario - Ver si esto lo maneja un hook
-	let actualUser = 'Juan Perez';
 </script>
 
 <svelte:head>
@@ -29,7 +27,7 @@
 	</BreadcrumbItem>
 	<BreadcrumbItem active>Operarios</BreadcrumbItem>
 </Breadcrumb>
-<div class="row">
+<header class="row">
 	<div class="col-auto">
 		<h1>Operarios</h1>
 		<p class="lead">Descripción breve</p>
@@ -37,18 +35,17 @@
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
 	</div>
-</div>
-<p />
+</header>
 
 <div class="table-responsive">
 	<table class="table table-striped table-hover align-middle">
 		<thead>
 			<tr>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
-				<th scope="col"><input type="text" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
+				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
 			</tr>
 			<tr>
 				<th scope="col">ID Cuenta</th>
