@@ -14,7 +14,7 @@
 	import OtroError from '$lib/Error/OtroError.svelte'; // Otra página
 
 	export let status;
-	console.log(status);
+	console.log("¡Felicidades! Tienes un error "+status+". Buena suerte averiguando la causa...");
 	export let message;
 </script>
 

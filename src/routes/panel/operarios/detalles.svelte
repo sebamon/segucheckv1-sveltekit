@@ -1,5 +1,7 @@
 <script lang="ts">
-	import UserDetails from "$lib/Details/UserDetails.svelte";
+	// Importar secciones de detalles:
+	import UserDetails from '$lib/Details/UserDetails.svelte';
+	import UserDocumentation from '$lib/Details/UserDocumentation.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -15,14 +17,16 @@
 		CardTitle,
 		TabContent,
 		TabPane,
-		Image
+		Image,
+		Accordion,
+		AccordionItem
 	} from 'sveltestrap';
 
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 	let userDetails = {
-		user_id: '1234',
-		cuit: '20301001008',
-		name: 'Juan',
+		user_id: 1234,
+		cuit: 20301001008,
+		firstName: 'Juan',
 		lastName: 'Perez',
 		email: 'juan.perez@ejemplo.com',
 		phone: '2993334444',
@@ -37,25 +41,34 @@
 			{ rol_id: 2, rolDescription: 'Personal de seguridad' }
 		]
 	};
-
-	let habilitaciones = {};
+	let userDocumentation = [
+		{
+			documentation_id: 10,
+			documentType: { documentType_id: 1, description: 'Certificación para Trabajo en Altura' },
+			urlPdf: '/docs/doc-placeholder.pdf',
+			status: 'Estado 1',
+			created_at: new Date('2021-10-31'),
+			updated_at: new Date('2021-11-31'),
+			expirated_at: new Date('2021-12-31')
+		},
+		{
+			documentation_id: 15,
+			documentType: { documentType_id: 2, description: 'Carnet de Manejo Defensivo' },
+			urlPdf: '/docs/doc-placeholder.pdf',
+			status: 'Estado 2',
+			created_at: new Date('2021-08-31'),
+			updated_at: new Date('2021-09-31'),
+			expirated_at: new Date('2021-10-31')
+		}
+	];
 	let userWorkInfo = {};
 	let userAddress = {};
 	let userHealthInfo = {};
-
-	// Info completa del operario:
-	let operatorDetails = {
-		userDetails,
-		habilitaciones,
-		userWorkInfo,
-		userAddress,
-		userHealthInfo
-	};
 </script>
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Detalles: {userDetails.name + ' ' + userDetails.lastName} - SeguCheck</title>
+	<title>Operario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
 <!-- Encabezado -->
@@ -80,7 +93,7 @@
 		/>
 	</div>
 	<div class="col-auto">
-		<h1>{userDetails.name + ' ' + userDetails.lastName}</h1>
+		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<p class="lead">Detalles del operario</p>
 	</div>
 	<div class="col-2 ms-auto">
@@ -91,21 +104,37 @@
 </header>
 
 <TabContent>
-	<TabPane tabId="userDetails" tab="Datos básicos" class="mt-4" active>
+	<TabPane tabId="userDetails" tab="Datos básicos" active>
 		<!-- Datos básicos -->
-		<h2>Datos básicos</h2>
-		<UserDetails { operatorDetails.userDetails } /> <!-- ACA ESTA EL ERROR, si quito la llave, el componente funciona porque tiene un objeto con valores vacíos -->
+		<h2 class="my-4">Datos básicos</h2>
+		<UserDetails {...userDetails} />
 	</TabPane>
 	<TabPane tabId="habilitaciones" tab="Habilitaciones">
-		<h2>Habilitaciones</h2>
+		<h2 class="my-4">Habilitaciones</h2>
+		{#if userDocumentation.length == 0}
+			<div class="alert alert-warning" role="alert">
+				<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
+				Haz click en Editar para subir archivos.
+			</div>
+		{:else}
+			<div class="row g-3">
+				{#each userDocumentation as thisDoc}
+					<Accordion stayOpen class="col-md-6">
+						<AccordionItem header={thisDoc.documentType.description}>
+							<UserDocumentation {...thisDoc} />
+						</AccordionItem>
+					</Accordion>
+				{/each}
+			</div>
+		{/if}
 	</TabPane>
 	<TabPane tabId="userWorkInfo" tab="Datos laborales">
-		<h2>Datos laborales</h2>
+		<h2 class="my-4">Datos laborales</h2>
 	</TabPane>
 	<TabPane tabId="userAddress" tab="Domicilios">
-		<h2>Domicilios</h2>
+		<h2 class="my-4">Domicilios</h2>
 	</TabPane>
 	<TabPane tabId="userHealthInfo" tab="Datos médicos">
-		<h2>Datos laborales</h2>
+		<h2 class="my-4">Datos laborales</h2>
 	</TabPane>
 </TabContent>

@@ -1,33 +1,30 @@
 <script lang="ts">
 	// Datos del usuario a mostrar
-	export let userDetails = {
-		user_id: '',
-		cuit: '',
-		name: '',
-		lastName: '',
-		email: '',
-		phone: '',
-		gender: '',
-		dateOfBirth: '',
-		nationality: '',
-		studyLevel: '',
-		degree: '',
-		profilePic: '',
-		roles: []
-	};
+	export let user_id = 0;
+	export let cuit = 0;
+	export let firstName = '';
+	export let lastName = '';
+	export let email = '';
+	export let phone = '';
+	export let gender = '';
+	export let dateOfBirth = '';
+	export let nationality = '';
+	export let studyLevel = '';
+	export let degree = '';
+	export let roles = [];
 
 	// Pasar inicial de género a texto legible:
 	let genderText;
-	if (userDetails.gender == 'M') {
+	if (gender == 'M') {
 		genderText = 'Varón';
-	} else if (userDetails.gender == 'F') {
+	} else if (gender == 'F') {
 		genderText = 'Mujer';
 	} else {
-		genderText = userDetails.gender;
+		genderText = gender;
 	}
 </script>
 
-<form name="formDetails" id="formDetails">
+<form name="formUserDetails" id="formUserDetails">
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="user_id" class="form-label">Número ID</label>
@@ -38,7 +35,7 @@
 				class="form-control"
 				placeholder="1234"
 				aria-label="Número ID"
-				value={userDetails.user_id}
+				value={user_id}
 				readonly
 			/>
 		</div>
@@ -51,7 +48,7 @@
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
-				value={userDetails.cuit}
+				value={cuit}
 				readonly
 			/>
 		</div>
@@ -66,7 +63,7 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
-				value={userDetails.name}
+				value={firstName}
 				readonly
 			/>
 		</div>
@@ -79,7 +76,7 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="First name"
-				value={userDetails.lastName}
+				value={lastName}
 				readonly
 			/>
 		</div>
@@ -94,7 +91,7 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Correo electrónico"
-				value={userDetails.email}
+				value={email}
 				readonly
 			/>
 		</div>
@@ -107,7 +104,7 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				value={userDetails.phone}
+				value={phone}
 				readonly
 			/>
 		</div>
@@ -120,7 +117,7 @@
 				id="lastName"
 				name="lastName"
 				class="form-control user-select-all"
-				placeholder="Perez"
+				placeholder="M"
 				aria-label="Género"
 				value={genderText}
 				readonly
@@ -133,9 +130,9 @@
 				id="name"
 				name="name"
 				class="form-control"
-				placeholder="Juan"
+				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				value={userDetails.dateOfBirth}
+				value={dateOfBirth}
 				readonly
 			/>
 		</div>
@@ -146,9 +143,9 @@
 				id="lastName"
 				name="lastName"
 				class="form-control"
-				placeholder="Perez"
+				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				value={userDetails.nationality}
+				value={nationality}
 				readonly
 			/>
 		</div>
@@ -163,7 +160,7 @@
 				class="form-control"
 				placeholder="Universitario completo"
 				aria-label="Correo electrónico"
-				value={userDetails.studyLevel}
+				value={studyLevel}
 				readonly
 			/>
 		</div>
@@ -176,7 +173,7 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				value={userDetails.degree}
+				value={degree}
 				readonly
 			/>
 		</div>
@@ -189,13 +186,13 @@
 				name="roles"
 				class="form-control overflow-visible"
 				aria-label="Roles"
-				value={userDetails.degree}
+				value={degree}
 				multiple
 			>
-				{#if userDetails.roles.length === 0}
+				{#if roles.length === 0}
 					<option selected>Ninguno</option>
 				{:else}
-					{#each userDetails.roles as { rol_id, rolDescription }}
+					{#each roles as { rol_id, rolDescription }}
 						<option value={rol_id}>{rolDescription}</option>
 					{/each}
 				{/if}
