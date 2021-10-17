@@ -1,16 +1,37 @@
 <script>
+	export let height = 184, width = 184, file_name = "img.png";
 	let avatar, fileInput;
 
 	const onFileSelected = (e) => {
 		let image = e.target.files[0];
+		if (!window.FileReader) {
+			alert('El navegador no soporta la lectura de archivos');
+			return;
+		}
+		if (!/.(jpg|jpeg|png|gif)$/i.test(image.name)) {
+			alert('El archivo a adjuntar no es una imagen');
+		} else {
+			var img = new Image();
+			img.onload = function () {
+				if (this.width.toFixed(0) != 184 && this.height.toFixed(0) != 184) {
+					alert('Las medidas deben ser: 184 * 184');
+				} else if (image.size > 20000) {
+					alert('El peso de la imagen no puede exceder los 200kb');
+				} else {
+					alert('Imagen correcta :)');
+				}
+			};
+			img.src = URL.createObjectURL(image);
+		}
 		console.log(image);
 		let reader = new FileReader();
 		reader.readAsDataURL(image);
 		console.log(reader);
 		reader.onload = (e) => {
-            avatar = e.target.result;
+			avatar = e.target.result;
 		};
 	};
+
 </script>
 
 <div id="file_upload">
@@ -51,7 +72,7 @@
 	/>
 </div>
 <div id="probando_img">
-    <img src="{"avatar-usuario.png"}" alt="">
+	<img src={'avatar-usuario.png'} alt="" />
 </div>
 
 <style>
