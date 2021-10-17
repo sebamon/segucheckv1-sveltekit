@@ -25,11 +25,11 @@
 	<BreadcrumbItem>
 		<a href="/panel/">Inicio</a>
 	</BreadcrumbItem>
-	<BreadcrumbItem active>Operarios</BreadcrumbItem>
+	<BreadcrumbItem active>Usuarios</BreadcrumbItem>
 </Breadcrumb>
 <div class="row">
 	<div class="col-auto">
-		<h1>Operarios</h1>
+		<h1>Usuarios</h1>
 		<p class="lead">Descripción breve</p>
 	</div>
 	<div class="col-2 ms-auto">

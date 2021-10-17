@@ -111,7 +111,7 @@
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select id="type" class="form-select" aria-label="Tipo de vehículo">
+			<select id="type" class="form-select" aria-label="Tipo de vehículo" required>
 				<option selected disabled>Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType, i}
 					<option value={i}>{vehicleType}</option>
@@ -129,6 +129,7 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
+				required
 			/>
 		</div>
 		<div class="col-md-6">
@@ -140,6 +141,7 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
+				required
 			/>
 		</div>
 	</div>

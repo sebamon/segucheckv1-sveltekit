@@ -56,6 +56,7 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
+				required
 			/>
 		</div>
 		<div class="col-md-6">
@@ -67,6 +68,7 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="Apellido"
+				required
 			/>
 		</div>
 	</div>
@@ -80,11 +82,12 @@
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
+				required
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="gender" class="form-label">Género</label>
-			<select id="gender" class="form-select" aria-label="Género">
+			<select id="gender" class="form-select" aria-label="Género" required>
 				<option selected disabled>Elija una opción...</option>
 				<option value="M">Masculino</option>
 				<option value="F">Femenino</option>
@@ -121,8 +124,8 @@
 			<label for="name" class="form-label">Fecha de nacimiento</label>
 			<input
 				type="date"
-				id="name"
-				name="name"
+				id="dateOfBirth"
+				name="dateOfBirth"
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
