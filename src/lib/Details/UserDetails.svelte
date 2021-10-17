@@ -75,7 +75,7 @@
 				name="lastName"
 				class="form-control"
 				placeholder="Perez"
-				aria-label="First name"
+				aria-label="Apellido"
 				value={lastName}
 				readonly
 			/>
@@ -89,7 +89,7 @@
 				id="email"
 				name="email"
 				class="form-control"
-				placeholder="Juan"
+				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
 				value={email}
 				readonly
@@ -111,11 +111,11 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-4">
-			<label for="lastName" class="form-label">Género</label>
+			<label for="gender" class="form-label">Género</label>
 			<input
 				type="text"
-				id="lastName"
-				name="lastName"
+				id="gender"
+				name="gender"
 				class="form-control user-select-all"
 				placeholder="M"
 				aria-label="Género"
@@ -159,7 +159,7 @@
 				name="studyLevel"
 				class="form-control"
 				placeholder="Universitario completo"
-				aria-label="Correo electrónico"
+				aria-label="Nivel de formación"
 				value={studyLevel}
 				readonly
 			/>
