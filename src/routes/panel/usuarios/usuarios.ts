@@ -2,22 +2,27 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export const get = async ():Promise<{ body : any }> => {
+export const get = async () => {
     console.log('GET')
     //console.log(request)
-    const result = await prisma.users.findMany({})
- 
+   const result = await prisma.users.findMany()
+   console.log(result)
+//   const result={
+//       user : 'hola'
+//   }
     return {
-        body: result
+        body: {
+            data: result
     }
 }
+}
 
-
-    export const post = async (request)=> {
-    console.log('servidor funcion post')
-    console.log(request)
-    const formBody =JSON.parse(request.body)
-    console.log(formBody)
+export const post = async (request)=> {
+console.log('servidor funcion post')
+console.log(request)
+const formBody =JSON.parse(request.body)
+console.log(formBody)
+try{
     const result = await prisma.users.create({
         data:{
                 firstName : formBody.firstName,
@@ -34,13 +39,16 @@ export const get = async ():Promise<{ body : any }> => {
                 password: '',
             },
         })
-
-    console.log(result)
-    return{
-        body: {
-            message: 'Usuario Creado',
-            data: result
-        },
-    }
-
+        console.log(result)
+        return{
+            body: {
+                message: 'Usuario Creado',
+                data: result
+            },
+        }
+}catch(err)
+{
+    error:Error=err
 }
+}
+

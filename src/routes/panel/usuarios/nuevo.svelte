@@ -1,53 +1,56 @@
 <script lang="ts" context="module">
-	export async function load({ page, fetch }) {
-			const res = await fetch('usuarios');
-			// console.log(res.body)
-			const item = await res.json(res);
-			// return { props: { item } };
-			console.log("array",item)
-			let firstName = 'Seba';
-			let lastName =  'Mon';
-			let cuit = '2034397372';
-			let email =  'seba_mon1@hotmail.com';
-			let phone =  '2994738130';
-			let dateOfBirt =  '1989/02/09';
-			let degree = 'Terciario';
-			let gender = 'M';
-			let nationality = 'Argentino';
-			let studyLevel = 'Terciario Completo';
-			console.log('load',
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirt,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-			)
-			return {
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirt,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-			}
-		}
+	// export async function load({ page, fetch }) {
+		// 	const res = await fetch('usuarios');
+		// 	// console.log(res.body)
+		// 	const item = await res.json(res);
+		// 	// return { props: { item } };
+		// 	console.log("array",item)
+		// 	let firstName = 'Seba';
+		// 	let lastName =  'Mon';
+		// 	let cuit = '2034397372';
+		// 	let email =  'seba_mon1@hotmail.com';
+		// 	let phone =  '2994738130';
+		// 	let dateOfBirt =  '1989/02/09';
+		// 	let degree = 'Terciario';
+		// 	let gender = 'M';
+		// 	let nationality = 'Argentino';
+		// 	let studyLevel = 'Terciario Completo';
+		// 	console.log('load',
+		// 		firstName,
+		// 		lastName,
+		// 		cuit,
+		// 		email,
+		// 		phone,
+		// 		dateOfBirt,
+		// 		degree,
+		// 		gender,
+		// 		nationality,
+		// 		studyLevel,
+		// 	)
+		// 	return {
+		// 		firstName,
+		// 		lastName,
+		// 		cuit,
+		// 		email,
+		// 		phone,
+		// 		dateOfBirt,
+		// 		degree,
+		// 		gender,
+		// 		nationality,
+		// 		studyLevel,
+		// 	}
+		// }
 </script>
 
 <script lang="ts">
+import ModalLogin from '$lib/ModalLogin.svelte';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem
+		BreadcrumbItem,
+		Alert 
 	} from 'sveltestrap';
 
 	// Arreglo de roles - Esto lo lee de la DB:
@@ -78,11 +81,17 @@
 	let gender : string =  'M';
 	let nationality : string =  'Argentino';
 	let studyLevel : string =  'Terciario Completo';
+	let rol_id : number;
+	let color : any = 'success';
+	let message = '';
+	let error ='';
+	let user_id : number;
 
 	const submitForm = async ():Promise<void> =>{ 
 		console.log('Hola')
 		console.log(firstName)
-		const submit = await fetch('usuarios', {
+		try{
+			const submit = await fetch('usuarios', {
 			method : "POST",
 			body: JSON.stringify({
 				firstName,
@@ -95,12 +104,19 @@
 				gender,
 				nationality,
 				studyLevel,
+				rol_id,
 			}),
 		})
-
 		const data = await submit.json()
+		message = data.message
+		user_id = data.body.user_id
 		console.log('volvio')
 		console.log(data);
+		}catch(err)
+		{
+			error=err
+		}
+
 	}
 </script>
 
@@ -125,8 +141,18 @@
 	</div>
 </header>
 
+{#if message}
+<Alert {color}>
+    <h4 class="alert-heading text-capitalize">{color}</h4>
+    El usuario {firstName} {lastName} ha sido creado bajo el Nro: {user_id}
+    <a href="#todo" class="alert-link">
+      Also, alert-links are colored to match
+    </a>
+    .
+  </Alert>
+  {/if}
 <!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" on:submit={submitForm}>
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="firstname" class="form-label">Nombre</label>

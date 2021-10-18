@@ -1,6 +1,20 @@
+<script lang="ts" context="module">
+export async function load({ page, fetch }) {
+	console.log(fetch)
+			const res = await fetch('usuarios.ts');
+
+			// console.log(res.body)
+			const item = await res.json(res);
+			// console.log(res)
+		//	console.log(item)
+		console.log('hola')
+}
+
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+
 </script>
 
 <svelte:head>
