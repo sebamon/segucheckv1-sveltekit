@@ -5,23 +5,22 @@
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Operarios - SeguCheck</title>
+	<title>Locaciones - SeguCheck</title>
 </svelte:head>
 
-<!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Operarios</BreadcrumbItem>
+		<BreadcrumbItem active>Locaciones</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-walking me-4" />Operarios</h1>
+		<h1><i class="fas fa-map-marked me-4" />Locaciones</h1>
 		<h5>Descripción breve</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo">
+		<Button color="primary" href="/panel/locaciones/nuevo">
 			<i class="fas fa-plus me-2" />Nuevo
 		</Button>
 	</div>
@@ -39,11 +38,11 @@
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 				</tr>
 				<tr>
-					<th scope="col">ID Cuenta</th>
-					<th scope="col">DNI</th>
+					<th scope="col">ID locación</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">Apellido</th>
-					<th scope="col">Estado Habilitación</th>
+					<th scope="col">Cliente</th>
+					<th scope="col">Coordenadas</th>
+					<th scope="col">etc</th>
 				</tr>
 			</thead>
 			<tbody>

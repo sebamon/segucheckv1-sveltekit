@@ -8,24 +8,21 @@
 	<title>Usuarios - SeguCheck</title>
 </svelte:head>
 
-<!-- Encabezado -->
-<header>
+<header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Usuarios</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="row">
-		<div class="col-auto">
-			<h1>Usuarios</h1>
-			<h5>Descripción breve</h5>
-		</div>
-		<div class="col-2 ms-auto">
-			<Button color="primary" href="/panel/usuarios/nuevo"
-				><i class="fas fa-plus me-2" />Nuevo</Button
-			>
-		</div>
+	<div class="col-auto">
+		<h1><i class="fas fa-users me-4" />Usuarios</h1>
+		<h5>Descripción breve</h5>
+	</div>
+	<div class="col-2 ms-auto">
+		<Button color="primary" href="/panel/usuarios/nuevo">
+			<i class="fas fa-plus me-2" />Nuevo
+		</Button>
 	</div>
 </header>
 
