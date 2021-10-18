@@ -40,7 +40,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Inicio - SeguCheck</title>
 </svelte:head>
 
