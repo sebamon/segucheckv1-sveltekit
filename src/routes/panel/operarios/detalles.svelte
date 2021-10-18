@@ -2,6 +2,7 @@
 	// Importar secciones de detalles:
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 	import DocDetails from '$lib/Details/DocDetails.svelte';
+	import AddressDetails from '$lib/Details/AddressDetails.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -54,8 +55,33 @@
 			expirated_at: new Date('2021-09-31')
 		}
 	];
+	/* Para componente:
+		export let stateOfOrigin: "",
+		export let cityOfOrigin: "",
+		export let zipCodeOfOrigin: 0,
+		export let phoneOfOrigin: "",
+		export let addressOfOrigin: "",
+		export let countryOfResidence: "",
+		export let stateOfResidence: "",
+		export let cityOfResidence: "",
+		export let zipCodeOfResidence:0,
+		export let addressOfResidence: "",
+  */
 	let userWorkInfo = {};
-	let userAddress = {};
+	let userAddress = {
+		countryOfOrigin: 'Estados Unidos',
+		stateOfOrigin: 'Texas',
+		cityOfOrigin: 'Houston',
+		zipCodeOfOrigin: 77001,
+		addressOfOrigin: '6815 Eastwood St.',
+		phoneOfOrigin: '+1-281-555-0185',
+		countryOfResidence: 'Argentina',
+		stateOfResidence: 'Neuquén',
+		cityOfResidence: 'Rincón de los Sauces',
+		zipCodeOfResidence: 8319,
+		addressOfResidence: 'Roca 893',
+		phoneOfResidence: '299-412-3469'
+	};
 	let userHealthInfo = {};
 </script>
 
@@ -95,39 +121,40 @@
 </header>
 
 <main>
-<TabContent>
-	<TabPane tabId="userDetails" tab="Datos básicos" active>
-		<!-- Datos básicos -->
-		<h2 class="my-4">Datos básicos</h2>
-		<UserDetails {...userDetails} />
-	</TabPane>
-	<TabPane tabId="habilitaciones" tab="Habilitaciones">
-		<h2 class="my-4">Habilitaciones</h2>
-		{#if userDocumentation.length == 0}
-			<div class="alert alert-warning" role="alert">
-				<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
-				Haz click en Editar para subir archivos.
-			</div>
-		{:else}
-			<div class="row g-3">
-				{#each userDocumentation as thisDoc}
-					<Accordion stayOpen class="col-md-6">
-						<AccordionItem header={thisDoc.documentType.description}>
-							<DocDetails {...thisDoc} />
-						</AccordionItem>
-					</Accordion>
-				{/each}
-			</div>
-		{/if}
-	</TabPane>
-	<TabPane tabId="userWorkInfo" tab="Datos laborales">
-		<h2 class="my-4">Datos laborales</h2>
-	</TabPane>
-	<TabPane tabId="userAddress" tab="Domicilios">
-		<h2 class="my-4">Domicilios</h2>
-	</TabPane>
-	<TabPane tabId="userHealthInfo" tab="Datos médicos">
-		<h2 class="my-4">Datos laborales</h2>
-	</TabPane>
-</TabContent>
+	<TabContent>
+		<TabPane tabId="userDetails" tab="Datos básicos" active>
+			<!-- Datos básicos -->
+			<h2 class="my-4">Datos básicos</h2>
+			<UserDetails {...userDetails} />
+		</TabPane>
+		<TabPane tabId="habilitaciones" tab="Habilitaciones">
+			<h2 class="my-4">Habilitaciones</h2>
+			{#if userDocumentation.length == 0}
+				<div class="alert alert-warning" role="alert">
+					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
+					Haz click en Editar para subir archivos.
+				</div>
+			{:else}
+				<div class="row g-3">
+					{#each userDocumentation as thisDoc}
+						<Accordion stayOpen class="col-md-6">
+							<AccordionItem header={thisDoc.documentType.description}>
+								<DocDetails {...thisDoc} />
+							</AccordionItem>
+						</Accordion>
+					{/each}
+				</div>
+			{/if}
+		</TabPane>
+		<TabPane tabId="userWorkInfo" tab="Datos laborales">
+			<h2 class="my-4">Datos laborales</h2>
+		</TabPane>
+		<TabPane tabId="userAddress" tab="Domicilios">
+			<h2 class="my-4">Domicilios</h2>
+			<AddressDetails {...userAddress} />
+		</TabPane>
+		<TabPane tabId="userHealthInfo" tab="Datos médicos">
+			<h2 class="my-4">Datos laborales</h2>
+		</TabPane>
+	</TabContent>
 </main>
