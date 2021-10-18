@@ -1,10 +1,14 @@
 <script lang="ts">
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Button,
-		Breadcrumb,
-		BreadcrumbItem
-	} from 'sveltestrap';
+	// Datos del usuario a mostrar
+	export let vehicle_id = 0;
+	export let domain = '';
+	export let type = 0;
+	export let brand = '';
+	export let model = '';
+	export let year = 0;
+	export let internal_id = 0;
+	export let chasisNumber = 0;
+	export let motorNumber = 0;
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -64,29 +68,7 @@
 	];
 </script>
 
-<svelte:head>
-	<title>Nuevo vehículo - SeguCheck</title>
-</svelte:head>
-
-<!-- Encabezado -->
-<header class="row">
-	<Breadcrumb>
-		<BreadcrumbItem>
-			<a href="/panel/">Inicio</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem>
-			<a href="/panel/vehiculos">Vehículos</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
-	</Breadcrumb>
-	<div class="col-auto">
-		<h1>Nuevo vehículo</h1>
-		<p class="lead">Ingrese los detalles a continuación.</p>
-	</div>
-</header>
-
-<!-- Formulario nuevo usuario -->
-<form name="formVehicleDetails" id="formVehicleDetails" action="./create">
+<form name="formVehicleDetails" id="formVehicleDetails">
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -97,17 +79,22 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-				required
+                value={domain}
+				readonly
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select id="type" class="form-select" aria-label="Tipo de vehículo" required>
-				<option selected disabled>Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType, i}
-					<option value={i}>{vehicleType}</option>
-				{/each}
-			</select>
+			<input
+				type="text"
+				id="type"
+				name="type"
+				class="form-control"
+				placeholder="Rodados - Camión"
+				aria-label="Tipo de vehículo"
+                value={vehicleTypeList[type]}
+				readonly
+			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -120,7 +107,8 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-				required
+                value={brand}
+				readonly
 			/>
 		</div>
 		<div class="col-md-6">
@@ -132,7 +120,8 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-				required
+                value={model}
+				readonly
 			/>
 		</div>
 	</div>
@@ -146,10 +135,8 @@
 				class="form-control"
 				placeholder="2015"
 				aria-label="Año"
-				min="1950"
-				max="9999"
-				step="1"
-				required
+                value={year}
+				readonly
 			/>
 		</div>
 		<div class="col-md-6">
@@ -161,6 +148,8 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
+                value={internal_id}
+				readonly
 			/>
 		</div>
 	</div>
@@ -172,8 +161,10 @@
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
-				placeholder="1214161820"
+				placeholder="1980-12-31"
 				aria-label="Número de chasis"
+                value={chasisNumber}
+				readonly
 			/>
 		</div>
 		<div class="col-md-6">
@@ -183,30 +174,11 @@
 				id="motorNumber"
 				name="motorNumber"
 				class="form-control"
-				placeholder="2356891256"
+				placeholder="Argentina"
 				aria-label="Número de motor"
+                value={motorNumber}
+				readonly
 			/>
-		</div>
-	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6">
-			<div class="mb-3">
-				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input class="form-control" type="file" id="frontPic" />
-			</div>
-			<div class="mb-3">
-				<label for="leftSidePic" class="form-label">Foto del lado derecho</label>
-				<input class="form-control" type="file" id="leftSidePic" />
-			</div>
-			<div class="mb-3">
-				<label for="rigthSidePicUrl" class="form-label">Foto del lado izquierdo</label>
-				<input class="form-control" type="file" id="rigthSidePicUrl" />
-			</div>
-		</div>
-		<div class="col-md-6 d-flex justify-content-end">
-			<Button type="submit" color="primary">
-				<i class="fas fa-plus me-2" />Crear
-			</Button>
 		</div>
 	</div>
 </form>

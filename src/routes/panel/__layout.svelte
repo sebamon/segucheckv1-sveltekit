@@ -63,31 +63,37 @@
 		<div class="sidebar-heading border-bottom bg-secondary fs-4">Menú lateral</div>
 		<div class="list-group list-group-flush">
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel">
-				<i class="fas fa-home me-2" />Resumen
+				<i class="fas fa-home me-4" />Resumen
 			</a>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/operarios">
-				<i class="fas fa-walking me-2" />Operarios
+				<i class="fas fa-walking me-4" />Operarios
 			</a>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/vehiculos">
-				<i class="fas fa-car me-2" />Vehículos
+				<i class="fas fa-car me-4" />Vehículos
 			</a>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/trabajos">
-				<i class="fas fa-briefcase me-2" />Trabajos
+				<i class="fas fa-briefcase me-4" />Trabajos
 			</a>
 			<a
 				class="list-group-item list-group-item-action list-group-item p-3"
 				href="/panel/checklists"
 			>
-				<i class="fas fa-clipboard-check me-2" />Checklists
+				<i class="fas fa-clipboard-check me-4" />Checklists
 			</a>
 			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/usuarios">
-				<i class="fas fa-users me-2" />Usuarios
+				<i class="fas fa-users me-4" />Usuarios
 			</a>
 			<a
 				class="list-group-item list-group-item-action list-group-item p-3"
 				href="/panel/locaciones"
 			>
-				<i class="fas fa-map-marked me-2" />Locaciones
+				<i class="fas fa-map-marked me-4" />Locaciones
+			</a>
+			<a
+				class="list-group-item list-group-item-action list-group-item p-3"
+				href="/panel/clientes"
+			>
+				<i class="fas fa-industry me-4" />Clientes
 			</a>
 		</div>
 	</div>

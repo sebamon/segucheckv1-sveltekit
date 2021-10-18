@@ -4,26 +4,24 @@
 </script>
 
 <svelte:head>
-	<title>Vehículos - SeguCheck</title>
+	<title>Locaciones - SeguCheck</title>
 </svelte:head>
 
-<header>
+<header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Vehículos</BreadcrumbItem>
+		<BreadcrumbItem active>Locaciones</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="row">
-		<div class="col-auto">
-			<h1><i class="fas fa-car me-4" />Vehículos</h1>
-			<h5>Descripción breve</h5>
-		</div>
-		<div class="col-2 ms-auto">
-			<Button color="primary" href="/panel/vehiculos/nuevo">
-				<i class="fas fa-plus me-2" />Nuevo
-			</Button>
-		</div>
+	<div class="col-auto">
+		<h1><i class="fas fa-map-marked me-4" />Locaciones</h1>
+		<h5>Descripción breve</h5>
+	</div>
+	<div class="col-2 ms-auto">
+		<Button color="primary" href="/panel/locaciones/nuevo">
+			<i class="fas fa-plus me-2" />Nuevo
+		</Button>
 	</div>
 </header>
 
@@ -39,11 +37,11 @@
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 				</tr>
 				<tr>
-					<th scope="col">Patente</th>
-					<th scope="col">Tipo</th>
-					<th scope="col">Marca</th>
-					<th scope="col">Modelo</th>
-					<th scope="col">Estado Habilitación</th>
+					<th scope="col">ID locación</th>
+					<th scope="col">Nombre</th>
+					<th scope="col">Cliente</th>
+					<th scope="col">Coordenadas</th>
+					<th scope="col">etc</th>
 				</tr>
 			</thead>
 			<tbody>
