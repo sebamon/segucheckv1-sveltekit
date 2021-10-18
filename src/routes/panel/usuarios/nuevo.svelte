@@ -1,3 +1,47 @@
+<script lang="ts" context="module">
+	export async function load({ page, fetch }) {
+			const res = await fetch('usuarios');
+			// console.log(res.body)
+			const item = await res.json(res);
+			// return { props: { item } };
+			console.log("array",item)
+			let firstName = 'Seba';
+			let lastName =  'Mon';
+			let cuit = '2034397372';
+			let email =  'seba_mon1@hotmail.com';
+			let phone =  '2994738130';
+			let dateOfBirt =  '1989/02/09';
+			let degree = 'Terciario';
+			let gender = 'M';
+			let nationality = 'Argentino';
+			let studyLevel = 'Terciario Completo';
+			console.log('load',
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirt,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+			)
+			return {
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirt,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+			}
+		}
+</script>
+
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -20,6 +64,52 @@
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
+
+	// let firstName:string
+	// let lastName:string;
+	// let cuit:string;
+	// let email:string;
+	// let phone:string;
+	// let dateOfBirth:Date = new Date('1989/09/02')
+	// let degree:string;
+	// let gender:string;
+	// let nationality:string;
+	// let studyLevel:string;
+	
+	let firstName : string = 'Sebastian';
+	let lastName : string =   'Mon';
+	let cuit : string =  '2034397372';
+	let email : string =   'seba_mon1@hotmaol.com';
+	let phone : string =   '2994738130';
+	let dateOfBirth : Date = new Date('1989/02/09');
+	let degree : string =  'Terciario';
+	let gender : string =  'M';
+	let nationality : string =  'Argentino';
+	let studyLevel : string =  'Terciario Completo';
+
+	const submitForm = async ():Promise<void> =>{ 
+		console.log('Hola')
+		console.log(firstName)
+		const submit = await fetch('usuarios', {
+			method : "POST",
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirth,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+			}),
+		})
+
+		const data = await submit.json()
+		console.log('volvio')
+		console.log(data);
+	}
 </script>
 
 <svelte:head>
@@ -45,18 +135,19 @@
 </header>
 
 <!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" action="./create">
+<form name="formUserDetails" id="formUserDetails" on:submit={submitForm}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="name" class="form-label">Nombre</label>
+			<label for="firstname" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="name"
-				name="name"
+				id="firstname"
+				name="firstname"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
 				required
+				bind:value={firstName}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -69,6 +160,7 @@
 				placeholder="Perez"
 				aria-label="Apellido"
 				required
+				bind:value={lastName}
 			/>
 		</div>
 	</div>
@@ -83,11 +175,12 @@
 				placeholder="20301001008"
 				aria-label="Número CUIT"
 				required
+				bind:value={cuit}
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="gender" class="form-label">Género</label>
-			<select id="gender" class="form-select" aria-label="Género" required>
+			<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="M">Masculino</option>
 				<option value="F">Femenino</option>
@@ -105,6 +198,7 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Correo electrónico"
+				bind:value={email}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -116,6 +210,7 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
+				bind:value={phone}
 			/>
 		</div>
 	</div>
@@ -129,24 +224,26 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
+				bind:value={dateOfBirth}
 			/>
 		</div>
 		<div class="col-md-6">
-			<label for="lastName" class="form-label">Nacionalidad</label>
+			<label for="nationality" class="form-label">Nacionalidad</label>
 			<input
 				type="text"
-				id="lastName"
-				name="lastName"
+				id="nationality"
+				name="nationality"
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
+				bind:value={nationality}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado">
+			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={studyLevel}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="Primario incompleto">Primario incompleto</option>
 				<option value="Primario completo">Primario completo</option>
@@ -169,6 +266,7 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
+				bind:value={degree}
 			/>
 		</div>
 	</div>
@@ -183,6 +281,7 @@
 						name="roles"
 						class="form-check-input"
 						role="switch"
+						bind:value={rol_id}
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>
