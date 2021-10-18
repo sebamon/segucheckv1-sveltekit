@@ -6,15 +6,6 @@
 		Button,
 		Breadcrumb,
 		BreadcrumbItem,
-		Card,
-		CardBody,
-		CardFooter,
-		CardHeader,
-		CardSubtitle,
-		CardText,
-		CardTitle,
-		TabContent,
-		TabPane,
 		Image
 	} from 'sveltestrap';
 
@@ -60,17 +51,17 @@
 			fluid
 			thumbnail
 			src={userDetails.profilePic}
-			alt="Aplicación móvil"
+			alt="Foto de perfil"
 			class="m-2"
 			style="max-width:150px"
 		/>
 	</div>
 	<div class="col-auto">
 		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<p class="lead">Detalles del usuario</p>
+		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo"
+		<Button color="primary" href="/panel/usuarios/editar"
 			><i class="fas fa-pen me-2" />Editar</Button
 		>
 	</div>

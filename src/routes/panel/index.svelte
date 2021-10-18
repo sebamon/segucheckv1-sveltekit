@@ -21,13 +21,16 @@
 	<title>Resumen - SeguCheck</title>
 </svelte:head>
 
-<!-- Posición -->
+<!-- Encabezado -->
+<header>
 <Breadcrumb>
 	<BreadcrumbItem active>Inicio</BreadcrumbItem>
 </Breadcrumb>
 <h1>Resumen</h1>
 <p class="lead">Bienvenido de nuevo, {actualUser}</p>
-<div class="row g-2">
+</header>
+
+<main class="row g-2">
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
@@ -82,4 +85,4 @@
 			</a>
 		</CardBody>
 	</Card>
-</div>
+</main>

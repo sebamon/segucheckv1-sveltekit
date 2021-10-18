@@ -5,31 +5,33 @@
 		Breadcrumb,
 		BreadcrumbItem
 	} from 'sveltestrap';
-
 </script>
 
 <svelte:head>
 	<!-- Insertar al head del HTML -->
-	<title>Operarios - SeguCheck</title>
+	<title>Trabajos - SeguCheck</title>
 </svelte:head>
 
-<!-- Posición -->
+<!-- Encabezado -->
+<header>
 <Breadcrumb>
 	<BreadcrumbItem>
 		<a href="/panel/">Inicio</a>
 	</BreadcrumbItem>
-	<BreadcrumbItem active>Operarios</BreadcrumbItem>
+	<BreadcrumbItem active>Trabajos</BreadcrumbItem>
 </Breadcrumb>
-<header class="row">
+<div class="row">
 	<div class="col-auto">
-		<h1>Operarios</h1>
+		<h1>Trabajos</h1>
 		<h5>Descripción breve</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
+		<Button color="primary" href="/panel/trabajos/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>
 	</div>
+</div>
 </header>
 
+<main>
 <div class="table-responsive">
 	<table class="table table-striped table-hover align-middle">
 		<thead>
@@ -41,11 +43,11 @@
 				<th scope="col"><input type="search" placeholder="Filtrar"/></th>
 			</tr>
 			<tr>
-				<th scope="col">ID Cuenta</th>
-				<th scope="col">DNI</th>
-				<th scope="col">Nombre</th>
-				<th scope="col">Apellido</th>
-				<th scope="col">Estado Habilitación</th>
+				<th scope="col">Número</th>
+				<th scope="col">Categoría</th>
+				<th scope="col">Fecha inicio</th>
+				<th scope="col">Estado</th>
+				<th scope="col">Cliente</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -164,3 +166,4 @@
 		</tbody>
 	</table>
 </div>
+</main>

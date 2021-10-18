@@ -89,6 +89,12 @@
 			>
 				<i class="fas fa-map-marked me-2" />Locaciones
 			</a>
+			<a
+				class="list-group-item list-group-item-action list-group-item p-3"
+				href="/panel/clientes"
+			>
+				<i class="fas fa-industry me-2" />Clientes
+			</a>
 		</div>
 	</div>
 

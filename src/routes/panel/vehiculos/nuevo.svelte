@@ -3,15 +3,7 @@
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem,
-		Card,
-		CardBody,
-		CardFooter,
-		CardHeader,
-		CardSubtitle,
-		CardText,
-		CardTitle,
-		Image
+		BreadcrumbItem
 	} from 'sveltestrap';
 
 	// Arreglo de tipo de vehículos:
@@ -181,7 +173,7 @@
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
-				placeholder="1980-12-31"
+				placeholder="1214161820"
 				aria-label="Número de chasis"
 			/>
 		</div>
@@ -192,7 +184,7 @@
 				id="motorNumber"
 				name="motorNumber"
 				class="form-control"
-				placeholder="Argentina"
+				placeholder="2356891256"
 				aria-label="Número de motor"
 			/>
 		</div>

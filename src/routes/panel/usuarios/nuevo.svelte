@@ -3,15 +3,7 @@
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem,
-		Card,
-		CardBody,
-		CardFooter,
-		CardHeader,
-		CardSubtitle,
-		CardText,
-		CardTitle,
-		Image
+		BreadcrumbItem
 	} from 'sveltestrap';
 
 	// Arreglo de roles - Esto lo lee de la DB:

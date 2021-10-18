@@ -8,13 +8,6 @@
 		Button,
 		Breadcrumb,
 		BreadcrumbItem,
-		Card,
-		CardBody,
-		CardFooter,
-		CardHeader,
-		CardSubtitle,
-		CardText,
-		CardTitle,
 		TabContent,
 		TabPane,
 		Image,
@@ -87,7 +80,7 @@
 			fluid
 			thumbnail
 			src={userDetails.profilePic}
-			alt="Aplicación móvil"
+			alt="Foto de perfil"
 			class="m-2"
 			style="max-width:150px"
 		/>
@@ -97,7 +90,7 @@
 		<p class="lead">Detalles del operario</p>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo"
+		<Button color="primary" href="/panel/operarios/editar"
 			><i class="fas fa-pen me-2" />Editar</Button
 		>
 	</div>
