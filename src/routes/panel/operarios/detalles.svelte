@@ -1,7 +1,7 @@
 <script lang="ts">
 	// Importar secciones de detalles:
 	import UserDetails from '$lib/Details/UserDetails.svelte';
-	import UserDocumentation from '$lib/Details/UserDocumentation.svelte';
+	import DocDetails from '$lib/Details/DocDetails.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -50,8 +50,8 @@
 			urlPdf: '/docs/doc-placeholder.pdf',
 			status: 'Estado 2',
 			created_at: new Date('2021-08-31'),
-			updated_at: new Date('2021-09-31'),
-			expirated_at: new Date('2021-10-31')
+			updated_at: new Date('2021-08-31'),
+			expirated_at: new Date('2021-09-31')
 		}
 	];
 	let userWorkInfo = {};
@@ -60,11 +60,9 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Operario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
-<!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -90,12 +88,13 @@
 		<p class="lead">Detalles del operario</p>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/editar"
-			><i class="fas fa-pen me-2" />Editar</Button
-		>
+		<Button color="primary" href="/panel/operarios/editar">
+			<i class="fas fa-pen me-2" />Editar
+		</Button>
 	</div>
 </header>
 
+<main>
 <TabContent>
 	<TabPane tabId="userDetails" tab="Datos básicos" active>
 		<!-- Datos básicos -->
@@ -114,7 +113,7 @@
 				{#each userDocumentation as thisDoc}
 					<Accordion stayOpen class="col-md-6">
 						<AccordionItem header={thisDoc.documentType.description}>
-							<UserDocumentation {...thisDoc} />
+							<DocDetails {...thisDoc} />
 						</AccordionItem>
 					</Accordion>
 				{/each}
@@ -131,3 +130,4 @@
 		<h2 class="my-4">Datos laborales</h2>
 	</TabPane>
 </TabContent>
+</main>

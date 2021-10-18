@@ -31,11 +31,9 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
-<!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -67,5 +65,6 @@
 	</div>
 </header>
 
-<!-- Detalles -->
+<main>
 <UserDetails {...userDetails} />
+</main>

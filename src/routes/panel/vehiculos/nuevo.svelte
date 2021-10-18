@@ -65,7 +65,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Nuevo vehículo - SeguCheck</title>
 </svelte:head>
 

@@ -23,7 +23,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Nuevo trabajo - SeguCheck</title>
 </svelte:head>
 

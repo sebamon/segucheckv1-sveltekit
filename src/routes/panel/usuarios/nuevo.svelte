@@ -15,7 +15,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Nuevo usuario - SeguCheck</title>
 </svelte:head>
 

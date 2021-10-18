@@ -17,7 +17,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Resumen - SeguCheck</title>
 </svelte:head>
 

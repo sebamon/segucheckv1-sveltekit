@@ -4,7 +4,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Usuarios - SeguCheck</title>
 </svelte:head>
 
