@@ -1,5 +1,5 @@
 <script>
-    import "fs";
+    import { Save_File } from "./api/file_save.js";
 	export let height = 184,
 		width = 184,
 		size_bytes = 90000,
@@ -33,10 +33,7 @@
 					console.log('Imagen correcta');
 					ready_to_save = true;
 					document.getElementById('info_upload').innerHTML = 'El archivo fue subido con éxito.';
-                    var fs = require('fs');
-					fs.writeFile( save_route + file_name, img, function (err) {
-						console.log('Archivo guardado como '+save_route + file_name);
-					});
+                    Save_File(save_route, file_name, img);
 				}
 			};
 			img.src = URL.createObjectURL(image);
