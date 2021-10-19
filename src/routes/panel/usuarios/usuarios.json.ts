@@ -1,4 +1,4 @@
-import { PrismaClient } from '@prisma/client'
+import { PrismaClient, Prisma } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
@@ -6,22 +6,22 @@ export const get = async () =>{
     console.log('GET')
     console.log("funcion Usuario get")
     //console.log(request)
-    const users= await prisma.users.findMany()
-    console.log("users: ",users)
-   const result = await prisma.users.findMany()
-
-   console.log("result: ",result)
+    const users = await prisma.users.findMany()
+     
+    // const users= await result.json()
+    // console.log("users: ",users)
+   console.log("result: ",users)
 //   const result={
 //       user : 'hola'
 //   }
     return {
         body: {
-            // data: JSON.stringify(result),
-           result,
+            users, // data: JSON.stringify(result),
             // data: result
+        }
     }
 }
-}
+
 
 
 
@@ -31,7 +31,8 @@ console.log(request)
 const formBody =JSON.parse(request.body)
 console.log('formBody: ',formBody)
 try{
-    const result = await prisma.users.create({
+   // let user:Prisma.UserCreateInput
+   const result = await prisma.users.create({
         data:{
                 firstName : formBody.firstName,
                 lastName :formBody.lastName,
@@ -47,7 +48,8 @@ try{
                 password: '',
             },
         })
-        console.log(result)
+        console.log('result despues de insert:',result)
+        
         return{
             body: {
                 message: 'Usuario Creado',

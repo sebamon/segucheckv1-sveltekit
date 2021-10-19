@@ -2,14 +2,16 @@
 import { writable } from 'svelte/store';
 export async function load({ page, fetch }) {
 	console.log('load usuario/index.svelte')
-		const response = await fetch(`./usuarios/usuarios.json?`)
+		const response = await fetch(`./usuarios/usuarios.json?`,)
 		const users = await response.json()
 		const user2= writable(users)
 		console.log('funcion load: users: ',response)
 		console.log('funcion load: users.body: ',response.body)
-		console.log('funcion load: item: ', users)
-		return {	
-			users
+		console.log('funcion load: item: ', users.users)
+		return {
+			props: {	
+				users,
+		}
 		};
 	}
 
@@ -64,122 +66,19 @@ export async function load({ page, fetch }) {
 					<th scope="col">DNI</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
-					<th scope="col">Estado Habilitación</th>
+					<th scope="col">Email</th>
 				</tr>
 			</thead>
 			<tbody>
+				{#each users.users as user }
 				<tr>
-					<td>1,001</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
+					<td>{user.user_id}</td>
+					<td>{user.cuit}</td>
+					<td>{user.firstName}</td>
+					<td>{user.lastName}</td>
+					<td>{user.email}</td>
 				</tr>
-				<tr>
-					<td>1,002</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,004</td>
-					<td>text</td>
-					<td>random</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,005</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>placeholder</td>
-				</tr>
-				<tr>
-					<td>1,006</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,007</td>
-					<td>placeholder</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>irrelevant</td>
-				</tr>
-				<tr>
-					<td>1,008</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,009</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,010</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,011</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,012</td>
-					<td>text</td>
-					<td>placeholder</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,013</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>visual</td>
-				</tr>
-				<tr>
-					<td>1,014</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,015</td>
-					<td>random</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>text</td>
-				</tr>
+				{/each}
 			</tbody>
 		</table>
 	</div>

@@ -1,6 +1,6 @@
 <script lang="ts">
 import ModalLogin from '$lib/ModalLogin.svelte';
-import type { User } from '$lib/store';
+// import type { User } from '$lib/store';
 import type { Prisma } from '.prisma/client';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -46,8 +46,8 @@ import type { Prisma } from '.prisma/client';
 	export let error ='';
 	
 
-	const submitForm = async ():Promise<void> =>{ 
-		console.log('Hola')
+	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
+		console.log('Hola')                         //en forma de api para hacer el insert
 		console.log(user)
 		try{
 			const submit = await fetch('usuarios.json', {
@@ -70,8 +70,14 @@ import type { Prisma } from '.prisma/client';
 			message = data.message
 			// user_id = data.body.user_id
 			console.log('volvio')
-			console.log(data);
-			console.log(data.body);
+			console.log('submit', submit)
+			console.log('data',data);
+			console.log('data.body',data.body);
+			console.log(message)
+			if(submit.status===200)
+			{
+				console.log(message)
+			}
 		}catch(err)
 		{
 			error=err
@@ -258,7 +264,7 @@ import type { Prisma } from '.prisma/client';
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						bind:value={roles.rol_id}
+						bind:value={rol_id}
 						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
