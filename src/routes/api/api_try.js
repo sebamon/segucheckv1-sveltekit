@@ -5,7 +5,7 @@ const auth = new google.auth.JWT(credentials.client_email, null, credentials.pri
 const drive = google.drive({ version: 'v3', auth });
 
 export function list_drive_files() {
-    alert ("got in!");
+    console.log("got in!");
     drive.files.list({}, (err, res) => {
         if (err) throw err;
         const files = res.data.files;
@@ -17,4 +17,22 @@ export function list_drive_files() {
             console.log('No files found');
         }
     });
+}
+export const get = async () =>{
+
+    console.log('entro a api_try GET')
+    return {
+        body : 
+        {
+            mensaje: 'hola get',
+        }
+    }
+}
+export const post = async (request)=> {
+
+    
+    console.log('entro a api_try POST: request',request)
+    return {
+        body :'hola post'
+    }
 }

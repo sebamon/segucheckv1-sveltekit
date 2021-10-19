@@ -27,6 +27,8 @@
 			return;
 		}else{
 			let pdf_file = "";
+			ready_to_save = true;
+			/*document.getElementById("doc_placeholder").innerHTML() */
 		}
 	};
 </script>
@@ -40,7 +42,7 @@
 	<img
 		class="upload"
 		src="https://static.thenounproject.com/png/377198-200.png"
-		alt="subir una foto"
+		alt="subir documento"
 		on:click={() => {
 			fileInput.click();
 		}}
@@ -61,7 +63,9 @@
 		bind:this={fileInput}
 	/>
 </div>
+<div id="doc_placeholder">
 
+</div>
 <style>
 	#file_upload {
 		display: flex;

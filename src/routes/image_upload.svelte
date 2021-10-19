@@ -1,5 +1,17 @@
 <script>
-import ImgUpload from "./Img_upload.svelte";
+import ImgUpload2 from "./Img_upload2.svelte";
 
 </script>
-<ImgUpload />
+<div>
+<!-- <div id="upload_img">
+ -->
+ <ImgUpload2 />
+</div>
+<style>
+    #upload_img{
+        width:25%;
+        height:30%;
+        align-self:left;
+        background-color:lightblue;
+    }
+</style>
