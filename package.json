@@ -34,8 +34,6 @@
 	"dependencies": {
 		"@prisma/client": "^3.2.1",
 		"dotenv": "^10.0.0",
-		"filepond": "^4.30.3",
-		"formidable": "^2.0.0-canary.20200504.1",
 		"googleapis": "^88.2.0",
 		"sveltestrap": "^5.6.3"
 	}

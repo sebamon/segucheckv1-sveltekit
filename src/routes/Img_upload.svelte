@@ -6,20 +6,20 @@
     width: ancho máximo de la imagen en pixeles
 	size_bytes: tamaño máximo del archivo en bytes
 	file_name: nombre con el que se guardará el archivo (la extensión se agregará automáticamente)
+    file_post: archivo para tratar la imagen enviada mediante POST
 	save_route: ubicación donde se guardará el archivo
-	accepted_file_test: string de extensiones que pueden aceptarse. Deben llevar el punto y separarse 
+	accepted_file_ext: string de extensiones que pueden aceptarse. Deben llevar el punto y separarse 
 		con coma (ej: ".jpg, .jpeg, .png") 
  -->
-
 <script>
-/*     import { Save_File } from "./api/file_save.js";
- */	export let 
-        height = 184,
+/*         import  "../static/user_pics/image.js"; */
+        export let height = 184,
 		width = 184,
 		size_bytes = 90000,
 		file_name = 'img_test.png',
-        save_route = '../static/user_pics/',
-        accepted_file_ext = ".jpg, .jpeg, .png, .webp"; 
+		file_post = '../static/user_pics/image.js',
+		save_route = '../static/user_pics/',
+		accepted_file_ext = '.jpg, .jpeg, .png, .webp';
 
 	let avatar,
 		fileInput,
@@ -48,7 +48,16 @@
 				} else {
 					console.log('Imagen correcta');
 					ready_to_save = true;
-					document.getElementById('info_upload').innerHTML = 'El archivo fue subido con éxito.';
+					let req = new XMLHttpRequest();
+					let form_data = new FormData();
+                    
+					form_data.append(file_name, avatar);
+                    form_data.append("Save route", save_route);
+                    
+					req.open('POST', file_post);
+					req.send(form_data);
+					
+                    document.getElementById('info_upload').innerHTML = 'El archivo fue subido con éxito.';
                     /* Save_File(save_route, file_name, img); */
 				}
 			};
@@ -98,10 +107,13 @@
 	<input
 		style="display:none"
 		type="file"
-		accept="{accepted_file_ext}"
+		accept={accepted_file_ext}
 		on:change={(e) => onFileSelected(e)}
 		bind:this={fileInput}
 	/>
+    <div id="test">
+        
+    </div>
 </div>
 
 <style>

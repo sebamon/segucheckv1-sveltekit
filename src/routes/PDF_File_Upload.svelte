@@ -5,7 +5,7 @@
 	size_bytes: tamaño máximo del archivo en bytes
 	file_name: nombre con el que se guardará el archivo (la extensión se agregará automáticamente)
 	save_route: ubicación donde se guardará el archivo
-	accepted_file_test: string de extensiones que pueden aceptarse. Deben llevar el punto y separarse 
+	accepted_file_ext: string de extensiones que pueden aceptarse. Deben llevar el punto y separarse 
 		con coma (ej: ".pdf, .doc, .xls") 
  -->
 <script>
@@ -26,7 +26,7 @@
 			alert('El navegador no soporta la lectura de archivos');
 			return;
 		}else{
-			let pdf = "";
+			let pdf_file = "";
 		}
 	};
 </script>
