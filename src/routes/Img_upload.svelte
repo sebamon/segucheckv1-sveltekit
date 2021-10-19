@@ -1,10 +1,26 @@
+<!-- 
+	IMG Upload
+	Este componente permite cargar una imagen.
+	Argumentos:
+    height: altura máxima de la imagen en pixeles
+    width: ancho máximo de la imagen en pixeles
+	size_bytes: tamaño máximo del archivo en bytes
+	file_name: nombre con el que se guardará el archivo (la extensión se agregará automáticamente)
+	save_route: ubicación donde se guardará el archivo
+	accepted_file_test: string de extensiones que pueden aceptarse. Deben llevar el punto y separarse 
+		con coma (ej: ".jpg, .jpeg, .png") 
+ -->
+
 <script>
-    import { Save_File } from "./api/file_save.js";
-	export let height = 184,
+/*     import { Save_File } from "./api/file_save.js";
+ */	export let 
+        height = 184,
 		width = 184,
 		size_bytes = 90000,
 		file_name = 'img_test.png',
-        save_route = '../static/user_pics/';
+        save_route = '../static/user_pics/',
+        accepted_file_ext = ".jpg, .jpeg, .png, .webp"; 
+
 	let avatar,
 		fileInput,
 		ready_to_save = false;
@@ -33,7 +49,7 @@
 					console.log('Imagen correcta');
 					ready_to_save = true;
 					document.getElementById('info_upload').innerHTML = 'El archivo fue subido con éxito.';
-                    Save_File(save_route, file_name, img);
+                    /* Save_File(save_route, file_name, img); */
 				}
 			};
 			img.src = URL.createObjectURL(image);
@@ -82,7 +98,7 @@
 	<input
 		style="display:none"
 		type="file"
-		accept=".jpg, .jpeg, .png"
+		accept="{accepted_file_ext}"
 		on:change={(e) => onFileSelected(e)}
 		bind:this={fileInput}
 	/>
