@@ -199,8 +199,8 @@
 				<input class="form-control" type="file" id="leftSidePic" />
 			</div>
 			<div class="mb-3">
-				<label for="rigthSidePicUrl" class="form-label">Foto del lado izquierdo</label>
-				<input class="form-control" type="file" id="rigthSidePicUrl" />
+				<label for="rigthSidePic" class="form-label">Foto del lado izquierdo</label>
+				<input class="form-control" type="file" id="rigthSidePic" />
 			</div>
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">

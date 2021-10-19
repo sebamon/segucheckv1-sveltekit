@@ -1,4 +1,7 @@
 <script lang="ts">
+	// Importar por nombre de componentes: https://sveltestrap.js.org/
+	import { Image } from 'sveltestrap';
+
 	// Datos del usuario a mostrar
 	export let user_id = 0;
 	export let cuit = 0;
@@ -11,6 +14,7 @@
 	export let nationality = '';
 	export let studyLevel = '';
 	export let degree = '';
+	export let profilePic = '';
 	export let roles = [];
 
 	// Arreglo de roles - Esto lo lee de la DB:
@@ -55,9 +59,35 @@
 	if (isReadOnly) {
 		action = 'action="./create"';
 	}
+
+	/* Convierte un objeto Date en un String en formato YYY-MM-DD
+	 * @param Date
+	 * @return String
+	 */
+	function dateToYMD(date) {
+		return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+	}
 </script>
 
 <form name="formUserDetails" id="formUserDetails" {action}>
+	<div class="row mb-3 g-3 align-items-end">
+		<div class="col-md-6">
+			<Image
+				fluid
+				thumbnail
+				src={profilePic}
+				alt="Foto de perfil"
+				class="m-2"
+				style="max-width:150px"
+			/>
+		</div>
+		{#if !isReadOnly}
+			<div class="col-md-6">
+				<label for="profilePic" class="form-label">Foto de perfil</label>
+				<input class="form-control" type="file" id="profilePic" />
+			</div>
+		{/if}
+	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="user_id" class="form-label">Número ID</label>
@@ -160,9 +190,9 @@
 				<select id="gender" class="form-select" aria-label="Género" required>
 					<option disabled>Elija una opción...</option>
 					{#each genderList as thisGender}
-					<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
-						>{thisGender.genderName}</option
-					>
+						<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
+							>{thisGender.genderName}</option
+						>
 					{/each}
 				</select>
 			{/if}
@@ -170,13 +200,15 @@
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			<input
-				type={isReadOnly ? "text" : "date"}
+				type={isReadOnly ? 'text' : 'date'}
 				id="dateOfBirth"
 				name="dateOfBirth"
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				value={dateOfBirth.toLocaleDateString()}
+				value={isReadOnly
+					? dateOfBirth.toLocaleDateString()
+					: dateToYMD(dateOfBirth)}
 				readonly={isReadOnly}
 				required={!isReadOnly}
 			/>
@@ -199,25 +231,25 @@
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación</label>
 			{#if isReadOnly}
-			<input
-				type="text"
-				id="studyLevel"
-				name="studyLevel"
-				class="form-control"
-				placeholder="Universitario completo"
-				aria-label="Nivel de formación"
-				value={studyLevel}
-				readonly
-			/>
+				<input
+					type="text"
+					id="studyLevel"
+					name="studyLevel"
+					class="form-control"
+					placeholder="Universitario completo"
+					aria-label="Nivel de formación"
+					value={studyLevel}
+					readonly
+				/>
 			{:else}
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación">
-				<option disabled>Elija una opción...</option>
-				{#each studyLevelList as thisStudyLevel}
-					<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}
-						>{thisStudyLevel}</option
-					>
-				{/each}
-			</select>
+				<select id="studyLevel" class="form-select" aria-label="Nivel de formación">
+					<option disabled>Elija una opción...</option>
+					{#each studyLevelList as thisStudyLevel}
+						<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}>
+							{thisStudyLevel}
+						</option>
+					{/each}
+				</select>
 			{/if}
 		</div>
 		<div class="col-md-6">
@@ -239,25 +271,26 @@
 		<div class="col-md-6">
 			<label for="roles" class="form-label">Roles asignados</label>
 			{#each rolesList as { rol_id, rolDescription }}
-				<div class="form-check form-switch"> <!-- Revisar cómo comprobar cuáles roles tiene -->
+				<div class="form-check form-switch">
+					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
 						id="rol{rol_id}"
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						checked={roles[rol_id] == rol_id} 
+						checked={roles[rol_id] == rol_id}
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>
 			{/each}
 		</div>
 		{#if !isReadOnly}
-		<div class="col-md-6 d-flex justify-content-end">
-			<button type="submit" class="btn btn-primary">
-				<i class="fas fa-pen me-2"/>Confirmar cambios
-			</button>
-		</div>
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-pen me-2" />Confirmar cambios
+				</button>
+			</div>
 		{/if}
 	</div>
 </form>

@@ -191,7 +191,13 @@
 				</div>
 			{/each}
 		</div>
-		<div class="col-md-6 d-flex justify-content-end">
+		<div class="col-md-6">
+			<label for="profilePic" class="form-label">Foto de perfil</label>
+			<input class="form-control" type="file" id="profilePic" />
+		</div>
+	</div>
+	<div class="row mb-3 g-3">
+		<div class="col-md-12 d-flex justify-content-end">
 			<Button type="submit" color="primary">
 				<i class="fas fa-plus me-2" />Crear
 			</Button>
