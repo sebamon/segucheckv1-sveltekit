@@ -18,7 +18,6 @@
 </script>
 
 <svelte:head>
-	<!-- Insertar al head del HTML -->
 	<title>Nuevo operario - SeguCheck</title>
 </svelte:head>
 
@@ -35,7 +34,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1>Operarios</h1>
-		<p class="lead">Descripción breve</p>
+		<h5>Descripción breve</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/operarios/nuevo"><i class="fas fa-plus me-2" />Nuevo</Button>

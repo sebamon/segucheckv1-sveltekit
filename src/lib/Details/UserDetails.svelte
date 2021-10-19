@@ -7,14 +7,35 @@
 	export let email = '';
 	export let phone = '';
 	export let gender = '';
-	export let dateOfBirth = '';
+	export let dateOfBirth = new Date();
 	export let nationality = '';
 	export let studyLevel = '';
 	export let degree = '';
 	export let roles = [];
 
-	// Pasar inicial de género a texto legible:
-	let genderText;
+	// Arreglo de roles - Esto lo lee de la DB:
+	let rolesList = [
+		{ rol_id: 0, rolDescription: 'Gestor documental' },
+		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+		{ rol_id: 3, rolDescription: 'Operario' }
+	];
+
+	// Arreglo de nivel de estudios:
+	let studyLevelList = [
+		'Primario incompleto',
+		'Primario completo',
+		'Secundario incompleto',
+		'Secundario incompleto',
+		'Superior no universitario',
+		'Superior no universitario',
+		'Universitario',
+		'Universitario',
+		'Post universitario',
+		'Post universitario'
+	];
+
+	// Arreglo de géneros:
+	let genderText = '';
 	if (gender == 'M') {
 		genderText = 'Varón';
 	} else if (gender == 'F') {
@@ -22,9 +43,21 @@
 	} else {
 		genderText = gender;
 	}
+	let genderList = [
+		{ genderLetter: 'M', genderName: 'Masculino' },
+		{ genderLetter: 'F', genderName: 'Femenino' },
+		{ genderLetter: 'X', genderName: 'No binario' }
+	];
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
+	let action = '';
+	if (isReadOnly) {
+		action = 'action="./create"';
+	}
 </script>
 
-<form name="formUserDetails" id="formUserDetails">
+<form name="formUserDetails" id="formUserDetails" {action}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="user_id" class="form-label">Número ID</label>
@@ -49,7 +82,7 @@
 				placeholder="20301001008"
 				aria-label="Número CUIT"
 				value={cuit}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -64,7 +97,7 @@
 				placeholder="Juan"
 				aria-label="Nombre"
 				value={firstName}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -75,9 +108,9 @@
 				name="lastName"
 				class="form-control"
 				placeholder="Perez"
-				aria-label="First name"
+				aria-label="Apellido"
 				value={lastName}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -89,10 +122,10 @@
 				id="email"
 				name="email"
 				class="form-control"
-				placeholder="Juan"
+				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
 				value={email}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -105,35 +138,47 @@
 				placeholder="2993334444"
 				aria-label="Teléfono"
 				value={phone}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-4">
-			<label for="lastName" class="form-label">Género</label>
-			<input
-				type="text"
-				id="lastName"
-				name="lastName"
-				class="form-control user-select-all"
-				placeholder="M"
-				aria-label="Género"
-				value={genderText}
-				readonly
-			/>
+			<label for="gender" class="form-label">Género</label>
+			{#if isReadOnly}
+				<input
+					type="text"
+					id="gender"
+					name="gender"
+					class="form-control user-select-all"
+					placeholder="M"
+					aria-label="Género"
+					value={genderText}
+					readonly
+				/>
+			{:else}
+				<select id="gender" class="form-select" aria-label="Género" required>
+					<option disabled>Elija una opción...</option>
+					{#each genderList as thisGender}
+					<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
+						>{thisGender.genderName}</option
+					>
+					{/each}
+				</select>
+			{/if}
 		</div>
 		<div class="col-md-4">
-			<label for="name" class="form-label">Fecha de nacimiento</label>
+			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			<input
-				type="text"
-				id="name"
-				name="name"
+				type={isReadOnly ? "text" : "date"}
+				id="dateOfBirth"
+				name="dateOfBirth"
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				value={dateOfBirth}
-				readonly
+				value={dateOfBirth.toLocaleDateString()}
+				readonly={isReadOnly}
+				required={!isReadOnly}
 			/>
 		</div>
 		<div class="col-md-4">
@@ -146,23 +191,34 @@
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
 				value={nationality}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación</label>
+			{#if isReadOnly}
 			<input
 				type="text"
 				id="studyLevel"
 				name="studyLevel"
 				class="form-control"
 				placeholder="Universitario completo"
-				aria-label="Correo electrónico"
+				aria-label="Nivel de formación"
 				value={studyLevel}
 				readonly
 			/>
+			{:else}
+			<select id="studyLevel" class="form-select" aria-label="Nivel de formación">
+				<option disabled>Elija una opción...</option>
+				{#each studyLevelList as thisStudyLevel}
+					<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}
+						>{thisStudyLevel}</option
+					>
+				{/each}
+			</select>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="degree" class="form-label">Título de formación</label>
@@ -174,29 +230,34 @@
 				placeholder="Licenciado"
 				aria-label="Título de formación"
 				value={degree}
-				readonly
+				readonly={isReadOnly}
+				required={!isReadOnly}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="roles" class="form-label">Roles asignados</label>
-			<select
-				id="roles"
-				name="roles"
-				class="form-control overflow-visible"
-				aria-label="Roles"
-				value={degree}
-				multiple
-			>
-				{#if roles.length === 0}
-					<option selected>Ninguno</option>
-				{:else}
-					{#each roles as { rol_id, rolDescription }}
-						<option value={rol_id}>{rolDescription}</option>
-					{/each}
-				{/if}
-			</select>
+			{#each rolesList as { rol_id, rolDescription }}
+				<div class="form-check form-switch"> <!-- Revisar cómo comprobar cuáles roles tiene -->
+					<input
+						type="checkbox"
+						id="rol{rol_id}"
+						name="roles"
+						class="form-check-input"
+						role="switch"
+						checked={roles[rol_id] == rol_id} 
+					/>
+					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
+				</div>
+			{/each}
 		</div>
+		{#if !isReadOnly}
+		<div class="col-md-6 d-flex justify-content-end">
+			<button type="submit" class="btn btn-primary">
+				<i class="fas fa-pen me-2"/>Confirmar cambios
+			</button>
+		</div>
+		{/if}
 	</div>
 </form>

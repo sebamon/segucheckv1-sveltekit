@@ -4,26 +4,24 @@
 </script>
 
 <svelte:head>
-	<title>Vehículos - SeguCheck</title>
+	<title>Trabajos - SeguCheck</title>
 </svelte:head>
 
-<header>
+<header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Vehículos</BreadcrumbItem>
+		<BreadcrumbItem active>Trabajos</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="row">
-		<div class="col-auto">
-			<h1><i class="fas fa-car me-4" />Vehículos</h1>
-			<h5>Descripción breve</h5>
-		</div>
-		<div class="col-2 ms-auto">
-			<Button color="primary" href="/panel/vehiculos/nuevo">
-				<i class="fas fa-plus me-2" />Nuevo
-			</Button>
-		</div>
+	<div class="col-auto">
+		<h1><i class="fas fa-briefcase me-4" />Trabajos</h1>
+		<h5>Descripción breve</h5>
+	</div>
+	<div class="col-2 ms-auto">
+		<Button color="primary" href="/panel/trabajos/nuevo">
+			<i class="fas fa-plus me-2" />Nuevo
+		</Button>
 	</div>
 </header>
 
@@ -39,11 +37,11 @@
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 				</tr>
 				<tr>
-					<th scope="col">Patente</th>
-					<th scope="col">Tipo</th>
-					<th scope="col">Marca</th>
-					<th scope="col">Modelo</th>
-					<th scope="col">Estado Habilitación</th>
+					<th scope="col">Número</th>
+					<th scope="col">Categoría</th>
+					<th scope="col">Fecha inicio</th>
+					<th scope="col">Estado</th>
+					<th scope="col">Cliente</th>
 				</tr>
 			</thead>
 			<tbody>
