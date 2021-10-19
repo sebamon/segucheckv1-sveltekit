@@ -15,6 +15,10 @@
 	export let message;
 </script>
 
+<svelte:head>
+	<title>Error {status} - SeguCheck</title>
+</svelte:head>
+
 <main class="container card py-4 shadow-lg">
 	<div class="card-body">
 		<p class="lead">Error n° <strong>{status}</strong></p>
