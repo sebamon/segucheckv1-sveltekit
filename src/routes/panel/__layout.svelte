@@ -12,7 +12,8 @@
 		DropdownItem,
 		DropdownMenu,
 		DropdownToggle,
-		Button
+		Button,
+		Alert
 	} from 'sveltestrap';
 
 	// Menú hamburguesa navbar
@@ -53,10 +54,34 @@
 	let showSidebar = true;
 	const toggleSidebar = () => (showSidebar = !showSidebar);
 
-	// Datos de usuario - Ver si esto lo maneja un hook
-	let actualUser = 'Juan Perez';
+	// Datos de usuario - Ver si esto lo maneja un hook:
+	let session = {
+		id_user: 1,
+		firstName: 'Juan',
+		lastName: 'Perez',
+		roles: [
+			{ rol_id: 1, rolDescription: 'Gestor documental' },
+			{ rol_id: 2, rolDescription: 'Personal de seguridad' }
+		]
+	};
+	/* Verificar si tiene rol 1 de 'Gestor documental' u 2 de 'Personal de seguridad':
+	 * @return boolean
+	 */
+	let isAuthorized = () => {
+		let userAuthorized = false;
+		let totalRoles = session.roles.length;
+		for (let i = 0; i < totalRoles; i++) {
+			if (session.roles[i].rol_id == 1 || session.roles[i].rol_id == 2) {
+				userAuthorized = true;
+				i = totalRoles;
+			}
+		}
+		return userAuthorized;
+	}
 </script>
 
+{@debug isAuthorized}
+{#if isAuthorized()}
 <div class="d-flex" id="wrapper">
 	<!-- Sidebar: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
 	<div class="border-end bg-dark" id="sidebar-wrapper">
@@ -89,10 +114,7 @@
 			>
 				<i class="fas fa-map-marked me-4" />Locaciones
 			</a>
-			<a
-				class="list-group-item list-group-item-action list-group-item p-3"
-				href="/panel/clientes"
-			>
+			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/clientes">
 				<i class="fas fa-industry me-4" />Clientes
 			</a>
 		</div>
@@ -109,7 +131,7 @@
 			<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 				<Nav class="ms-auto" navbar>
 					<Dropdown nav inNavbar>
-						<DropdownToggle nav caret><i class="fas fa-user me-2" />{actualUser}</DropdownToggle>
+						<DropdownToggle nav caret><i class="fas fa-user me-2" />{session.firstName+' '+session.lastName}</DropdownToggle>
 						<DropdownMenu end>
 							<DropdownItem>Ver tu perfil</DropdownItem>
 							<DropdownItem>Preferencias</DropdownItem>
@@ -125,7 +147,18 @@
 		</Navbar>
 		<!-- Contenido principal -->
 		<div class="container p-4">
-			<slot />
+				<slot />
 		</div>
 	</div>
 </div>
+{:else}
+<div class="container p-4">
+	<Alert color="warning">
+		<h4 class="alert-heading text-capitalize">
+			<i class="fas fa-exclamation-triangle me-4" />Acceso denegado
+		</h4>
+		Para ver esta sección, primero debes iniciar sesión con una cuenta habilitada.
+		<a href="/login" class="alert-link">Ir a iniciar sesión.</a>
+	</Alert>
+</div>
+{/if}
