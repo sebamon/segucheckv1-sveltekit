@@ -44,16 +44,6 @@
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-md-3">
-		<Image
-			fluid
-			thumbnail
-			src={userDetails.profilePic}
-			alt="Foto de perfil"
-			class="m-2"
-			style="max-width:150px"
-		/>
-	</div>
 	<div class="col-auto">
 		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<h5>Detalles del usuario</h5>
