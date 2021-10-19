@@ -2,8 +2,10 @@
 	// Importar secciones de detalles:
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 	import DocDetails from '$lib/Details/DocDetails.svelte';
+	import WorkInfo from '$lib/Details/WorkInfo.svelte';
 	import AddressDetails from '$lib/Details/AddressDetails.svelte';
-
+	import HealthInfo from '$lib/Details/HealthInfo.svelte';
+	
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Button,
@@ -25,7 +27,7 @@
 		email: 'juan.perez@ejemplo.com',
 		phone: '2993334444',
 		gender: 'M',
-		dateOfBirth: '1980-12-31',
+		dateOfBirth: new Date('1980-12-31'),
 		nationality: 'Argentina',
 		studyLevel: 'Universitario completo',
 		degree: 'Licenciado',
@@ -55,19 +57,13 @@
 			expirated_at: new Date('2021-09-31')
 		}
 	];
-	/* Para componente:
-		export let stateOfOrigin: "",
-		export let cityOfOrigin: "",
-		export let zipCodeOfOrigin: 0,
-		export let phoneOfOrigin: "",
-		export let addressOfOrigin: "",
-		export let countryOfResidence: "",
-		export let stateOfResidence: "",
-		export let cityOfResidence: "",
-		export let zipCodeOfResidence:0,
-		export let addressOfResidence: "",
-  */
-	let userWorkInfo = {};
+	let userWorkInfo = {
+		dischargeDate: new Date('2019-08-21'),
+		employementRel: 'Relación de dependencia',
+		hiringMode: 'A tiempo completo',
+		unionAgreement: 'Federación Sindicatos Unidos Petroleros',
+		job: 'Técnico Vertical'
+	};
 	let userAddress = {
 		countryOfOrigin: 'Estados Unidos',
 		stateOfOrigin: 'Texas',
@@ -82,7 +78,11 @@
 		addressOfResidence: 'Roca 893',
 		phoneOfResidence: '299-412-3469'
 	};
-	let userHealthInfo = {};
+	let userHealthInfo = {
+		bloodType: "A",
+		rh: true,
+		allergies: "Ninguno"
+	};
 </script>
 
 <svelte:head>
@@ -148,13 +148,15 @@
 		</TabPane>
 		<TabPane tabId="userWorkInfo" tab="Datos laborales">
 			<h2 class="my-4">Datos laborales</h2>
+			<WorkInfo {...userWorkInfo} />
 		</TabPane>
 		<TabPane tabId="userAddress" tab="Domicilios">
 			<h2 class="my-4">Domicilios</h2>
 			<AddressDetails {...userAddress} />
 		</TabPane>
 		<TabPane tabId="userHealthInfo" tab="Datos médicos">
-			<h2 class="my-4">Datos laborales</h2>
+			<h2 class="my-4">Datos médicos</h2>
+			<HealthInfo {...userHealthInfo} />
 		</TabPane>
 	</TabContent>
 </main>

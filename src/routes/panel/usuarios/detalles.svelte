@@ -18,7 +18,7 @@
 		email: 'juan.perez@ejemplo.com',
 		phone: '2993334444',
 		gender: 'M',
-		dateOfBirth: '1980-12-31',
+		dateOfBirth: new Date('1980-12-31'),
 		nationality: 'Argentina',
 		studyLevel: 'Universitario completo',
 		degree: 'Licenciado',

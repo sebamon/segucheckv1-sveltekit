@@ -7,7 +7,7 @@
 	export let email = '';
 	export let phone = '';
 	export let gender = '';
-	export let dateOfBirth = '';
+	export let dateOfBirth = new Date();
 	export let nationality = '';
 	export let studyLevel = '';
 	export let degree = '';
@@ -132,7 +132,7 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				value={dateOfBirth}
+				value={dateOfBirth.toLocaleDateString()}
 				readonly
 			/>
 		</div>
