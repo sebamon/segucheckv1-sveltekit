@@ -1,47 +1,3 @@
-<script lang="ts" context="module">
-	// export async function load({ page, fetch }) {
-		// 	const res = await fetch('usuarios');
-		// 	// console.log(res.body)
-		// 	const item = await res.json(res);
-		// 	// return { props: { item } };
-		// 	console.log("array",item)
-		// 	let firstName = 'Seba';
-		// 	let lastName =  'Mon';
-		// 	let cuit = '2034397372';
-		// 	let email =  'seba_mon1@hotmail.com';
-		// 	let phone =  '2994738130';
-		// 	let dateOfBirt =  '1989/02/09';
-		// 	let degree = 'Terciario';
-		// 	let gender = 'M';
-		// 	let nationality = 'Argentino';
-		// 	let studyLevel = 'Terciario Completo';
-		// 	console.log('load',
-		// 		firstName,
-		// 		lastName,
-		// 		cuit,
-		// 		email,
-		// 		phone,
-		// 		dateOfBirt,
-		// 		degree,
-		// 		gender,
-		// 		nationality,
-		// 		studyLevel,
-		// 	)
-		// 	return {
-		// 		firstName,
-		// 		lastName,
-		// 		cuit,
-		// 		email,
-		// 		phone,
-		// 		dateOfBirt,
-		// 		degree,
-		// 		gender,
-		// 		nationality,
-		// 		studyLevel,
-		// 	}
-		// }
-</script>
-
 <script lang="ts">
 import ModalLogin from '$lib/ModalLogin.svelte';
 import type { User } from '$lib/store';
@@ -73,43 +29,42 @@ import type { Prisma } from '.prisma/client';
 	// let nationality:string;
 	// let studyLevel:string;
 	let user;
-	let firstName
-	user.firstName = 'Sebastian';
-	user.lastName =   'Mon';
-	user.cuit =  '2034397372';
-	user.email =   'seba_mon1@hotmaol.com';
-	user.phone =   '2994738130';
-	user.dateOfBirth = new Date('1989/02/09');
-	user.degree =  'Terciario';
-	user.gender =  'M';
-	user.nationality =  'Argentino';
-	user.studyLevel =  'Terciario Completo';
-	user.rol_id;
+	
+	let firstName = 'Sebastian';
+	let lastName =   'Mon';
+	let cuit =  '2034397372';
+	let email =   'seba_mon1@hotmaol.com';
+	let phone =   '2994738130';
+	let dateOfBirth = new Date('1989/02/09');
+	let degree =  'Terciario';
+	let gender =  'M';
+	let nationality =  'Argentino';
+	let studyLevel =  'Terciario Completo';
+	let rol_id;
 	let color = 'success';
 	export let message = '';
 	export let error ='';
-	user.user_id;
+	
 
 	const submitForm = async ():Promise<void> =>{ 
 		console.log('Hola')
 		console.log(user)
 		try{
-			const submit = await fetch('usuarios', {
+			const submit = await fetch('usuarios.json', {
 			method : "POST",
-			body : user,
-			// body: JSON.stringify({
-			// 	firstName,
-			// 	lastName,
-			// 	cuit,
-			// 	email,
-			// 	phone,
-			// 	dateOfBirth,
-			// 	degree,
-			// 	gender,
-			// 	nationality,
-			// 	studyLevel,
-			// 	rol_id,
-			// })
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirth,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+				rol_id,
+			})
 			})
 			const data = await submit.json()
 			message = data.message
@@ -146,16 +101,16 @@ import type { Prisma } from '.prisma/client';
 	</div>
 </header>
 
-{#if message}
+<!-- {#if message}
 <Alert {color}>
     <h4 class="alert-heading text-capitalize">{color}</h4>
-    El usuario {user.firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
+    El usuario {firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
     <a href="#todo" class="alert-link">
       Also, alert-links are colored to match
     </a>
     .
   </Alert>
-  {/if}
+  {/if} -->
 <!-- Formulario nuevo usuario -->
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3">
@@ -169,7 +124,7 @@ import type { Prisma } from '.prisma/client';
 				placeholder="Juan"
 				aria-label="Nombre"
 				required
-				bind:value={user.firstName}
+				bind:value={firstName}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -182,7 +137,7 @@ import type { Prisma } from '.prisma/client';
 				placeholder="Perez"
 				aria-label="Apellido"
 				required
-				bind:value={user.lastName}
+				bind:value={lastName}
 			/>
 		</div>
 	</div>
@@ -197,12 +152,12 @@ import type { Prisma } from '.prisma/client';
 				placeholder="20301001008"
 				aria-label="Número CUIT"
 				required
-				bind:value={user.cuit}
+				bind:value={cuit}
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="gender" class="form-label">Género</label>
-			<select id="gender" class="form-select" aria-label="Género" required bind:value={user.gender}>
+			<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="M">Masculino</option>
 				<option value="F">Femenino</option>
@@ -220,7 +175,7 @@ import type { Prisma } from '.prisma/client';
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Correo electrónico"
-				bind:value={user.email}
+				bind:value={email}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -232,7 +187,7 @@ import type { Prisma } from '.prisma/client';
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				bind:value={user.phone}
+				bind:value={phone}
 			/>
 		</div>
 	</div>
@@ -246,7 +201,7 @@ import type { Prisma } from '.prisma/client';
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={user.dateOfBirth}
+				bind:value={dateOfBirth}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -258,14 +213,14 @@ import type { Prisma } from '.prisma/client';
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				bind:value={user.nationality}
+				bind:value={nationality}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={user.studyLevel}>
+			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={studyLevel}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="Primario incompleto">Primario incompleto</option>
 				<option value="Primario completo">Primario completo</option>
@@ -288,7 +243,7 @@ import type { Prisma } from '.prisma/client';
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				bind:value={user.degree}
+				bind:value={degree}
 			/>
 		</div>
 	</div>
@@ -303,7 +258,7 @@ import type { Prisma } from '.prisma/client';
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						bind:value={user.roles.rol_id}
+						bind:value={roles.rol_id}
 						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>

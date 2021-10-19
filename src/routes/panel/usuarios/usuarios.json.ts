@@ -24,11 +24,12 @@ export const get = async () =>{
 }
 
 
+
 export const post = async (request)=> {
 console.log('servidor funcion post')
 console.log(request)
 const formBody =JSON.parse(request.body)
-console.log(formBody)
+console.log('formBody: ',formBody)
 try{
     const result = await prisma.users.create({
         data:{

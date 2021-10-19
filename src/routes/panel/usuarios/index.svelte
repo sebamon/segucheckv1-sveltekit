@@ -1,25 +1,28 @@
-<script lang="ts" context="module">
+<script context="module">
+import { writable } from 'svelte/store';
 export async function load({ page, fetch }) {
 	console.log('load usuario/index.svelte')
 		const response = await fetch(`./usuarios/usuarios.json?`)
 		const users = await response.json()
+		const user2= writable(users)
 		console.log('funcion load: users: ',response)
 		console.log('funcion load: users.body: ',response.body)
 		console.log('funcion load: item: ', users)
 		return {	
-			props: {
-				 users: users
-			}
+			users
 		};
 	}
 
 </script>
-<script lang="ts">
+<script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	import { page, session } from '$app/stores';
+	import { onMount } from 'svelte';
+	//import { page, session } from '$app/stores';
 	export let users;
-	console.log('script interno: ', session)
+	onMount(() => console.log(`mounted component`));
+  
+	console.log('script interno users: ',{users})
 </script>
 
 <svelte:head>
@@ -36,10 +39,6 @@ export async function load({ page, fetch }) {
 	<div class="col-auto">
 		<h1><i class="fas fa-users me-4" />Usuarios</h1>
 		<h5>Descripción breve</h5>
-		{#each users as user }
-		{users}
-				<p>hola</p>
-		{/each}
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/usuarios/nuevo">
