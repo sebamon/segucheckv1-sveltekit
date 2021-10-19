@@ -1,16 +1,33 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Button,
-		Breadcrumb,
-		BreadcrumbItem
-	} from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	// Arreglo de roles - Esto lo lee de la DB:
-	let roles = [
+	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' }
+	];
+
+	// Arreglo de nivel de estudios:
+	let studyLevelList = [
+		'Primario incompleto',
+		'Primario completo',
+		'Secundario incompleto',
+		'Secundario incompleto',
+		'Superior no universitario',
+		'Superior no universitario',
+		'Universitario',
+		'Universitario',
+		'Post universitario',
+		'Post universitario'
+	];
+
+	// Arreglo de géneros:
+	let genderList = [
+		{ genderLetter: 'M', genderName: 'Masculino' },
+		{ genderLetter: 'F', genderName: 'Femenino' },
+		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 </script>
 
@@ -80,9 +97,11 @@
 			<label for="gender" class="form-label">Género</label>
 			<select id="gender" class="form-select" aria-label="Género" required>
 				<option selected disabled>Elija una opción...</option>
-				<option value="M">Masculino</option>
-				<option value="F">Femenino</option>
-				<option value="X">No binario</option>
+				{#each genderList as thisGender}
+					<option value={thisGender.genderLetter}>
+						{thisGender.genderName}
+					</option>
+				{/each}
 			</select>
 		</div>
 	</div>
@@ -112,7 +131,7 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="name" class="form-label">Fecha de nacimiento</label>
+			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			<input
 				type="date"
 				id="dateOfBirth"
@@ -136,19 +155,12 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado">
+			<label for="studyLevel" class="form-label">Nivel de formación</label>
+			<select id="studyLevel" class="form-select" aria-label="Nivel de formación">
 				<option selected disabled>Elija una opción...</option>
-				<option value="Primario incompleto">Primario incompleto</option>
-				<option value="Primario completo">Primario completo</option>
-				<option value="Secundario incompleto">Secundario incompleto</option>
-				<option value="Secundario incompleto">Secundario completo</option>
-				<option value="Superior no universitario">Superior no universitario incompleto</option>
-				<option value="Superior no universitario">Superior no universitario completo</option>
-				<option value="Universitario">Universitario incompleto</option>
-				<option value="Universitario">Universitario completo</option>
-				<option value="Post universitario">Post universitario incompleto</option>
-				<option value="Post universitario">Post universitario completo</option>
+				{#each studyLevelList as thisStudyLevel}
+					<option value={thisStudyLevel}>{thisStudyLevel}</option>
+				{/each}
 			</select>
 		</div>
 		<div class="col-md-6">
@@ -165,8 +177,8 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<p>Asignar roles</p>
-			{#each roles as { rol_id, rolDescription }}
+			<label for="roles" class="form-label">Roles asignados</label>
+			{#each rolesList as { rol_id, rolDescription }}
 				<div class="form-check form-switch">
 					<input
 						type="checkbox"
@@ -181,7 +193,7 @@
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">
 			<Button type="submit" color="primary">
-				<i class="fas fa-plus me-2"/>Crear
+				<i class="fas fa-plus me-2" />Crear
 			</Button>
 		</div>
 	</div>
