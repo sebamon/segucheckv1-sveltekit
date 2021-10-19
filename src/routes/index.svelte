@@ -1,5 +1,7 @@
 <script lang="ts">
 	import ModalLogin from '$lib/ModalLogin.svelte';
+	import { page, session } from '$app/stores';
+	console.log("session",session)
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {

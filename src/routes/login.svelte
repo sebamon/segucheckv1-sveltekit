@@ -1,5 +1,20 @@
+<script context="module">
+	export async function load({ session }) {
+		console.log(session)
+		if (session.user) {
+			return {
+				status: 302,
+				redirect: '/'
+			};
+		}
+
+		return {};
+	}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
+	import { session } from '$app/stores';
+	import { goto } from '$app/navigation';
 	import {
 		Button,
 		Card,
@@ -11,21 +26,41 @@
 		Input,
 		Label
 	} from 'sveltestrap';
+	let cuit = '';
+	let password = '';
+	let errors = null;
+
+	const submitForm = async ():Promise<void> =>{
+		const response = await fetch(`auth/login`, {
+			method : "POST",
+			body :JSON.stringify({
+				cuit,
+				password,
+			})
+		})
+		const data = await response.json()
+		// errors = response.errors;
+		// if(response.user){
+		// 	$session.user= response.user;
+		// 	goto('/panel')
+		// }
+	}
 </script>
 
 <main class="container py-4">
 <Card class="shadow-lg">
     <CardHeader>Ingresar a SeguCheck</CardHeader>
     <CardBody>
-		<Form action="/checklogin" method="post" class="needs-validation">
+		<form on:submit|preventDefault={submitForm} class="needs-validation">
 			<FormGroup>
-			  <Label for="user" class="small mb-1">DNI</Label>
+			  <Label for="user" class="small mb-1">CUIT</Label>
 			  <Input
 				class="py-3"
 				type="text"
 				name="user"
 				id="user"
-				placeholder="Ingresa tu DNI" />
+				placeholder="Ingresa tu CUIT"
+				bind:value={cuit} />
 			</FormGroup>
 			<FormGroup>
 			  <Label for="pass" class="small mb-1">Contraseña</Label>
@@ -34,7 +69,8 @@
 				type="password"
 				name="pass"
 				id="pass"
-				placeholder="Ingresa tu contraseña" />
+				placeholder="Ingresa tu contraseña"
+				bind:value={password} />
 			</FormGroup>
 			<FormGroup>
 			  <Input
@@ -49,7 +85,7 @@
 				¿Olvidó su contraseña?
 			  </a>
 			</FormGroup>
-		</Form>
+		</form>
     </CardBody>
     <CardFooter>
 		<p class="text-md-center small">Los usuarios deben estar previamente registrados por su empleador.</p>
