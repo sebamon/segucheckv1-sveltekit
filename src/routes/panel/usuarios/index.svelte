@@ -1,20 +1,25 @@
 <script lang="ts" context="module">
 export async function load({ page, fetch }) {
-	console.log(fetch)
-			const res = await fetch('usuarios.ts');
-
-			// console.log(res.body)
-			const item = await res.json(res);
-			// console.log(res)
-		//	console.log(item)
-		console.log('hola')
-}
+	console.log('load usuario/index.svelte')
+		const response = await fetch(`./usuarios/usuarios.json?`)
+		const users = await response.json()
+		console.log('funcion load: users: ',response)
+		console.log('funcion load: users.body: ',response.body)
+		console.log('funcion load: item: ', users)
+		return {	
+			props: {
+				 users: users
+			}
+		};
+	}
 
 </script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-
+	import { page, session } from '$app/stores';
+	export let users;
+	console.log('script interno: ', session)
 </script>
 
 <svelte:head>
@@ -31,6 +36,10 @@ export async function load({ page, fetch }) {
 	<div class="col-auto">
 		<h1><i class="fas fa-users me-4" />Usuarios</h1>
 		<h5>Descripción breve</h5>
+		{#each users as user }
+		{users}
+				<p>hola</p>
+		{/each}
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/usuarios/nuevo">

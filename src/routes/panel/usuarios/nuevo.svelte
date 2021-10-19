@@ -44,6 +44,8 @@
 
 <script lang="ts">
 import ModalLogin from '$lib/ModalLogin.svelte';
+import type { User } from '$lib/store';
+import type { Prisma } from '.prisma/client';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -70,48 +72,51 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 	// let gender:string;
 	// let nationality:string;
 	// let studyLevel:string;
-	
-	let firstName : string = 'Sebastian';
-	let lastName : string =   'Mon';
-	let cuit : string =  '2034397372';
-	let email : string =   'seba_mon1@hotmaol.com';
-	let phone : string =   '2994738130';
-	let dateOfBirth : Date = new Date('1989/02/09');
-	let degree : string =  'Terciario';
-	let gender : string =  'M';
-	let nationality : string =  'Argentino';
-	let studyLevel : string =  'Terciario Completo';
-	let rol_id : number;
-	let color : any = 'success';
-	let message = '';
-	let error ='';
-	let user_id : number;
+	let user;
+	let firstName
+	user.firstName = 'Sebastian';
+	user.lastName =   'Mon';
+	user.cuit =  '2034397372';
+	user.email =   'seba_mon1@hotmaol.com';
+	user.phone =   '2994738130';
+	user.dateOfBirth = new Date('1989/02/09');
+	user.degree =  'Terciario';
+	user.gender =  'M';
+	user.nationality =  'Argentino';
+	user.studyLevel =  'Terciario Completo';
+	user.rol_id;
+	let color = 'success';
+	export let message = '';
+	export let error ='';
+	user.user_id;
 
 	const submitForm = async ():Promise<void> =>{ 
 		console.log('Hola')
-		console.log(firstName)
+		console.log(user)
 		try{
 			const submit = await fetch('usuarios', {
 			method : "POST",
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-				rol_id,
-			}),
-		})
-		const data = await submit.json()
-		message = data.message
-		user_id = data.body.user_id
-		console.log('volvio')
-		console.log(data);
+			body : user,
+			// body: JSON.stringify({
+			// 	firstName,
+			// 	lastName,
+			// 	cuit,
+			// 	email,
+			// 	phone,
+			// 	dateOfBirth,
+			// 	degree,
+			// 	gender,
+			// 	nationality,
+			// 	studyLevel,
+			// 	rol_id,
+			// })
+			})
+			const data = await submit.json()
+			message = data.message
+			// user_id = data.body.user_id
+			console.log('volvio')
+			console.log(data);
+			console.log(data.body);
 		}catch(err)
 		{
 			error=err
@@ -144,7 +149,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 {#if message}
 <Alert {color}>
     <h4 class="alert-heading text-capitalize">{color}</h4>
-    El usuario {firstName} {lastName} ha sido creado bajo el Nro: {user_id}
+    El usuario {user.firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
     <a href="#todo" class="alert-link">
       Also, alert-links are colored to match
     </a>
@@ -164,7 +169,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				placeholder="Juan"
 				aria-label="Nombre"
 				required
-				bind:value={firstName}
+				bind:value={user.firstName}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -177,7 +182,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				placeholder="Perez"
 				aria-label="Apellido"
 				required
-				bind:value={lastName}
+				bind:value={user.lastName}
 			/>
 		</div>
 	</div>
@@ -192,12 +197,12 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				placeholder="20301001008"
 				aria-label="Número CUIT"
 				required
-				bind:value={cuit}
+				bind:value={user.cuit}
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="gender" class="form-label">Género</label>
-			<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
+			<select id="gender" class="form-select" aria-label="Género" required bind:value={user.gender}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="M">Masculino</option>
 				<option value="F">Femenino</option>
@@ -215,7 +220,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Correo electrónico"
-				bind:value={email}
+				bind:value={user.email}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -227,7 +232,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				bind:value={phone}
+				bind:value={user.phone}
 			/>
 		</div>
 	</div>
@@ -241,7 +246,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={dateOfBirth}
+				bind:value={user.dateOfBirth}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -253,14 +258,14 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				bind:value={nationality}
+				bind:value={user.nationality}
 			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={studyLevel}>
+			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={user.studyLevel}>
 				<option selected disabled>Elija una opción...</option>
 				<option value="Primario incompleto">Primario incompleto</option>
 				<option value="Primario completo">Primario completo</option>
@@ -283,7 +288,7 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				bind:value={degree}
+				bind:value={user.degree}
 			/>
 		</div>
 	</div>
@@ -298,7 +303,8 @@ import ModalLogin from '$lib/ModalLogin.svelte';
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						bind:value={rol_id}
+						bind:value={user.roles.rol_id}
+						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>

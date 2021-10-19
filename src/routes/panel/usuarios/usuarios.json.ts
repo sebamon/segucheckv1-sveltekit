@@ -2,20 +2,27 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export const get = async () => {
+export const get = async () =>{
     console.log('GET')
+    console.log("funcion Usuario get")
     //console.log(request)
+    const users= await prisma.users.findMany()
+    console.log("users: ",users)
    const result = await prisma.users.findMany()
-   console.log(result)
+
+   console.log("result: ",result)
 //   const result={
 //       user : 'hola'
 //   }
     return {
         body: {
-            data: result
+            // data: JSON.stringify(result),
+           result,
+            // data: result
     }
 }
 }
+
 
 export const post = async (request)=> {
 console.log('servidor funcion post')

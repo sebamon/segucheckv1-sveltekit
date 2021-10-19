@@ -4,6 +4,7 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function get() : Promise<{ body : any }> {
+    
     const result = await prisma.users.findMany()
     
     console.log(result)
