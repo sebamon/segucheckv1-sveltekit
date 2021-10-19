@@ -3,13 +3,11 @@
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
-		Button,
 		Breadcrumb,
-		BreadcrumbItem,
-		Image
+		BreadcrumbItem
 	} from 'sveltestrap';
 
-	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
+    // Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 	let userDetails = {
 		user_id: 1234,
 		cuit: 20301001008,
@@ -28,12 +26,21 @@
 			{ rol_id: 2, rolDescription: 'Personal de seguridad' }
 		]
 	};
+
+	// Debug
+	let fechaNac = userDetails.dateOfBirth;
+	let fechaNacString = userDetails.dateOfBirth.toDateString();
+	let fechaNacYMD = userDetails.dateOfBirth.getFullYear() +'-'+ userDetails.dateOfBirth.getMonth() +'-'+ userDetails.dateOfBirth.getDate();
+
+	// Configurar componente UserDetails para editar
+	let isReadOnly = false;
 </script>
 
 <svelte:head>
-	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	<title>Editar usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
+<!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -42,19 +49,16 @@
 		<BreadcrumbItem>
 			<a href="/panel/usuarios">Usuarios</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Detalles</BreadcrumbItem>
+		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<h5>Detalles del usuario</h5>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/editar"
-			><i class="fas fa-pen me-2" />Editar</Button
-		>
+		<h1>Editar usuario</h1>
+		<p class="lead">Modifique los detalles a continuación.</p>
 	</div>
 </header>
 
-<main>
-<UserDetails {...userDetails} />
-</main>
+<!-- Formulario editar usuario -->
+{@debug fechaNac}
+{@debug fechaNacString}
+{@debug fechaNacYMD}
+<UserDetails {...userDetails} {isReadOnly} />

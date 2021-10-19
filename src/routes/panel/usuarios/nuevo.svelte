@@ -12,7 +12,7 @@ import type { Prisma } from '.prisma/client';
 	} from 'sveltestrap';
 
 	// Arreglo de roles - Esto lo lee de la DB:
-	let roles = [
+	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' }
@@ -35,7 +35,7 @@ import type { Prisma } from '.prisma/client';
 	let cuit =  '2034397372';
 	let email =   'seba_mon1@hotmaol.com';
 	let phone =   '2994738130';
-	let dateOfBirth = new Date('1989/02/09');
+	let dateOfBirth = new Date('1989-02-09');
 	let degree =  'Terciario';
 	let gender =  'M';
 	let nationality =  'Argentino';
@@ -84,6 +84,26 @@ import type { Prisma } from '.prisma/client';
 		}
 
 	}
+	// Arreglo de nivel de estudios:
+	let studyLevelList = [
+		'Primario incompleto',
+		'Primario completo',
+		'Secundario incompleto',
+		'Secundario incompleto',
+		'Superior no universitario',
+		'Superior no universitario',
+		'Universitario',
+		'Universitario',
+		'Post universitario',
+		'Post universitario'
+	];
+
+	// Arreglo de géneros:
+	let genderList = [
+		{ genderLetter: 'M', genderName: 'Masculino' },
+		{ genderLetter: 'F', genderName: 'Femenino' },
+		{ genderLetter: 'X', genderName: 'No binario' }
+	];
 </script>
 
 <svelte:head>
@@ -165,9 +185,11 @@ import type { Prisma } from '.prisma/client';
 			<label for="gender" class="form-label">Género</label>
 			<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
 				<option selected disabled>Elija una opción...</option>
-				<option value="M">Masculino</option>
-				<option value="F">Femenino</option>
-				<option value="X">No binario</option>
+				{#each genderList as thisGender}
+					<option value={thisGender.genderLetter}>
+						{thisGender.genderName}
+					</option>
+				{/each}
 			</select>
 		</div>
 	</div>
@@ -199,7 +221,7 @@ import type { Prisma } from '.prisma/client';
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="name" class="form-label">Fecha de nacimiento</label>
+			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			<input
 				type="date"
 				id="dateOfBirth"
@@ -228,16 +250,9 @@ import type { Prisma } from '.prisma/client';
 			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
 			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={studyLevel}>
 				<option selected disabled>Elija una opción...</option>
-				<option value="Primario incompleto">Primario incompleto</option>
-				<option value="Primario completo">Primario completo</option>
-				<option value="Secundario incompleto">Secundario incompleto</option>
-				<option value="Secundario incompleto">Secundario completo</option>
-				<option value="Superior no universitario">Superior no universitario incompleto</option>
-				<option value="Superior no universitario">Superior no universitario completo</option>
-				<option value="Universitario">Universitario incompleto</option>
-				<option value="Universitario">Universitario completo</option>
-				<option value="Post universitario">Post universitario incompleto</option>
-				<option value="Post universitario">Post universitario completo</option>
+				{#each studyLevelList as thisStudyLevel}
+					<option value={thisStudyLevel}>{thisStudyLevel}</option>
+				{/each}
 			</select>
 		</div>
 		<div class="col-md-6">
@@ -255,8 +270,8 @@ import type { Prisma } from '.prisma/client';
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<p>Asignar roles</p>
-			{#each roles as { rol_id, rolDescription }}
+			<label for="roles" class="form-label">Roles asignados</label>
+			{#each rolesList as { rol_id, rolDescription }}
 				<div class="form-check form-switch">
 					<input
 						type="checkbox"
@@ -271,9 +286,15 @@ import type { Prisma } from '.prisma/client';
 				</div>
 			{/each}
 		</div>
-		<div class="col-md-6 d-flex justify-content-end">
+		<div class="col-md-6">
+			<label for="profilePic" class="form-label">Foto de perfil</label>
+			<input class="form-control" type="file" id="profilePic" />
+		</div>
+	</div>
+	<div class="row mb-3 g-3">
+		<div class="col-md-12 d-flex justify-content-end">
 			<Button type="submit" color="primary">
-				<i class="fas fa-plus me-2"/>Crear
+				<i class="fas fa-plus me-2" />Crear
 			</Button>
 		</div>
 	</div>
