@@ -1,6 +1,6 @@
 <!-- 
 	IMG Upload
-	Este componente permite cargar una imagen.
+	Este componente permite cargar una imagen, mostrando una vista previa de la misma.
 	Argumentos:
     height: altura máxima de la imagen en pixeles
     width: ancho máximo de la imagen en pixeles
@@ -35,7 +35,7 @@
 		if (!/.(jpg|jpeg|png|gif)$/i.test(image.name)) {
 			alert('El archivo a adjuntar no es una imagen');
 		} else {
-			var img = new Image();
+			let img = new Image();
 			img.onload = function () {
 				if (this.width.toFixed(0) != width && this.height.toFixed(0) != height) {
 					alert(
