@@ -1,18 +1,18 @@
 <script context="module">
-import { writable } from 'svelte/store';
+
 export async function load({ page, fetch }) {
 	console.log('load usuario/index.svelte')
 		const response = await fetch(`./usuarios/usuarios.json?`,)
 		const users = await response.json()
-		const user2= writable(users)
 		console.log('funcion load: users: ',response)
 		console.log('funcion load: users.body: ',response.body)
 		console.log('funcion load: item: ', users.users)
-		return {
-			props: {	
-				users,
+			return {
+				props: {	
+					users,
 		}
 		};
+
 	}
 
 </script>

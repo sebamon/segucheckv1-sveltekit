@@ -18,7 +18,7 @@
 // 	};
 // }
 
-// // src/hooks.ts https://blog.logrocket.com/exploring-sveltekit-the-newest-svelte-based-framework/
+// src/hooks.ts https://blog.logrocket.com/exploring-sveltekit-the-newest-svelte-based-framework/
 // import {defaultState} from '$lib/store';
 // import type { RequestHandler, Response } from "@sveltejs/kit";
 
@@ -33,7 +33,8 @@
 // //         token:cookies['token']
 // //     };
 // // }
-// export const getSession:getSession=async ({context})=>{
+// export const getSession=async ({context})=>{
+//     console.log('getSession Hook', context)
 //     let initialState={...defaultState};
 //     if (context['token']===auth_token){
 //         console.log("tokens match");
