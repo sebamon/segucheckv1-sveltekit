@@ -1,5 +1,5 @@
 <script>
-import PDF_File_Upload from "./PDF_File_Upload.svelte";
+import Pdf_file_upload from "./Pdf_file_upload.svelte";
 
 </script>
-<PDF_File_Upload />
+<Pdf_file_upload />
