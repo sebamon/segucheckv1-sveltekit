@@ -205,6 +205,8 @@ model users {
   password     String
   operator     operator?
   usersonroles usersonroles[]
+
+  
 }
 
 model usersonroles {

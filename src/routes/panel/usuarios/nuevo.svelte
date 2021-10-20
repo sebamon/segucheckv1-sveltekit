@@ -1,4 +1,6 @@
 <script lang="ts">
+import DocDetails from '$lib/Details/DocDetails.svelte';
+
 import ModalLogin from '$lib/ModalLogin.svelte';
 // import type { User } from '$lib/store';
 import type { Prisma } from '.prisma/client';
@@ -8,12 +10,12 @@ import type { Prisma } from '.prisma/client';
 		Button,
 		Breadcrumb,
 		BreadcrumbItem,
-		Alert 
+		Alert ,
 	} from 'sveltestrap';
 
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
-		{ rol_id: 0, rolDescription: 'Gestor documental' },
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
@@ -30,60 +32,22 @@ import type { Prisma } from '.prisma/client';
 	// let studyLevel:string;
 	let user;
 	
-	let firstName = 'Sebastian';
-	let lastName =   'Mon';
-	let cuit =  '2034397372';
-	let email =   'seba_mon1@hotmaol.com';
-	let phone =   '2994738130';
-	let dateOfBirth = new Date('1989-02-09');
-	let degree =  'Terciario';
-	let gender =  'M';
-	let nationality =  'Argentino';
-	let studyLevel =  'Terciario Completo';
-	let rol_id;
-	let color = 'success';
-	export let message = '';
-	export let error ='';
-	
-
-	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
-		console.log('Hola')                         //en forma de api para hacer el insert
-		console.log(user)
-		try{
-			const submit = await fetch('usuarios.json', {
-			method : "POST",
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-				rol_id,
-			})
-			})
-			const data = await submit.json()
-			message = data.message
-			// user_id = data.body.user_id
-			console.log('volvio')
-			console.log('submit', submit)
-			console.log('data',data);
-			console.log('data.body',data.body);
-			console.log(message)
-			if(submit.status===200)
-			{
-				console.log(message)
-			}
-		}catch(err)
-		{
-			error=err
-		}
-
-	}
+	let firstName = 'Sebastian'
+	let lastName =   'Mon'
+	let cuit =  '2034397372'
+	let email =   'seba_mon1@hotmaol.com'
+	let phone =   '2994738130'
+	let dateOfBirth = new Date('1989-02-09')
+	let degree =  'Terciario'
+	let gender =  'M'
+	let nationality =  'Argentino'
+	let studyLevel =  'Terciario Completo'
+	let rol_id=''
+	let color = 'success'
+	let roles_assigned = [{
+	}]
+	export let message = ''
+	export let error =''
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -104,6 +68,56 @@ import type { Prisma } from '.prisma/client';
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
+	
+
+	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
+		console.log('Hola')                         //en forma de api para hacer el insert
+		console.log(user)
+		try{
+			const submit = await fetch('usuarios.json', {
+			method : "POST",
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirth,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+				roles_assigned,
+			})
+			})
+			const data = await submit.json()
+			message = data.message
+			// user_id = data.body.user_id
+			console.log('volvio')
+			console.log('submit', submit)
+			console.log('data',data)
+			console.log('data.body',data.body)
+			console.log(message)
+			if(submit.status===200)
+			{
+				console.log(message)
+			}
+		}catch(err)
+		{
+			error=err
+		}
+
+	}
+
+	const assign_rol = (id) =>{
+		console.log(id)
+				
+		roles_assigned.push(id)		
+		
+		
+		console.log('roles_assigned: ',roles_assigned)
+		// roles_assigned rol_id
+	}
 </script>
 
 <svelte:head>
@@ -127,16 +141,16 @@ import type { Prisma } from '.prisma/client';
 	</div>
 </header>
 
-<!-- {#if message}
-<Alert {color}>
+{#if message}
+<Alert color="success">
     <h4 class="alert-heading text-capitalize">{color}</h4>
-    El usuario {firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
+    El usuario {user.firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
     <a href="#todo" class="alert-link">
       Also, alert-links are colored to match
     </a>
     .
   </Alert>
-  {/if} -->
+  {/if}
 <!-- Formulario nuevo usuario -->
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3">
@@ -279,7 +293,8 @@ import type { Prisma } from '.prisma/client';
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						bind:value={rol_id}
+						bind:value={rol_id}			
+						on:click={assign_rol({rol_id})}
 						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
