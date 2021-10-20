@@ -19,16 +19,18 @@
         align-self: center;
     }
     .upload_img {
+        margin:auto;
 		width: 50%;
 		height: 30%;
-		align-self:right;
+		position: relative;
 		color: white;
 		background-color: lightblue;
 	}
 	.upload_file {
+        margin:auto;
 		width: 50%;
 		height: 30%;
-		align-self: right;
+		position: relative;
 		color: white;
 		background-color: palevioletred;
 	}
