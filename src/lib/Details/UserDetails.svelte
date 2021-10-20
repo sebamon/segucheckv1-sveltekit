@@ -10,7 +10,7 @@
 	export let email = '';
 	export let phone = '';
 	export let gender = '';
-	export let dateOfBirth = new Date();
+	export let dateOfBirth:Date = new Date();
 	export let nationality = '';
 	export let studyLevel = '';
 	export let degree = '';
@@ -64,7 +64,7 @@
 	 * @param Date
 	 * @return String
 	 */
-	function dateToYMD(date) {
+	function dateToYMD(date):string {
 		return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
 	}
 </script>

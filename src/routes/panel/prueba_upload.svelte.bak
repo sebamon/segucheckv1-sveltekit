@@ -3,7 +3,7 @@ let uploadFile = obj.files[0];
 
 if (!window.FileReader) {
     alert('El navegador no soporta la lectura de archivos');
-    return;
+    // return ;
 }
 
 if (!(/.(jpg|png|gif)$/i).test(uploadFile.name)) {
@@ -25,7 +25,7 @@ if (!(/.(jpg|png|gif)$/i).test(uploadFile.name)) {
                 };
                 img.src = URL.createObjectURL(uploadFile);
             }
-        }
+        
 </script>
 
 <h1>
