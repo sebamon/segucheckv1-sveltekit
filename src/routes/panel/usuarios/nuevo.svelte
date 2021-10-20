@@ -124,6 +124,7 @@ import type { Color } from 'sveltestrap/src/shared';
 
 	}
 
+	//Funcion para limpiar el formulario
 	const cleanPage = () => {
 	 firstName = ''
 	 lastName = ''
@@ -135,10 +136,15 @@ import type { Color } from 'sveltestrap/src/shared';
 	 gender = ''
 	 nationality = ''
 	 studyLevel = ''
+	 roles_assigned = {
+		 rol1 : false,
+		 rol2 : false,
+		 rol3 : false,
+	 }
 	}
+
+	//Funcion para asignar roles
 	const assign_rol = (id:any) =>{
-		console.log('id',id.rol_id)
-	
 		if(id.rol_id === 1 || id.rol_id === '1')
 		{
 			roles_assigned['rol1']= !(roles_assigned['rol1'])
@@ -151,10 +157,6 @@ import type { Color } from 'sveltestrap/src/shared';
 		{
 			roles_assigned['rol3']=!(roles_assigned['rol3'])
 		}
-		
-		
-		console.log('roles_assigned: ',roles_assigned)
-		// roles_assigned rol_id
 	}
 </script>
 
@@ -180,7 +182,7 @@ import type { Color } from 'sveltestrap/src/shared';
 </header>
 
 {#if status}
-<Alert color='{color}'>
+<Alert color='{color}'> 
     <h4 class="alert-heading text-capitalize">{status}</h4>
     {message}
     <a href="#todo" class="alert-link">
