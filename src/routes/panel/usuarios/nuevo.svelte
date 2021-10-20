@@ -4,14 +4,17 @@ import DocDetails from '$lib/Details/DocDetails.svelte';
 import ModalLogin from '$lib/ModalLogin.svelte';
 // import type { User } from '$lib/store';
 import type { Prisma } from '.prisma/client';
+import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Button,
 		Breadcrumb,
 		BreadcrumbItem,
-		Alert ,
+		Alert, 
+Colgroup,
 	} from 'sveltestrap';
+import type { Color } from 'sveltestrap/src/shared';
 
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
@@ -43,10 +46,14 @@ import type { Prisma } from '.prisma/client';
 	let nationality =  'Argentino'
 	let studyLevel =  'Terciario Completo'
 	let rol_id=''
-	let color = 'success'
-	let roles_assigned = [{
-	}]
+	let color= ''
+	let roles_assigned = {
+		rol1 : false,
+		rol2 : false,
+		rol3 : false,
+	}
 	export let message = ''
+	export let status = ''
 	export let error =''
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
@@ -68,6 +75,7 @@ import type { Prisma } from '.prisma/client';
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
+	
 	
 
 	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
@@ -92,16 +100,23 @@ import type { Prisma } from '.prisma/client';
 			})
 			const data = await submit.json()
 			message = data.message
+			status = data.status
 			// user_id = data.body.user_id
 			console.log('volvio')
 			console.log('submit', submit)
 			console.log('data',data)
-			console.log('data.body',data.body)
-			console.log(message)
-			if(submit.status===200)
-			{
-				console.log(message)
+			console.log('message', message)
+			if(data.status==='OK') {
+				color='success'
+				cleanPage();
 			}
+			if(data.status==='ERROR') color='danger'
+
+			if(data.status===200)
+			{
+				console.log('message', message)
+			}
+			console.log('color:' ,color)
 		}catch(err)
 		{
 			error=err
@@ -109,10 +124,33 @@ import type { Prisma } from '.prisma/client';
 
 	}
 
-	const assign_rol = (id) =>{
-		console.log(id)
-				
-		roles_assigned.push(id)		
+	const cleanPage = () => {
+	 firstName = ''
+	 lastName = ''
+	 cuit = ''
+	 email = ''
+	 phone = ''
+	 dateOfBirth = new Date('now()')
+	 degree = ''
+	 gender = ''
+	 nationality = ''
+	 studyLevel = ''
+	}
+	const assign_rol = (id:any) =>{
+		console.log('id',id.rol_id)
+	
+		if(id.rol_id === 1 || id.rol_id === '1')
+		{
+			roles_assigned['rol1']= !(roles_assigned['rol1'])
+		}
+		if(id.rol_id === 2 || id.rol_id === '2')
+		{
+			roles_assigned['rol2']=!roles_assigned['rol2']
+		}
+		if(id.rol_id === 3 || id.rol_id === '3')
+		{
+			roles_assigned['rol3']=!(roles_assigned['rol3'])
+		}
 		
 		
 		console.log('roles_assigned: ',roles_assigned)
@@ -141,10 +179,10 @@ import type { Prisma } from '.prisma/client';
 	</div>
 </header>
 
-{#if message}
-<Alert color="success">
-    <h4 class="alert-heading text-capitalize">{color}</h4>
-    El usuario {user.firstName} {user.lastName} ha sido creado bajo el Nro: {user.user_id}
+{#if status}
+<Alert color='{color}'>
+    <h4 class="alert-heading text-capitalize">{status}</h4>
+    {message}
     <a href="#todo" class="alert-link">
       Also, alert-links are colored to match
     </a>
@@ -292,8 +330,7 @@ import type { Prisma } from '.prisma/client';
 						id="rol{rol_id}"
 						name="roles"
 						class="form-check-input"
-						role="switch"
-						bind:value={rol_id}			
+						bind:value={rol_id}	
 						on:click={assign_rol({rol_id})}
 						
 					/>
