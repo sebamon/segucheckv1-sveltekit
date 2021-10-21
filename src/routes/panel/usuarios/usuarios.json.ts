@@ -24,7 +24,6 @@ export const get = async () =>{
                 },
             }
         })
-
         console.log("result: ",users)
         return {
             body: {
@@ -39,9 +38,7 @@ export const get = async () =>{
             console.log('e.meta: ' , e.meta)
             if (e.code === 'P2002') {
             console.log(
-                'There is a unique constraint violation, a new user cannot be created with this email', e
-            )
-            
+                'There is a unique constraint violation, a new user cannot be created with this email', e)
             }
             return {
                 body: {
@@ -51,18 +48,32 @@ export const get = async () =>{
                 }
             }
         }
-        throw e
-        }
+            throw e
     }
+}
 
 
 export const post = async (request)=> {
 console.log('servidor funcion post')
 console.log(request)
 const formBody =JSON.parse(request.body)
+let roles=[]
 console.log('formBody: ',formBody)
-   // let user:Prisma.UserCreateInput
    try {
+       if(formBody.roles_assigned['rol1']===true){
+         roles.push({rol_id: 1})
+         console.log('roles id1', roles)
+       }
+       if(formBody.roles_assigned['rol2']===true){
+         roles.push({rol_id: 2})
+         console.log('roles id2', roles)
+       }
+       if(formBody.roles_assigned['rol3']===true){
+         roles.push({rol_id: 3})
+         console.log('roles id3', roles)
+       }
+       
+       console.log('roles:', roles)
        const result = await prisma.users.create({
             data:{
                     firstName : formBody.firstName,
@@ -77,10 +88,25 @@ console.log('formBody: ',formBody)
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
-                    usersonroles:{
-                    }
+                    usersonroles :  {
+                        rol_id : roles[0],
                 },
+                include: {
+                    usersonroles: true, // Include all posts in the returned object
+                  }
             })
+            const newUserId = result.user_id
+            console.log('newUserId: ', newUserId)
+
+            // formBody.usersonroles.forEach(async element => {  
+            //     let roles = await prisma.usersonroles.create({
+            //         data: {
+            //             user_id : newUserId,
+            //             rol_id : element.rol_id,
+            //         }
+            //     })
+            // });
+
             console.log('result despues de insert:',result)
             return{
                 body: {
