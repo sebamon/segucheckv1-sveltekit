@@ -5,14 +5,56 @@ const prisma = new PrismaClient()
 export const get = async () =>{
     console.log('GET')
     console.log("funcion Usuario get")
-    const users = await prisma.users.findMany()
-    console.log("result: ",users)
-    return {
-        body: {
-            users,
+    try{
+        const aw=await prisma.$connect()
+        const users = await prisma.users.findMany({
+            where: {
+                
+            },
+            select :{
+                user_id :true,
+                firstName:true,
+                lastName:true,
+                cuit:true,
+                email:true,
+                usersonroles:{
+                    include : {
+                        roles: true,
+                   },
+                },
+            }
+        })
+
+        console.log("result: ",users)
+        return {
+            body: {
+                users,
+            }
+        }
+    }catch (e){
+        if (e instanceof Prisma.PrismaClientKnownRequestError) {
+            // The .code property can be accessed in a type-safe manner
+            console.log('entro al  error' , e)
+            console.log('e.code: ' , e.code)
+            console.log('e.meta: ' , e.meta)
+            if (e.code === 'P2002') {
+            console.log(
+                'There is a unique constraint violation, a new user cannot be created with this email', e
+            )
+            
+            }
+            return {
+                body: {
+                    status: 'ERROR',
+                    message: 'El Usuario no se pudo crear, email ya existente',
+                    data : e
+                }
+            }
+        }
+        throw e
         }
     }
-}
+
 
 export const post = async (request)=> {
 console.log('servidor funcion post')
@@ -35,6 +77,8 @@ console.log('formBody: ',formBody)
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
+                    usersonroles:{
+                    }
                 },
             })
             console.log('result despues de insert:',result)
@@ -42,7 +86,9 @@ console.log('formBody: ',formBody)
                 body: {
                     status: 'OK',
                     message: 'Usuario Creado',
-                    data: result,                    
+                    data: {
+                        user_id : result.user_id,                    
+                    }
                 },
             }
     } catch (e) {
