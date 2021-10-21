@@ -16,7 +16,6 @@
 
 	// Abrir modal login
 	let modalOpen = false;
-	const toggle = () => (modalOpen = !modalOpen);
 </script>
 
 <svelte:head>
@@ -27,7 +26,7 @@
 <NavbarHome/>
 
 <!-- Modal login -->
-<ModalLogin {modalOpen} {toggle}/>
+<ModalLogin {modalOpen} />
 
 <!-- Hero a pantalla completa -->
 <header class="py-4">
@@ -38,7 +37,7 @@
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
 			</h3>
 			<div class="mb-5 g-3">
-				<Button color="primary" on:click={toggle} class="btn-lg px-4">Iniciar sesión</Button>
+				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4">Iniciar sesión</Button>
 				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
 			</div>
 		</div>
