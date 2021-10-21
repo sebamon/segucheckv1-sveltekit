@@ -27,11 +27,6 @@
 		]
 	};
 
-	// Debug
-	let fechaNac = userDetails.dateOfBirth;
-	let fechaNacString = userDetails.dateOfBirth.toDateString();
-	let fechaNacYMD = userDetails.dateOfBirth.getFullYear() +'-'+ userDetails.dateOfBirth.getMonth() +'-'+ userDetails.dateOfBirth.getDate();
-
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
 </script>
@@ -58,7 +53,4 @@
 </header>
 
 <!-- Formulario editar usuario -->
-{@debug fechaNac}
-{@debug fechaNacString}
-{@debug fechaNacYMD}
 <UserDetails {...userDetails} {isReadOnly} />

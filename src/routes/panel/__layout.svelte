@@ -80,7 +80,6 @@
 	}
 </script>
 
-{@debug isAuthorized}
 {#if isAuthorized()}
 <div class="d-flex" id="wrapper">
 	<!-- Sidebar: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->

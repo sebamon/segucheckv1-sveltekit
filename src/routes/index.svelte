@@ -1,41 +1,19 @@
 <script lang="ts">
+	import NavbarHome from'$lib/NavbarHome.svelte';
 	import ModalLogin from '$lib/ModalLogin.svelte';
 	import { page, session } from '$app/stores';
-	console.log("session",session)
+	// console.log("session",session)
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
-		Collapse,
-		Navbar,
-		NavbarToggler,
-		NavbarBrand,
-		Nav,
-		NavItem,
-		NavLink,
 		Button,
-		Modal,
-		ModalBody,
-		ModalFooter,
-		ModalHeader,
-		Form,
-		FormGroup,
-		Input,
-		Label,
 		Card,
 		CardBody,
-		CardFooter,
-		CardHeader,
 		CardSubtitle,
-		CardText,
 		CardTitle,
 		Image
 	} from 'sveltestrap';
 
-	// Menú hamburguesa navbar
-	let isOpen = false;
-	function handleUpdate(event) {
-		isOpen = event.detail.isOpen;
-	}
 	// Abrir modal login
 	let modalOpen = false;
 	const toggle = () => (modalOpen = !modalOpen);
@@ -46,27 +24,7 @@
 </svelte:head>
 
 <!-- Menú de navegación -->
-<Navbar color="light" light expand="md">
-	<NavbarBrand href="/">SeguCheck</NavbarBrand>
-	<Button color="warning" href="/panel" title="placeholder">Ir al panel</Button>
-	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
-	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
-		<Nav class="ms-auto" navbar>
-			<NavItem>
-				<NavLink href="#sistema">Nuestro sistema</NavLink>
-			</NavItem>
-			<NavItem>
-				<NavLink href="#tutoriales">Tutoriales</NavLink>
-			</NavItem>
-			<NavItem>
-				<NavLink href="#contacto">Contacto</NavLink>
-			</NavItem>
-			<NavItem>
-				<Button color="primary" on:click={toggle}>Iniciar sesión</Button>
-			</NavItem>
-		</Nav>
-	</Collapse>
-</Navbar>
+<NavbarHome/>
 
 <!-- Modal login -->
 <ModalLogin {modalOpen} {toggle}/>
