@@ -99,16 +99,6 @@
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-md-3">
-		<Image
-			fluid
-			thumbnail
-			src={userDetails.profilePic}
-			alt="Foto de perfil"
-			class="m-2"
-			style="max-width:150px"
-		/>
-	</div>
 	<div class="col-auto">
 		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<p class="lead">Detalles del operario</p>
@@ -137,11 +127,7 @@
 			{:else}
 				<div class="row g-3">
 					{#each userDocumentation as thisDoc}
-						<Accordion stayOpen class="col-md-6">
-							<AccordionItem header={thisDoc.documentType.description}>
-								<DocDetails {...thisDoc} />
-							</AccordionItem>
-						</Accordion>
+						<DocDetails {...thisDoc} />
 					{/each}
 				</div>
 			{/if}
