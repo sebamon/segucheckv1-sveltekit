@@ -72,7 +72,7 @@ console.log('formBody: ',formBody)
          roles.push({rol_id: 3})
          console.log('roles id3', roles)
        }
-       
+
        console.log('roles:', roles)
        const result = await prisma.users.create({
             data:{
@@ -88,14 +88,30 @@ console.log('formBody: ',formBody)
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
-                    usersonroles :  {
-                        rol_id : roles[0],
+                    usersonroles: {
+                        create : [{
+                            rol_id: roles[0],
+                            assignedBy: '1',
+                        },{
+                            rol_id: roles[1],
+                            assignedBy: '1',
+                        },
+                        {
+                            rol_id: roles[2],
+                            assignedBy: '1',
+                        }
+                      ]
+                    }
+              
                 },
                 include: {
                     usersonroles: true, // Include all posts in the returned object
+                    
                   }
             })
+            
             const newUserId = result.user_id
+            console.log('result: ', result)
             console.log('newUserId: ', newUserId)
 
             // formBody.usersonroles.forEach(async element => {  
