@@ -176,7 +176,7 @@ import type { Color } from 'sveltestrap/src/shared';
 		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Nuevo usuario</h1>
+		<h1><i class="fas fa-users me-4" />Nuevo usuario</h1>
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
@@ -255,7 +255,7 @@ import type { Color } from 'sveltestrap/src/shared';
 				id="email"
 				name="email"
 				class="form-control"
-				placeholder="Juan"
+				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
 				bind:value={email}
 			/>

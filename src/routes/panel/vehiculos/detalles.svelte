@@ -92,7 +92,7 @@
 		/>
 	</div>
 	<div class="col-auto">
-		<h1>{vehicleDetails.domain}</h1>
+		<h1><i class="fas fa-car me-4" />{vehicleDetails.domain}</h1>
 		<h5>Detalles del vehículo</h5>
 	</div>
 	<div class="col-2 ms-auto">

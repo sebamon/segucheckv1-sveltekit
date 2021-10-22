@@ -38,13 +38,13 @@
 		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Nuevo trabajo</h1>
+		<h1><i class="fas fa-briefcase me-4" />Nuevo trabajo</h1>
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
 
-<!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" action="./create">
+<!-- Formulario nuevo trabajo -->
+<form name="formJobDetails" id="formJobDetails">
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="startDate" class="form-label">Fecha de Inicio</label>

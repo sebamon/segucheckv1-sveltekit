@@ -53,7 +53,7 @@
 		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Nueva locación</h1>
+		<h1><i class="fas fa-map-marked me-4" />Nueva locación</h1>
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>

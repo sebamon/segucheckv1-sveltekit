@@ -9,7 +9,7 @@
 		coordenates: '-38.74,-67.66',
 		// coordenateY: '-67.66',
 		province: 'Neuquén',
-		customer: { customer_id: 3, bussinessName: 'Cliente C' }
+		customer: { customer_id: 3, bussinessName: 'YPF' }
 	};
 </script>
 
@@ -28,7 +28,7 @@
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>{locationDetails.locationName}</h1>
+		<h1><i class="fas fa-map-marked me-4" />{locationDetails.locationName}</h1>
 		<p class="lead">Detalles de la locación</p>
 	</div>
 	<div class="col-2 ms-auto">

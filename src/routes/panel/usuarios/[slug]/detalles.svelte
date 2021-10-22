@@ -45,7 +45,7 @@
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+		<h1><i class="fas fa-users me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">

@@ -47,7 +47,7 @@
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Editar usuario</h1>
+		<h1><i class="fas fa-users me-4" />Editar usuario</h1>
 		<p class="lead">Modifique los detalles a continuación.</p>
 	</div>
 </header>
