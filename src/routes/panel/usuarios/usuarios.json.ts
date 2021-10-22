@@ -61,15 +61,15 @@ let roles=[]
 console.log('formBody: ',formBody)
    try {
        if(formBody.roles_assigned['rol1']===true){
-         roles.push({rol_id: 1})
+         roles.push({rol_id: 1, assignedBy : 1, user_id: 16})
          console.log('roles id1', roles)
        }
        if(formBody.roles_assigned['rol2']===true){
-         roles.push({rol_id: 2})
+         roles.push({rol_id: 2 , assignedBy : 1, user_id: 16})
          console.log('roles id2', roles)
        }
        if(formBody.roles_assigned['rol3']===true){
-         roles.push({rol_id: 3})
+         roles.push({rol_id: 3, assignedBy : 1, user_id: 16})
          console.log('roles id3', roles)
        }
 
@@ -88,40 +88,31 @@ console.log('formBody: ',formBody)
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
-                    usersonroles: {
-                        create : [{
-                            rol_id: roles[0],
-                            assignedBy: '1',
-                        },{
-                            rol_id: roles[1],
-                            assignedBy: '1',
-                        },
-                        {
-                            rol_id: roles[2],
-                            assignedBy: '1',
-                        }
-                      ]
-                    }
-              
-                },
-                include: {
-                    usersonroles: true, // Include all posts in the returned object
-                    
-                  }
-            })
+        
+            }
+        })
             
             const newUserId = result.user_id
             console.log('result: ', result)
             console.log('newUserId: ', newUserId)
 
-            // formBody.usersonroles.forEach(async element => {  
-            //     let roles = await prisma.usersonroles.create({
-            //         data: {
-            //             user_id : newUserId,
-            //             rol_id : element.rol_id,
-            //         }
-            //     })
-            // });
+            roles.forEach(async element => {  
+                let rolInsert = await prisma.usersonroles.create({
+                        data: {
+                                user_id : newUserId,
+                                rol_id : element.rol_id,
+                                assignedBy : '1',
+                    }
+                })
+                if (element.rol_id==3){
+                    let operator = await prisma.operator.create({
+                        data: {
+                            user_id: newUserId,
+                        }
+                    })
+                }
+            });
+
 
             console.log('result despues de insert:',result)
             return{
