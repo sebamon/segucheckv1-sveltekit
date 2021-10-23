@@ -2,21 +2,27 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image } from 'sveltestrap';
 
+	// export let useronroles
+	export let userDetails
+	console.log('props componente userDetails',userDetails)
 	// Datos del usuario a mostrar
-	export let user_id = 0;
-	export let cuit = 0;
-	export let firstName = '';
-	export let lastName = '';
-	export let email = '';
-	export let phone = '';
-	export let gender = '';
-	export let dateOfBirth:Date = new Date();
-	export let nationality = '';
-	export let studyLevel = '';
-	export let degree = '';
-	export let profilePic = '';
-	export let roles = [];
+	export let user_id = userDetails.user_id
+	export let cuit = userDetails.cuit
+	export let firstName = userDetails.firstName
+	export let lastName = userDetails.lastName
+	export let email = userDetails.email
+	export let phone = userDetails.phone
+	export let gender = userDetails.gender
+	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
+	export let dateOfBirth:string=userDetails.dateOfBirth
+	export let nationality = userDetails.nationality
+	export let studyLevel = userDetails.studyLevel
+	export let degree = userDetails.degree
+	export let profilePic = userDetails.profilePic
+	// export let roles = userDetails.useronroles
 
+	
+	console.log ('dateOfBirth', dateOfBirth,typeof(dateOfBirth))
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -200,15 +206,13 @@
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			<input
-				type={isReadOnly ? 'text' : 'date'}
+				type="date"
 				id="dateOfBirth"
 				name="dateOfBirth"
 				class="form-control"
-				placeholder="1980-12-31"
+				placeholder="*1980-12-31"
 				aria-label="Fecha de nacimiento"
-				value={isReadOnly
-					? dateOfBirth.toLocaleDateString()
-					: dateToYMD(dateOfBirth)}
+				bind:value={dateOfBirth}
 				readonly={isReadOnly}
 				required={!isReadOnly}
 			/>
@@ -279,7 +283,7 @@
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						checked={roles[rol_id] == rol_id}
+						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>

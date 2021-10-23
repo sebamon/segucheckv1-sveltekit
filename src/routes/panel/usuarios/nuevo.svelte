@@ -40,13 +40,17 @@ import type { Color } from 'sveltestrap/src/shared';
 	let cuit =  '2034397372'
 	let email =   'seba_mon1@hotmaol.com'
 	let phone =   '2994738130'
-	let dateOfBirth = new Date('1989-02-09')
+	// let dateOfBirth = new Date('1989-02-09')
+	let dateOfBirth:string
+
 	let degree =  'Terciario'
 	let gender =  'M'
 	let nationality =  'Argentino'
 	let studyLevel =  'Terciario Completo'
 	let rol_id=''
-	let color= ''
+	let color:Color
+
+
 	let roles_assigned = {
 		rol1 : false,
 		rol2 : false,
@@ -60,7 +64,7 @@ import type { Color } from 'sveltestrap/src/shared';
 		'Primario incompleto',
 		'Primario completo',
 		'Secundario incompleto',
-		'Secundario incompleto',
+		'Secundario completo',
 		'Superior no universitario',
 		'Superior no universitario',
 		'Universitario',
@@ -131,7 +135,7 @@ import type { Color } from 'sveltestrap/src/shared';
 	 cuit = ''
 	 email = ''
 	 phone = ''
-	 dateOfBirth = new Date('now()')
+	// dateOfBirth = new Date('now()')
 	 degree = ''
 	 gender = ''
 	 nationality = ''
