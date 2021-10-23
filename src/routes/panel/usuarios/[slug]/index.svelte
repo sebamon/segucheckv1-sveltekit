@@ -14,9 +14,7 @@ export async function load({ page, fetch }) {
 		props: {
 			userDetails,
 		}
-		
 	}
-
 }
 </script>
 <script lang="ts">
@@ -25,8 +23,7 @@ export async function load({ page, fetch }) {
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem,
-		Image
+		BreadcrumbItem
 	} from 'sveltestrap';
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
@@ -68,13 +65,13 @@ export async function load({ page, fetch }) {
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+		<h1><i class="fas fa-users me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/editar"
-			><i class="fas fa-pen me-2" />Editar</Button
-		>
+		<Button color="primary" href="/panel/usuarios/editar">
+			<i class="fas fa-pen me-2" />Editar
+		</Button>
 	</div>
 </header>
 
