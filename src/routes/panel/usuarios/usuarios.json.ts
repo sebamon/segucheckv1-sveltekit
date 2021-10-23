@@ -72,7 +72,6 @@ console.log('formBody: ',formBody)
          roles.push({rol_id: 3, assignedBy : 1, user_id: 16})
          console.log('roles id3', roles)
        }
-
        console.log('roles:', roles)
        const result = await prisma.users.create({
             data:{
@@ -88,9 +87,11 @@ console.log('formBody: ',formBody)
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
+               
+                }
         
             }
-        })
+        )
             
             const newUserId = result.user_id
             console.log('result: ', result)

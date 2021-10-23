@@ -2,7 +2,7 @@
 
 export async function load({ page, fetch }) {
 	console.log('load usuario/index.svelte')
-	try{
+	try{	
 	const response = await fetch(`./usuarios/usuarios.json?`,)
 	const users = await response.json()
 	console.log('funcion load: response: ',response)

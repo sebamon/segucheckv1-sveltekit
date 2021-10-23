@@ -9,25 +9,26 @@
 		Image
 	} from 'sveltestrap';
 
+	export let userDetails
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
-	let userDetails = {
-		user_id: 1234,
-		cuit: 20301001008,
-		firstName: 'Juan',
-		lastName: 'Perez',
-		email: 'juan.perez@ejemplo.com',
-		phone: '2993334444',
-		gender: 'M',
-		dateOfBirth: new Date('1980-12-31'),
-		nationality: 'Argentina',
-		studyLevel: 'Universitario completo',
-		degree: 'Licenciado',
-		profilePic: 'https://avatars.dicebear.com/api/micah/1234.svg',
-		roles: [
-			{ rol_id: 1, rolDescription: 'Gestor documental' },
-			{ rol_id: 2, rolDescription: 'Personal de seguridad' }
-		]
-	};
+	// let userDetails = {
+	// 	user_id: 1234,
+	// 	cuit: 20301001008,
+	// 	firstName: 'Juan',
+	// 	lastName: 'Perez',
+	// 	email: 'juan.perez@ejemplo.com',
+	// 	phone: '2993334444',
+	// 	gender: 'M',
+	// 	dateOfBirth: new Date('1980-12-31'),
+	// 	nationality: 'Argentina',
+	// 	studyLevel: 'Universitario completo',
+	// 	degree: 'Licenciado',
+	// 	profilePic: 'https://avatars.dicebear.com/api/micah/1234.svg',
+	// 	roles: [
+	// 		{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 		{ rol_id: 2, rolDescription: 'Personal de seguridad' }
+	// 	]
+	// };
 </script>
 
 <svelte:head>
