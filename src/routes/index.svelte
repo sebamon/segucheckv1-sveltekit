@@ -69,8 +69,6 @@
 				/>
 			</svelte:component>
 		</div>
-
-		<div class="my-5" />
 	</div>
 	<div class="d-flex justify-content-center align-self-end text-center">
 		<a href="#sistema" class="text-decoration-none">
