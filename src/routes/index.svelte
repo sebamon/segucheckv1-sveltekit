@@ -37,6 +37,7 @@
 <header class="py-4">
 	<div class="container row mt-4 align-items-center justify-content-around">
 		<div class="col-12 col-md-8 col-lg-9">
+			<img src="img/segucheck-logo.svg" alt="logo" height="200" class="m-5">
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo

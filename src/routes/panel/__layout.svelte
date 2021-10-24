@@ -125,12 +125,14 @@
 			<Button color="secondary" id="#sidebarToggle" class="me-3">
 				<i class="fas fa-bars fs-6" on:click={toggleSidebar} />
 			</Button>
-			<NavbarBrand href="/">SeguCheck</NavbarBrand>
+			<NavbarBrand href="/panel">
+				<img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2 text-dark" id="text-logo">SeguCheck</span>
+			</NavbarBrand>
 			<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 			<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 				<Nav class="ms-auto" navbar>
 					<Dropdown nav inNavbar>
-						<DropdownToggle nav caret><i class="fas fa-user me-2" />{session.firstName+' '+session.lastName}</DropdownToggle>
+						<DropdownToggle nav caret class="text-primary me-2"><i class="fas fa-user me-4" />{session.firstName+' '+session.lastName}</DropdownToggle>
 						<DropdownMenu end>
 							<DropdownItem>Ver tu perfil</DropdownItem>
 							<DropdownItem>Preferencias</DropdownItem>
@@ -161,3 +163,9 @@
 	</Alert>
 </div>
 {/if}
+
+<style>
+    #text-logo {
+        font-family: 'Poppins', 'sans-serif';
+    }
+</style>

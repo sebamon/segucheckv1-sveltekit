@@ -24,18 +24,20 @@
 </script>
 
 <Navbar color="light" light expand="md">
-	<NavbarBrand href="/">SeguCheck</NavbarBrand>
+	<NavbarBrand href="/">
+		<img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2 text-dark" id="text-logo">SeguCheck</span>
+	</NavbarBrand>
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
 			<NavItem class="mx-2">
-				<NavLink href="#sistema">Nuestro sistema</NavLink>
+				<NavLink href="#sistema" class="text-primary">Nuestro sistema</NavLink>
 			</NavItem>
 			<NavItem class="mx-2">
-				<NavLink href="#tutoriales">Tutoriales</NavLink>
+				<NavLink href="#tutoriales" class="text-primary">Tutoriales</NavLink>
 			</NavItem>
 			<NavItem class="mx-2">
-				<NavLink href="#contacto">Contacto</NavLink>
+				<NavLink href="#contacto" class="text-primary">Contacto</NavLink>
 			</NavItem>
 			<NavItem class="ms-2">
 				<Button color="primary" on:click={() => (modalOpen = !modalOpen)}>Iniciar sesión</Button>
@@ -47,3 +49,9 @@
 
 <!-- Modal login -->
 <ModalLogin {modalOpen} />
+
+<style>
+    #text-logo {
+        font-family: 'Poppins', 'sans-serif';
+    }
+</style>
