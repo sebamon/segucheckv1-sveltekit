@@ -1,21 +1,26 @@
 <script lang="ts">
-	import NavbarHome from'$lib/NavbarHome.svelte';
+	import NavbarHome from '$lib/NavbarHome.svelte';
 	import ModalLogin from '$lib/ModalLogin.svelte';
 	import { page, session } from '$app/stores';
 	// console.log("session",session)
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Button,
-		Card,
-		CardBody,
-		CardSubtitle,
-		CardTitle,
-		Image
-	} from 'sveltestrap';
+	import { Button, Card, CardBody, CardSubtitle, CardTitle, Image } from 'sveltestrap';
 
 	// Abrir modal login
 	let modalOpen = false;
+
+	// Carrusel diapositivas:
+	import { onMount } from 'svelte';
+	let Carousel; // for saving Carousel component class
+	let carousel; // for calling methods of the carousel instance
+	onMount(async () => {
+		const module = await import('svelte-carousel');
+		Carousel = module.default;
+	});
+
+	const items = ['/img/screen-app1.png', '/img/screen-app2.png'];
+	let activeIndex = 0;
 </script>
 
 <svelte:head>
@@ -23,25 +28,48 @@
 </svelte:head>
 
 <!-- Menú de navegación -->
-<NavbarHome/>
+<NavbarHome />
 
 <!-- Modal login -->
 <ModalLogin {modalOpen} />
 
 <!-- Hero a pantalla completa -->
 <header class="py-4">
-	<div class="container mt-4">
-		<div class="row col-6">
+	<div class="container row mt-4 align-items-center justify-content-around">
+		<div class="col-12 col-md-8 col-lg-9">
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
 			</h3>
 			<div class="mb-5 g-3">
-				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4">Iniciar sesión</Button>
+				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4"
+					>Iniciar sesión</Button
+				>
 				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
 			</div>
 		</div>
-		<hr class="m-5" />
+		<div class="col-6 col-md-4 col-lg-3">
+			<svelte:component
+				this={Carousel}
+				autoplay
+				autoplayDuration={5000}
+				pauseOnFocus
+				arrows={false}
+				dots={false}
+				let:loaded
+			>
+				<img
+					src="/img/screen-app1.png"
+					alt="Vista de aplicación móvil 1"
+				/>
+				<img
+					src="/img/screen-app2.png"
+					alt="Vista de aplicación móvil 2"
+				/>
+			</svelte:component>
+		</div>
+
+		<div class="my-5" />
 	</div>
 	<div class="d-flex justify-content-center align-self-end text-center">
 		<a href="#sistema" class="text-decoration-none">
@@ -50,9 +78,6 @@
 		</a>
 	</div>
 </header>
-
-
-
 
 <!-- Más info al scrollear -->
 <main class="container py-4">
@@ -64,10 +89,18 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<Image fluid thumbnail src="/thumb-dashboard.jpg" alt="Panel Administrativo" class="my-4"/>
+				<a href="/info/plataforma"
+					><Image
+						fluid
+						thumbnail
+						src="/img/thumb-dashboard.jpg"
+						alt="Panel Administrativo"
+						class="my-4"
+					/></a
+				>
 				<CardSubtitle>
-					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por
-					tus clientes
+					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus
+					clientes
 				</CardSubtitle>
 				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
@@ -75,7 +108,15 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<Image fluid thumbnail src="/thumb-screen-app.jpg" alt="Aplicación móvil" class="my-4" />
+				<a href="/info/movil"
+					><Image
+						fluid
+						thumbnail
+						src="/img/thumb-screen-app.jpg"
+						alt="Aplicación móvil"
+						class="my-4"
+					/></a
+				>
 				<CardSubtitle
 					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
 				>
@@ -87,10 +128,12 @@
 </main>
 
 <style>
-	header { /* Estilo de portada */
+	header {
+		/* Estilo de portada */
 		height: 90vh;
-		background: #ededed url('/bg-hero.jpg');
-  		background-attachment: fixed; /* Efecto parallax */
+		background: #ededed url('/img/bg-hero.jpg');
+		background-attachment: fixed; /* Efecto parallax */
+		background-size: cover; /* Cubrir todo el ancho */
 		background-position: center;
 		background-repeat: no-repeat;
 	}
