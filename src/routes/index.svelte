@@ -18,9 +18,6 @@
 		const module = await import('svelte-carousel');
 		Carousel = module.default;
 	});
-
-	const items = ['/img/screen-app1.png', '/img/screen-app2.png'];
-	let activeIndex = 0;
 </script>
 
 <svelte:head>

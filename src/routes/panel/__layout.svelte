@@ -1,5 +1,6 @@
 <!-- Encabezado y pie de página panel -->
 <script lang="ts">
+	import NavbarHome from '$lib/NavbarHome.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Collapse,
@@ -12,47 +13,12 @@
 		DropdownItem,
 		DropdownMenu,
 		DropdownToggle,
-		Button,
 		Alert
 	} from 'sveltestrap';
 
-	// Menú hamburguesa navbar
-	let isOpen = false;
-	function handleUpdate(event) {
-		isOpen = event.detail.isOpen;
-	}
-	let open = false;
-	const toggle = () => (open = !open);
-
-	import { onMount } from 'svelte';
-	/* https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/js/scripts.js#L12
-	 *
-	 * Start Bootstrap - Simple Sidebar v6.0.3 (https://startbootstrap.com/template/simple-sidebar)
-	 * Copyright 2013-2021 Start Bootstrap
-	 * Licensed under MIT (https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/LICENSE)
-	 */
-	onMount(() => {
-		// Alternar el menú lateral - Hacer con Svelte
-		const sidebarToggle = document.body.querySelector('#sidebarToggle');
-		if (sidebarToggle) {
-			// Uncomment Below to persist sidebar toggle between refreshes
-			// if (localStorage.getItem('sb|sidebar-toggle') === 'true') {
-			//     document.body.classList.toggle('sb-sidenav-toggled');
-			// }
-			sidebarToggle.addEventListener('click', (event) => {
-				event.preventDefault();
-				document.body.classList.toggle('sb-sidenav-toggled');
-				localStorage.setItem(
-					'sb|sidebar-toggle',
-					document.body.classList.contains('sb-sidenav-toggled')
-				);
-			});
-		}
-	});
-
-	// Armar versión Svelte:
-	let showSidebar = true;
-	const toggleSidebar = () => (showSidebar = !showSidebar);
+	// Alternar menú lateral:
+	import { fade } from 'svelte/transition';
+	let showSidebar = false;
 
 	// Datos de usuario - Ver si esto lo maneja un hook:
 	let session = {
@@ -77,95 +43,171 @@
 			}
 		}
 		return userAuthorized;
-	}
+	};
 </script>
 
 {#if isAuthorized()}
-<div class="d-flex" id="wrapper">
-	<!-- Sidebar: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
-	<div class="border-end bg-dark" id="sidebar-wrapper">
-		<div class="sidebar-heading border-bottom bg-secondary fs-4">Menú lateral</div>
-		<div class="list-group list-group-flush">
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel">
-				<i class="fas fa-home me-4" />Resumen
-			</a>
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/operarios">
-				<i class="fas fa-walking me-4" />Operarios
-			</a>
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/vehiculos">
-				<i class="fas fa-car me-4" />Vehículos
-			</a>
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/trabajos">
-				<i class="fas fa-briefcase me-4" />Trabajos
-			</a>
-			<a
-				class="list-group-item list-group-item-action list-group-item p-3"
-				href="/panel/checklists"
+	<div class="d-flex" id="wrapper">
+		<!-- Menú lateral vertical: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
+		{#if showSidebar}
+			<div
+				class="border-end bg-dark"
+				class:sb-sidenav-toggled={showSidebar}
+				id="sidebar-wrapper"
+				transition:fade
 			>
-				<i class="fas fa-clipboard-check me-4" />Checklists
-			</a>
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/usuarios">
-				<i class="fas fa-users me-4" />Usuarios
-			</a>
-			<a
-				class="list-group-item list-group-item-action list-group-item p-3"
-				href="/panel/locaciones"
-			>
-				<i class="fas fa-map-marked me-4" />Locaciones
-			</a>
-			<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel/clientes">
-				<i class="fas fa-industry me-4" />Clientes
-			</a>
-		</div>
-	</div>
+				<div class="sidebar-heading border-bottom bg-secondary row align-items-center">
+					<div class="row">
+						<div class="col-auto mt-2">
+							<h4>Menú lateral</h4>
+						</div>
+						<div class="col-1 ms-auto">
+							<button
+								class="btn btn-secondary"
+								title="cerrar"
+								id="cerrarMenu"
+								on:click={() => (showSidebar = false)}
+							>
+								<i class="fas fa-times fs-6" />
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="list-group list-group-flush">
+					<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel">
+						<i class="fas fa-home me-4" />Resumen
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/operarios"
+					>
+						<i class="fas fa-walking me-4" />Operarios
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/vehiculos"
+					>
+						<i class="fas fa-car me-4" />Vehículos
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/trabajos"
+					>
+						<i class="fas fa-briefcase me-4" />Trabajos
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/checklists"
+					>
+						<i class="fas fa-clipboard-check me-4" />Checklists
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/usuarios"
+					>
+						<i class="fas fa-users me-4" />Usuarios
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/locaciones"
+					>
+						<i class="fas fa-map-marked me-4" />Locaciones
+					</a>
+					<a
+						class="list-group-item list-group-item-action list-group-item p-3"
+						href="/panel/clientes"
+					>
+						<i class="fas fa-industry me-4" />Clientes
+					</a>
+				</div>
+			</div>
+		{/if}
 
-	<div id="page-content-wrapper">
-		<!-- Menú de navegación -->
-		<Navbar color="light" light expand="md">
-			<Button color="secondary" id="#sidebarToggle" class="me-3">
-				<i class="fas fa-bars fs-6" on:click={toggleSidebar} />
-			</Button>
-			<NavbarBrand href="/panel">
-				<img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2 text-dark" id="text-logo">SeguCheck</span>
-			</NavbarBrand>
-			<NavbarToggler on:click={() => (isOpen = !isOpen)} />
-			<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
-				<Nav class="ms-auto" navbar>
+		<div id="page-content-wrapper">
+			<!-- Menú superior horizontal -->
+			<Navbar color="light" light expand="md">
+				<button class="btn btn-secondary me-3" on:click={() => (showSidebar = !showSidebar)}>
+					<i class="fas fa-bars fs-6" />
+				</button>
+				<NavbarBrand href="/panel">
+					<img src="/img/segucheck-logo.svg" height="36" alt="logo" /><span
+						class="mx-2 text-dark"
+						id="text-logo">SeguCheck</span
+					>
+				</NavbarBrand>
+				<Nav navbar>
 					<Dropdown nav inNavbar>
-						<DropdownToggle nav caret class="text-primary me-2"><i class="fas fa-user me-4" />{session.firstName+' '+session.lastName}</DropdownToggle>
+						<DropdownToggle nav caret class="text-primary me-2"
+							><i class="fas fa-user me-4" />{session.firstName +
+								' ' +
+								session.lastName}</DropdownToggle
+						>
 						<DropdownMenu end>
-							<DropdownItem>Ver tu perfil</DropdownItem>
+							<DropdownItem href="/panel/perfil">Ver tu perfil</DropdownItem>
 							<DropdownItem>Preferencias</DropdownItem>
+							<DropdownItem href="/ayuda">Ayuda</DropdownItem>
 							<DropdownItem divider />
-							<DropdownItem>Ayuda</DropdownItem>
+							<DropdownItem href="/salir">Cerrar sesión</DropdownItem>
 						</DropdownMenu>
 					</Dropdown>
-					<NavItem>
-						<Button color="secondary" on:click={toggle}>Cerrar sesión</Button>
-					</NavItem>
 				</Nav>
-			</Collapse>
-		</Navbar>
-		<!-- Contenido principal -->
-		<div class="container p-4">
+			</Navbar>
+			<!-- Contenido principal -->
+			<div class="container p-4">
 				<slot />
+			</div>
 		</div>
 	</div>
-</div>
 {:else}
-<div class="container p-4">
-	<Alert color="warning">
-		<h4 class="alert-heading text-capitalize">
-			<i class="fas fa-exclamation-triangle me-4" />Acceso denegado
-		</h4>
-		Para ver esta sección, primero debes iniciar sesión con una cuenta habilitada.
-		<a href="/login" class="alert-link">Ir a iniciar sesión.</a>
-	</Alert>
-</div>
+	<NavbarHome />
+
+	<div class="container p-4">
+		<Alert color="warning">
+			<h4 class="alert-heading text-capitalize">
+				<i class="fas fa-exclamation-triangle me-4" />Acceso denegado
+			</h4>
+			Para ver esta sección, primero debes iniciar sesión con una cuenta habilitada.
+			<a href="/login" class="alert-link">Ir a iniciar sesión.</a>
+		</Alert>
+	</div>
 {/if}
 
 <style>
-    #text-logo {
-        font-family: 'Poppins', 'sans-serif';
-    }
+	#text-logo {
+		font-family: 'Poppins', 'sans-serif';
+	}
+
+	/* --- Sidenav tema ---
+	 * https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/css/styles.css#L11276
+	 */
+	#wrapper {
+		overflow-x: hidden;
+	}
+	#sidebar-wrapper {
+		max-height: 100%;
+		margin-left: 0;
+		transition: margin 0.25s ease-out;
+	}
+	#sidebar-wrapper .sidebar-heading {
+		padding: 0.875rem 1.25rem;
+		font-size: 1.2rem;
+	}
+	#sidebar-wrapper .list-group {
+		width: 15rem;
+	}
+	#page-content-wrapper {
+		min-width: 0;
+		width: 100%;
+	}
+	@media (max-width: 576px) {
+		#sidebar-wrapper {
+			min-width: 100vw;
+		}
+	}
+
+	@media (min-width: 576px) {
+		#cerrarMenu {
+			display: none;
+		}
+	}
 </style>

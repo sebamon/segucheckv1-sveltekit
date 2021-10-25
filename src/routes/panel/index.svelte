@@ -62,7 +62,7 @@
 				Puede registrar nuevos usuarios, modificar sus datos o realizar la baja de los mismos
 			</CardSubtitle>
 			<p class="text-end">
-				<a href="/info/plataforma" class="text-decoration-none fw-bold">
+				<a href="/panel/usuarios" class="text-decoration-none fw-bold">
 					Gestionar usuarios <i class="fas fa-arrow-right me-2" />
 				</a>
 			</p>
@@ -76,7 +76,7 @@
 			<CardTitle class="fw-bold">Historial de trabajos</CardTitle>
 			<CardSubtitle>Últimas órdenes de trabajo vigentes</CardSubtitle>
 			<p class="text-end">
-				<a href="/info/plataforma" class="text-decoration-none fw-bold">
+				<a href="/panel/trabajos" class="text-decoration-none fw-bold">
 					Ver historial <i class="fas fa-arrow-right me-2" />
 				</a>
 			</p>
