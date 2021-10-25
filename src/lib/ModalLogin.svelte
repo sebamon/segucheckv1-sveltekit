@@ -14,12 +14,11 @@
 
 	// Abrir modal login
 	export let modalOpen = false;
-	export const toggle = () => (modalOpen = !modalOpen);
 </script>
 
 <!-- Modal login -->
-<Modal isOpen={modalOpen} {toggle}>
-	<ModalHeader {toggle}>Ingresar a SeguCheck</ModalHeader>
+<Modal isOpen={modalOpen}>
+	<ModalHeader toggle={() => (modalOpen = !modalOpen)}>Ingresar a SeguCheck</ModalHeader>
 	<ModalBody>
 		<Form name="modalLogin" id="modalLogin" action="/checklogin" method="post">
 			<FormGroup>
@@ -39,8 +38,7 @@
 			<FormGroup>
 				<Input type="checkbox" id="rec" label="Recordar contraseña" />
 			</FormGroup>
-			<FormGroup>
-			<!-- <FormGroup class="d-flex align-items-center justify-content-between mt-4 mb-0"> -->
+			<FormGroup class="d-flex align-items-center justify-content-between mt-4 mb-0">
 				<Button color="primary" href="/login">Ingresar</Button>
 				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
 			</FormGroup>

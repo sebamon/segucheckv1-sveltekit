@@ -51,11 +51,6 @@
 	// 	]
 	// };
 
-	// Debug
-	// let fechaNac = userDetails.userDetails.dateOfBirth;
-	// let fechaNacString = userDetails.userDetails.dateOfBirth.toDateString();
-	// let fechaNacYMD = userDetails.userDetails.dateOfBirth.getFullYear() +'-'+ userDetails.dateOfBirth.getMonth() +'-'+ userDetails.dateOfBirth.getDate();
-
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
 
@@ -77,12 +72,9 @@
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Editar usuario</h1>
+		<h1><i class="fas fa-users me-4" />Editar usuario</h1>
 		<p class="lead">Modifique los detalles a continuación.</p>
 	</div>
 </header>
-<!-- Formulario editar usuario -->
-<!-- {@debug fechaNac}
-	{@debug fechaNacString}
-	{@debug fechaNacYMD} -->
+
 	<UserDetails {...userDetails.userDetails} {isReadOnly} />

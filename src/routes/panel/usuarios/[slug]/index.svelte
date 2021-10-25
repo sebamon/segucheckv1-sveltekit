@@ -24,8 +24,7 @@ export async function load({ page, fetch }) {
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem,
-		Image
+		BreadcrumbItem
 	} from 'sveltestrap';
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
