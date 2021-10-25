@@ -80,7 +80,7 @@
 		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1>Nuevo vehículo</h1>
+		<h1><i class="fas fa-car me-4" />Nuevo vehículo</h1>
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>

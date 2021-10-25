@@ -5,7 +5,7 @@
 	import WorkInfo from '$lib/Details/WorkInfo.svelte';
 	import AddressDetails from '$lib/Details/AddressDetails.svelte';
 	import HealthInfo from '$lib/Details/HealthInfo.svelte';
-	
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Button,
@@ -79,9 +79,9 @@
 		phoneOfResidence: '299-412-3469'
 	};
 	let userHealthInfo = {
-		bloodType: "A",
+		bloodType: 'A',
 		rh: true,
-		allergies: "Ninguno"
+		allergies: 'Ninguno'
 	};
 </script>
 
@@ -99,18 +99,8 @@
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-md-3">
-		<Image
-			fluid
-			thumbnail
-			src={userDetails.profilePic}
-			alt="Foto de perfil"
-			class="m-2"
-			style="max-width:150px"
-		/>
-	</div>
 	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+		<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<p class="lead">Detalles del operario</p>
 	</div>
 	<div class="col-2 ms-auto">
@@ -123,11 +113,10 @@
 <main>
 	<TabContent>
 		<TabPane tabId="userDetails" tab="Datos básicos" active>
-			<!-- Datos básicos -->
 			<h2 class="my-4">Datos básicos</h2>
 			<UserDetails {...userDetails} />
 		</TabPane>
-		<TabPane tabId="habilitaciones" tab="Habilitaciones">
+		<TabPane tabId="docDetails" tab="Habilitaciones">
 			<h2 class="my-4">Habilitaciones</h2>
 			{#if userDocumentation.length == 0}
 				<div class="alert alert-warning" role="alert">
@@ -137,11 +126,7 @@
 			{:else}
 				<div class="row g-3">
 					{#each userDocumentation as thisDoc}
-						<Accordion stayOpen class="col-md-6">
-							<AccordionItem header={thisDoc.documentType.description}>
-								<DocDetails {...thisDoc} />
-							</AccordionItem>
-						</Accordion>
+						<DocDetails {...thisDoc} />
 					{/each}
 				</div>
 			{/if}

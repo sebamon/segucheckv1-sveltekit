@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ModalLogin from '$lib/ModalLogin.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
 		Collapse,
@@ -12,32 +13,45 @@
 	} from 'sveltestrap';
 
     
-	// Menú hamburguesa navbar
-	let isOpen = false;
+	// Alternar menú hamburguesa navbar (móvil):
+	export let isOpen = false;
 	function handleUpdate(event) {
 		isOpen = event.detail.isOpen;
 	}
-	let open = false;
-	const toggle = () => (open = !open);
+
+    // Alternar modal login
+	export let modalOpen = false;
 </script>
 
 <Navbar color="light" light expand="md">
-    <NavbarBrand href="/">SeguCheck</NavbarBrand>
-    <NavbarToggler on:click={() => (isOpen = !isOpen)} />
-    <Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
-        <Nav class="ms-auto" navbar>
-            <NavItem>
-                <NavLink href="#sistema">Nuestro sistema</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink href="#tutoriales">Tutoriales</NavLink>
-            </NavItem>
-            <NavItem>
-                <NavLink href="#contacto">Contacto</NavLink>
-            </NavItem>
-            <NavItem>
-                <Button color="primary" on:click={toggle}>Iniciar sesión</Button>
-            </NavItem>
-        </Nav>
-    </Collapse>
+	<NavbarBrand href="/">
+		<img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2 text-dark" id="text-logo">SeguCheck</span>
+	</NavbarBrand>
+	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
+	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
+		<Nav class="ms-auto" navbar>
+			<NavItem class="mx-2">
+				<NavLink href="#sistema" class="text-primary">Nuestro sistema</NavLink>
+			</NavItem>
+			<NavItem class="mx-2">
+				<NavLink href="#tutoriales" class="text-primary">Tutoriales</NavLink>
+			</NavItem>
+			<NavItem class="mx-2">
+				<NavLink href="#contacto" class="text-primary">Contacto</NavLink>
+			</NavItem>
+			<NavItem class="ms-2">
+				<Button color="primary" on:click={() => (modalOpen = !modalOpen)}>Iniciar sesión</Button>
+                <Button color="warning" href="/panel" title="placeholder">Ir al panel</Button>
+			</NavItem>
+		</Nav>
+	</Collapse>
 </Navbar>
+
+<!-- Modal login -->
+<ModalLogin {modalOpen} />
+
+<style>
+    #text-logo {
+        font-family: 'Poppins', 'sans-serif';
+    }
+</style>

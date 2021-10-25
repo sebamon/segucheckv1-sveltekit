@@ -2,27 +2,32 @@
 
 export async function load({ page, fetch }) {
 	console.log('load usuario/index.svelte')
-		const response = await fetch(`./usuarios/usuarios.json?`,)
-		const users = await response.json()
-		console.log('funcion load: users: ',response)
-		console.log('funcion load: users.body: ',response.body)
-		console.log('funcion load: item: ', users.users)
-			return {
-				props: {	
-					users,
+	try{	
+	const response = await fetch(`./usuarios/usuarios.json?`,)
+	const users = await response.json()
+	console.log('funcion load: response: ',response)
+	console.log('funcion load: response.body: ',response.body)
+	console.log('funcion load: user.user: ', users.users)
+	return {
+		props: {	
+			users,
 		}
-		};
-
+	};
+	}catch(e){
+		console.log("error",e)
 	}
+
+}
 
 </script>
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	import { onMount } from 'svelte';
+	// import { onMount } from 'svelte';
 	//import { page, session } from '$app/stores';
 	export let users;
-	onMount(() => console.log(`mounted component`));
+
+	// onMount(() => console.log(`mounted component`));
   
 	console.log('script interno users: ',{users})
 </script>
