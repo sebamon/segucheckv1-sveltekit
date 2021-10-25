@@ -4,21 +4,37 @@
 
 	// export let useronroles
 	export let userDetails
-	console.log('props componente userDetails',userDetails)
+	// console.log('props componente userDetails',{userDetails})
 	// Datos del usuario a mostrar
-	export let user_id = userDetails.user_id
-	export let cuit = userDetails.cuit
-	export let firstName = userDetails.firstName
-	export let lastName = userDetails.lastName
-	export let email = userDetails.email
-	export let phone = userDetails.phone
-	export let gender = userDetails.gender
+	export let user_id  
+	export let cuit 
+	export let firstName 
+	export let lastName 
+	export let email 
+	export let phone 
+	export let gender 
+	export let dateOfBirth 
+	export let nationality 
+	export let studyLevel 
+	export let degree 
+	export let profilePic 
+
+	export let message
+	export let error
+	export let color
+	// export let user_id = userDetails.user_id
+	// export let cuit = userDetails.cuit
+	// export let firstName = userDetails.firstName
+	// export let lastName = userDetails.lastName
+	// export let email = userDetails.email
+	// export let phone = userDetails.phone
+	// export let gender = userDetails.gender
+	// export let dateOfBirth:string=userDetails.dateOfBirth
+	// export let nationality = userDetails.nationality
+	// export let studyLevel = userDetails.studyLevel
+	// export let degree = userDetails.degree
+	// export let profilePic = userDetails.profilePic
 	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
-	export let dateOfBirth:string=userDetails.dateOfBirth
-	export let nationality = userDetails.nationality
-	export let studyLevel = userDetails.studyLevel
-	export let degree = userDetails.degree
-	export let profilePic = userDetails.profilePic
 	// export let roles = userDetails.useronroles
 
 	
@@ -72,10 +88,47 @@
 	 */
 	function dateToYMD(date):string {
 		return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+	}	
+	const submitForm  = async():Promise<void> => {
+
+		const submit = await fetch (`editar.json`, {
+			method : "PUT",
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirth,
+				degree,
+				gender,
+				nationality,
+				studyLevel,
+				// roles_assigned,
+			})
+		})
+		const data = await submit.json()
+		message = data.message
+		error= data.error
+		console.log('UserDetails editar data', data)
+		if(data.status==='OK') {
+				color='success'
+			}
+			if(data.status==='ERROR') color='danger'
+
+			if(data.status===200)
+			{
+				console.log('message', message)
+			}
+			console.log('color:' ,color)
+
 	}
+
+
 </script>
 
-<form name="formUserDetails" id="formUserDetails" {action}>
+
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<Image
@@ -117,8 +170,8 @@
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
-				value={cuit}
 				readonly={isReadOnly}
+				bind:value={cuit}
 			/>
 		</div>
 	</div>
@@ -132,7 +185,7 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
-				value={firstName}
+				bind:value={firstName}
 				readonly={isReadOnly}
 			/>
 		</div>
@@ -145,7 +198,7 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="Apellido"
-				value={lastName}
+				bind:value={lastName}
 				readonly={isReadOnly}
 			/>
 		</div>
@@ -160,7 +213,7 @@
 				class="form-control"
 				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
-				value={email}
+				bind:value={email}
 				readonly={isReadOnly}
 			/>
 		</div>
@@ -173,7 +226,7 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				value={phone}
+				bind:value={phone}
 				readonly={isReadOnly}
 			/>
 		</div>
@@ -189,11 +242,11 @@
 					class="form-control user-select-all"
 					placeholder="M"
 					aria-label="Género"
-					value={genderText}
+					bind:value={genderText}
 					readonly
 				/>
 			{:else}
-				<select id="gender" class="form-select" aria-label="Género" required>
+				<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
 					<option disabled>Elija una opción...</option>
 					{#each genderList as thisGender}
 						<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
@@ -226,7 +279,7 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				value={nationality}
+				bind:value={nationality}
 				readonly={isReadOnly}
 			/>
 		</div>
@@ -242,11 +295,11 @@
 					class="form-control"
 					placeholder="Universitario completo"
 					aria-label="Nivel de formación"
-					value={studyLevel}
+					bind:value={studyLevel}
 					readonly
 				/>
 			{:else}
-				<select id="studyLevel" class="form-select" aria-label="Nivel de formación">
+				<select id="studyLevel" class="form-select" aria-label="Nivel de formación" bind:value={studyLevel}>
 					<option disabled>Elija una opción...</option>
 					{#each studyLevelList as thisStudyLevel}
 						<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}>
@@ -265,7 +318,7 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				value={degree}
+				bind:value={degree}
 				readonly={isReadOnly}
 				required={!isReadOnly}
 			/>

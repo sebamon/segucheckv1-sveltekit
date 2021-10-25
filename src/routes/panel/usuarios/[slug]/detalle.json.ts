@@ -4,31 +4,27 @@ const prisma = new PrismaClient()
 
 export const get = async ( request ) =>{
     console.log('Entro al get de detalle: request:', request)
-    const id_find = Number(request.params.slug)
+    let id_find = Number(request.params.slug)
 //  NaN( request.params.slug )
     console.log('id_find', id_find, typeof(id_find))
     try{
-        const result = await prisma.users.findUnique({
+        const userDetails = await prisma.users.findUnique({
             where :{
-                // user_id : 1,
                 user_id : id_find,
+                // user_id : parseInt(id_find,10),
             },
             include:{
                 usersonroles: true,
             }
     
         })
-        console.log('result', result)
+        console.log('result', userDetails)
         return {
           body: {
-              result,
+              userDetails,
               message: 'User Found',
               status: 'OK'
-              
           }
-          
-            // message: 'Find User',
-            // status: 'OK'
         }
     }catch(e){
         console.log("Error: ",e)

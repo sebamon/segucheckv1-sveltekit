@@ -23,6 +23,7 @@ export async function load({ page, fetch }) {
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { goto } from '$app/navigation'
 	// import { onMount } from 'svelte';
 	//import { page, session } from '$app/stores';
 	export let users;
@@ -30,7 +31,12 @@ export async function load({ page, fetch }) {
 	// onMount(() => console.log(`mounted component`));
   
 	console.log('script interno users: ',{users})
-</script>
+
+	const showDetails = async (e) =>{
+		console.log("showDetails", e)
+		redirect: `./usuarios/`+e.target.value
+	}
+	</script>
 
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
@@ -76,7 +82,7 @@ export async function load({ page, fetch }) {
 			</thead>
 			<tbody>
 				{#each users.users as user }
-				<tr>
+				<tr value={user.user_id} on:dblclick={showDetails}>
 					<td>{user.user_id}</td>
 					<td>{user.cuit}</td>
 					<td>{user.firstName}</td>
