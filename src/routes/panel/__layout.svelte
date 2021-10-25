@@ -73,7 +73,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="list-group list-group-flush">
+				<div class="list-group list-group-flush text-center">
 					<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel">
 						<i class="fas fa-home me-4" />Resumen
 					</a>
@@ -126,8 +126,8 @@
 		<div id="page-content-wrapper">
 			<!-- Menú superior horizontal -->
 			<Navbar color="light" light expand="md">
-				<button class="btn btn-secondary me-3" on:click={() => (showSidebar = !showSidebar)}>
-					<i class="fas fa-bars fs-6" />
+				<button class="btn btn-primary me-3" on:click={() => (showSidebar = !showSidebar)}>
+					<i class="fas fa-bars fs-6 me-1" /> Menú
 				</button>
 				<NavbarBrand href="/panel">
 					<img src="/img/segucheck-logo.svg" height="36" alt="logo" /><span
@@ -185,16 +185,12 @@
 	}
 	#sidebar-wrapper {
 		max-height: 100%;
-		margin-left: 0;
-		transition: margin 0.25s ease-out;
 	}
 	#sidebar-wrapper .sidebar-heading {
 		padding: 0.875rem 1.25rem;
 		font-size: 1.2rem;
 	}
-	#sidebar-wrapper .list-group {
-		width: 15rem;
-	}
+	
 	#page-content-wrapper {
 		min-width: 0;
 		width: 100%;
@@ -208,6 +204,9 @@
 	@media (min-width: 576px) {
 		#cerrarMenu {
 			display: none;
+		}
+		#sidebar-wrapper .list-group {
+		width: 15rem;
 		}
 	}
 </style>
