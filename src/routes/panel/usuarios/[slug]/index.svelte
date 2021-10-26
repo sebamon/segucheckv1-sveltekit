@@ -25,10 +25,10 @@ export async function load({ page, fetch }) {
 		Breadcrumb,
 		BreadcrumbItem
 	} from 'sveltestrap';
-	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
 	export let userDetails;
-	console.log('userDetails segundo script',userDetails)
+	// console.log('userDetails segundo script',userDetails)
+	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 	userDetails=userDetails.result
 	// let userDetails = {
 	// 	user_id: 1234,

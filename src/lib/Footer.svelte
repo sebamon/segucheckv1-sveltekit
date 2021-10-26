@@ -1,6 +1,56 @@
-<footer class="container pt-5 my-5 text-muted border-top" id="contacto">
-	<p>
-		<strong>SeguCheck</strong> © 2021 - Desarrollado por
-		<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
-	</p>
+<footer class="pt-2 text-muted border-top bg-light" id="contacto">
+	<div class="container p-4">
+		<!-- Formulario suscribirse -->
+		<form id="formNewsletter">
+			<div class="row justify-content-around mb-4">
+				<div class="col-auto">
+					<p class="pt-2 fw-bold">Seguí nuestras novedades por email</p>
+				</div>
+				<div class="col-md-5 col-12">
+					<input
+						type="email"
+						id="emailNewsletter"
+						class="form-control"
+						placeholder="Deja tu correo electrónico"
+						required
+					/>
+				</div>
+				<div class="col-auto">
+					<button type="submit" class="btn btn-primary">Suscribirse</button>
+				</div>
+			</div>
+		</form>
+		<div class="row justify-content-around">
+			<div class="col-md-4">
+				<h4 class="my-4"><img src="/img/segucheck-logo.svg" height="36" alt="logo">SeguCheck © 2021</h4>
+				<p>
+					Desarrollado por
+					<a href="https://github.com/sebamon/segucheckv1-sveltekit">SanguCheck Dozen</a>
+				</p>
+			</div>
+			<div class="col-auto">
+				<h5>Enlaces</h5>
+				<ul class="list-unstyled">
+					<li>
+						<a href="/info/acerca" class="text-decoration-none">Acerca de</a>
+					</li>
+					<li>
+						<a href="/descargar" class="text-decoration-none">Descargar app</a>
+					</li>
+					<li>
+						<a href="/info/index" class="text-decoration-none">Tutoriales</a>
+					</li>
+					<li>
+						<a href="/info/index" class="text-decoration-none">Novedades</a>
+					</li>
+				</ul>
+			</div>
+			<div class="col-auto">
+				<h5>Nuestras redes sociales</h5>
+				<a href="#!" class="text-decoration-none text-primary fs-1" alt="Facebook" title="Facebook"><i class="fab fa-facebook-square me-1" /></a>
+				<a href="#!" class="text-decoration-none text-primary fs-1" alt="Twitter" title="Twitter"><i class="fab fa-twitter-square me-1" /></a>
+				<a href="#!" class="text-decoration-none text-primary fs-1" alt="LinkedIn" title="LinkedIn"><i class="fab fa-linkedin me-1" /></a>
+			</div>
+		</div>
+	</div>
 </footer>

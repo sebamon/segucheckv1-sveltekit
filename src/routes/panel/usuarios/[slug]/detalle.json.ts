@@ -3,10 +3,10 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const get = async ( request ) =>{
-    console.log('Entro al get de detalle: request:', request)
+//    console.log('Entro al get de detalle: request:', request)
     const id_find = Number(request.params.slug)
 //  NaN( request.params.slug )
-    console.log('id_find', id_find, typeof(id_find))
+//    console.log('id_find', id_find, typeof(id_find))
     try{
         const result = await prisma.users.findUnique({
             where :{

@@ -1,5 +1,6 @@
-<!-- Encabezado y pie de página panel -->
 <script lang="ts">
+	// ./panel/__layout.svelte: Encabezado y pie de página panel
+
 	import NavbarHome from '$lib/NavbarHome.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -51,12 +52,12 @@
 		<!-- Menú lateral vertical: https://github.com/StartBootstrap/startbootstrap-simple-sidebar/blob/master/dist/index.html#L16 -->
 		{#if showSidebar}
 			<div
-				class="border-end bg-dark"
+				class="bg-dark"
 				class:sb-sidenav-toggled={showSidebar}
 				id="sidebar-wrapper"
 				transition:fade
 			>
-				<div class="sidebar-heading border-bottom bg-secondary row align-items-center">
+				<div class="sidebar-heading bg-secondary row align-items-center">
 					<div class="row">
 						<div class="col-auto mt-2">
 							<h4>Menú lateral</h4>
@@ -125,7 +126,7 @@
 
 		<div id="page-content-wrapper">
 			<!-- Menú superior horizontal -->
-			<Navbar color="light" light expand="md">
+			<Navbar color="light" light expand="md" class="border-bottom">
 				<button class="btn btn-primary me-3" on:click={() => (showSidebar = !showSidebar)}>
 					<i class="fas fa-bars fs-6 me-1" /> Menú
 				</button>
@@ -153,7 +154,7 @@
 				</Nav>
 			</Navbar>
 			<!-- Contenido principal -->
-			<div class="container p-4">
+			<div class="container p-4 shadow-lg">
 				<slot />
 			</div>
 		</div>

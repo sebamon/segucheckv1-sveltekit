@@ -23,7 +23,7 @@
 	export let modalOpen = false;
 </script>
 
-<Navbar color="light" light expand="md">
+<Navbar color="light" light expand="md" class="border-bottom">
 	<NavbarBrand href="/">
 		<img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2 text-dark" id="text-logo">SeguCheck</span>
 	</NavbarBrand>
