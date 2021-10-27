@@ -1,6 +1,7 @@
 <script lang="ts">
-	// Alternar modo oscuro:
+	// Alternar modo oscuro según preferencia del usuario:
 	let isDarkMode = false;
+	isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches;
 </script>
 
 <footer class="pt-2 {isDarkMode ? 'text-light bg-dark': 'bg-light'} border-top" id="contacto">
