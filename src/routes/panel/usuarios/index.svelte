@@ -22,14 +22,20 @@
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { goto } from '$app/navigation'
 	// import { onMount } from 'svelte';
 	//import { page, session } from '$app/stores';
 	export let users;
 
 	// onMount(() => console.log(`mounted component`));
+  
+	console.log('script interno users: ',{users})
 
-	// console.log('script interno users: ', { users });
-</script>
+	const showDetails = async (e) =>{
+		console.log("showDetails", e)
+		redirect: `./usuarios/`+e.target.value
+	}
+	</script>
 
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
@@ -74,6 +80,7 @@
 				</tr>
 			</thead>
 			<tbody>
+<<<<<<< HEAD
 				{#each users.users as user}
 					<tr>
 						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.user_id}</a></td>
@@ -82,6 +89,16 @@
 						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.lastName}</a></td>
 						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.email}</a></td>
 					</tr>
+=======
+				{#each users.users as user }
+				<tr value={user.user_id} on:dblclick={showDetails}>
+					<td>{user.user_id}</td>
+					<td>{user.cuit}</td>
+					<td>{user.firstName}</td>
+					<td>{user.lastName}</td>
+					<td>{user.email}</td>
+				</tr>
+>>>>>>> 786d98a40a404f16cfe0fbc72df505d953fdbe1e
 				{/each}
 			</tbody>
 		</table>
