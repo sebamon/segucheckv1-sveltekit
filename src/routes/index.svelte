@@ -126,6 +126,9 @@
 		background-position: center;
 		background-repeat: no-repeat;
 	}
+	#logoHeader {
+		max-height: 200px;
+	}
 	@media (max-width: 768px) {
 		/* Esconde carrusel en pantallas pequeñas */
 		#showCarousel {
@@ -141,9 +144,6 @@
 		/* Evita que se sobresalgan items del header en pantallas pequeñas */
 		header {
 			height: 90vh;
-		}
-		#logoHeader {
-			max-height: 200px;
 		}
 		#conoceMas {
 			position: absolute;
