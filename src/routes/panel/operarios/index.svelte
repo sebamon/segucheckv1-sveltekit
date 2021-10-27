@@ -20,7 +20,7 @@
 		<h5>Descripción breve</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/nuevo">
+		<Button color="primary" href="/panel/usuarios/nuevo">
 			<i class="fas fa-plus me-2" />Nuevo
 		</Button>
 	</div>
