@@ -15,7 +15,7 @@
 /*      import  "../static/user_pics/image.js"; */
         export let maxHeight = 1024,
 		maxWidth = 768,
-		size_bytes = 90000,
+		size_bytes = 500000,
 		file_name = 'img_test.png',
 		file_post = '/src/routes/api/api_try.js',
 		save_route = '../static/user_pics/',
@@ -24,7 +24,7 @@
 	let avatar,
 		fileInput,
 		ready_to_save = false;
-	let size_kb = size_bytes / 100;
+	let size_mb = size_bytes / 100000;
 
 	const onFileSelected = (e) => {
 		let image = e.target.files[0];
@@ -37,13 +37,13 @@
 		} else {
 			let img = new Image();
 			img.onload = function () {
-				if (this.width.toFixed(0) != maxWidth && this.height.toFixed(0) != maxHeight) {
+				if (this.width.toFixed(0) > maxWidth && this.height.toFixed(0) > maxHeight) {
 					alert(
-						`Las medidas deben ser: ${maxWidth} x ${maxHeight}px \nEl peso de la imagen no puede exceder los ${size_kb}kb`
+						`Las medidas deben ser: ${maxWidth} x ${maxHeight}px \nEl peso de la imagen no puede exceder los ${size_mb}mb`
 					);
 				} else if (image.size > size_bytes) {
 					alert(
-						`Las medidas deben ser: ${width} x ${height}px \nEl peso de la imagen no puede exceder los ${size_kb}kb`
+						`Las medidas deben ser: ${width} x ${height}px \nEl peso de la imagen no puede exceder los ${size_mb}mb`
 					);
 				} else {
 					ready_to_save = true;
@@ -76,7 +76,7 @@
 	<p id="info_upload">
 		<strong>Subir una foto para el perfil del operario</strong>
 		<br />
-		Subir foto carnet de 184 x 184 px, máximo 900 Kb.
+		Subir foto carnet de {maxWidth} x {maxHeight} px, máximo {size_mb} Mb.
 		<br />Los formatos permitidos son JPG y PNG.
 	</p>
 	{#if avatar && ready_to_save}
@@ -84,14 +84,14 @@
 	{:else}
 		<img
 			class="avatar"
-			src="https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png"
+			src="../static/img/usr-await.png"
 			alt="foto de perfil sin cargar"
 		/>
 	{/if}
 
 	<img
 		class="upload"
-		src="https://static.thenounproject.com/png/625182-200.png"
+		src="../static/img/pic-upload.png"
 		alt="subir una foto"
 		on:click={() => {
 			fileInput.click();

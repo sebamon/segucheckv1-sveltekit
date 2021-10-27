@@ -41,7 +41,7 @@
 	</p>
 	<img
 		class="upload"
-		src="https://static.thenounproject.com/png/781714-200.png"
+		src="../static/img/doc-upload.png"
 		alt="subir documento"
 		on:click={() => {
 			fileInput.click();
