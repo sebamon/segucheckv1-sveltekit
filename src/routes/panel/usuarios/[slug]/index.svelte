@@ -10,7 +10,7 @@ export async function load({ page, fetch }) {
 	const userDetails = await response.json()
 	// console.log( await response.json())
 	
-	console.log('userDetails index', userDetails.userDetails)
+	// console.log('userDetails index', userDetails.userDetails)
 	return {
 		props:{
 			userDetails,
@@ -49,7 +49,7 @@ export async function load({ page, fetch }) {
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<!-- <h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1> -->
+		<h1>{userDetails.userDetails.firstName + ' ' + userDetails.userDetails.lastName}</h1>
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
