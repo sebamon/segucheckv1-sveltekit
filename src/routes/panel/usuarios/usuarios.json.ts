@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 
 export const get = async () =>{
     try{
-        const aw=await prisma.$connect()
         const users = await prisma.users.findMany({
             where: {
                 
@@ -22,6 +21,7 @@ export const get = async () =>{
                 },
             }
         })
+        console.log("result: ",users)
         return {
             body: {
                 users,

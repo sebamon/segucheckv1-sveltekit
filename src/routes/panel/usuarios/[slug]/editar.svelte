@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({fetch , page}){
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
+		const response = await fetch(`./detalle.json`, {
 			method: "GET",
 			request: page.params.slug
 		})
@@ -12,17 +12,16 @@
 		}
 	}
 </script>
-
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 import { dataset_dev } from 'svelte/internal';
 
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		Alert
-	} from 'sveltestrap';
+// Importar por nombre de componentes: https://sveltestrap.js.org/
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	Alert
+} from 'sveltestrap';
 
 	export let data;
 	export let userDetails=data.userDetails

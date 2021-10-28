@@ -1,5 +1,4 @@
 <script context="module">
-
 export async function load({ page, fetch }) {
 	try{	
 	const response = await fetch(`./usuarios/usuarios.json?`,)
@@ -14,7 +13,6 @@ export async function load({ page, fetch }) {
 	}
 
 }
-
 </script>
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/

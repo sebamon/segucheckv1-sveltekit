@@ -25,7 +25,6 @@ export async function load({ page, fetch }) {
 	export let data;
 	export let userDetails = data.userDetails
 
-	
 </script>
 
 <svelte:head>
@@ -43,7 +42,7 @@ export async function load({ page, fetch }) {
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<!-- <h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1> -->
+		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">

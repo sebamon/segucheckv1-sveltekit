@@ -8,7 +8,6 @@ export const get = async ( request ) =>{
         const userDetails = await prisma.users.findUnique({
             where :{
                 user_id : id_find,
-                // user_id : parseInt(id_find,10),
             },
             include:{
                 usersonroles: true,

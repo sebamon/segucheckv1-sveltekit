@@ -12,7 +12,7 @@ import { dataset_dev } from 'svelte/internal';
 		Breadcrumb,
 		BreadcrumbItem,
 		Alert, 
-Colgroup,
+		Colgroup,
 	} from 'sveltestrap';
 import type { Color } from 'sveltestrap/src/shared';
 
