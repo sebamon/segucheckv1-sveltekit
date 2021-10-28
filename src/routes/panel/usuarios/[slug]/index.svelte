@@ -1,19 +1,13 @@
 <script context="module">
 export async function load({ page, fetch }) {
-	console.log('load usuarios/slug/index')
-	console.log('page.params.slug', page.params.slug)
 	const response = await fetch(`./${page.params.slug}/detalle.json`, {
 		method: "GET",
 		request: page.params.slug
 	})
-	console.log('response index: ','response')
-	const userDetails = await response.json()
-	// console.log( await response.json())
-	
-	// console.log('userDetails index', userDetails.userDetails)
+	const data = await response.json()
 	return {
 		props:{
-			userDetails,
+			data,
 		}	
 	}
 }
@@ -27,15 +21,14 @@ export async function load({ page, fetch }) {
 		BreadcrumbItem
 	} from 'sveltestrap';
 
-	export let userDetails;
-	// userDetails=userDetails.userDetails
-	// console.log('userDetails segundo script',userDetails.userDetails)
+	export let data;
+	export let userDetails = data.userDetails
+
 	
 </script>
 
 <svelte:head>
-	
-	<title>Usuario: {userDetails.userDetails.firstName + ' ' + userDetails.userDetails.lastName} - SeguCheck</title>
+	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
 <header class="row">
@@ -53,12 +46,12 @@ export async function load({ page, fetch }) {
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/{userDetails.userDetails.user_id}/editar"
+		<Button color="primary" href="/panel/usuarios/{userDetails.user_id}/editar"
 			><i class="fas fa-pen me-2" />Editar</Button
 		>
 	</div>
 </header>
 
 <main>
-<UserDetails {...userDetails.userDetails} />
+<UserDetails {...userDetails} />
 </main>

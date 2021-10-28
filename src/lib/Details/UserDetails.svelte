@@ -3,8 +3,7 @@
 	import { Image } from 'sveltestrap';
 
 	// export let useronroles
-	export let userDetails:object
-	// console.log('props componente userDetails',{userDetails})
+	export let userDetails
 	// Datos del usuario a mostrar
 	export let user_id:number 
 	export let cuit:number 
@@ -36,9 +35,7 @@
 	// export let profilePic = userDetails.profilePic
 	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
 	// export let roles = userDetails.useronroles
-
 	
-	/* console.log ('dateOfBirth', dateOfBirth,typeof(dateOfBirth)) */
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -110,7 +107,6 @@
 		const data = await submit.json()
 		message = data.message
 		error= data.error
-		console.log('UserDetails editar data', data)
 		if(data.status==='OK') {
 				color='success'
 			}
@@ -120,8 +116,6 @@
 			{
 				console.log('message', message)
 			}
-			console.log('color:' ,color)
-
 	}
 
 
