@@ -1,20 +1,11 @@
 <script lang="ts">
-import DocDetails from '$lib/Details/DocDetails.svelte';
-
-import ModalLogin from '$lib/ModalLogin.svelte';
-// import type { User } from '$lib/store';
-import type { Prisma } from '.prisma/client';
-import { dataset_dev } from 'svelte/internal';
+	// import type { User } from '$lib/store';
+	import type { Prisma } from '.prisma/client';
+	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Button,
-		Breadcrumb,
-		BreadcrumbItem,
-		Alert, 
-Colgroup,
-	} from 'sveltestrap';
-import type { Color } from 'sveltestrap/src/shared';
+	import { Button, Breadcrumb, BreadcrumbItem, Alert, Colgroup } from 'sveltestrap';
+	import type { Color } from 'sveltestrap/src/shared';
 
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
@@ -23,42 +14,27 @@ import type { Color } from 'sveltestrap/src/shared';
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
 
-	// let firstName:string
-	// let lastName:string;
-	// let cuit:string;
-	// let email:string;
-	// let phone:string;
-	// let dateOfBirth:Date = new Date('1989/09/02')
-	// let degree:string;
-	// let gender:string;
-	// let nationality:string;
-	// let studyLevel:string;
-	let user;
+	let firstName:string
+	let lastName:string;
+	let cuit:string;
+	let email:string;
+	let phone:string;
+	let dateOfBirth:Date = new Date('1989/09/02')
+	let degree:string;
+	let gender:string;
+	let nationality:string;
+	let studyLevel:string;
 	
-	let firstName = 'Sebastian'
-	let lastName =   'Mon'
-	let cuit =  '2034397372'
-	let email =   'seba_mon1@hotmaol.com'
-	let phone =   '2994738130'
-	// let dateOfBirth = new Date('1989-02-09')
-	let dateOfBirth:string
-
-	let degree =  'Terciario'
-	let gender =  'M'
-	let nationality =  'Argentino'
-	let studyLevel =  'Terciario Completo'
-	let rol_id=''
 	let color:Color
 
-
 	let roles_assigned = {
-		rol1 : false,
-		rol2 : false,
-		rol3 : false,
-	}
-	export let message = ''
-	export let status = ''
-	export let error =''
+		rol1: false,
+		rol2: false,
+		rol3: false
+	};
+	export let message = '';
+	export let status = '';
+	export let error = '';
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -80,88 +56,73 @@ import type { Color } from 'sveltestrap/src/shared';
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 	
-	
-
 	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
-		console.log('Hola')                         //en forma de api para hacer el insert
-		console.log(user)
 		try{
 			const submit = await fetch('usuarios.json', {
-			method : "POST",
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-				roles_assigned,
-			})
+				method : "POST",
+				body: JSON.stringify({
+					firstName,
+					lastName,
+					cuit,
+					email,
+					phone,
+					dateOfBirth,
+					degree,
+					gender,
+					nationality,
+					studyLevel,
+					roles_assigned,
+				})
 			})
 			const data = await submit.json()
 			message = data.message
 			status = data.status
-			// user_id = data.body.user_id
-			console.log('volvio')
-			console.log('submit', submit)
-			console.log('data',data)
-			console.log('message', message)
+
 			if(data.status==='OK') {
-				color='success'
 				cleanPage();
 			}
-			if(data.status==='ERROR') color='danger'
+			color = data.status==='OK' ? 'success' : 'danger'
 
-			if(data.status===200)
-			{
+			if(data.status===200){
 				console.log('message', message)
 			}
-			console.log('color:' ,color)
 		}catch(err)
 		{
 			error=err
 		}
+	};
 
-	}
-
-	//Funcion para limpiar el formulario
+	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
 	const cleanPage = () => {
-	 firstName = ''
-	 lastName = ''
-	 cuit = ''
-	 email = ''
-	 phone = ''
-	// dateOfBirth = new Date('now()')
-	 degree = ''
-	 gender = ''
-	 nationality = ''
-	 studyLevel = ''
-	 roles_assigned = {
-		 rol1 : false,
-		 rol2 : false,
-		 rol3 : false,
-	 }
-	}
+		firstName = '';
+		lastName = '';
+		cuit = '';
+		email = '';
+		phone = '';
+		// dateOfBirth = new Date('now()')
+		degree = '';
+		gender = '';
+		nationality = '';
+		studyLevel = '';
+		roles_assigned = {
+			rol1: false,
+			rol2: false,
+			rol3: false
+		};
+	};
 
 	//Funcion para asignar roles
-	const assign_rol = (id:any) =>{
-		if(id.rol_id === 1 || id.rol_id === '1')
-		{
-			roles_assigned['rol1']= !(roles_assigned['rol1'])
+	const assign_rol = (id: any) => {
+		if (id.rol_id === 1 || id.rol_id === '1') {
+			roles_assigned['rol1'] = !roles_assigned['rol1'];
 		}
-		if(id.rol_id === 2 || id.rol_id === '2')
-		{
-			roles_assigned['rol2']=!roles_assigned['rol2']
+		if (id.rol_id === 2 || id.rol_id === '2') {
+			roles_assigned['rol2'] = !roles_assigned['rol2'];
 		}
-		if(id.rol_id === 3 || id.rol_id === '3')
-		{
-			roles_assigned['rol3']=!(roles_assigned['rol3'])
+		if (id.rol_id === 3 || id.rol_id === '3') {
+			roles_assigned['rol3'] = !roles_assigned['rol3'];
 		}
-	}
+	};
 </script>
 
 <svelte:head>
@@ -189,8 +150,8 @@ import type { Color } from 'sveltestrap/src/shared';
 <Alert color='{color}'> 
     <h4 class="alert-heading text-capitalize">{status}</h4>
     {message}
-    <a href="#todo" class="alert-link">
-      Also, alert-links are colored to match
+    <a href="/panel/usuarios" class="alert-link">
+      Ver Usuarios
     </a>
     .
   </Alert>
@@ -306,7 +267,12 @@ import type { Color } from 'sveltestrap/src/shared';
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="studyLevel" class="form-label">Nivel de formación alcanzado</label>
-			<select id="studyLevel" class="form-select" aria-label="Nivel de formación alcanzado" bind:value={studyLevel}>
+			<select
+				id="studyLevel"
+				class="form-select"
+				aria-label="Nivel de formación alcanzado"
+				bind:value={studyLevel}
+			>
 				<option selected disabled>Elija una opción...</option>
 				{#each studyLevelList as thisStudyLevel}
 					<option value={thisStudyLevel}>{thisStudyLevel}</option>
@@ -336,9 +302,8 @@ import type { Color } from 'sveltestrap/src/shared';
 						id="rol{rol_id}"
 						name="roles"
 						class="form-check-input"
-						bind:value={rol_id}	
-						on:click={assign_rol({rol_id})}
-						
+						bind:value={rol_id}
+						on:click={assign_rol({ rol_id })}
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>
