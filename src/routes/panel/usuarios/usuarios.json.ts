@@ -30,9 +30,9 @@ export const get = async () =>{
     }catch (e){
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
             // The .code property can be accessed in a type-safe manner
-            console.log('entro al  error' , e)
+/*             console.log('entro al  error' , e)
             console.log('e.code: ' , e.code)
-            console.log('e.meta: ' , e.meta)
+            console.log('e.meta: ' , e.meta) */
             if (e.code === 'P2002') {
             console.log(
                 'There is a unique constraint violation, a new user cannot be created with this email', e)

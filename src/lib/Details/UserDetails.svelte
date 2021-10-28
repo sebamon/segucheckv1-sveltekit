@@ -5,18 +5,18 @@
 	// export let useronroles
 	export let userDetails
 	// Datos del usuario a mostrar
-	export let user_id  
-	export let cuit 
-	export let firstName 
-	export let lastName 
-	export let email 
-	export let phone 
-	export let gender 
-	export let dateOfBirth 
-	export let nationality 
-	export let studyLevel 
-	export let degree 
-	export let profilePic 
+	export let user_id:number 
+	export let cuit:number 
+	export let firstName:string
+	export let lastName:string
+	export let email:string
+	export let phone:string
+	export let gender:string
+	export let dateOfBirth:Date
+	export let nationality:string
+	export let studyLevel:string
+	export let degree:string
+	export let profilePic:string
 
 	export let message
 	export let error
@@ -35,7 +35,6 @@
 	// export let profilePic = userDetails.profilePic
 	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
 	// export let roles = userDetails.useronroles
-
 	
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
@@ -49,17 +48,17 @@
 		'Primario incompleto',
 		'Primario completo',
 		'Secundario incompleto',
-		'Secundario incompleto',
-		'Superior no universitario',
-		'Superior no universitario',
-		'Universitario',
-		'Universitario',
-		'Post universitario',
-		'Post universitario'
+		'Secundario completo',
+		'Superior no universitario incompleto',
+		'Superior no universitario completo',
+		'Universitario incompleto',
+		'Universitario completo',
+		'Post universitario incompleto',
+		'Post universitario completo'
 	];
 
 	// Arreglo de géneros:
-	let genderText = '';
+	let genderText:string;
 	if (gender == 'M') {
 		genderText = 'Varón';
 	} else if (gender == 'F') {
