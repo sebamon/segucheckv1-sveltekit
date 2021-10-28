@@ -1,13 +1,9 @@
 <script context="module">
 
 export async function load({ page, fetch }) {
-	console.log('load usuario/index.svelte')
 	try{	
 	const response = await fetch(`./usuarios/usuarios.json?`,)
 	const users = await response.json()
-	console.log('funcion load: response: ',response)
-	console.log('funcion load: response.body: ',response.body)
-	console.log('funcion load: user.user: ', users.users)
 	return {
 		props: {	
 			users,
@@ -24,17 +20,10 @@ export async function load({ page, fetch }) {
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import { goto } from '$app/navigation'
-	// import { onMount } from 'svelte';
-	//import { page, session } from '$app/stores';
 	export let users;
 
-	// onMount(() => console.log(`mounted component`));
-  
-	console.log('script interno users: ',{users})
-
 	const showDetails = async (e) =>{
-		console.log("showDetails", e)
-		redirect: `./usuarios/`+e.target.value
+		
 	}
 	</script>
 

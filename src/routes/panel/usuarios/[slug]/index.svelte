@@ -1,16 +1,12 @@
 <script context="module">
 export async function load({ page, fetch }) {
-	console.log('load usuarios/slug/index')
-	console.log('page.params.slug', page.params.slug)
 	const response = await fetch(`./${page.params.slug}/detalle.json`, {
 		method: "GET",
-		request: page.params.slug
+		body: JSON.parse(page.params.slug)
 	})
 	console.log('response index: ','response')
 	const data = await response.json()
-	// console.log( await response.json())
-	
-	console.log('userDetails index', data.userDetails)
+
 	return {
 		props:{
 			data,
@@ -36,7 +32,6 @@ export async function load({ page, fetch }) {
 </script>
 
 <svelte:head>
-	
 	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 

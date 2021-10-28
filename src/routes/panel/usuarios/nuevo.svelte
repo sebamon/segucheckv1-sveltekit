@@ -23,31 +23,17 @@ import type { Color } from 'sveltestrap/src/shared';
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
 
-	// let firstName:string
-	// let lastName:string;
-	// let cuit:string;
-	// let email:string;
-	// let phone:string;
-	// let dateOfBirth:Date = new Date('1989/09/02')
-	// let degree:string;
-	// let gender:string;
-	// let nationality:string;
-	// let studyLevel:string;
-	let user;
+	let firstName:string
+	let lastName:string;
+	let cuit:string;
+	let email:string;
+	let phone:string;
+	let dateOfBirth:Date = new Date('1989/09/02')
+	let degree:string;
+	let gender:string;
+	let nationality:string;
+	let studyLevel:string;
 	
-	let firstName = 'Sebastian'
-	let lastName =   'Mon'
-	let cuit =  '2034397372'
-	let email =   'seba_mon1@hotmaol.com'
-	let phone =   '2994738130'
-	// let dateOfBirth = new Date('1989-02-09')
-	let dateOfBirth:string
-
-	let degree =  'Terciario'
-	let gender =  'M'
-	let nationality =  'Argentino'
-	let studyLevel =  'Terciario Completo'
-	let rol_id=''
 	let color:Color
 
 
@@ -80,47 +66,36 @@ import type { Color } from 'sveltestrap/src/shared';
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 	
-	
-
 	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
-		console.log('Hola')                         //en forma de api para hacer el insert
-		console.log(user)
 		try{
 			const submit = await fetch('usuarios.json', {
-			method : "POST",
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel,
-				roles_assigned,
-			})
+				method : "POST",
+				body: JSON.stringify({
+					firstName,
+					lastName,
+					cuit,
+					email,
+					phone,
+					dateOfBirth,
+					degree,
+					gender,
+					nationality,
+					studyLevel,
+					roles_assigned,
+				})
 			})
 			const data = await submit.json()
 			message = data.message
 			status = data.status
-			// user_id = data.body.user_id
-			console.log('volvio')
-			console.log('submit', submit)
-			console.log('data',data)
-			console.log('message', message)
+
 			if(data.status==='OK') {
-				color='success'
 				cleanPage();
 			}
-			if(data.status==='ERROR') color='danger'
+			color = data.status==='OK' ? 'success' : 'danger'
 
-			if(data.status===200)
-			{
+			if(data.status===200){
 				console.log('message', message)
 			}
-			console.log('color:' ,color)
 		}catch(err)
 		{
 			error=err
@@ -189,8 +164,8 @@ import type { Color } from 'sveltestrap/src/shared';
 <Alert color='{color}'> 
     <h4 class="alert-heading text-capitalize">{status}</h4>
     {message}
-    <a href="#todo" class="alert-link">
-      Also, alert-links are colored to match
+    <a href="/panel/usuarios" class="alert-link">
+      Ver Usuarios
     </a>
     .
   </Alert>

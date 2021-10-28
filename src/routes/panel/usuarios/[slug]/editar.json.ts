@@ -3,12 +3,9 @@ import { PrismaClient , Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const put = async (request) =>{
-    console.log('Entro al put de editar.jspon con request:', request)
-
     let id_find = Number(request.params.slug)
     const formBody = JSON.parse(request.body)
-    console.log('formBody PUT editar', formBody)
-    console.log('formBody.firstName PUT editar', formBody.firstName)
+
     try{
         const userEdit = await prisma.users.update({
             where: {

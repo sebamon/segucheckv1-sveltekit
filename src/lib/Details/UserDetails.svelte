@@ -4,7 +4,6 @@
 
 	// export let useronroles
 	export let userDetails
-	// console.log('props componente userDetails',{userDetails})
 	// Datos del usuario a mostrar
 	export let user_id  
 	export let cuit 
@@ -110,7 +109,6 @@
 		const data = await submit.json()
 		message = data.message
 		error= data.error
-		console.log('UserDetails editar data', data)
 		if(data.status==='OK') {
 				color='success'
 			}
@@ -120,8 +118,6 @@
 			{
 				console.log('message', message)
 			}
-			console.log('color:' ,color)
-
 	}
 
 
