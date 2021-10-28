@@ -7,13 +7,13 @@ export async function load({ page, fetch }) {
 		request: page.params.slug
 	})
 	console.log('response index: ','response')
-	const userDetails = await response.json()
+	const data = await response.json()
 	// console.log( await response.json())
 	
-	console.log('userDetails index', userDetails.userDetails)
+	console.log('userDetails index', data.userDetails)
 	return {
 		props:{
-			userDetails,
+			data,
 		}	
 	}
 }
@@ -28,15 +28,16 @@ export async function load({ page, fetch }) {
 	} from 'sveltestrap';
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
-	export let userDetails;
+	export let data;
+	let userDetails = data.userDetails
 	// userDetails=userDetails.userDetails
-	console.log('userDetails segundo script',userDetails.userDetails)
+	console.log('userDetails segundo script', userDetails)
 	
 </script>
 
 <svelte:head>
 	
-	<title>Usuario: {userDetails.userDetails.firstName + ' ' + userDetails.userDetails.lastName} - SeguCheck</title>
+	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
 <header class="row">
@@ -54,12 +55,12 @@ export async function load({ page, fetch }) {
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/{userDetails.userDetails.user_id}/editar"
+		<Button color="primary" href="/panel/usuarios/{userDetails.user_id}/editar"
 			><i class="fas fa-pen me-2" />Editar</Button
 		>
 	</div>
 </header>
 
 <main>
-<UserDetails {...userDetails.userDetails} />
+<UserDetails {...userDetails} />
 </main>
