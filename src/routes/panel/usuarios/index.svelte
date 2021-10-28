@@ -1,13 +1,9 @@
 <script context="module">
 
 export async function load({ page, fetch }) {
-	console.log('load usuario/index.svelte')
 	try{	
 	const response = await fetch(`./usuarios/usuarios.json?`,)
 	const users = await response.json()
-	console.log('funcion load: response: ',response)
-	console.log('funcion load: response.body: ',response.body)
-	console.log('funcion load: user.user: ', users.users)
 	return {
 		props: {	
 			users,
@@ -23,14 +19,13 @@ export async function load({ page, fetch }) {
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	// import { onMount } from 'svelte';
-	//import { page, session } from '$app/stores';
+	import { goto } from '$app/navigation'
 	export let users;
 
-	// onMount(() => console.log(`mounted component`));
-  
-	console.log('script interno users: ',{users})
-</script>
+	const showDetails = async (e) =>{
+		
+	}
+	</script>
 
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
@@ -76,7 +71,7 @@ export async function load({ page, fetch }) {
 			</thead>
 			<tbody>
 				{#each users.users as user }
-				<tr>
+				<tr value={user.user_id} on:dblclick={showDetails}>
 					<td>{user.user_id}</td>
 					<td>{user.cuit}</td>
 					<td>{user.firstName}</td>

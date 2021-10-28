@@ -11,7 +11,7 @@
 
 <script>
 	export let status;
-	console.log('¡Felicidades! Tienes un error ' + status + '. Buena suerte averiguando la causa...');
+	// console.log('¡Felicidades! Tienes un error ' + status + '. Buena suerte averiguando la causa...');
 	export let message;
 </script>
 

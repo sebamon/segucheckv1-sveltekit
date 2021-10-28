@@ -1,19 +1,14 @@
 <script context="module">
 export async function load({ page, fetch }) {
-	console.log('load usuarios/slug/detalle')
-	console.log('page.params.slug', page.params.slug)
 	const response = await fetch(`./${page.params.slug}/detalle.json`, {
 		method: "GET",
 		request: page.params.slug
 	})
-	const userDetails = await response.json()
-	// console.log( await response.json())
-	
-	console.log('userDetails', userDetails)
+	const data = await response.json()
 	return {
-		props: {
-			userDetails,
-		}
+		props:{
+			data,
+		}	
 	}
 }
 </script>
@@ -27,27 +22,10 @@ export async function load({ page, fetch }) {
 	} from 'sveltestrap';
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
-	export let userDetails;
-	console.log('userDetails segundo script',userDetails)
-	userDetails=userDetails.result
-	// let userDetails = {
-	// 	user_id: 1234,
-	// 	cuit: 20301001008,
-	// 	firstName: 'Juan',
-	// 	lastName: 'Perez',
-	// 	email: 'juan.perez@ejemplo.com',
-	// 	phone: '2993334444',
-	// 	gender: 'M',
-	// 	dateOfBirth: new Date('1980-12-31'),
-	// 	nationality: 'Argentina',
-	// 	studyLevel: 'Universitario completo',
-	// 	degree: 'Licenciado',
-	// 	profilePic: 'https://avatars.dicebear.com/api/micah/1234.svg',
-	// 	roles: [
-	// 		{ rol_id: 1, rolDescription: 'Gestor documental' },
-	// 		{ rol_id: 2, rolDescription: 'Personal de seguridad' }
-	// 	]
-	// };
+	export let data;
+	export let userDetails = data.userDetails
+
+	
 </script>
 
 <svelte:head>
@@ -65,13 +43,13 @@ export async function load({ page, fetch }) {
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-users me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+		<!-- <h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1> -->
 		<h5>Detalles del usuario</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/editar">
-			<i class="fas fa-pen me-2" />Editar
-		</Button>
+		<Button color="primary" href="/panel/usuarios/{userDetails.user_id}/editar"
+			><i class="fas fa-pen me-2" />Editar</Button
+		>
 	</div>
 </header>
 
