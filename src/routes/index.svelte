@@ -79,15 +79,15 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<a href="/info/plataforma"
-					><Image
+				<a href="/info/plataforma">
+					<Image
 						fluid
 						thumbnail
 						src="/img/thumb-dashboard.jpg"
 						alt="Panel Administrativo"
 						class="my-4"
-					/></a
-				>
+					/>
+				</a>
 				<CardSubtitle>
 					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus
 					clientes
@@ -98,18 +98,18 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<a href="/info/movil"
-					><Image
+				<a href="/info/movil">
+					<Image
 						fluid
 						thumbnail
 						src="/img/thumb-screen-app.jpg"
 						alt="Aplicación móvil"
 						class="my-4"
-					/></a
-				>
-				<CardSubtitle
-					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
-				>
+					/>
+				</a>
+				<CardSubtitle>
+					Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
+				</CardSubtitle>
 				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>

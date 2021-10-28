@@ -67,19 +67,29 @@
 				{#each users.users as user}
 					<tr>
 						<td>
-							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.user_id}</a>
+							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
+								{user.user_id}
+							</a>
 						</td>
 						<td>
-							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.cuit}</a>
+							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
+								{user.cuit}
+							</a>
 						</td>
 						<td>
-							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.firstName}</a>
+							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
+								{user.firstName}
+							</a>
 						</td>
 						<td>
-							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.lastName}</a>
+							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
+								{user.lastName}
+							</a>
 						</td>
 						<td>
-							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.email}</a>
+							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
+								{user.email}
+							</a>
 						</td>
 					</tr>
 				{/each}
