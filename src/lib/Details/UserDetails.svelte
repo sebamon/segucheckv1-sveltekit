@@ -37,7 +37,6 @@
 	// export let roles = userDetails.useronroles
 
 	
-	console.log ('dateOfBirth', dateOfBirth,typeof(dateOfBirth))
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },

@@ -2,11 +2,9 @@
 export async function load({ page, fetch }) {
 	const response = await fetch(`./${page.params.slug}/detalle.json`, {
 		method: "GET",
-		body: JSON.parse(page.params.slug)
+		request: page.params.slug
 	})
-	console.log('response index: ','response')
 	const data = await response.json()
-
 	return {
 		props:{
 			data,
@@ -25,9 +23,8 @@ export async function load({ page, fetch }) {
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 
 	export let data;
-	let userDetails = data.userDetails
-	// userDetails=userDetails.userDetails
-	console.log('userDetails segundo script', userDetails)
+	export let userDetails = data.userDetails
+
 	
 </script>
 
