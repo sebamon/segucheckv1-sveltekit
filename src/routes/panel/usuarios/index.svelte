@@ -28,9 +28,9 @@
 	export let users;
 
 	// onMount(() => console.log(`mounted component`));
-  
+
 	// console.log('script interno users: ',{users})
-	</script>
+</script>
 
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
@@ -77,11 +77,31 @@
 			<tbody>
 				{#each users.users as user}
 					<tr>
-						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.user_id}</a></td>
-						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.cuit}</a></td>
-						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.firstName}</a></td>
-						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.lastName}</a></td>
-						<td><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">{user.email}</a></td>
+						<td
+							><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}"
+								>{user.user_id}</a
+							></td
+						>
+						<td
+							><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}"
+								>{user.cuit}</a
+							></td
+						>
+						<td
+							><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}"
+								>{user.firstName}</a
+							></td
+						>
+						<td
+							><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}"
+								>{user.lastName}</a
+							></td
+						>
+						<td
+							><a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}"
+								>{user.email}</a
+							></td
+						>
 					</tr>
 				{/each}
 			</tbody>
@@ -92,9 +112,9 @@
 <style>
 	/* Solución filas de tablas como links: https://newbedev.com/html-table-row-like-a-link */
 	table tr td a {
-		display:block;
-		height:100%;
-		width:100%;
+		display: block;
+		height: 100%;
+		width: 100%;
 	}
 	table tr td {
 		padding-left: 0;

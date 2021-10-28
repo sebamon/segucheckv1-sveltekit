@@ -1,4 +1,4 @@
-<script lang="ts">
+<script>
 	// Alternar modo oscuro según preferencia del usuario:
 	let isDarkMode = () => {
 		// Se corrige error de que la ventana no está definida en primer arranque:
