@@ -49,9 +49,9 @@ import { dataset_dev } from 'svelte/internal';
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-users me-4" />Editar usuario</h1>
+		<h1><i class="fas fa-user me-4" />Editar usuario</h1>
 		<p class="lead">Modifique los detalles a continuación.</p>
 	</div>
 </header>
 
-	<UserDetails {...userDetails} {isReadOnly} />
+<UserDetails {...userDetails} {isReadOnly} />

@@ -3,7 +3,7 @@
 	import { Image } from 'sveltestrap';
 
 	// export let useronroles
-	export let userDetails
+	export const userDetails:object = {};
 	// Datos del usuario a mostrar
 	export let user_id:number 
 	export let cuit:number 
@@ -123,6 +123,16 @@
 
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
+	<div class="hstack gap-3">
+		<h2 class="my-4">Datos básicos</h2>
+		{#if isReadOnly}
+		<div class="ms-auto">
+			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
+				<i class="fas fa-pen me-2" />Editar
+			</a>
+		</div>
+		{/if}
+	</div>
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<Image
@@ -252,17 +262,29 @@
 		</div>
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
+			{#if isReadOnly}
+			<input
+				type="text"
+				id="dateOfBirth"
+				name="dateOfBirth"
+				class="form-control"
+				placeholder="1980-12-31"
+				aria-label="Fecha de nacimiento"
+                value={dateOfBirth.toLocaleDateString()}
+				readonly={isReadOnly}
+			/>
+			{:else}
 			<input
 				type="date"
 				id="dateOfBirth"
 				name="dateOfBirth"
 				class="form-control"
-				placeholder="*1980-12-31"
+				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
 				bind:value={dateOfBirth}
 				readonly={isReadOnly}
-				required={!isReadOnly}
 			/>
+			{/if}
 		</div>
 		<div class="col-md-4">
 			<label for="lastName" class="form-label">Nacionalidad</label>

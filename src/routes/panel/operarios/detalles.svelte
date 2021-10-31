@@ -8,7 +8,6 @@
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
-		Button,
 		Breadcrumb,
 		BreadcrumbItem,
 		TabContent,
@@ -62,6 +61,7 @@
 		job: 'Técnico Vertical'
 	};
 	let userAddress = {
+		user_id: 1234,
 		countryOfOrigin: 'Estados Unidos',
 		stateOfOrigin: 'Texas',
 		cityOfOrigin: 'Houston',
@@ -96,21 +96,13 @@
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-auto">
-		<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<p class="lead">Detalles del operario</p>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/editar">
-			<i class="fas fa-pen me-2" />Editar
-		</Button>
-	</div>
+	<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+	<p class="lead">Detalles del operario</p>
 </header>
 
 <main>
 	<TabContent>
 		<TabPane tabId="userDetails" tab="Datos básicos" active>
-			<h2 class="my-4">Datos básicos</h2>
 			<UserDetails {...userDetails} />
 		</TabPane>
 		<TabPane tabId="docDetails" tab="Habilitaciones">
@@ -129,11 +121,9 @@
 			{/if}
 		</TabPane>
 		<TabPane tabId="userWorkInfo" tab="Datos laborales">
-			<h2 class="my-4">Datos laborales</h2>
 			<WorkInfo {...userWorkInfo} />
 		</TabPane>
 		<TabPane tabId="userAddress" tab="Domicilios">
-			<h2 class="my-4">Domicilios</h2>
 			<AddressDetails {...userAddress} />
 		</TabPane>
 		<TabPane tabId="userHealthInfo" tab="Datos médicos">
