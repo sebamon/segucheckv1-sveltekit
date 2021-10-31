@@ -1,21 +1,28 @@
-<!-- Encabezado y pie de página general - No editar app.html, sino acá -->
-<!-- src/routes/$layout.svelte -->
 <script context="module" lang="ts">
-    import Store from '$lib/store';
-    import {setContext} from 'svelte';
-    import Footer from '$lib/Footer.svelte';
+	// ./__layout.svelte: Incluye librerías y pie de página general
+	// No editar app.html, sino acá y __layout en subcarpetas
+	import Store from '$lib/store';
+	import { setContext } from 'svelte';
+	import Footer from '$lib/Footer.svelte';
 </script>
+
 <script lang="ts">
-    import '../app.scss';
-    import {session} from '$app/stores';
-    const store=new Store($session)
-    setContext<Store>('store',store);
+	import '../app.scss';
+	import { session } from '$app/stores';
+	const store = new Store($session);
+	setContext<Store>('store', store);
 </script>
+<div class="flex-wrapper">
+	<slot />
+	<Footer />
+</div>
 
-<!-- <script>import "../app.scss";</script> -->
-<slot></slot>
-
-
-<!-- <slot /> -->
-
-<Footer />
+<style>
+	/* Empujar footer al fondo de la página: https://stackoverflow.com/questions/4575826/how-to-push-a-footer-to-the-bottom-of-page-when-content-is-short-or-missing */
+	.flex-wrapper {		
+		display: flex;
+		min-height: 100vh;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+</style>

@@ -1,6 +1,8 @@
 import { PrismaClient, Prisma } from '@prisma/client'
-
 const prisma = new PrismaClient()
+
+const multer = require('multer')
+const upload = multer({dest : 'images/'})
 
 export const get = async () =>{
     try{
@@ -21,7 +23,6 @@ export const get = async () =>{
                 },
             }
         })
-        console.log("result: ",users)
         return {
             body: {
                 users,
@@ -50,8 +51,12 @@ export const get = async () =>{
 }
 
 
-export const post = async (request)=> {
+export const post = async (request) => {
+    debugger
+
+
 const formBody =JSON.parse(request.body)
+console.log('formBody',formBody)
 let roles=[]
    try {
        if(formBody.roles_assigned['rol1']===true){
@@ -76,7 +81,7 @@ let roles=[]
                     nationality :formBody.nationality,
                     studyLevel :formBody.studyLevel,              
                     dateOfBirth: new Date(formBody.dateOfBirth),
-                    profilePic: 'Not Load',
+                    profilePic: formBody.profilePic,
                     password: '',
                 }
         

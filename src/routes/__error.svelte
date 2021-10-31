@@ -1,4 +1,5 @@
 <script context="module">
+	// /__error.svelte: Muestra códigos de errores HTTP al usuario
 	export function load({ error, status }) {
 		return {
 			props: {
@@ -11,7 +12,6 @@
 
 <script>
 	export let status;
-	// console.log('¡Felicidades! Tienes un error ' + status + '. Buena suerte averiguando la causa...');
 	export let message;
 </script>
 
@@ -20,25 +20,32 @@
 </svelte:head>
 
 <main class="container card py-4 shadow-lg">
+	<div class="mt-1 ms-auto">
+		<h5><a href="/" class="text-dark text-decoration-none"><img src="/img/segucheck-logo.svg" height="36" alt="logo"><span class="mx-2">SeguCheck</span></a></h5>
+	</div>
+	<hr class="my-2" />
 	<div class="card-body">
 		<p class="lead">Error n° <strong>{status}</strong></p>
 		{#if status == 404}
 			<h1><i class="fas fa-exclamation-triangle me-2" />La página no existe</h1>
-			<p class="lead">Revisa que esté bien escrita la dirección URL.</p>
+			<p class="lead">
+				Revisa que esté bien escrita la dirección URL. O quizás hayas llegado antes de que esta
+				página fuera creada.
+			</p>
 			<img
 				class="fluid thumbnail"
-				alt="¡Seguí participando!"
-				title="¡Seguí participando!"
-				src="https://c.tenor.com/yTxA7WgkBEUAAAAd/grandpa-abe-exit.gif"
+				alt="Volver al futuro: Precisamente a horario"
+				title="Volver al futuro: Precisamente a horario"
+				src="https://c.tenor.com/SD-TxYTh3scAAAAd/precisely-on-schedule-right-on-schedule.gif"
 			/>
 		{:else if status == 500}
 			<h1><i class="fas fa-exclamation-triangle me-2" />Hubo un problema en el servidor</h1>
-			<p class="lead">Alguien metió la pata...</p>
+			<p class="lead">Alguien metió la pata... Digo, aquí no sucedió nada.</p>
 			<!-- Pero no te preocupes. Estamos trabajando para resolverlo. -->
 			<img
 				class="fluid thumbnail"
-				alt="¡Seguí participando!"
-				title="¡Seguí participando!"
+				alt="Los Simpsons: Aquí no sucedió nada"
+				title="Los Simpsons: Aquí no sucedió nada"
 				src="https://c.tenor.com/yTxA7WgkBEUAAAAd/grandpa-abe-exit.gif"
 			/>
 		{:else if status == 503}
@@ -58,7 +65,7 @@
 			<h1><i class="fas fa-exclamation-triangle me-2" />Algo malo pasó</h1>
 			<p class="lead">Pero no te preocupes. Estamos trabajando para resolverlo.</p>
 		{/if}
-		<hr class="m-5" />
+		<hr class="my-5" />
 		<p><em>Detalles: {message}</em></p>
 	</div>
 </main>

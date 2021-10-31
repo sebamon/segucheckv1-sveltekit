@@ -12,10 +12,7 @@
 		Breadcrumb,
 		BreadcrumbItem,
 		TabContent,
-		TabPane,
-		Image,
-		Accordion,
-		AccordionItem
+		TabPane
 	} from 'sveltestrap';
 
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):

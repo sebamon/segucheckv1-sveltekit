@@ -34,7 +34,7 @@
 <header class="py-4">
 	<div class="container row mt-4 align-items-center justify-content-around">
 		<div class="col-12 col-md-8 col-lg-9">
-			<img src="img/segucheck-logo.svg" alt="logo" height="200" class="m-5">
+			<img src="img/segucheck-logo.svg" alt="logo" id="logoHeader" class="m-5" />
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
@@ -46,7 +46,7 @@
 				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
 			</div>
 		</div>
-		<div class="col-6 col-md-4 col-lg-3">
+		<div class="col-6 col-md-4 col-lg-3" id="showCarousel">
 			<svelte:component
 				this={Carousel}
 				autoplay
@@ -56,23 +56,17 @@
 				dots={false}
 				let:loaded
 			>
-				<img
-					src="/img/screen-app1.png"
-					alt="Vista de aplicación móvil 1"
-				/>
-				<img
-					src="/img/screen-app2.png"
-					alt="Vista de aplicación móvil 2"
-				/>
+				<img src="/img/screen-app1.png" alt="Vista de aplicación móvil 1" />
+				<img src="/img/screen-app2.png" alt="Vista de aplicación móvil 2" />
 			</svelte:component>
 		</div>
 	</div>
-	<div class="d-flex justify-content-center align-self-end text-center">
-		<a href="#sistema" class="text-decoration-none">
+	<a href="#sistema" class="text-decoration-none">
+		<div class="text-center" id="conoceMas">
 			<h5 class="fw-bold">Conocé más</h5>
 			<i class="fas fa-chevron-down mx-2 fs-1" />
-		</a>
-	</div>
+		</div>
+	</a>
 </header>
 
 <!-- Más info al scrollear -->
@@ -85,15 +79,15 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<a href="/info/plataforma"
-					><Image
+				<a href="/info/plataforma">
+					<Image
 						fluid
 						thumbnail
 						src="/img/thumb-dashboard.jpg"
 						alt="Panel Administrativo"
 						class="my-4"
-					/></a
-				>
+					/>
+				</a>
 				<CardSubtitle>
 					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus
 					clientes
@@ -104,18 +98,18 @@
 		<Card class="col-md-6">
 			<CardBody>
 				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<a href="/info/movil"
-					><Image
+				<a href="/info/movil">
+					<Image
 						fluid
 						thumbnail
 						src="/img/thumb-screen-app.jpg"
 						alt="Aplicación móvil"
 						class="my-4"
-					/></a
-				>
-				<CardSubtitle
-					>Donde tus colaboradores pueden visualizar su documentos, tareas y checklists</CardSubtitle
-				>
+					/>
+				</a>
+				<CardSubtitle>
+					Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
+				</CardSubtitle>
 				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 			</CardBody>
 		</Card>
@@ -126,11 +120,37 @@
 <style>
 	header {
 		/* Estilo de portada */
-		height: 90vh;
 		background: #ededed url('/img/bg-hero.jpg');
 		background-attachment: fixed; /* Efecto parallax */
 		background-size: cover; /* Cubrir todo el ancho */
 		background-position: center;
 		background-repeat: no-repeat;
+	}
+	#logoHeader {
+		max-height: 200px;
+	}
+	@media (max-width: 768px) {
+		/* Esconde carrusel en pantallas pequeñas */
+		#showCarousel {
+			display: none;
+		}
+		#logoHeader {
+			display: block;
+			margin: 0 auto;
+			width: 40%;
+		}
+	}
+	@media (min-width: 768px) and (min-height: 800px) {
+		/* Evita que se sobresalgan items del header en pantallas pequeñas */
+		header {
+			height: 90vh;
+		}
+		#conoceMas {
+			position: absolute;
+			bottom: 0;
+			width: 100%;
+			background-color: rgba(169, 145, 212, 0.2);
+			padding: 15px 0;
+		}
 	}
 </style>
