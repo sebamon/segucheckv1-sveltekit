@@ -1,8 +1,13 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
-			method: 'GET',
-			request: page.params.slug
+		console.log('page.params.slug',page.params.slug)
+		const response = await fetch(`./${page.params.slug}/detalle`, {
+		// const response = await fetch(`./detalle`, {
+		method: 'GET',
+		headers:{
+			'Content-Type': 'application/json'
+		},
+			// body: JSON.stringify(page.params.slug)
 		});
 		const data = await response.json();
 		return {
@@ -48,5 +53,6 @@
 </header>
 
 <main>
-	<UserDetails {...userDetails} />
+	<!-- <UserDetails {...userDetails} /> -->
+	<UserDetails {...data.userDetails} />
 </main>

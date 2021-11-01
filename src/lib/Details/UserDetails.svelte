@@ -3,7 +3,8 @@
 	import { Image } from 'sveltestrap';
 
 	// export let useronroles
-	export let userDetails
+	export let userDetails 
+	console.log('userDetails',userDetails)
 	// Datos del usuario a mostrar
 	export let user_id:number 
 	export let cuit:number 
@@ -28,12 +29,13 @@
 	// export let email = userDetails.email
 	// export let phone = userDetails.phone
 	// export let gender = userDetails.gender
-	// export let dateOfBirth:string=userDetails.dateOfBirth
+	// export let dateOfBirth=userDetails.dateOfBirth
 	// export let nationality = userDetails.nationality
 	// export let studyLevel = userDetails.studyLevel
 	// export let degree = userDetails.degree
 	// export let profilePic = userDetails.profilePic
 	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
+	// export let useronroles
 	// export let roles = userDetails.useronroles
 	
 	// Arreglo de roles - Esto lo lee de la DB:
@@ -88,8 +90,11 @@
 	}	
 	const submitForm  = async():Promise<void> => {
 
-		const submit = await fetch (`editar.json`, {
+		const submit = await fetch (`editar`, {
 			method : "PUT",
+			headers:{
+   				'Content-Type': 'application/json'
+  			},
 			body: JSON.stringify({
 				firstName,
 				lastName,

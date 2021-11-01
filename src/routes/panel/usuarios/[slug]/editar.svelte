@@ -1,7 +1,10 @@
 <script context="module">
 	export async function load({fetch , page}){
-		const response = await fetch(`./detalle.json`, {
+		const response = await fetch(`./detalle`, {
 			method: "GET",
+			headers:{
+   				'Content-Type': 'application/json'
+  			},
 			request: page.params.slug
 		})
 		const data  = await response.json()
