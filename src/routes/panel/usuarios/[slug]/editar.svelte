@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({fetch , page}){
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
+		const response = await fetch(`./detalle.json`, {
 			method: "GET",
 			request: page.params.slug
 		})
@@ -45,6 +45,9 @@ import { dataset_dev } from 'svelte/internal';
 		</BreadcrumbItem>
 		<BreadcrumbItem>
 			<a href="/panel/usuarios">Usuarios</a>
+		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/usuarios/{userDetails.user_id}">{userDetails.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>

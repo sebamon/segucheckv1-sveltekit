@@ -26,7 +26,7 @@
 	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
-<header class="row">
+<header>
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
@@ -34,17 +34,13 @@
 		<BreadcrumbItem>
 			<a href="/panel/usuarios">Usuarios</a>
 		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/usuarios/{userDetails.user_id}">{userDetails.user_id}</a>
+		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<h5>Detalles del usuario</h5>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/{userDetails.user_id}/editar">
-			<i class="fas fa-pen me-2" />Editar
-		</Button>
-	</div>
+	<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+	<h5>Detalles del usuario</h5>
 </header>
 
 <main>

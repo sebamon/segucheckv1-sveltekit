@@ -22,9 +22,9 @@
 <form name="formUserAddress" id="formUserAddress">
     {#if isReadOnly}
     <div class="hstack gap-3">
-        <h2 class="my-4">Domicilios</h2>
+        <h2 class="my-4"><i class="fas fa-house-user me-4" />Domicilios</h2>
 		<div class="ms-auto">
-			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/domicilios">
+			<a class="btn btn-primary" href="/panel/operarios/{user_id}/domicilios">
 				<i class="fas fa-pen me-2" />Editar
 			</a>
 		</div>

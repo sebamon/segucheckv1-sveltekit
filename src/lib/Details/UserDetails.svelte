@@ -124,7 +124,7 @@
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="hstack gap-3">
-		<h2 class="my-4">Datos básicos</h2>
+		<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 		{#if isReadOnly}
 		<div class="ms-auto">
 			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
@@ -270,9 +270,9 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-                value={dateOfBirth.toLocaleDateString()}
+                value={dateOfBirth}
 				readonly={isReadOnly}
-			/>
+			/> <!-- En detalles llega como fecha, en editar llega como string -->
 			{:else}
 			<input
 				type="date"

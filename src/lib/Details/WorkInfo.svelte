@@ -14,9 +14,9 @@
 <form name="formUserWorkInfo" id="formUserWorkInfo">
     {#if isReadOnly}
     <div class="hstack gap-3">
-        <h2 class="my-4">Datos laborales</h2>
+        <h2 class="my-4"><i class="fas fa-briefcase me-4" />Datos laborales</h2>
 		<div class="ms-auto">
-			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/laborales">
+			<a class="btn btn-primary" href="/panel/operarios/{user_id}/laborales">
 				<i class="fas fa-pen me-2" />Editar
 			</a>
 		</div>
@@ -25,7 +25,8 @@
     <div class="row mb-3 g-3">
         <div class="col-md-6">
             <label for="dischargeDate" class="form-label">Fecha de alta</label>
-            <input
+            {#if isReadOnly}
+			<input
                 type="text"
                 id="dischargeDate"
                 name="dischargeDate"
@@ -35,6 +36,18 @@
                 value={dischargeDate.toLocaleDateString()}
                 readonly={isReadOnly}
             />
+			{:else}
+            <input
+                type="date"
+                id="dischargeDate"
+                name="dischargeDate"
+                class="form-control"
+                placeholder="1980-12-31"
+                aria-label="Fecha de alta"
+				bind:value={dischargeDate}
+                readonly={isReadOnly}
+            />
+			{/if}
         </div>
         <div class="col-md-6">
             <label for="employementRel" class="form-label">Relación laboral</label>

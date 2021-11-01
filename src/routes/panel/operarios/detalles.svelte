@@ -86,13 +86,16 @@
 	<title>Operario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
-<header class="row">
+<header>
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
 			<a href="/panel/operarios">Operarios</a>
+		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/operarios/{userDetails.user_id}">{userDetails.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
@@ -106,7 +109,14 @@
 			<UserDetails {...userDetails} />
 		</TabPane>
 		<TabPane tabId="docDetails" tab="Habilitaciones">
-			<h2 class="my-4">Habilitaciones</h2>
+			<div class="hstack gap-3">
+				<h2 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h2>
+				<div class="ms-auto">
+					<a class="btn btn-primary" href="/panel/operarios/{userDetails.user_id}/habilitaciones">
+						<i class="fas fa-plus me-2" />Nuevo
+					</a>
+				</div>
+			</div>
 			{#if userDocumentation.length == 0}
 				<div class="alert alert-warning" role="alert">
 					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
@@ -127,7 +137,6 @@
 			<AddressDetails {...userAddress} />
 		</TabPane>
 		<TabPane tabId="userHealthInfo" tab="Datos médicos">
-			<h2 class="my-4">Datos médicos</h2>
 			<HealthInfo {...userHealthInfo} />
 		</TabPane>
 	</TabContent>
