@@ -62,6 +62,51 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
+	
+	let form
+	let vehicle_id : number
+	let domain : string
+	let brand : string 
+	let model : number
+	let type : string
+	let year : number
+	let intNumber : number
+	let chasis : string
+	let motor : string
+	let frontPic:FileReader
+	let rightSidePic:ImageData
+	let leftSidePic=[]
+
+	const submitForm = async ():Promise<any> => {
+		console.log(form)
+		debugger
+		try{
+			const submit = await fetch('vehiculos', {
+				method : "POST",
+				body: new FormData(form),
+				headers: {
+					'Contex-Type' :'application/json',
+				}
+			})
+			const data = await submit.json()
+			console.log('data', data)
+			onmessage = data.message
+			// status = data.status
+
+			// 	if(data.status==='OK') {
+			// 		cleanPage();
+			// 	}
+			// 	color = data.status==='OK' ? 'success' : 'danger'
+
+			// 	if(data.status===200){
+			// 		console.log('message', message)
+			// 	}
+		}catch(err)
+		{
+			throw new Error
+		}
+	};
+
 </script>
 
 <svelte:head>
@@ -86,7 +131,7 @@
 </header>
 
 <!-- Formulario nuevo usuario -->
-<form name="formVehicleDetails" id="formVehicleDetails" action="./create">
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault="{submitForm}" bind:this={form}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -97,12 +142,13 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
+				bind:value={domain}
 				required
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select id="type" class="form-select" aria-label="Tipo de vehículo" required>
+			<select id="type" class="form-select" aria-label="Tipo de vehículo" bind:value={type} required>
 				<option selected disabled>Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType, i}
 					<option value={i}>{vehicleType}</option>
@@ -120,6 +166,7 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
+				bind:value={brand}
 				required
 			/>
 		</div>
@@ -132,6 +179,7 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
+				bind:value={model}
 				required
 			/>
 		</div>
@@ -149,6 +197,7 @@
 				min="1950"
 				max="9999"
 				step="1"
+				bind:value={year}
 				required
 			/>
 		</div>
@@ -160,6 +209,7 @@
 				name="internal_id"
 				class="form-control"
 				placeholder="001234"
+				bind:value={intNumber}
 				aria-label="Número interno"
 			/>
 		</div>
@@ -168,12 +218,13 @@
 		<div class="col-md-6">
 			<label for="chasisNumber" class="form-label">Número de chasis</label>
 			<input
-				type="date"
+				type="text"
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
 				placeholder="1214161820"
 				aria-label="Número de chasis"
+				bind:value={chasis}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -185,6 +236,7 @@
 				class="form-control"
 				placeholder="2356891256"
 				aria-label="Número de motor"
+				bind:value={motor}
 			/>
 		</div>
 	</div>
@@ -192,14 +244,14 @@
 		<div class="col-md-6">
 			<div class="mb-3">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input class="form-control" type="file" id="frontPic" />
+				<input class="form-control" type="file" id="frontPic"/>
 			</div>
 			<div class="mb-3">
-				<label for="leftSidePic" class="form-label">Foto del lado derecho</label>
-				<input class="form-control" type="file" id="leftSidePic" />
+				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
+				<input class="form-control" type="file" id="leftSidePic" bind:value={leftSidePic} />
 			</div>
 			<div class="mb-3">
-				<label for="rigthSidePic" class="form-label">Foto del lado izquierdo</label>
+				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
 				<input class="form-control" type="file" id="rigthSidePic" />
 			</div>
 		</div>
