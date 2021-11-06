@@ -1,17 +1,32 @@
 <script lang="ts">
-	// Datos de los domicilios a mostrar
+	// Datos laborales a mostrar
+	export let user_id = 1; 
 	export let dischargeDate = new Date();
 	export let employementRel = '';
 	export let hiringMode = '';
 	export let unionAgreement = '';
 	export let job = '';
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
 </script>
 
 <form name="formUserWorkInfo" id="formUserWorkInfo">
+    {#if isReadOnly}
+    <div class="hstack gap-3">
+        <h2 class="my-4"><i class="fas fa-briefcase me-4" />Datos laborales</h2>
+		<div class="ms-auto">
+			<a class="btn btn-primary" href="/panel/operarios/{user_id}/laborales">
+				<i class="fas fa-pen me-2" />Editar
+			</a>
+		</div>
+	</div>
+    {/if}
     <div class="row mb-3 g-3">
         <div class="col-md-6">
             <label for="dischargeDate" class="form-label">Fecha de alta</label>
-            <input
+            {#if isReadOnly}
+			<input
                 type="text"
                 id="dischargeDate"
                 name="dischargeDate"
@@ -19,8 +34,20 @@
                 placeholder="21/08/2019"
                 aria-label="Fecha de alta"
                 value={dischargeDate.toLocaleDateString()}
-                readonly
+                readonly={isReadOnly}
             />
+			{:else}
+            <input
+                type="date"
+                id="dischargeDate"
+                name="dischargeDate"
+                class="form-control"
+                placeholder="1980-12-31"
+                aria-label="Fecha de alta"
+				bind:value={dischargeDate}
+                readonly={isReadOnly}
+            />
+			{/if}
         </div>
         <div class="col-md-6">
             <label for="employementRel" class="form-label">Relación laboral</label>
@@ -32,7 +59,7 @@
                 placeholder="Texas"
                 aria-label="Relación laboral"
                 value={employementRel}
-                readonly
+                readonly={isReadOnly}
             />
         </div>
     </div>
@@ -47,7 +74,7 @@
                 placeholder="A tiempo completo"
                 aria-label="Modalidad de contratación"
                 value={hiringMode}
-                readonly
+                readonly={isReadOnly}
             />
         </div>
         <div class="col-md-6">
@@ -60,7 +87,7 @@
                 placeholder="Federación Sindicatos Unidos Petroleros"
                 aria-label="Relación laboral"
                 value={unionAgreement}
-                readonly
+                readonly={isReadOnly}
             />
         </div>
     </div>
@@ -75,7 +102,7 @@
                 placeholder="Técnico Vertical"
                 aria-label="Puesto de trabajo"
                 value={job}
-                readonly
+                readonly={isReadOnly}
             />
         </div>
     </div>
