@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
+		const response = await fetch(`./${page.params.slug}/detalle`, {
 			method: 'GET',
 			request: page.params.slug
 		});

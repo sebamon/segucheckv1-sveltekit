@@ -88,7 +88,7 @@
 	}	
 	const submitForm  = async():Promise<void> => {
 
-		const submit = await fetch (`editar.json`, {
+		const submit = await fetch (`editar`, {
 			method : "PUT",
 			body: JSON.stringify({
 				firstName,

@@ -58,7 +58,7 @@
 	
 	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
 		try{
-			const submit = await fetch('usuarios.json', {
+			const submit = await fetch('usuarios', {
 				method : "POST",
 				body: JSON.stringify({
 					firstName,
