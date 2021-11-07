@@ -1,26 +1,26 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Image } from 'sveltestrap';
+	import { Image, Modal, ModalBody, ModalHeader } from 'sveltestrap';
 
 	// export let useronroles
-	export const userDetails:object = {};
+	export const userDetails: object = {};
 	// Datos del usuario a mostrar
-	export let user_id:number 
-	export let cuit:number 
-	export let firstName:string
-	export let lastName:string
-	export let email:string
-	export let phone:string
-	export let gender:string
-	export let dateOfBirth:Date
-	export let nationality:string
-	export let studyLevel:string
-	export let degree:string
-	export let profilePic:string
+	export let user_id: number;
+	export let cuit: number;
+	export let firstName: string;
+	export let lastName: string;
+	export let email: string;
+	export let phone: string;
+	export let gender: string;
+	export let dateOfBirth: Date;
+	export let nationality: string;
+	export let studyLevel: string;
+	export let degree: string;
+	export let profilePic: string;
 
-	export let message
-	export let error
-	export let color
+	export let message;
+	export let error;
+	export let color;
 	// export let user_id = userDetails.user_id
 	// export let cuit = userDetails.cuit
 	// export let firstName = userDetails.firstName
@@ -35,7 +35,7 @@
 	// export let profilePic = userDetails.profilePic
 	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
 	// export let roles = userDetails.useronroles
-	
+
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -58,7 +58,7 @@
 	];
 
 	// Arreglo de géneros:
-	let genderText:string;
+	let genderText: string;
 	if (gender == 'M') {
 		genderText = 'Varón';
 	} else if (gender == 'F') {
@@ -83,13 +83,12 @@
 	 * @param Date
 	 * @return String
 	 */
-	function dateToYMD(date):string {
-		return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-	}	
-	const submitForm  = async():Promise<void> => {
-
-		const submit = await fetch (`editar.json`, {
-			method : "PUT",
+	function dateToYMD(date): string {
+		return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+	}
+	const submitForm = async (): Promise<void> => {
+		const submit = await fetch(`editar.json`, {
+			method: 'PUT',
 			body: JSON.stringify({
 				firstName,
 				lastName,
@@ -100,49 +99,54 @@
 				degree,
 				gender,
 				nationality,
-				studyLevel,
+				studyLevel
 				// roles_assigned,
 			})
-		})
-		const data = await submit.json()
-		message = data.message
-		error= data.error
-		if(data.status==='OK') {
-				color='success'
-			}
-			if(data.status==='ERROR') color='danger'
+		});
+		const data = await submit.json();
+		message = data.message;
+		error = data.error;
+		if (data.status === 'OK') {
+			color = 'success';
+		}
+		if (data.status === 'ERROR') color = 'danger';
 
-			if(data.status===200)
-			{
-				console.log('message', message)
-			}
-	}
+		if (data.status === 200) {
+			console.log('message', message);
+		}
+	};
 
-
+	// Abrir modal para ver foto:
+	let modalProfile = false;
+	const toggle = () => (modalProfile = !modalProfile);
 </script>
-
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="hstack gap-3">
 		<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 		{#if isReadOnly}
-		<div class="ms-auto">
-			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
-				<i class="fas fa-pen me-2" />Editar
-			</a>
-		</div>
+			<div class="ms-auto">
+				<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
+					<i class="fas fa-pen me-2" />Editar
+				</a>
+			</div>
 		{/if}
 	</div>
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
-			<Image
-				fluid
-				thumbnail
-				src={profilePic}
-				alt="Foto de perfil"
-				class="m-2"
-				style="max-width:150px"
-			/>
+			<span on:click={toggle}>
+				<Image
+					fluid
+					thumbnail
+					src={profilePic}
+					alt="Foto de perfil"
+					class="m-2"
+					style="max-width:150px"
+				/>
+			</span>
+			<Modal isOpen={modalProfile} {toggle} body header="{firstName+" "+lastName}">
+				<Image src={profilePic} alt="Foto de perfil" />
+			</Modal>
 		</div>
 		{#if !isReadOnly}
 			<div class="col-md-6">
@@ -263,27 +267,28 @@
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			{#if isReadOnly}
-			<input
-				type="text"
-				id="dateOfBirth"
-				name="dateOfBirth"
-				class="form-control"
-				placeholder="1980-12-31"
-				aria-label="Fecha de nacimiento"
-                value={dateOfBirth}
-				readonly={isReadOnly}
-			/> <!-- En detalles llega como fecha, en editar llega como string -->
+				<input
+					type="text"
+					id="dateOfBirth"
+					name="dateOfBirth"
+					class="form-control"
+					placeholder="1980-12-31"
+					aria-label="Fecha de nacimiento"
+					value={dateOfBirth}
+					readonly={isReadOnly}
+				/>
+				<!-- En detalles llega como fecha, en editar llega como string -->
 			{:else}
-			<input
-				type="date"
-				id="dateOfBirth"
-				name="dateOfBirth"
-				class="form-control"
-				placeholder="1980-12-31"
-				aria-label="Fecha de nacimiento"
-				bind:value={dateOfBirth}
-				readonly={isReadOnly}
-			/>
+				<input
+					type="date"
+					id="dateOfBirth"
+					name="dateOfBirth"
+					class="form-control"
+					placeholder="1980-12-31"
+					aria-label="Fecha de nacimiento"
+					bind:value={dateOfBirth}
+					readonly={isReadOnly}
+				/>
 			{/if}
 		</div>
 		<div class="col-md-4">
@@ -315,7 +320,12 @@
 					readonly
 				/>
 			{:else}
-				<select id="studyLevel" class="form-select" aria-label="Nivel de formación" bind:value={studyLevel}>
+				<select
+					id="studyLevel"
+					class="form-select"
+					aria-label="Nivel de formación"
+					bind:value={studyLevel}
+				>
 					<option disabled>Elija una opción...</option>
 					{#each studyLevelList as thisStudyLevel}
 						<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}>
@@ -352,7 +362,6 @@
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>
