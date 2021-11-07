@@ -17,25 +17,14 @@
 	export let studyLevel:string
 	export let degree:string
 	export let profilePic:string
-
-	export let message
-	export let error
-	export let color
-	// export let user_id = userDetails.user_id
-	// export let cuit = userDetails.cuit
-	// export let firstName = userDetails.firstName
-	// export let lastName = userDetails.lastName
-	// export let email = userDetails.email
-	// export let phone = userDetails.phone
-	// export let gender = userDetails.gender
-	// export let dateOfBirth:string=userDetails.dateOfBirth
-	// export let nationality = userDetails.nationality
-	// export let studyLevel = userDetails.studyLevel
-	// export let degree = userDetails.degree
-	// export let profilePic = userDetails.profilePic
-	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
-	// export let roles = userDetails.useronroles
 	
+	let dateString = new Date(dateOfBirth).toLocaleDateString('en-US')
+	// export let usersonroles = []
+	
+
+	let message
+	let error
+	let color
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -73,23 +62,24 @@
 	];
 
 	// Por defecto, el componente se llama como solo lectura:
-	export let isReadOnly = true;
+    let isReadOnly = false;
 	let action = '';
 	if (isReadOnly) {
-		action = 'action="./create"';
+		// action = 'action="./create"';
 	}
 
 	/* Convierte un objeto Date en un String en formato YYY-MM-DD
 	 * @param Date
 	 * @return String
+	 * NO FUNCIONA
 	 */
 	function dateToYMD(date):string {
-		return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+		return '2020-10-10'
 	}	
 	const submitForm  = async():Promise<void> => {
-
 		const submit = await fetch (`editar`, {
-			method : "PUT",
+			method : 'PUT',
 			body: JSON.stringify({
 				firstName,
 				lastName,
@@ -101,7 +91,7 @@
 				gender,
 				nationality,
 				studyLevel,
-				// roles_assigned,
+			    // roles_assigned,
 			})
 		})
 		const data = await submit.json()
@@ -270,7 +260,7 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-                value={dateOfBirth}
+                value={dateString}
 				readonly={isReadOnly}
 			/> <!-- En detalles llega como fecha, en editar llega como string -->
 			{:else}
@@ -281,7 +271,7 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={dateOfBirth}
+				bind:value={dateString}
 				readonly={isReadOnly}
 			/>
 			{/if}

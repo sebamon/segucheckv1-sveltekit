@@ -1,15 +1,20 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle`, {
-			method: 'GET',
-			request: page.params.slug
-		});
-		const data = await response.json();
+		const response = await fetch(`./${page.params.slug}/detalle`)
+		// const response = await fetch(`./${page.params.slug}/detalle`,{
+		// 	// method: 'GET',
+		// 	body: page.params.slug,
+		// 	mode : 'cors',
+		// 	headers: {
+		// 			"Content-type" : "application/json"
+		// 		},
+		// })
+		const data = await response.json()
 		return {
 			props: {
 				data
 			}
-		};
+		}
 	}
 </script>
 
@@ -20,6 +25,7 @@
 
 	export let data;
 	export let userDetails = data.userDetails;
+	export let isReadOnly=true
 </script>
 
 <svelte:head>
@@ -44,5 +50,5 @@
 </header>
 
 <main>
-	<UserDetails {...userDetails} />
+	<UserDetails {...userDetails} {isReadOnly} />
 </main>

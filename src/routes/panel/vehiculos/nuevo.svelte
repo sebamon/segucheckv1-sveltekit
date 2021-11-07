@@ -3,9 +3,10 @@
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem
+		BreadcrumbItem,
+		Alert
 	} from 'sveltestrap';
-
+	import type { Color } from 'sveltestrap/src/shared';
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
 		'Aeronaves - Avión Comercial',
@@ -76,36 +77,66 @@
 	let frontPic:FileReader
 	let rightSidePic:ImageData
 	let leftSidePic=[]
+	
+	export let status:string
+	export let message:string
+	export let color: Color
 
 	const submitForm = async ():Promise<any> => {
-		console.log(form)
-		debugger
+
+		form = document.getElementById('formVehicleDetails')
 		try{
 			const submit = await fetch('vehiculos', {
 				method : "POST",
-				body: new FormData(form),
 				headers: {
 					'Contex-Type' :'application/json',
-				}
+				},
+				body: JSON.stringify({
+					domain,
+					brand,
+					model,
+					type,
+					year,
+					intNumber,
+					chasis,
+					motor,
+					frontPic,
+					rightSidePic,
+					leftSidePic,
+				})
 			})
 			const data = await submit.json()
-			console.log('data', data)
-			onmessage = data.message
-			// status = data.status
+			message = data.message
+			status = data.status
 
-			// 	if(data.status==='OK') {
-			// 		cleanPage();
-			// 	}
-			// 	color = data.status==='OK' ? 'success' : 'danger'
+				if(data.status==='OK') {
+					cleanPage();
+				}
+				color = data.status==='OK' ? 'success' : 'danger'
 
-			// 	if(data.status===200){
-			// 		console.log('message', message)
-			// 	}
+				if(data.status===200){
+					console.log('message', message)
+				}
 		}catch(err)
 		{
 			throw new Error
 		}
 	};
+
+	function cleanPage(){
+		vehicle_id = null
+		domain = ''
+		brand = ''
+		model = null
+		type = ''
+		year = 0
+		intNumber =null
+		chasis = ''
+		motor = ''
+		frontPic = null
+		rightSidePic = null
+		leftSidePic = null
+	}
 
 </script>
 
@@ -130,6 +161,17 @@
 	</div>
 </header>
 
+{#if status}
+<Alert color='{color}'> 
+    <h4 class="alert-heading text-capitalize">{status}</h4>
+    {message}
+    <a href="/panel/vehiculos" class="alert-link">
+      Ver Vehiculos
+    </a>
+    .
+  </Alert>
+  {/if}
+
 <!-- Formulario nuevo usuario -->
 <form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault="{submitForm}" bind:this={form}>
 	<div class="row mb-3 g-3">
@@ -150,8 +192,8 @@
 			<label for="type" class="form-label">Tipo de vehículo</label>
 			<select id="type" class="form-select" aria-label="Tipo de vehículo" bind:value={type} required>
 				<option selected disabled>Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType, i}
-					<option value={i}>{vehicleType}</option>
+				{#each vehicleTypeList as vehicleType}
+					<option value={vehicleType}>{vehicleType}</option>
 				{/each}
 			</select>
 		</div>
@@ -244,7 +286,7 @@
 		<div class="col-md-6">
 			<div class="mb-3">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input class="form-control" type="file" id="frontPic"/>
+				<input class="form-control" type="file" id="frontPic" bind:value={frontPic}/>
 			</div>
 			<div class="mb-3">
 				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
@@ -252,7 +294,7 @@
 			</div>
 			<div class="mb-3">
 				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
-				<input class="form-control" type="file" id="rigthSidePic" />
+				<input class="form-control" type="file" id="rigthSidePic" bind:value={rightSidePic} />
 			</div>
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">

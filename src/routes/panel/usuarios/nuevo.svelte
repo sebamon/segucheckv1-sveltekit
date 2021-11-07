@@ -1,6 +1,14 @@
+<!-- <script context="module">
+	export async function load({fetch , page}) {
+		const response = await fetch(`../../../api/roles`)
+		console.log(response)
+		const roles = await response.json()
+		console.log(roles)
+	}
+</script> -->
+
 <script lang="ts">
 	// import type { User } from '$lib/store';
-	import type { Prisma } from '.prisma/client';
 	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -41,12 +49,12 @@
 		'Primario completo',
 		'Secundario incompleto',
 		'Secundario completo',
-		'Superior no universitario',
-		'Superior no universitario',
-		'Universitario',
-		'Universitario',
-		'Post universitario',
-		'Post universitario'
+		'Superior no universitario incompleto',
+		'Superior no universitario completo',
+		'Universitario incompleto',
+		'Universitario completo',
+		'Post universitario incompleto',
+		'Post universitario completo'
 	];
 
 	// Arreglo de géneros:

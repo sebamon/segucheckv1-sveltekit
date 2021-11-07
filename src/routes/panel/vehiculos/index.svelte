@@ -1,27 +1,45 @@
 <script context="module">
 	export async function load ({fetch , page}){
-		const response = await fetch('./vehiculos/vehiculos',{
-			method : "GET",
-			headers: {
-				'Content-Type': 'application/json',
-			},
-		})
-		const data = await response.json()
-		console.log('data')
-		return {
-			props: {
-				data
+		try{
+
+			const response = await fetch('./vehiculos/vehiculos')
+			// const response = await fetch('./vehiculos/vehiculos',{
+			// 	method : "GET",
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+			// 	},
+			// })
+			const data = await response.json()
+			console.log('data')
+			return {
+				props: {
+					data
+				}
+			}
+		}catch(e){
+			console.log('error',e)
+			return {
+				props:
+					{}
 			}
 		}
 }
 </script>
 
 <script lang="ts">
-import type { vehicle } from '.prisma/client';
-
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	export let data
+	// type vehicle = {
+	// 	vehicle_id : number,
+	// 	domain : string,
+	// 	type : string,
+	// 	brand : string,
+	// 	model : string,
+	// }
+	export let data = {
+		vehicles: []
+	}
+	export let vehicles = data.vehicles
 </script>
 
 <svelte:head>
@@ -68,14 +86,30 @@ import type { vehicle } from '.prisma/client';
 				</tr>
 			</thead>
 			<tbody>
-				{#each data.vehicles as vehicle}
-				<tr>
-					<td>{vehicle.domain}</td>
-					<td>{vehicle.type}</td>
-					<td>{vehicle.brand}</td>
-					<td>{vehicle.model}</td>
-					<td>text</td>
-				</tr>
+				{#each vehicles as vehicle}	
+						<tr>
+							<td>
+								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+									{vehicle.domain}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+									{vehicle.type}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+									{vehicle.brand}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+									{vehicle.model}
+								</a>
+							</td>
+							<td>text</td>
+						</tr>
 				{/each}
 			</tbody>
 		</table>

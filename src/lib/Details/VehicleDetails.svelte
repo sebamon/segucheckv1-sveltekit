@@ -1,14 +1,24 @@
 <script lang="ts">
+import { validate_store } from "svelte/internal";
+
+
 	// Datos del usuario a mostrar
-	export let vehicle_id = 0;
-	export let domain = '';
-	export let type = 0;
-	export let brand = '';
-	export let model = '';
-	export let year = 0;
-	export let internal_id = 0;
-	export let chasisNumber = 0;
-	export let motorNumber = 0;
+	export let vehicle_id:number
+	export let domain = ''
+	export let type:string
+	export let brand : string
+	export let model : string
+	export let year : number
+	export let internal_id = vehicle_id 
+	export let chasisNumber = 0
+	export let motorNumber = 0
+
+	export let isReadOnly = true;
+
+	export let error:string
+	export let message:string
+	export let color
+	export let status
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -66,9 +76,39 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
+	const submitForm = async(): Promise<void> => {
+		const submit = await fetch(`editar`,{
+			method : 'PUT',
+			body: JSON.stringify({
+				domain,
+				brand,
+				model,
+				type,
+				year,
+				internal_id,
+				chasisNumber,
+				motorNumber,
+				// frontPic,
+				// rightSidePic,
+				// leftSidePic,
+			})
+		})
+		const data = await submit.json()
+		message = data.message
+		error = data.error
+		if(data.status==='OK') {
+				color='success'
+			}
+			if(data.status==='ERROR') color='danger'
+
+			if(data.status===200)
+			{
+				console.log('message', message)
+			}
+	}
 </script>
 
-<form name="formVehicleDetails" id="formVehicleDetails">
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -80,21 +120,21 @@
 				placeholder="AB123CD"
 				aria-label="Patente"
                 value={domain}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<input
-				type="text"
-				id="type"
-				name="type"
-				class="form-control"
-				placeholder="Rodados - Camión"
-				aria-label="Tipo de vehículo"
-                value={vehicleTypeList[type]}
-				readonly
-			/>
+			<select id="type" name="type" class="form-select" aria-label="Tipo de vehículo" bind:value={type} required>
+				<option selected disabled>Elija una opción...</option>
+				{#each vehicleTypeList as vehicleType }
+					{#if type===vehicleType}
+						<option value={vehicleType} selected>{vehicleType}</option>)
+					{:else}
+						<option value={vehicleType}>{vehicleType}</option>
+					{/if}
+				{/each}
+			</select>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -108,7 +148,7 @@
 				placeholder="Ford"
 				aria-label="Marca"
                 value={brand}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -121,7 +161,7 @@
 				placeholder="Ranger"
 				aria-label="Modelo"
                 value={model}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -136,7 +176,7 @@
 				placeholder="2015"
 				aria-label="Año"
                 value={year}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -149,7 +189,7 @@
 				placeholder="001234"
 				aria-label="Número interno"
                 value={internal_id}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -157,14 +197,14 @@
 		<div class="col-md-6">
 			<label for="chasisNumber" class="form-label">Número de chasis</label>
 			<input
-				type="date"
+				type="text"
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
                 value={chasisNumber}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -177,8 +217,15 @@
 				placeholder="Argentina"
 				aria-label="Número de motor"
                 value={motorNumber}
-				readonly
+				readonly={isReadOnly}
 			/>
 		</div>
+		{#if !isReadOnly}
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-pen me-2" />Confirmar cambios
+				</button>
+			</div>
+		{/if}
 	</div>
 </form>

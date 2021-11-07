@@ -1,6 +1,34 @@
+<script context="module">
+	export async function load ({fetch , page}){
+		try{
+
+			const response = await fetch('./operarios/operarios',{
+				method : "GET",
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			})
+			const data = await response.json()
+			console.log('data',data)
+			return {
+				props: {
+					data
+				}
+			}
+		}catch(e){
+			console.log('error',e)
+			return {
+				props:
+					{}
+			}
+		}
+}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem , Alert} from 'sveltestrap';
+	export let data
+	export let operators = data.operators
 </script>
 
 <svelte:head>
@@ -45,120 +73,25 @@
 					<th scope="col">Estado Habilitación</th>
 				</tr>
 			</thead>
-			<tbody>
-				<tr>
-					<td>1,001</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,002</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,004</td>
-					<td>text</td>
-					<td>random</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,005</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>placeholder</td>
-				</tr>
-				<tr>
-					<td>1,006</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,007</td>
-					<td>placeholder</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>irrelevant</td>
-				</tr>
-				<tr>
-					<td>1,008</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,009</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,010</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,011</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,012</td>
-					<td>text</td>
-					<td>placeholder</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,013</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>visual</td>
-				</tr>
-				<tr>
-					<td>1,014</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,015</td>
-					<td>random</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>text</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+			{#if operators.length>0}
+				<tbody>
+					{#each operators as operator}
+						<tr>
+							<!-- <td>{operator.user_id}></td>
+							<td>{operator.cuit}></td>
+							<td>{operator.firstName}></td>
+							<td>{operator.lastName}></td> -->
+							<td>Habilitado</td>
+						</tr>
+					{/each}
+				</tbody>
+			{/if}
+			</table>
+		</div>
+	{#if data.status==='INFO'}
+		<Alert color='success'> 
+			<h4 class="alert-heading text-capitalize">Atención:</h4>
+			<p>{data.message}</p>
+		</Alert>
+	{/if}
 </main>

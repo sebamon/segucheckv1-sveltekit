@@ -2,11 +2,17 @@
 	// panel/usuarios.svelte: Lee de la BD y lista los usuarios registrados
 	export async function load({ page, fetch }) {
 		try {
-			const response = await fetch(`./usuarios/usuarios`);
-			const users = await response.json();
+			const response = await fetch(`./usuarios/usuarios`,{
+				method : "GET",
+				headers: {
+					'Content-Type': 'application/json',
+				},
+			});
+			const data = await response.json();
+			console.log('ssr data:', data)
 			return {
 				props: {
-					users
+					data
 				}
 			};
 		} catch (e) {
@@ -18,7 +24,11 @@
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	export let users;
+	export let data = {
+		users: [{}]
+	}
+	export let users = data.users
+	// export let users = data.users;
 </script>
 
 <svelte:head>
@@ -63,8 +73,9 @@
 					<th scope="col">Email</th>
 				</tr>
 			</thead>
+			{#if data.status==='OK'}
 			<tbody>
-				{#each users.users as user}
+				{#each users as user}
 					<tr>
 						<td>
 							<a class="text-decoration-none text-dark" href="./usuarios/{user.user_id}">
@@ -94,6 +105,7 @@
 					</tr>
 				{/each}
 			</tbody>
+			{/if}
 		</table>
 	</div>
 </main>
