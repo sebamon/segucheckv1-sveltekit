@@ -66,6 +66,9 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
 </script>
 
 <form name="formVehicleDetails" id="formVehicleDetails">
@@ -79,8 +82,8 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-                value={domain}
-				readonly
+				value={domain}
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -92,8 +95,8 @@
 				class="form-control"
 				placeholder="Rodados - Camión"
 				aria-label="Tipo de vehículo"
-                value={vehicleTypeList[type]}
-				readonly
+				value={vehicleTypeList[type]}
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -107,8 +110,8 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-                value={brand}
-				readonly
+				value={brand}
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -120,8 +123,8 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-                value={model}
-				readonly
+				value={model}
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -135,8 +138,8 @@
 				class="form-control"
 				placeholder="2015"
 				aria-label="Año"
-                value={year}
-				readonly
+				value={year}
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -148,8 +151,8 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-                value={internal_id}
-				readonly
+				value={internal_id}
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
@@ -163,8 +166,8 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
-                value={chasisNumber}
-				readonly
+				value={chasisNumber}
+				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -176,9 +179,19 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Número de motor"
-                value={motorNumber}
-				readonly
+				value={motorNumber}
+				readonly={isReadOnly}
 			/>
 		</div>
 	</div>
+	{#if !isReadOnly}
+		<div class="row mb-3 g-3">
+			<div class="col-md-6" />
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-pen me-2" />Confirmar cambios
+				</button>
+			</div>
+		</div>
+	{/if}
 </form>

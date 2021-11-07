@@ -210,7 +210,7 @@
     </section>
     {#if !isReadOnly}
 	<div class="row mb-3 g-3">
-        <div class="col"></div>
+        <div class="col-md-6"></div>
         <div class="col-md-6 d-flex justify-content-end">
             <button type="submit" class="btn btn-primary">
                 <i class="fas fa-pen me-2" />Confirmar cambios
