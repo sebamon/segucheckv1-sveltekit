@@ -18,7 +18,7 @@
 	export let data;
 	console.log(data);
 	export let userDetails = data.userDetails;
-	let isReadOnly = true;
+	export let isReadOnly = true;
 	// let f = new Date(data.userDetails.dateOfBirth)
 	// let fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 </script>
@@ -49,6 +49,7 @@
 
 <main>
 	<p>
+		{isReadOnly}
 		{data.message}
 	</p>
 	<UserDetails {...userDetails} {isReadOnly} />

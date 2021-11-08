@@ -1,15 +1,8 @@
 <script context="module">
 	export async function load({fetch , page}){
 		const response = await fetch(`./detalle`)
-		// const response = await fetch(`./detalle`,  {
-			// method: "GET",
-			// headers: {
-			// 	'Content-Type': 'application/json',
-			// },
-			// body: JSON.stringify(page.params.slug),
-		// })
 		const data  = await response.json()
-		console.log('editar adata ',data)
+		console.log('editar data ',data)
 		return {
 			props:{
 				data,
