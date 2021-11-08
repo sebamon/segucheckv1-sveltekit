@@ -1,30 +1,36 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image } from 'sveltestrap';
+	import moment from 'moment';
 
 	// export let useronroles
-	export const userDetails:object = {};
+	export const userDetails: object = {};
 	// Datos del usuario a mostrar
-	export let user_id:number 
-	export let cuit:number 
-	export let firstName:string
-	export let lastName:string
-	export let email:string
-	export let phone:string
-	export let gender:string
-	export let dateOfBirth:Date
-	export let nationality:string
-	export let studyLevel:string
-	export let degree:string
-	export let profilePic:string
-	
-	let dateString = new Date(dateOfBirth).toLocaleDateString('en-US')
-	// export let usersonroles = []
-	
+	export let user_id: number;
+	export let cuit: number;
+	export let firstName: string;
+	export let lastName: string;
+	export let email: string;
+	export let phone: string;
+	export let gender: string;
+	export let dateOfBirth;
+	export let nationality: string;
+	export let studyLevel: string;
+	export let degree: string;
+	export let profilePic: string;
 
-	let message
-	let error
-	let color
+	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
+	let newDate = new Date(new Date(dateString).getTime() - (new Date().getTimezoneOffset() * 60000 )).toISOString().split("T")[0];
+
+	// export let usersonroles = []
+	// let fecha = dateString.getDate() + "/" + (dateString.getMonth() +1) + "/" + dateString.getFullYear();
+	// export let fecha = + dateString.getFullYear() + "/" + (dateString.getMonth() +1) + "/" + dateString.getDate();
+	console.log('dateOfBirth', dateOfBirth);
+	console.log('dateString', dateString);
+
+	let message;
+	let error;
+	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -47,7 +53,7 @@
 	];
 
 	// Arreglo de géneros:
-	let genderText:string;
+	let genderText: string;
 	if (gender == 'M') {
 		genderText = 'Varón';
 	} else if (gender == 'F') {
@@ -62,7 +68,7 @@
 	];
 
 	// Por defecto, el componente se llama como solo lectura:
-    let isReadOnly = false;
+	let isReadOnly = false;
 	let action = '';
 	if (isReadOnly) {
 		// action = 'action="./create"';
@@ -73,13 +79,13 @@
 	 * @return String
 	 * NO FUNCIONA
 	 */
-	function dateToYMD(date):string {
+	function dateToYMD(date): string {
 		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-		return '2020-10-10'
-	}	
-	const submitForm  = async():Promise<void> => {
-		const submit = await fetch (`editar`, {
-			method : 'PUT',
+		return '2020-10-10';
+	}
+	const submitForm = async (): Promise<void> => {
+		const submit = await fetch(`editar`, {
+			method: 'PUT',
 			body: JSON.stringify({
 				firstName,
 				lastName,
@@ -90,37 +96,33 @@
 				degree,
 				gender,
 				nationality,
-				studyLevel,
-			    // roles_assigned,
+				studyLevel
+				// roles_assigned,
 			})
-		})
-		const data = await submit.json()
-		message = data.message
-		error= data.error
-		if(data.status==='OK') {
-				color='success'
-			}
-			if(data.status==='ERROR') color='danger'
+		});
+		const data = await submit.json();
+		message = data.message;
+		error = data.error;
+		if (data.status === 'OK') {
+			color = 'success';
+		}
+		if (data.status === 'ERROR') color = 'danger';
 
-			if(data.status===200)
-			{
-				console.log('message', message)
-			}
-	}
-
-
+		if (data.status === 200) {
+			console.log('message', message);
+		}
+	};
 </script>
-
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
 	<div class="hstack gap-3">
 		<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 		{#if isReadOnly}
-		<div class="ms-auto">
-			<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
-				<i class="fas fa-pen me-2" />Editar
-			</a>
-		</div>
+			<div class="ms-auto">
+				<a class="btn btn-primary" href="/panel/usuarios/{user_id}/editar">
+					<i class="fas fa-pen me-2" />Editar
+				</a>
+			</div>
 		{/if}
 	</div>
 	<div class="row mb-3 g-3 align-items-end">
@@ -253,27 +255,28 @@
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
 			{#if isReadOnly}
-			<input
-				type="text"
-				id="dateOfBirth"
-				name="dateOfBirth"
-				class="form-control"
-				placeholder="1980-12-31"
-				aria-label="Fecha de nacimiento"
-                value={dateString}
-				readonly={isReadOnly}
-			/> <!-- En detalles llega como fecha, en editar llega como string -->
+				<input
+					type=date
+					id="dateOfBirth"
+					name="dateOfBirth"
+					class="form-control"
+					placeholder="1980-12-31"
+					aria-label="Fecha de nacimiento"
+					bind:value={newDate}
+					readonly={isReadOnly}
+				/>
+				<!-- En detalles llega como fecha, en editar llega como string -->
 			{:else}
-			<input
-				type="date"
-				id="dateOfBirth"
-				name="dateOfBirth"
-				class="form-control"
-				placeholder="1980-12-31"
-				aria-label="Fecha de nacimiento"
-				bind:value={dateString}
-				readonly={isReadOnly}
-			/>
+				<input
+					type=date
+					id="dateOfBirth"
+					name="dateOfBirth"
+					class="form-control"
+					placeholder="1980-12-31"
+					aria-label="Fecha de nacimiento"
+					bind:value={newDate}
+					readonly={isReadOnly}
+				/>
 			{/if}
 		</div>
 		<div class="col-md-4">
@@ -305,7 +308,12 @@
 					readonly
 				/>
 			{:else}
-				<select id="studyLevel" class="form-select" aria-label="Nivel de formación" bind:value={studyLevel}>
+				<select
+					id="studyLevel"
+					class="form-select"
+					aria-label="Nivel de formación"
+					bind:value={studyLevel}
+				>
 					<option disabled>Elija una opción...</option>
 					{#each studyLevelList as thisStudyLevel}
 						<option value={thisStudyLevel} selected={thisStudyLevel == studyLevel}>
@@ -342,7 +350,6 @@
 						name="roles"
 						class="form-check-input"
 						role="switch"
-						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>

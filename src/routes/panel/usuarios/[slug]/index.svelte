@@ -1,20 +1,12 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle`)
-		// const response = await fetch(`./${page.params.slug}/detalle`,{
-		// 	// method: 'GET',
-		// 	body: page.params.slug,
-		// 	mode : 'cors',
-		// 	headers: {
-		// 			"Content-type" : "application/json"
-		// 		},
-		// })
-		const data = await response.json()
+		const response = await fetch(`./${page.params.slug}/detalle`);
+		const data = await response.json();
 		return {
 			props: {
 				data
 			}
-		}
+		};
 	}
 </script>
 
@@ -24,14 +16,20 @@
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
+	console.log(data);
 	export let userDetails = data.userDetails;
-	export let isReadOnly=true
+	let isReadOnly = true;
+	// let f = new Date(data.userDetails.dateOfBirth)
+	// let fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 </script>
 
 <svelte:head>
-	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	{#if data.status == 'OK'}
+		<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	{:else}
+		<title>Usuario: Inexistente - SeguCheck</title>
+	{/if}
 </svelte:head>
-
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -41,7 +39,7 @@
 			<a href="/panel/usuarios">Usuarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/usuarios/{userDetails.user_id}">{userDetails.user_id}</a>
+			<a href="/panel/usuarios/{userDetails.user_id}/">{userDetails.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
@@ -50,5 +48,8 @@
 </header>
 
 <main>
+	<p>
+		{data.message}
+	</p>
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

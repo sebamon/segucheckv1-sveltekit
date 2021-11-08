@@ -2,12 +2,7 @@
 	// panel/usuarios.svelte: Lee de la BD y lista los usuarios registrados
 	export async function load({ page, fetch }) {
 		try {
-			const response = await fetch(`./usuarios/usuarios`,{
-				method : "GET",
-				headers: {
-					'Content-Type': 'application/json',
-				},
-			});
+			const response = await fetch(`./usuarios/usuarios`)
 			const data = await response.json();
 			console.log('ssr data:', data)
 			return {

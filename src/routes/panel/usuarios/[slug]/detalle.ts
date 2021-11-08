@@ -16,13 +16,24 @@ export const get = async ( request ) =>{
     
         })
 
+        if(userDetails.user_id!=null){
         return {
           body: {
             userDetails: userDetails,
             message: 'User Found',
             status: 'OK'
-          }
         }
+    }
+}
+else{
+    return {
+        body: {
+            userDetails : {},
+            message: 'User Not Found',
+            status: 'ERROR'
+            }
+        }
+    }
     }catch(e){
         console.log("Error: ",e)
         return{

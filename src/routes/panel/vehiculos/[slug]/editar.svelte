@@ -30,7 +30,7 @@ import {
 } from 'sveltestrap';
 
 	export let data;
-	let status = data.status
+	let status
 	let error = data.error
 	let message = data.message
 	
@@ -39,6 +39,10 @@ import {
 	
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
+
+	async function submit(){
+		
+	} 
 
 </script>
 

@@ -29,6 +29,14 @@
 	import { Button, Breadcrumb, BreadcrumbItem , Alert} from 'sveltestrap';
 	export let data
 	export let operators = data.operators
+
+
+	interface user  {
+		user_id : number,
+		firstName : string,
+		lastName : string,
+		cuit : string,
+	}
 </script>
 
 <svelte:head>
@@ -77,11 +85,31 @@
 				<tbody>
 					{#each operators as operator}
 						<tr>
-							<!-- <td>{operator.user_id}></td>
-							<td>{operator.cuit}></td>
-							<td>{operator.firstName}></td>
-							<td>{operator.lastName}></td> -->
-							<td>Habilitado</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./operarios/{operator.users.user_id}">
+									{operator.users.user_id}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./operarios/{operator.users.user_id}">
+									{operator.users.cuit}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./operarios/{operator.users.user_id}">
+									{operator.users.firstName}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./operarios/{operator.users.user_id}">
+									{operator.users.lastName}
+								</a>
+							</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./operarios/{operator.users.user_id}">
+									Habilitado
+								</a>
+							</td>
 						</tr>
 					{/each}
 				</tbody>

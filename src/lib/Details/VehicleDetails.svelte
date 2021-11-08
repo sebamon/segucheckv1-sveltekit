@@ -1,4 +1,6 @@
 <script lang="ts">
+import { format } from "path/posix";
+
 import { validate_store } from "svelte/internal";
 
 
@@ -77,34 +79,37 @@ import { validate_store } from "svelte/internal";
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
 	const submitForm = async(): Promise<void> => {
-		const submit = await fetch(`editar`,{
-			method : 'PUT',
-			body: JSON.stringify({
-				domain,
-				brand,
-				model,
-				type,
-				year,
-				internal_id,
-				chasisNumber,
-				motorNumber,
-				// frontPic,
-				// rightSidePic,
-				// leftSidePic,
-			})
+		const formBody = JSON.stringify({
+			domain,
+			brand,
+			model,
+			type,
+			year,
+			internal_id,
+			chasisNumber,
+			motorNumber,
+			// frontPic,
+			// rightSidePic,
+			// leftSidePic,
 		})
-		const data = await submit.json()
-		message = data.message
-		error = data.error
-		if(data.status==='OK') {
-				color='success'
-			}
-			if(data.status==='ERROR') color='danger'
+		console.log(formBody)
+	// 	const submit = await fetch(`editar`,{
+	// 	method : 'PUT',
+	// 	body: JSON.stringify({
+	// 	})
+	// })
+	// 	const data = await submit.json()
+	// 	message = data.message
+	// 	error = data.error
+	// 	if(data.status==='OK') {
+	// 			color='success'
+	// 		}
+	// 		if(data.status==='ERROR') color='danger'
 
-			if(data.status===200)
-			{
-				console.log('message', message)
-			}
+	// 		if(data.status===200)
+	// 		{
+	// 			console.log('message', message)
+	// 		}
 	}
 </script>
 

@@ -1,20 +1,31 @@
-import type { Prisma } from "@prisma/client";
-import PrismaClientPkg from "@prisma/client";
-
-const PrismaClient = PrismaClientPkg.PrismaClient;
+// import  { PrismaClient } from "@prisma/client";
+// import { links } from 
+import pkg from '@prisma/client';
+const { PrismaClient } = pkg;
 
 const prisma = new PrismaClient();
 // async function main() {
-    const main = async () =>{
+async function main(){
     
-    const createUser = await prisma.users.createMany({
+    await prisma.roles.createMany({
+        data:[{
+            rolDescription : 'Gestor Documental'
+        },{
+            rolDescription : 'Tecnico Seguridad'
+        },
+        {
+            rolDescription : 'Operador'
+        }]
+    })
+
+    await prisma.users.createMany({
         data:[{
             firstName: 'Esteban',
             lastName: 'Kito',
             email: 'ekito@gmail.com',
             cuit: '202971547',
-            gender: 'masculino',
-            dateOfBirth: '01/07/1982',
+            gender: 'M',
+            dateOfBirth: new Date('1982/11/07'),
             phone: '2995103456',
             nationality: 'Argentino',
             studyLevel: 'Secundario',
@@ -27,8 +38,8 @@ const prisma = new PrismaClient();
             lastName: 'Asado',
             email: 'jasado@hotmail.com',
             cuit: '202845698712',
-            gender: 'Masculino',
-            dateOfBirth: '29/01/1980',
+            gender: 'M',
+            dateOfBirth: new Date('1980/01/12'),
             phone: '2996478214',
             nationality: 'Argentino',
             studyLevel: 'Universitario',
@@ -39,38 +50,38 @@ const prisma = new PrismaClient();
 
     })
 
-     const crearVehiculos = await prisma.vehicle.createMany({
+     await prisma.vehicle.createMany({
          data:[{
             domain : 'AB 105 RD',
             brand : 'TOYOYA',
             model : 'HILUX',
-            type : 'CAMIONETA',
+            type : 'Rodados - Pick Up - Cargas Peligrosas',
             year : 2019,
-            chasisNumber : 'AS421018A8D1A2',
-            motorNumber : '2ASD748A12D59A8S1',
+            chasisNumber : 'ASA8D1A2',
+            motorNumber : '2ASDA8S1',
             frontPicUrl : 'url',
             leftSidePicUrl : 'url',
-            rigthSidePicUrl : 'url',
+            rightSidePicUrl : 'url',
             backPicUrl : 'url',
          },
          {
             domain : 'AC 457 DA',
             brand : 'TOYOYA',
             model : 'ETIOS',
-            type : 'AUTOMOVIL',
+            type : 'Rodados - Automóvil',
             year : 2020,
-            chasisNumber : 'ASASA13218D1A2',
-            motorNumber : 'NB8AS5D28QD59A8S1',
+            chasisNumber : 'ASASA132',
+            motorNumber : 'NB8AS5D28QD5',
             frontPicUrl : 'url',
             leftSidePicUrl : 'url',
-            rigthSidePicUrl : 'url',
+            rightSidePicUrl : 'url',
             backPicUrl : 'url',
          }
 
         ]
      })
 
-     const createOperator = await prisma.operator.createMany({
+      await prisma.operator.createMany({
          data:[{
              user_id : 1,
 

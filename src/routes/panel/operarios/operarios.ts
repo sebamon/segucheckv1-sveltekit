@@ -11,7 +11,19 @@ export const post = (request) => {
 
 export const get = async () => {
     try{
-        const operators = await prisma.operator.findMany({})
+        const operators = await prisma.operator.findMany({
+            include: {
+                users:{
+                    select: {
+                        user_id : true,
+                        firstName : true,
+                        lastName : true,
+                        cuit : true,
+                        active : true,
+                    }
+                }
+            }
+        })
         console.log('operators.length',operators.length)
         if(operators.length>0){
             return {
