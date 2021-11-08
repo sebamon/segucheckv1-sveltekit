@@ -32,12 +32,12 @@ import { dataset_dev } from 'svelte/internal';
 	
     // Datos placeholder:
 	let userDetails = {
-		user_id: 1234,
+		user_id: 1,
 		firstName: 'Juan',
 		lastName: 'Perez'
 	};
 	let userHealthInfo = {
-		user_id: 1234,
+		user_id: 1,
 		bloodType: 'A',
 		rh: true,
 		allergies: 'Ninguno'

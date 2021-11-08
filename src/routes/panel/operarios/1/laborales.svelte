@@ -32,12 +32,12 @@ import { dataset_dev } from 'svelte/internal';
 	
     // Datos placeholder:
 	let userDetails = {
-		user_id: 1234,
+		user_id: 1,
 		firstName: 'Juan',
 		lastName: 'Perez'
 	};
 	let userWorkInfo = {
-		user_id: 1234,
+		user_id: 1,
 		dischargeDate: new Date('2019-08-21'),
 		employementRel: 'Relación de dependencia',
 		hiringMode: 'A tiempo completo',
