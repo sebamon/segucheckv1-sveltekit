@@ -1,5 +1,5 @@
 <script>
-	import Pdf_file_upload from './Pdf_file_upload.svelte';
+	import Pdf_file_upload from './fileUpload/Pdf_file_upload.svelte';
 	import ImgUpload from './Img_upload.svelte';
 	import NavbarHome from '$lib/NavbarHome.svelte';
 

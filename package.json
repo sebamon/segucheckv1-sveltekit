@@ -37,9 +37,11 @@
 	},
 	"dependencies": {
 		"@prisma/client": "^3.2.1",
+		"@types/gapi": "0.0.41",
 		"cookie": "^0.4.1",
 		"dotenv": "^10.0.0",
 		"filepond": "^4.30.3",
+		"pdf-lib": "^1.17.0",
 		"sk-auth": "^0.3.7",
 		"svelte-filepond": "^0.2.0",
 		"sveltestrap": "^5.6.3"
