@@ -19,8 +19,8 @@
 	export let degree: string;
 	export let profilePic: string;
 
-	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
+	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
 
