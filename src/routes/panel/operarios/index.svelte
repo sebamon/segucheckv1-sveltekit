@@ -63,6 +63,13 @@
 </header>
 
 <main>
+	{#if data.status==='INFO'}
+		<Alert color='secondary'> 
+			<h4 class="alert-heading text-capitalize">Atención:</h4>
+			<p>{data.message}</p>
+		</Alert>
+	{:else}
+	{#if operators.length>0}
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
@@ -81,7 +88,6 @@
 					<th scope="col">Estado Habilitación</th>
 				</tr>
 			</thead>
-			{#if operators.length>0}
 				<tbody>
 					{#each operators as operator}
 						<tr>
@@ -113,13 +119,8 @@
 						</tr>
 					{/each}
 				</tbody>
-			{/if}
 			</table>
 		</div>
-	{#if data.status==='INFO'}
-		<Alert color='success'> 
-			<h4 class="alert-heading text-capitalize">Atención:</h4>
-			<p>{data.message}</p>
-		</Alert>
+	{/if}
 	{/if}
 </main>
