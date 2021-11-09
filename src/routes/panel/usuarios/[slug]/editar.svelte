@@ -1,9 +1,13 @@
 <script context="module">
 	export async function load({fetch , page}){
-		const response = await fetch(`./detalle.json`, {
-			method: "GET",
-			request: page.params.slug
-		})
+		const response = await fetch(`./detalle`)
+		// const response = await fetch(`./detalle`, {
+		// 	method: "GET",
+		// 	headers: {
+		// 		'Content-Type': 'application/json',
+		// 	},
+		// 	body: JSON.stringify(page.params.slug),
+		// })
 		const data  = await response.json()
 		return {
 			props:{
@@ -12,17 +16,16 @@
 		}
 	}
 </script>
-
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 import { dataset_dev } from 'svelte/internal';
 
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		Alert
-	} from 'sveltestrap';
+// Importar por nombre de componentes: https://sveltestrap.js.org/
+import {
+	Breadcrumb,
+	BreadcrumbItem,
+	Alert
+} from 'sveltestrap';
 
 	export let data;
 	export let userDetails=data.userDetails

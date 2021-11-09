@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal, ModalBody, ModalHeader } from 'sveltestrap';
+	import moment from 'moment';
 
 	// export let useronroles
 	export const userDetails: object = {};
@@ -12,30 +13,26 @@
 	export let email: string;
 	export let phone: string;
 	export let gender: string;
-	export let dateOfBirth: Date;
+	export let dateOfBirth;
 	export let nationality: string;
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
 
-	export let message;
-	export let error;
-	export let color;
-	// export let user_id = userDetails.user_id
-	// export let cuit = userDetails.cuit
-	// export let firstName = userDetails.firstName
-	// export let lastName = userDetails.lastName
-	// export let email = userDetails.email
-	// export let phone = userDetails.phone
-	// export let gender = userDetails.gender
-	// export let dateOfBirth:string=userDetails.dateOfBirth
-	// export let nationality = userDetails.nationality
-	// export let studyLevel = userDetails.studyLevel
-	// export let degree = userDetails.degree
-	// export let profilePic = userDetails.profilePic
-	//  export let dateOfBirth2:Date=new Date(userDetails.dateOfBirth,)
-	// export let roles = userDetails.useronroles
+	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
+	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+		.toISOString()
+		.split('T')[0];
 
+	// export let usersonroles = []
+	// let fecha = dateString.getDate() + "/" + (dateString.getMonth() +1) + "/" + dateString.getFullYear();
+	// export let fecha = + dateString.getFullYear() + "/" + (dateString.getMonth() +1) + "/" + dateString.getDate();
+	console.log('dateOfBirth', dateOfBirth);
+	console.log('dateString', dateString);
+
+	let message;
+	let error;
+	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 0, rolDescription: 'Gestor documental' },
@@ -73,21 +70,23 @@
 	];
 
 	// Por defecto, el componente se llama como solo lectura:
-	export let isReadOnly = true;
+	export let isReadOnly = false;
 	let action = '';
 	if (isReadOnly) {
-		action = 'action="./create"';
+		// action = 'action="./create"';
 	}
 
 	/* Convierte un objeto Date en un String en formato YYY-MM-DD
 	 * @param Date
 	 * @return String
+	 * NO FUNCIONA
 	 */
 	function dateToYMD(date): string {
-		return date.getFullYear() + '-' + date.getMonth() + '-' + date.getDate();
+		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
+		return '2020-10-10';
 	}
 	const submitForm = async (): Promise<void> => {
-		const submit = await fetch(`editar.json`, {
+		const submit = await fetch(`editar`, {
 			method: 'PUT',
 			body: JSON.stringify({
 				firstName,
@@ -144,7 +143,7 @@
 					style="max-width:150px"
 				/>
 			</span>
-			<Modal isOpen={modalProfile} {toggle} body header="{firstName+" "+lastName}">
+			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
 				<Image src={profilePic} alt="Foto de perfil" />
 			</Modal>
 		</div>
@@ -266,30 +265,17 @@
 		</div>
 		<div class="col-md-4">
 			<label for="dateOfBirth" class="form-label">Fecha de nacimiento</label>
-			{#if isReadOnly}
-				<input
-					type="text"
-					id="dateOfBirth"
-					name="dateOfBirth"
-					class="form-control"
-					placeholder="1980-12-31"
-					aria-label="Fecha de nacimiento"
-					value={dateOfBirth}
-					readonly={isReadOnly}
-				/>
-				<!-- En detalles llega como fecha, en editar llega como string -->
-			{:else}
-				<input
-					type="date"
-					id="dateOfBirth"
-					name="dateOfBirth"
-					class="form-control"
-					placeholder="1980-12-31"
-					aria-label="Fecha de nacimiento"
-					bind:value={dateOfBirth}
-					readonly={isReadOnly}
-				/>
-			{/if}
+			<!-- En BD llegan invertidos el mes y día, revisar -->
+			<input
+				type="date"
+				id="dateOfBirth"
+				name="dateOfBirth"
+				class="form-control"
+				placeholder="1980-12-31"
+				aria-label="Fecha de nacimiento"
+				bind:value={newDate}
+				readonly={isReadOnly}
+			/>
 		</div>
 		<div class="col-md-4">
 			<label for="lastName" class="form-label">Nacionalidad</label>

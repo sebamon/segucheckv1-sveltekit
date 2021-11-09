@@ -1,14 +1,25 @@
 <script lang="ts">
+	import { format } from 'path/posix';
+	import { validate_store } from 'svelte/internal';
+
 	// Datos del usuario a mostrar
-	export let vehicle_id = 0;
+	export let vehicle_id: number;
 	export let domain = '';
-	export let type = 0;
-	export let brand = '';
-	export let model = '';
-	export let year = 0;
-	export let internal_id = 0;
+	export let type: string;
+	export let brand: string;
+	export let model: string;
+	export let year: number;
+	export let internal_id = vehicle_id;
 	export let chasisNumber = 0;
 	export let motorNumber = 0;
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
+
+	export let error: string;
+	export let message: string;
+	export let color;
+	export let status;
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -66,12 +77,42 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
+	const submitForm = async (): Promise<void> => {
+		const formBody = JSON.stringify({
+			domain,
+			brand,
+			model,
+			type,
+			year,
+			internal_id,
+			chasisNumber,
+			motorNumber
+			// frontPic,
+			// rightSidePic,
+			// leftSidePic,
+		});
+		console.log(formBody);
+		// 	const submit = await fetch(`editar`,{
+		// 	method : 'PUT',
+		// 	body: JSON.stringify({
+		// 	})
+		// })
+		// 	const data = await submit.json()
+		// 	message = data.message
+		// 	error = data.error
+		// 	if(data.status==='OK') {
+		// 			color='success'
+		// 		}
+		// 		if(data.status==='ERROR') color='danger'
 
-	// Por defecto, el componente se llama como solo lectura:
-	export let isReadOnly = true;
+		// 		if(data.status===200)
+		// 		{
+		// 			console.log('message', message)
+		// 		}
+	};
 </script>
 
-<form name="formVehicleDetails" id="formVehicleDetails">
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={submitForm}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -88,16 +129,23 @@
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<input
-				type="text"
+			<select
 				id="type"
 				name="type"
-				class="form-control"
-				placeholder="Rodados - Camión"
+				class="form-select"
 				aria-label="Tipo de vehículo"
-				value={vehicleTypeList[type]}
-				readonly={isReadOnly}
-			/>
+				bind:value={type}
+				required
+			>
+				<option selected disabled>Elija una opción...</option>
+				{#each vehicleTypeList as vehicleType}
+					{#if type === vehicleType}
+						<option value={vehicleType} selected>{vehicleType}</option>)
+					{:else}
+						<option value={vehicleType}>{vehicleType}</option>
+					{/if}
+				{/each}
+			</select>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -160,7 +208,7 @@
 		<div class="col-md-6">
 			<label for="chasisNumber" class="form-label">Número de chasis</label>
 			<input
-				type="date"
+				type="text"
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
@@ -183,6 +231,13 @@
 				readonly={isReadOnly}
 			/>
 		</div>
+		{#if !isReadOnly}
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-pen me-2" />Confirmar cambios
+				</button>
+			</div>
+		{/if}
 	</div>
 	{#if !isReadOnly}
 		<div class="row mb-3 g-3">

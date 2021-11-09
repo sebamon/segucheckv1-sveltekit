@@ -1,3 +1,23 @@
+<script context="module">
+	export async function load({fetch, page}){
+		const id_find = page.params.slug
+		const response = await fetch(`./${page.params.slug}/detalle`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+			},
+			request: page.params.slug
+		})
+		const data = await response.json()
+		console.log('response',data)
+		return {
+			props:{
+				data
+			}
+		}
+	}
+
+</script>
 <script lang="ts">
 	// Importar secciones de detalles:
 	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
@@ -20,21 +40,26 @@
 	} from 'sveltestrap';
 
 	// Info vehículo placeholder (esto lo recibe del servidor en estructura similar):
-	let vehicleDetails = {
-		vehicle_id: 10,
-		domain: 'AB123CD',
-		type: 43,
-		brand: 'Ford',
-		model: 'Ranger',
-		year: 2015,
-		internal_id: 1234,
-		chasisNumber: 1214161820,
-		motorNumber: 2356891256,
-		frontPicUrl: 'https://avatars.dicebear.com/api/bottts/1234.svg',
-		leftSidePicUrl: 'https://avatars.dicebear.com/api/bottts/1235.svg',
-		rigthSidePicUrl: 'https://avatars.dicebear.com/api/bottts/1236.svg',
-		backPicUrl: 'https://avatars.dicebear.com/api/bottts/1237.svg'
-	};
+	// let vehicleDetails = {
+	// 	vehicle_id: 10,
+	// 	domain: 'AB123CD',
+	// 	type: 43,
+	// 	brand: 'Ford',
+	// 	model: 'Ranger',
+	// 	year: 2015,
+	// 	internal_id: 1234,
+	// 	chasisNumber: 1214161820,
+	// 	motorNumber: 2356891256,
+	// 	frontPicUrl: 'https://avatars.dicebear.com/api/bottts/1234.svg',
+	// 	leftSidePicUrl: 'https://avatars.dicebear.com/api/bottts/1235.svg',
+	// 	rigthSidePicUrl: 'https://avatars.dicebear.com/api/bottts/1236.svg',
+	// 	backPicUrl: 'https://avatars.dicebear.com/api/bottts/1237.svg'
+	// };
+	export let data
+	// export const message = data.message
+	export let status = data.status
+	console.log('status', status)
+	export let vehicleDetails = data.vehicleDetails
 	let vehicleDocumentation = [
 		{
 			documentation_id: 20,
@@ -58,10 +83,10 @@
 
 	// Fotos del vehículo para carrusel:
 	const items = [
-		vehicleDetails.frontPicUrl,
-		vehicleDetails.leftSidePicUrl,
-		vehicleDetails.rigthSidePicUrl,
-		vehicleDetails.backPicUrl
+		// vehicleDetails.frontPicUrl,
+		// vehicleDetails.leftSidePicUrl,
+		// vehicleDetails.rigthSidePicUrl,
+		// vehicleDetails.backPicUrl
 	];
 	let activeIndex = 0;
 </script>
@@ -96,7 +121,7 @@
 		<h5>Detalles del vehículo</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/vehiculos/editar"
+		<Button color="primary" href="/panel/vehiculos/{vehicleDetails.vehicle_id}/editar"
 			><i class="fas fa-pen me-2" />Editar</Button
 		>
 	</div>

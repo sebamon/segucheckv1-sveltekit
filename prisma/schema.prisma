@@ -201,12 +201,11 @@ model users {
   nationality  String
   studyLevel   String
   degree       String
-  profilePic   String
+  profilePic   String?
   password     String
+  active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
-
-  
 }
 
 model usersonroles {
@@ -242,7 +241,7 @@ model vehicle {
   motorNumber                 String?
   frontPicUrl                 String?
   leftSidePicUrl              String?
-  rigthSidePicUrl             String?
+  rightSidePicUrl             String?
   backPicUrl                  String?
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime?
