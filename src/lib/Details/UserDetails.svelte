@@ -150,7 +150,7 @@
 		{#if !isReadOnly}
 			<div class="col-md-6">
 				<label for="profilePic" class="form-label">Foto de perfil</label>
-				<input class="form-control" type="file" id="profilePic" />
+				<input class="form-control" type="file" accept="image/*" id="profilePic" />
 			</div>
 		{/if}
 	</div>
