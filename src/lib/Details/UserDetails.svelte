@@ -147,7 +147,6 @@
 				profilePic: profilePic
 			},
 			validationSchema: yup.object().shape({
-				dischargeDate: yup.date().required('Debes completar este campo.'),
 				cuit: yup
 					.string()
 					.required('Debes completar este campo.')

@@ -78,6 +78,7 @@
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
 	const submitForm = async (): Promise<void> => {
+		// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
 		const formBody = JSON.stringify({
 			domain,
 			brand,
@@ -91,7 +92,7 @@
 			// rightSidePic,
 			// leftSidePic,
 		});
-		console.log(formBody);
+		/* console.log(formBody); */
 		// 	const submit = await fetch(`editar`,{
 		// 	method : 'PUT',
 		// 	body: JSON.stringify({
@@ -110,9 +111,81 @@
 		// 			console.log('message', message)
 		// 		}
 	};
+
+	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import es from 'yup-es';
+	yup.setLocale(es);
+	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
+	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
+	*/
+	let regexNombre =
+		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð&,.'\s-]+$/u;
+	let regexAZNum = /^[A-Z0-9]+$/i;
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			domain: domain,
+			brand: brand,
+			model: model,
+			type: type,
+			year: year,
+			internal_id: internal_id,
+			chasisNumber: chasisNumber,
+			motorNumber: motorNumber
+			// frontPic: frontPic,
+			// rightSidePic: rightSidePic,
+			// leftSidePic: leftSidePic
+		},
+		validationSchema: yup.object().shape({
+			domain: yup
+				.string()
+				.required('Debes completar este campo.')
+				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+			brand: yup
+				.string()
+				.trim()
+				.required('Debes completar este campo.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			model: yup
+				.string()
+				.required('Debes completar este campo.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			type: yup
+				.string()
+				.required('Debes completar este campo.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.'),
+			year: yup
+				.number()
+				.required('Debes completar este campo.')
+				.min(1900, 'El año es demasiado bajo.')
+				.max(9999, 'El año es demasiado alto.'),
+			internal_id: yup
+				.string()
+				.required('Debes completar este campo.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			chasisNumber: yup
+				.string()
+				.required('Debes completar este campo.')
+				.min(11, 'Este campo debe ser al menos ${max} caracteres.')
+				.max(17, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+			motorNumber: yup
+				.string()
+				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+		}),
+		onSubmit: (values) => {
+			// -- Muestra resultado en submit: BORRAR --
+			alert(JSON.stringify(values));
+		}
+	});
 </script>
 
-<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={submitForm}>
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -123,9 +196,14 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-				value={domain}
+				value={$form.domain}
+				on:blur={handleChange}
+				class:invalid={$errors.domain}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.domain}
+				<small class="form-error">{$errors.domain}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
@@ -134,7 +212,9 @@
 				name="type"
 				class="form-select"
 				aria-label="Tipo de vehículo"
-				bind:value={type}
+				bind:value={$form.type}
+				on:blur={handleChange}
+				class:invalid={$errors.type}
 				required
 			>
 				<option selected disabled>Elija una opción...</option>
@@ -146,6 +226,9 @@
 					{/if}
 				{/each}
 			</select>
+			{#if $errors.type}
+				<small class="form-error">{$errors.type}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -158,9 +241,14 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-				value={brand}
+				value={$form.brand}
+				on:blur={handleChange}
+				class:invalid={$errors.brand}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.brand}
+				<small class="form-error">{$errors.brand}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="model" class="form-label">Modelo</label>
@@ -171,9 +259,14 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-				value={model}
+				value={$form.model}
+				on:blur={handleChange}
+				class:invalid={$errors.model}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.model}
+				<small class="form-error">{$errors.model}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -186,9 +279,16 @@
 				class="form-control"
 				placeholder="2015"
 				aria-label="Año"
-				value={year}
+				min="1900"
+				max="9999"
+				value={$form.year}
+				on:blur={handleChange}
+				class:invalid={$errors.year}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.year}
+				<small class="form-error">{$errors.year}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="internal_id" class="form-label">Número interno</label>
@@ -199,9 +299,14 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				value={internal_id}
+				value={$form.internal_id}
+				on:blur={handleChange}
+				class:invalid={$errors.internal_id}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.internal_id}
+				<small class="form-error">{$errors.internal_id}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -214,9 +319,14 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
-				value={chasisNumber}
+				value={$form.chasisNumber}
+				on:blur={handleChange}
+				class:invalid={$errors.chasisNumber}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.chasisNumber}
+				<small class="form-error">{$errors.chasisNumber}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="motorNumber" class="form-label">Número de motor</label>
@@ -227,26 +337,34 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Número de motor"
-				value={motorNumber}
+				value={$form.motorNumber}
+				on:blur={handleChange}
+				class:invalid={$errors.motorNumber}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.motorNumber}
+				<small class="form-error">{$errors.motorNumber}</small>
+			{/if}
 		</div>
-		{#if !isReadOnly}
-			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
-				</button>
-			</div>
-		{/if}
 	</div>
 	{#if !isReadOnly}
 		<div class="row mb-3 g-3">
 			<div class="col-md-6" />
 			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
 				</button>
 			</div>
 		</div>
 	{/if}
 </form>
+
+<style>
+	#domain, #chasisNumber, #motorNumber {
+		text-transform: uppercase;
+	}
+</style>
