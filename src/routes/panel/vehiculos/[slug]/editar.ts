@@ -5,6 +5,7 @@ const prisma = new PrismaClient()
 export const put = async (request) =>{
     let id_find = Number(request.params.slug)
     const formBody = JSON.parse(request.body)
+    console.log(formBody)
 
     try{
         const vehicleEdit = await prisma.vehicle.update({

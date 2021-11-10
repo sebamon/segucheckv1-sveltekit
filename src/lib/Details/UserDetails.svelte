@@ -102,7 +102,9 @@
 				// roles_assigned,
 			})
 		});
+		console.log(submit)
 		const data = await submit.json();
+		console.log(data)
 		message = data.message;
 		error = data.error;
 		if (data.status === 'OK') {

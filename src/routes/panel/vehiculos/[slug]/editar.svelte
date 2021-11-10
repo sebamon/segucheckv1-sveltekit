@@ -33,9 +33,9 @@ import {
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
 
-	async function submit(){
-		
-	} 
+	function handleSubmit() {
+		console.log('llego el submit')
+	}
 
 </script>
 
@@ -74,4 +74,4 @@ import {
   </Alert>
 {/if}
 
-<VehicleDetails {...vehicleDetails} {isReadOnly} />
+<VehicleDetails {...vehicleDetails} {isReadOnly} on:submit{handleSubmit}/>
