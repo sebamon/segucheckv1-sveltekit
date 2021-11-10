@@ -4,7 +4,7 @@
 		try {
 			const response = await fetch(`./usuarios/usuarios`)
 			const data = await response.json();
-			console.log('ssr data:', data)
+			/* console.log('ssr data:', data) */
 			return {
 				props: {
 					data

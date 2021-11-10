@@ -4,7 +4,7 @@ const prisma = new PrismaClient()
 
 export const get = async ( request ) =>{
     let id_find = Number(request.params.slug)
-    console.log('Busqueda para Prisma', typeof(id_find))
+    /* console.log('Busqueda para Prisma', typeof(id_find)) */
     try{
         const userDetails = await prisma.users.findUnique({
             where :{

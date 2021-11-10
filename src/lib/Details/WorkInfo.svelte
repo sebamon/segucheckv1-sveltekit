@@ -18,7 +18,7 @@
 	*/
 	let regexNombre =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
-	const { form, errors, state, isValid, isSubmitting, touched, handleChange, handleSubmit } =
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
 			initialValues: {
 				dischargeDate: dischargeDate,
@@ -33,22 +33,22 @@
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'El campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				hiringMode: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'El campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				unionAgreement: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'El campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				job: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'El campo solo permite letras y espacios, no números ni otros símbolos.')
+					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.')
 			}),
 			onSubmit: (values) => {
 				// -- Muestra resultado en submit: BORRAR --

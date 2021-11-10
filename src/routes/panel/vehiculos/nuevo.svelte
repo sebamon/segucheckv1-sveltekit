@@ -286,15 +286,15 @@
 		<div class="col-md-6">
 			<div class="mb-3">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input class="form-control" type="file" id="frontPic" bind:value={frontPic}/>
+				<input class="form-control" type="file" accept="image/*" id="frontPic" bind:value={frontPic}/>
 			</div>
 			<div class="mb-3">
 				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
-				<input class="form-control" type="file" id="leftSidePic" bind:value={leftSidePic} />
+				<input class="form-control" type="file" accept="image/*" id="leftSidePic" bind:value={leftSidePic} />
 			</div>
 			<div class="mb-3">
 				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
-				<input class="form-control" type="file" id="rigthSidePic" bind:value={rightSidePic} />
+				<input class="form-control" type="file" accept="image/*" id="rigthSidePic" bind:value={rightSidePic} />
 			</div>
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">

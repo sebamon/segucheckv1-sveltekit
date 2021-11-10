@@ -24,7 +24,7 @@ export const get = async () => {
                 }
             }
         })
-        console.log('operators.length',operators.length)
+        /* console.log('operators.length',operators.length) */
         if(operators.length>0){
             return {
                 body: {

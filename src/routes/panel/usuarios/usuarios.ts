@@ -21,7 +21,7 @@ export const get = async () =>{
                 },
             }
         })
-        console.log("result: ",users)
+        /* console.log("result: ",users) */
         return {
             body: {
                 users: users,

@@ -83,7 +83,21 @@
 		</div>
 		<div class="col-md-6">
 			<label for="riskAnalysis" class="form-label">Análisis de riesgos</label>
-			<input class="form-control" type="file" id="riskAnalysis" />
+			<!-- Acepta documentos, planillas, presentaciones, imágenes y sus variantes libres-->
+			<input
+				class="form-control"
+				type="file"
+				accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
+				application/vnd.oasis.opendocument.text, 
+				application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
+				application/vnd.oasis.opendocument.spreadsheet
+				application/vnd.ms-powerpoint, pplication/vnd.openxmlformats-officedocument.presentationml.slideshow, 
+				application/vnd.openxmlformats-officedocument.presentationml.presentation, 
+				application/vnd.oasis.opendocument.presentation,
+				text/plain, application/vnd.oasis.opendocument.text
+				application/pdf, image/*"
+				id="riskAnalysis"
+			/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
