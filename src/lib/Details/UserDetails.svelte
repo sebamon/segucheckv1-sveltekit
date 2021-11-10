@@ -86,6 +86,40 @@
 		return '2020-10-10';
 	}
 
+	const submitForm = async (): Promise<void> => {
+		const submit = await fetch(`editar`, {
+			method: 'PUT',
+			body: JSON.stringify({
+				firstName,
+				lastName,
+				cuit,
+				email,
+				phone,
+				dateOfBirth,
+				degree,
+				gender,
+				nationality,
+				studyLevel
+				// roles_assigned,
+			})
+		});
+		const data = await submit.json();
+		message = data.message;
+		error = data.error;
+		if (data.status === 'OK') {
+			color = 'success';
+		}
+		if (data.status === 'ERROR') color = 'danger';
+
+		if (data.status === 200) {
+			console.log('message', message);
+		}
+	};
+
+	// Abrir modal para ver foto:
+	let modalProfile = false;
+	const toggle = () => (modalProfile = !modalProfile);
+	
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -97,9 +131,10 @@
 	*/
 	let regexNombre =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
-	const { form, errors, state, isValid, isSubmitting, touched, handleChange, handleSubmit } =
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
 			initialValues: {
+				user_id: user_id,
 				cuit: cuit,
 				firstName: firstName,
 				lastName: lastName,
@@ -177,40 +212,6 @@
 				alert(JSON.stringify(values));
 			}
 		});
-
-	const submitForm = async (): Promise<void> => {
-		const submit = await fetch(`editar`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel
-				// roles_assigned,
-			})
-		});
-		const data = await submit.json();
-		message = data.message;
-		error = data.error;
-		if (data.status === 'OK') {
-			color = 'success';
-		}
-		if (data.status === 'ERROR') color = 'danger';
-
-		if (data.status === 200) {
-			console.log('message', message);
-		}
-	};
-
-	// Abrir modal para ver foto:
-	let modalProfile = false;
-	const toggle = () => (modalProfile = !modalProfile);
 </script>
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
@@ -257,7 +258,7 @@
 				class="form-control"
 				placeholder="1234"
 				aria-label="Número ID"
-				value={user_id}
+				value={$form.user_id}
 				readonly
 			/>
 		</div>

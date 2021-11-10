@@ -111,7 +111,6 @@
 				placeholder="Texas"
 				aria-label="Relación laboral"
 				readonly={isReadOnly}
-				on:change={handleChange}
 				on:blur={handleChange}
 				bind:value={$form.employementRel}
 				class:invalid={$errors.employementRel}
@@ -132,7 +131,6 @@
 				placeholder="A tiempo completo"
 				aria-label="Modalidad de contratación"
 				readonly={isReadOnly}
-				on:change={handleChange}
 				on:blur={handleChange}
 				bind:value={$form.hiringMode}
 				class:invalid={$errors.hiringMode}
@@ -151,7 +149,6 @@
 				placeholder="Federación Sindicatos Unidos Petroleros"
 				aria-label="Relación laboral"
 				readonly={isReadOnly}
-				on:change={handleChange}
 				on:blur={handleChange}
 				bind:value={$form.unionAgreement}
 				class:invalid={$errors.unionAgreement}
@@ -172,7 +169,6 @@
 				placeholder="Técnico Vertical"
 				aria-label="Puesto de trabajo"
 				readonly={isReadOnly}
-				on:change={handleChange}
 				on:blur={handleChange}
 				bind:value={$form.job}
 			/>
