@@ -1,6 +1,6 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Image, Modal, ModalBody, ModalHeader } from 'sveltestrap';
+	import { Image, Modal } from 'sveltestrap';
 	import moment from 'moment';
 
 	// export let useronroles
@@ -85,6 +85,99 @@
 		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
 		return '2020-10-10';
 	}
+
+	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import es from 'yup-es';
+	yup.setLocale(es);
+	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
+	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
+	*/
+	let regexNombre =
+		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
+	const { form, errors, state, isValid, isSubmitting, touched, handleChange, handleSubmit } =
+		createForm({
+			initialValues: {
+				cuit: cuit,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				phone: phone,
+				gender: gender,
+				nationality: nationality,
+				studyLevel: studyLevel,
+				degree: degree,
+				profilePic: profilePic
+			},
+			validationSchema: yup.object().shape({
+				dischargeDate: yup.date().required('Debes completar este campo.'),
+				cuit: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
+				firstName: yup
+					.string()
+					.trim()
+					.required('Debes completar este campo.')
+					.matches(
+						regexNombre,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				lastName: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexNombre,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				email: yup
+					.string()
+					.required('Debes completar este campo.')
+					.email('El formato de email es incorrecto')
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				phone: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
+				gender: yup
+					.string()
+					.required('Debes completar este campo.')
+					.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
+				nationality: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexNombre,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				studyLevel: yup
+					.string()
+					.matches(
+						regexNombre,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+				degree: yup
+					.string()
+					.matches(
+						regexNombre,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+			}),
+			onSubmit: (values) => {
+				// -- Muestra resultado en submit: BORRAR --
+				alert(JSON.stringify(values));
+			}
+		});
+
 	const submitForm = async (): Promise<void> => {
 		const submit = await fetch(`editar`, {
 			method: 'PUT',
@@ -120,7 +213,7 @@
 	const toggle = () => (modalProfile = !modalProfile);
 </script>
 
-<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
 		<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 		{#if isReadOnly}
@@ -171,30 +264,40 @@
 		<div class="col-md-6">
 			<label for="cuit" class="form-label">Número CUIT</label>
 			<input
-				type="text"
+				type="number"
 				id="cuit"
 				name="cuit"
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
+				bind:value={$form.cuit}
+				on:blur={handleChange}
 				readonly={isReadOnly}
-				bind:value={cuit}
+				class:invalid={$errors.cuit}
 			/>
+			{#if $errors.cuit}
+				<small class="form-error">{$errors.cuit}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="name" class="form-label">Nombre</label>
+			<label for="firstName" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="name"
-				name="name"
+				id="firstName"
+				name="firstName"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
-				bind:value={firstName}
+				bind:value={$form.firstName}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.firstName}
 			/>
+			{#if $errors.firstName}
+				<small class="form-error">{$errors.firstName}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="lastName" class="form-label">Apellido</label>
@@ -205,9 +308,14 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="Apellido"
-				bind:value={lastName}
+				bind:value={$form.lastName}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.lastName}
 			/>
+			{#if $errors.lastName}
+				<small class="form-error">{$errors.lastName}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -220,9 +328,14 @@
 				class="form-control"
 				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
-				bind:value={email}
+				bind:value={$form.email}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.email}
 			/>
+			{#if $errors.email}
+				<small class="form-error">{$errors.email}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="phone" class="form-label">Teléfono</label>
@@ -233,9 +346,14 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				bind:value={phone}
+				bind:value={$form.phone}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.phone}
 			/>
+			{#if $errors.phone}
+				<small class="form-error">{$errors.phone}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -253,7 +371,15 @@
 					readonly
 				/>
 			{:else}
-				<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
+				<select
+					id="gender"
+					class="form-select"
+					aria-label="Género"
+					required
+					bind:value={$form.gender}
+					on:blur={handleChange}
+					class:invalid={$errors.gender}
+				>
 					<option disabled>Elija una opción...</option>
 					{#each genderList as thisGender}
 						<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
@@ -261,6 +387,9 @@
 						>
 					{/each}
 				</select>
+				{#if $errors.gender}
+					<small class="form-error">{$errors.gender}</small>
+				{/if}
 			{/if}
 		</div>
 		<div class="col-md-4">
@@ -274,21 +403,27 @@
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
 				bind:value={newDate}
+				on:blur={handleChange}
 				readonly={isReadOnly}
 			/>
 		</div>
 		<div class="col-md-4">
-			<label for="lastName" class="form-label">Nacionalidad</label>
+			<label for="nationality" class="form-label">Nacionalidad</label>
 			<input
 				type="text"
-				id="lastName"
-				name="lastName"
+				id="nationality"
+				name="nationality"
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				bind:value={nationality}
+				bind:value={$form.nationality}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.nationality}
 			/>
+			{#if $errors.nationality}
+				<small class="form-error">{$errors.nationality}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -310,7 +445,9 @@
 					id="studyLevel"
 					class="form-select"
 					aria-label="Nivel de formación"
-					bind:value={studyLevel}
+					bind:value={$form.studyLevel}
+					on:blur={handleChange}
+					class:invalid={$errors.studyLevel}
 				>
 					<option disabled>Elija una opción...</option>
 					{#each studyLevelList as thisStudyLevel}
@@ -319,6 +456,9 @@
 						</option>
 					{/each}
 				</select>
+				{#if $errors.studyLevel}
+					<small class="form-error">{$errors.studyLevel}</small>
+				{/if}
 			{/if}
 		</div>
 		<div class="col-md-6">
@@ -330,10 +470,14 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				bind:value={degree}
+				bind:value={$form.degree}
+				on:blur={handleChange}
 				readonly={isReadOnly}
-				required={!isReadOnly}
+				class:invalid={$errors.degree}
 			/>
+			{#if $errors.degree}
+				<small class="form-error">{$errors.degree}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -355,8 +499,12 @@
 		</div>
 		{#if !isReadOnly}
 			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
 				</button>
 			</div>
 		{/if}
