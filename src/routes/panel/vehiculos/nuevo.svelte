@@ -3,9 +3,10 @@
 	import {
 		Button,
 		Breadcrumb,
-		BreadcrumbItem
+		BreadcrumbItem,
+		Alert
 	} from 'sveltestrap';
-
+	import type { Color } from 'sveltestrap/src/shared';
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
 		'Aeronaves - Avión Comercial',
@@ -62,6 +63,81 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
+	
+	let form
+	let vehicle_id : number
+	let domain : string
+	let brand : string 
+	let model : number
+	let type : string
+	let year : number
+	let intNumber : number
+	let chasis : string
+	let motor : string
+	let frontPic:FileReader
+	let rightSidePic:ImageData
+	let leftSidePic=[]
+	
+	export let status:string
+	export let message:string
+	export let color: Color
+
+	const submitForm = async ():Promise<any> => {
+
+		form = document.getElementById('formVehicleDetails')
+		try{
+			const submit = await fetch('vehiculos', {
+				method : "POST",
+				headers: {
+					'Contex-Type' :'application/json',
+				},
+				body: JSON.stringify({
+					domain,
+					brand,
+					model,
+					type,
+					year,
+					intNumber,
+					chasis,
+					motor,
+					frontPic,
+					rightSidePic,
+					leftSidePic,
+				})
+			})
+			const data = await submit.json()
+			message = data.message
+			status = data.status
+
+				if(data.status==='OK') {
+					cleanPage();
+				}
+				color = data.status==='OK' ? 'success' : 'danger'
+
+				if(data.status===200){
+					console.log('message', message)
+				}
+		}catch(err)
+		{
+			throw new Error
+		}
+	};
+
+	function cleanPage(){
+		vehicle_id = null
+		domain = ''
+		brand = ''
+		model = null
+		type = ''
+		year = 0
+		intNumber =null
+		chasis = ''
+		motor = ''
+		frontPic = null
+		rightSidePic = null
+		leftSidePic = null
+	}
+
 </script>
 
 <svelte:head>
@@ -85,8 +161,19 @@
 	</div>
 </header>
 
+{#if status}
+<Alert color='{color}'> 
+    <h4 class="alert-heading text-capitalize">{status}</h4>
+    {message}
+    <a href="/panel/vehiculos" class="alert-link">
+      Ver Vehiculos
+    </a>
+    .
+  </Alert>
+  {/if}
+
 <!-- Formulario nuevo usuario -->
-<form name="formVehicleDetails" id="formVehicleDetails" action="./create">
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault="{submitForm}" bind:this={form}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -97,15 +184,16 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
+				bind:value={domain}
 				required
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select id="type" class="form-select" aria-label="Tipo de vehículo" required>
+			<select id="type" class="form-select" aria-label="Tipo de vehículo" bind:value={type} required>
 				<option selected disabled>Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType, i}
-					<option value={i}>{vehicleType}</option>
+				{#each vehicleTypeList as vehicleType}
+					<option value={vehicleType}>{vehicleType}</option>
 				{/each}
 			</select>
 		</div>
@@ -120,6 +208,7 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
+				bind:value={brand}
 				required
 			/>
 		</div>
@@ -132,6 +221,7 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
+				bind:value={model}
 				required
 			/>
 		</div>
@@ -149,6 +239,7 @@
 				min="1950"
 				max="9999"
 				step="1"
+				bind:value={year}
 				required
 			/>
 		</div>
@@ -160,6 +251,7 @@
 				name="internal_id"
 				class="form-control"
 				placeholder="001234"
+				bind:value={intNumber}
 				aria-label="Número interno"
 			/>
 		</div>
@@ -168,12 +260,13 @@
 		<div class="col-md-6">
 			<label for="chasisNumber" class="form-label">Número de chasis</label>
 			<input
-				type="date"
+				type="text"
 				id="chasisNumber"
 				name="chasisNumber"
 				class="form-control"
 				placeholder="1214161820"
 				aria-label="Número de chasis"
+				bind:value={chasis}
 			/>
 		</div>
 		<div class="col-md-6">
@@ -185,6 +278,7 @@
 				class="form-control"
 				placeholder="2356891256"
 				aria-label="Número de motor"
+				bind:value={motor}
 			/>
 		</div>
 	</div>
@@ -192,15 +286,15 @@
 		<div class="col-md-6">
 			<div class="mb-3">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input class="form-control" type="file" id="frontPic" />
+				<input class="form-control" type="file" accept="image/*" id="frontPic" bind:value={frontPic}/>
 			</div>
 			<div class="mb-3">
-				<label for="leftSidePic" class="form-label">Foto del lado derecho</label>
-				<input class="form-control" type="file" id="leftSidePic" />
+				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
+				<input class="form-control" type="file" accept="image/*" id="leftSidePic" bind:value={leftSidePic} />
 			</div>
 			<div class="mb-3">
-				<label for="rigthSidePic" class="form-label">Foto del lado izquierdo</label>
-				<input class="form-control" type="file" id="rigthSidePic" />
+				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
+				<input class="form-control" type="file" accept="image/*" id="rigthSidePic" bind:value={rightSidePic} />
 			</div>
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">

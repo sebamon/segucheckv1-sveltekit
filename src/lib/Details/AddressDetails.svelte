@@ -1,5 +1,7 @@
 <script lang="ts">
 	// Datos de los domicilios a mostrar
+	export let user_id = 1;
+
 	export let countryOfOrigin = "";
     export let stateOfOrigin =  "";
     export let cityOfOrigin =  "";
@@ -12,9 +14,22 @@
     export let zipCodeOfResidence =  0;
     export let addressOfResidence =  "";
     export let phoneOfResidence =  "";
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
 </script>
 
 <form name="formUserAddress" id="formUserAddress">
+    {#if isReadOnly}
+    <div class="hstack gap-3">
+        <h2 class="my-4"><i class="fas fa-house-user me-4" />Domicilios</h2>
+		<div class="ms-auto">
+			<a class="btn btn-primary" href="/panel/operarios/{user_id}/domicilios">
+				<i class="fas fa-pen me-2" />Editar
+			</a>
+		</div>
+	</div>
+    {/if}
     <section>
         <div class="row mt-3 g-3">
             <h3>Domicilio de origen</h3>
@@ -30,7 +45,7 @@
                     placeholder="Estados Unidos"
                     aria-label="País"
                     value={countryOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -43,7 +58,7 @@
                     placeholder="Texas"
                     aria-label="Provincia / Estado"
                     value={stateOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
@@ -58,7 +73,7 @@
                     placeholder="Houston"
                     aria-label="Localidad"
                     value={cityOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -71,7 +86,7 @@
                     placeholder="77001"
                     aria-label="Código postal"
                     value={zipCodeOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
@@ -86,7 +101,7 @@
                     placeholder="6815 Eastwood St."
                     aria-label="Dirección"
                     value={addressOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -99,7 +114,7 @@
                     placeholder="+1-281-555-0185"
                     aria-label="Teléfono"
                     value={phoneOfOrigin}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
@@ -119,7 +134,7 @@
                     placeholder="Estados Unidos"
                     aria-label="País"
                     value={countryOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -132,7 +147,7 @@
                     placeholder="Texas"
                     aria-label="Provincia / Estado"
                     value={stateOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
@@ -147,7 +162,7 @@
                     placeholder="Houston"
                     aria-label="Localidad"
                     value={cityOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -160,7 +175,7 @@
                     placeholder="77001"
                     aria-label="Código postal"
                     value={zipCodeOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
@@ -175,7 +190,7 @@
                     placeholder="6815 Eastwood St."
                     aria-label="Dirección"
                     value={addressOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
             <div class="col-md-6">
@@ -188,9 +203,19 @@
                     placeholder="+1-281-555-0185"
                     aria-label="Teléfono"
                     value={phoneOfResidence}
-                    readonly
+                    readonly={isReadOnly}
                 />
             </div>
         </div>
     </section>
+    {#if !isReadOnly}
+	<div class="row mb-3 g-3">
+        <div class="col-md-6"></div>
+        <div class="col-md-6 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-pen me-2" />Confirmar cambios
+            </button>
+        </div>
+	</div>
+    {/if}
 </form>

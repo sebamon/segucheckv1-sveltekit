@@ -1,9 +1,6 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
-			method: 'GET',
-			request: page.params.slug
-		});
+		const response = await fetch(`./${page.params.slug}/detalle`);
 		const data = await response.json();
 		return {
 			props: {
@@ -19,14 +16,21 @@
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
+	console.log(data);
 	export let userDetails = data.userDetails;
+	export let isReadOnly = true;
+	// let f = new Date(data.userDetails.dateOfBirth)
+	// let fecha = f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear();
 </script>
 
 <svelte:head>
-	<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	{#if data.status == 'OK'}
+		<title>Usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	{:else}
+		<title>Usuario: Inexistente - SeguCheck</title>
+	{/if}
 </svelte:head>
-
-<header class="row">
+<header>
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
@@ -34,19 +38,19 @@
 		<BreadcrumbItem>
 			<a href="/panel/usuarios">Usuarios</a>
 		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/usuarios/{userDetails.user_id}/">{userDetails.user_id}</a>
+		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-auto">
-		<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<h5>Detalles del usuario</h5>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/usuarios/{userDetails.user_id}/editar">
-			<i class="fas fa-pen me-2" />Editar
-		</Button>
-	</div>
+	<h1>{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+	<h5>Detalles del usuario</h5>
 </header>
 
 <main>
-	<UserDetails {...userDetails} />
+	<p>
+		{isReadOnly}
+		{data.message}
+	</p>
+	<UserDetails {...userDetails} {isReadOnly} />
 </main>

@@ -1,6 +1,40 @@
+<script context="module">
+	export async function load({ fetch, page }) {
+		try {
+			const response = await fetch('./operarios/operarios', {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json'
+				}
+			});
+			const data = await response.json();
+			console.log('data', data);
+			return {
+				props: {
+					data
+				}
+			};
+		} catch (e) {
+			console.log('error', e);
+			return {
+				props: {}
+			};
+		}
+	}
+</script>
+
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	export let data;
+	export let operators = data.operators;
+
+	interface user {
+		user_id: number;
+		firstName: string;
+		lastName: string;
+		cuit: string;
+	}
 </script>
 
 <svelte:head>
@@ -27,138 +61,77 @@
 </header>
 
 <main>
-	<div class="table-responsive">
-		<table class="table table-striped table-hover align-middle">
-			<thead>
-				<tr>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-				</tr>
-				<tr>
-					<th scope="col">ID Cuenta</th>
-					<th scope="col">DNI</th>
-					<th scope="col">Nombre</th>
-					<th scope="col">Apellido</th>
-					<th scope="col">Estado Habilitación</th>
-				</tr>
-			</thead>
-			<tbody>
-				<tr>
-					<td>1,001</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,002</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,004</td>
-					<td>text</td>
-					<td>random</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,005</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>placeholder</td>
-				</tr>
-				<tr>
-					<td>1,006</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,007</td>
-					<td>placeholder</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>irrelevant</td>
-				</tr>
-				<tr>
-					<td>1,008</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,009</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,010</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,011</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,012</td>
-					<td>text</td>
-					<td>placeholder</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,013</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>visual</td>
-				</tr>
-				<tr>
-					<td>1,014</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,015</td>
-					<td>random</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>text</td>
-				</tr>
-			</tbody>
-		</table>
-	</div>
+	{#if data.status === 'INFO'}
+		<Alert color="secondary">
+			<h4 class="alert-heading text-capitalize">Atención:</h4>
+			<p>{data.message}</p>
+		</Alert>
+	{:else if operators.length > 0}
+		<div class="table-responsive">
+			<table class="table table-striped table-hover align-middle">
+				<thead>
+					<tr>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+					</tr>
+					<tr>
+						<th scope="col">ID Cuenta</th>
+						<th scope="col">DNI</th>
+						<th scope="col">Nombre</th>
+						<th scope="col">Apellido</th>
+						<th scope="col">Estado Habilitación</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each operators as operator}
+						<tr>
+							<td>
+								<a
+									class="text-decoration-none text-dark"
+									href="./operarios/{operator.users.user_id}"
+								>
+									{operator.users.user_id}
+								</a>
+							</td>
+							<td>
+								<a
+									class="text-decoration-none text-dark"
+									href="./operarios/{operator.users.user_id}"
+								>
+									{operator.users.cuit}
+								</a>
+							</td>
+							<td>
+								<a
+									class="text-decoration-none text-dark"
+									href="./operarios/{operator.users.user_id}"
+								>
+									{operator.users.firstName}
+								</a>
+							</td>
+							<td>
+								<a
+									class="text-decoration-none text-dark"
+									href="./operarios/{operator.users.user_id}"
+								>
+									{operator.users.lastName}
+								</a>
+							</td>
+							<td>
+								<a
+									class="text-decoration-none text-dark"
+									href="./operarios/{operator.users.user_id}"
+								>
+									Habilitado
+								</a>
+							</td>
+						</tr>
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{/if}
 </main>

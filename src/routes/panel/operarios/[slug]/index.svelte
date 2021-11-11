@@ -8,7 +8,6 @@
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
-		Button,
 		Breadcrumb,
 		BreadcrumbItem,
 		TabContent,
@@ -24,7 +23,7 @@
 		email: 'juan.perez@ejemplo.com',
 		phone: '2993334444',
 		gender: 'M',
-		dateOfBirth: new Date('1980-12-31'),
+		dateOfBirth: new Date('1980/01/12'),
 		nationality: 'Argentina',
 		studyLevel: 'Universitario completo',
 		degree: 'Licenciado',
@@ -62,6 +61,7 @@
 		job: 'Técnico Vertical'
 	};
 	let userAddress = {
+		user_id: 1234,
 		countryOfOrigin: 'Estados Unidos',
 		stateOfOrigin: 'Texas',
 		cityOfOrigin: 'Houston',
@@ -86,7 +86,7 @@
 	<title>Operario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
 
-<header class="row">
+<header>
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
@@ -94,27 +94,29 @@
 		<BreadcrumbItem>
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/operarios/{userDetails.user_id}">{userDetails.user_id}</a>
+		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
-	<div class="col-auto">
-		<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
-		<p class="lead">Detalles del operario</p>
-	</div>
-	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/operarios/editar">
-			<i class="fas fa-pen me-2" />Editar
-		</Button>
-	</div>
+	<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
+	<p class="lead">Detalles del operario</p>
 </header>
 
 <main>
 	<TabContent>
 		<TabPane tabId="userDetails" tab="Datos básicos" active>
-			<h2 class="my-4">Datos básicos</h2>
 			<UserDetails {...userDetails} />
 		</TabPane>
 		<TabPane tabId="docDetails" tab="Habilitaciones">
-			<h2 class="my-4">Habilitaciones</h2>
+			<div class="hstack gap-3">
+				<h2 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h2>
+				<div class="ms-auto">
+					<a class="btn btn-primary" href="/panel/operarios/{userDetails.user_id}/habilitaciones">
+						<i class="fas fa-plus me-2" />Nuevo
+					</a>
+				</div>
+			</div>
 			{#if userDocumentation.length == 0}
 				<div class="alert alert-warning" role="alert">
 					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
@@ -129,15 +131,12 @@
 			{/if}
 		</TabPane>
 		<TabPane tabId="userWorkInfo" tab="Datos laborales">
-			<h2 class="my-4">Datos laborales</h2>
 			<WorkInfo {...userWorkInfo} />
 		</TabPane>
 		<TabPane tabId="userAddress" tab="Domicilios">
-			<h2 class="my-4">Domicilios</h2>
 			<AddressDetails {...userAddress} />
 		</TabPane>
 		<TabPane tabId="userHealthInfo" tab="Datos médicos">
-			<h2 class="my-4">Datos médicos</h2>
 			<HealthInfo {...userHealthInfo} />
 		</TabPane>
 	</TabContent>

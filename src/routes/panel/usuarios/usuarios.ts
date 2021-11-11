@@ -4,7 +4,6 @@ const prisma = new PrismaClient()
 
 export const get = async () =>{
     try{
-        const aw=await prisma.$connect()
         const users = await prisma.users.findMany({
             where: {
                 
@@ -22,9 +21,12 @@ export const get = async () =>{
                 },
             }
         })
+        /* console.log("result: ",users) */
         return {
             body: {
-                users,
+                users: users,
+                message: 'Busqueda de Usuarios Exitosa',
+                status: 'OK'
             }
         }
     }catch (e){
@@ -41,7 +43,7 @@ export const get = async () =>{
                 body: {
                     status: 'ERROR',
                     message: 'El Usuario no se pudo crear, email ya existente',
-                    data : e
+                    users : {}
                 }
             }
         }

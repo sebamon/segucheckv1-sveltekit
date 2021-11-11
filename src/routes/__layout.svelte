@@ -25,4 +25,16 @@
 		flex-direction: column;
 		justify-content: space-between;
 	}
+	/* Estilos de texto de error: https://svelte-forms-lib-sapper-docs.vercel.app/styling */
+    :global(.form-error) {
+      color: #fc3939;
+    }
+	:global(.invalid) {
+		border-color: #fc3939;
+		outline-color: #fc3939;
+    }
+	:global(.valid) {
+		border-color: #13b955;
+		outline-color: #13b955;
+    }
 </style>

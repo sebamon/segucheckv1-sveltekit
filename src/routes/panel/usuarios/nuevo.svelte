@@ -1,6 +1,14 @@
+<!-- <script context="module">
+	export async function load({fetch , page}) {
+		const response = await fetch(`../../../api/roles`)
+		console.log(response)
+		const roles = await response.json()
+		console.log(roles)
+	}
+</script> -->
+
 <script lang="ts">
 	// import type { User } from '$lib/store';
-	import type { Prisma } from '.prisma/client';
 	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -41,12 +49,12 @@
 		'Primario completo',
 		'Secundario incompleto',
 		'Secundario completo',
-		'Superior no universitario',
-		'Superior no universitario',
-		'Universitario',
-		'Universitario',
-		'Post universitario',
-		'Post universitario'
+		'Superior no universitario incompleto',
+		'Superior no universitario completo',
+		'Universitario incompleto',
+		'Universitario completo',
+		'Post universitario incompleto',
+		'Post universitario completo'
 	];
 
 	// Arreglo de géneros:
@@ -58,7 +66,7 @@
 	
 	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
 		try{
-			const submit = await fetch('usuarios.json', {
+			const submit = await fetch('usuarios', {
 				method : "POST",
 				body: JSON.stringify({
 					firstName,
@@ -311,7 +319,7 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<input class="form-control" type="file" id="profilePic" />
+			<input class="form-control" type="file" accept="image/*" id="profilePic" />
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
