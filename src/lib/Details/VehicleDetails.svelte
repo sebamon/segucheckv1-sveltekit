@@ -146,7 +146,6 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
 			brand: yup
 				.string()
-				.trim()
 				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 			model: yup
@@ -220,7 +219,7 @@
 				<option selected disabled>Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType}
 					{#if type === vehicleType}
-						<option value={vehicleType} selected>{vehicleType}</option>)
+						<option value={vehicleType} selected>{vehicleType}</option>
 					{:else}
 						<option value={vehicleType}>{vehicleType}</option>
 					{/if}

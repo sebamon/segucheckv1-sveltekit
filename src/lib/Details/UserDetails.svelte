@@ -35,7 +35,7 @@
 	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
-		{ rol_id: 0, rolDescription: 'Gestor documental' },
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
@@ -154,7 +154,6 @@
 					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
 				firstName: yup
 					.string()
-					.trim()
 					.required('Debes completar este campo.')
 					.matches(
 						regexNombre,

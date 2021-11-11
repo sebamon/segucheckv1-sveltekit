@@ -59,7 +59,7 @@
 	export let isReadOnly = true;
 </script>
 
-<form name="formUserWorkInfo" id="formUserWorkInfo" on:submit={handleSubmit}>
+<form name="formUserWorkInfo" id="formUserWorkInfo" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="hstack gap-3">
 			<h2 class="my-4"><i class="fas fa-briefcase me-4" />Datos laborales</h2>
