@@ -125,11 +125,11 @@
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
 	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
 	*/
-	let regexNombre =
+	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
@@ -156,7 +156,7 @@
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -164,7 +164,7 @@
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -186,21 +186,21 @@
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 				studyLevel: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
 				degree: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')

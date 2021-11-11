@@ -12,11 +12,11 @@
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
 	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
 	*/
-	let regexNombre =
+	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
@@ -33,22 +33,22 @@
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexName, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				hiringMode: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexName, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				unionAgreement: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
+					.matches(regexName, 'Este campo solo permite letras y espacios, no números ni otros símbolos.'),
 				job: yup
 					.string()
 					.required('Debes completar este campo.')
 					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.matches(regexNombre, 'Este campo solo permite letras y espacios, no números ni otros símbolos.')
+					.matches(regexName, 'Este campo solo permite letras y espacios, no números ni otros símbolos.')
 			}),
 			onSubmit: (values) => {
 				// -- Muestra resultado en submit: BORRAR --
@@ -171,6 +171,7 @@
 				readonly={isReadOnly}
 				on:blur={handleChange}
 				bind:value={$form.job}
+				class:invalid={$errors.job}
 			/>
 			{#if $errors.job}
 				<small class="form-error">{$errors.job}</small>
