@@ -16,7 +16,7 @@
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
-	console.log(data);
+	// console.log(data);
 	export let userDetails = data.userDetails;
 	export let isReadOnly = true;
 	// let f = new Date(data.userDetails.dateOfBirth)
@@ -48,9 +48,5 @@
 </header>
 
 <main>
-	<p>
-		{isReadOnly}
-		{data.message}
-	</p>
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

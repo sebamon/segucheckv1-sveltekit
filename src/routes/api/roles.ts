@@ -5,12 +5,14 @@ export const get = async () =>{
     console.log('roles get')
     try{
         const roles = await prisma.roles.findMany()
+        console.log(roles)
         return {
-            roles
+            body: {
+                roles
+            }
         }
         
     }catch(e){
        throw e
     }
 }
-

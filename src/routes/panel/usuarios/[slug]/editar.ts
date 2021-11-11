@@ -4,12 +4,11 @@ const prisma = new PrismaClient()
 
 export const put = async (request) =>{
     let id_find = Number(request.params.slug)
-    const formBody = JSON.parse(request.body)
-
+    const formBody = JSON.parse(request.body).values
     try{
         const userEdit = await prisma.users.update({
             where: {
-                user_id: id_find,
+                user_id: formBody.user_id,
             },
             data: {
                 firstName : formBody.firstName,
