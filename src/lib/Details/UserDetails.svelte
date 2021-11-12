@@ -70,7 +70,7 @@
 	];
 
 	// Por defecto, el componente se llama como solo lectura:
-	export let isReadOnly = false;
+	export let isReadOnly = true;
 	let action = '';
 	if (isReadOnly) {
 		// action = 'action="./create"';

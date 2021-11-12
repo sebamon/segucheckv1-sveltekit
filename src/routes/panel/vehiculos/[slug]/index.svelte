@@ -135,9 +135,16 @@
 			<VehicleDetails {...vehicleDetails} />
 		</TabPane>
 		<TabPane tabId="vehicleDocumentation" tab="Habilitaciones">
-			<h2 class="my-4">Habilitaciones</h2>
+			<div class="hstack gap-3">
+				<h2 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h2>
+				<div class="ms-auto">
+					<a class="btn btn-primary" href="/panel/vehiculos/{vehicleDetails.user_id}/habilitaciones">
+						<i class="fas fa-plus me-2" />Nuevo
+					</a>
+				</div>
+			</div>
 			{#if vehicleDocumentation.length == 0}
-				<div class="alert alert-warning" role="alert">
+				<div class="alert alert-secondary" role="alert">
 					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
 					Haz click en Editar para subir archivos.
 				</div>
