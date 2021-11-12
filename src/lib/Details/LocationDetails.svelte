@@ -1,6 +1,15 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+
+	export let location_id: number;
+	export let locationName: string;
+	export let coordenates: string;
+	// export let coordenateY: '-67.66':string
+	export let province: string;
+	export let customer = {
+		customer_id: 0,
+		bussinessName: ''
+	};
 
 	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
@@ -8,6 +17,7 @@
 		{ customer_id: 2, bussinessName: 'Cliente B' },
 		{ customer_id: 3, bussinessName: 'Cliente C' }
 	];
+
 	// Arreglo de provincias
 	let provinceList = [
 		'Buenos Aires',
@@ -35,6 +45,10 @@
 		'Tierra del Fuego',
 		'Tucumán'
 	];
+
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
+
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -48,10 +62,10 @@
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
-			locationName: '',
-			coordenates: '',
-			province: '',
-			customer: ''
+			locationName: locationName,
+			coordenates: coordenates,
+			province: province,
+			customer: customer.customer_id
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -78,27 +92,23 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Nueva locación - SeguCheck</title>
-</svelte:head>
-
-<!-- Encabezado -->
-<header>
-	<Breadcrumb>
-		<BreadcrumbItem>
-			<a href="/panel/">Inicio</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem>
-			<a href="/panel/locaciones">Locaciones</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
-	</Breadcrumb>
-	<h1><i class="fas fa-map-marked me-4" />Nueva locación</h1>
-	<p class="lead">Ingrese los detalles a continuación</p>
-</header>
-
-<!-- Formulario nuevo usuario -->
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
+	{#if isReadOnly}
+		<div class="row">
+			<div class="col-auto">
+				<h1><i class="fas fa-map-marked me-4" />{locationName}</h1>
+				<p class="lead">Detalles de la locación</p>
+			</div>
+			<div class="col-2 ms-auto">
+				<a class="btn btn-primary" href="/panel/locaciones/{location_id}/editar">
+					<i class="fas fa-pen me-2" />Editar
+				</a>
+			</div>
+		</div>
+	{:else}
+		<h1><i class="fas fa-map-marked me-4" />{locationName}</h1>
+		<p class="lead">Indique los detalles a continuación</p>
+	{/if}
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="locationName" class="form-label">Nombre del sitio</label>
@@ -111,6 +121,7 @@
 				aria-label="Nombre del sitio"
 				bind:value={$form.locationName}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.locationName}
 			/>
 			{#if $errors.locationName}
@@ -119,14 +130,31 @@
 		</div>
 		<div class="col-md-6">
 			<label for="customer" class="form-label">Cliente</label>
-			<select id="customer" class="form-select" aria-label="Cliente" required>
-				<option selected disabled>Elija una opción...</option>
-				{#each customerList as { customer_id, bussinessName }}
-					<option value={customer_id}>{bussinessName}</option>
-				{/each}
-			</select>
-			{#if $errors.customer}
-				<small class="form-error">{$errors.customer}</small>
+			{#if isReadOnly}
+				<input
+					type="text"
+					id="customer"
+					name="customer"
+					class="form-control"
+					placeholder="Cliente X"
+					aria-label="Cliente"
+					bind:value={$form.customer}
+					on:blur={handleChange}
+					readonly={isReadOnly}
+					class:invalid={$errors.customer}
+				/>
+			{:else}
+				<select id="customer" class="form-select" aria-label="Cliente" required>
+					<option selected disabled>Elija una opción...</option>
+					{#each customerList as { customer_id, bussinessName }}
+						<option value={customer_id} selected={customer_id == customer.customer_id}>
+							{bussinessName}
+						</option>
+					{/each}
+				</select>
+				{#if $errors.customer}
+					<small class="form-error">{$errors.customer}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>
@@ -142,55 +170,72 @@
 				aria-label="Coordenadas"
 				bind:value={$form.coordenates}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.coordenates}
 			/>
 			{#if $errors.coordenates}
 				<small class="form-error">{$errors.coordenates}</small>
 			{/if}
 		</div>
-		<!-- Editar BD si lo usamos:
-			<label for="coordenates" class="form-label">Coordenada Y</label>
-			<input
-				type="text"
-				id="coordenateY"
-				name="coordenateY"
-				class="form-control"
-				placeholder="-67.66"
-				aria-label="Coordenada Y"
-				bind:value={$form.coordenateY}
-				on:blur={handleChange}
-				class:invalid={$errors.coordenates}
-			/> -->
 		<div class="col-md-6">
 			<label for="province" class="form-label">Provincia</label>
-			<select
-				id="province"
-				class="form-select"
-				aria-label="Provincia"
-				bind:value={$form.province}
-				on:blur={handleChange}
-				class:invalid={$errors.province}
-			>
-				<option selected disabled>Elija una opción...</option>
-				{#each provinceList as province}
-					<option value={province}>{province}</option>
-				{/each}
-			</select>
-			{#if $errors.province}
-				<small class="form-error">{$errors.province}</small>
+			{#if isReadOnly}
+				<input
+					type="text"
+					id="province"
+					name="province"
+					class="form-control"
+					placeholder="Neuquén"
+					aria-label="Provincia"
+					bind:value={$form.province}
+					readonly
+				/>
+			{:else}
+				<select
+					id="province"
+					class="form-select"
+					aria-label="Provincia"
+					bind:value={$form.province}
+					on:blur={handleChange}
+					class:invalid={$errors.province}
+				>
+					<option selected disabled>Elija una opción...</option>
+					{#each provinceList as thisProvince}
+						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
+					{/each}
+				</select>
+				{#if $errors.province}
+					<small class="form-error">{$errors.province}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6" />
-		<div class="col-md-6 d-flex justify-content-end">
-			<button type="submit" class="btn btn-primary" disabled={!$isValid}>
-				{#if $isSubmitting}
-					<i class="fas fa-spinner fa-pulse me-2" />Enviando...
-				{:else}
-					<i class="fas fa-plus me-2" />Crear
-				{/if}
-			</button>
+	{#if isReadOnly}
+		<div class="row mb-3 g-3">
+			<div class="col-md-12">
+				<small class="fst-italic">Mapa placeholder: No está integrado como API</small>
+				<iframe
+					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.0104807882767!2d-69.1899611978548!3d-38.92952028151186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960c6f2c11011405%3A0xe0df2e0585067db2!2sRefineria%20Ypf!5e0!3m2!1ses-419!2sar!4v1634860550780!5m2!1ses-419!2sar"
+					width="100%"
+					height="500px"
+					loading="lazy"
+					alt="Mapa de {locationName}"
+					title="Mapa de {locationName}"
+				/>
+			</div>
 		</div>
-	</div>
+	{:else}
+		<div class="row mb-3 g-3">
+			<div class="col-md-6" />
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
+				</button>
+			</div>
+		</div>
+	{/if}
 </form>

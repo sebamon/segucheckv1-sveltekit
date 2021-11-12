@@ -30,16 +30,8 @@
 	let error;
 	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
-	
-
-	
-	
-	// 	{ rol_id: 0, rolDescription: 'Gestor documental' },
-	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-	// 	{ rol_id: 3, rolDescription: 'Operario' }
-	// ];
-	export let rolesList =  [
-		{ rol_id: 0, rolDescription: 'Gestor documental' },
+	let rolesList = [
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' },
 		{ rol_id: 4, rolDescription: 'Operario' }
@@ -90,6 +82,36 @@
 	export let isReadOnly = false;
 
 
+	// const submitForm = async (): Promise<void> => {
+	// 	const submit = await fetch(`editar`, {
+	// 		method: 'PUT',
+	// 		body: JSON.stringify({
+	// 			firstName,
+	// 			lastName,
+	// 			cuit,
+	// 			email,
+	// 			phone,
+	// 			dateOfBirth,
+	// 			degree,
+	// 			gender,
+	// 			nationality,
+	// 			studyLevel
+	// 			// roles_assigned,
+	// 		})
+	// 	});
+	// 	const data = await submit.json();
+	// 	message = data.message;
+	// 	error = data.error;
+	// 	if (data.status === 'OK') {
+	// 		color = 'success';
+	// 	}
+	// 	if (data.status === 'ERROR') color = 'danger';
+
+	// 	if (data.status === 200) {
+	// 		console.log('message', message);
+	// 	}
+	// };
+
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
@@ -101,11 +123,11 @@
 import { page } from '$app/stores';
 import { pathToFileURL } from 'url';
 	yup.setLocale(es);
-	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
 	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
 	*/
-	let regexNombre =
+	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
@@ -131,10 +153,9 @@ import { pathToFileURL } from 'url';
 					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
 				firstName: yup
 					.string()
-					.trim()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -142,7 +163,7 @@ import { pathToFileURL } from 'url';
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -164,21 +185,21 @@ import { pathToFileURL } from 'url';
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 				studyLevel: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
 				degree: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')

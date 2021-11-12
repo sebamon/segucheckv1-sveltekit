@@ -48,5 +48,10 @@
 </header>
 
 <main>
+	<p>
+		{isReadOnly}
+		{data.message}
+	</p>
+	<!-- Formulario detalles usuario -->
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

@@ -40,9 +40,9 @@
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
 			</h3>
 			<div class="mb-5 g-3">
-				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4"
-					>Iniciar sesión</Button
-				>
+				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4">
+					Iniciar sesión
+				</Button>
 				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
 			</div>
 		</div>
