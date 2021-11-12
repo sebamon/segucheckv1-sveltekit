@@ -1,12 +1,52 @@
+import {defaultState} from '$lib/store';
+import * as cookie from 'cookie';
+
+const auth_token='demo_token_for_example';
+const userDetails={name:"Deb",age:45}
+
+
+export async function handle({ request, resolve }) {
+	// console.log('handle hook',request) 
+	// console.log('handle hook') 
+    // console.log(JSON.stringify(request))
+	const cookies = cookie.parse(request.headers.cookie || '');
+	const jwt = cookies.jwt && Buffer.from(cookies.jwt, 'base64').toString('utf-8');
+	request.locals.user = jwt ? JSON.parse(jwt) : null;
+    console.log('request',JSON.stringify(jwt))
+	return await resolve(request);
+
+}
+
+export const getSession = (request) =>{
+    console.log(request)
+    return {
+        user: {
+            id: "1",
+            firstName: 'PrimerNombre',
+            access: "Control Documental",
+        }
+    }
+}
+
+
+// export const getContext = ({ headers })=>{
+//     const cookies = cookie.parse(headers.cookie || '');
+//     return {
+//         token:cookies['token']
+//     };
+// }
+// export const getSession =asy1nc ({context})=>{
+//     let initialState={...defaultState};
+//     if (context['token']===auth_token){
+//         console.log("tokens match");
+//         initialState.authenticated=true
+//         initialState.user=userDetails;
+//     }
+//     console.log(initialState)
+//     return initialState
+// }
 // // import * as cookie from 'cookie';
 
-// // export async function handle({ request, resolve }) {
-// // 	console.log('handle hook')
-// // 	const cookies = cookie.parse(request.headers.cookie || '');
-// // 	const jwt = cookies.jwt && Buffer.from(cookies.jwt, 'base64').toString('utf-8');
-// // 	request.locals.user = jwt ? JSON.parse(jwt) : null;
-// // 	return await resolve(request);
-// // }
 
 // // export function getSession({ locals }) {
 // // 	console.log('getSession hook: locals->' ,locals)

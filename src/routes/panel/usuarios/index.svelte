@@ -1,13 +1,16 @@
 <script context="module">
 	// panel/usuarios.svelte: Lee de la BD y lista los usuarios registrados
-	export async function load({ page, fetch }) {
+	import { session } from "$app/stores"
+	export async function load({ page, fetch , session}) {
+		// console.log(JSON.stringify(session))
 		try {
 			const response = await fetch(`./usuarios/usuarios`)
 			const data = await response.json();
 			/* console.log('ssr data:', data) */
 			return {
 				props: {
-					data
+					data,
+					session
 				}
 			};
 		} catch (e) {
@@ -29,7 +32,7 @@
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
 </svelte:head>
-
+{JSON.stringify($session)}
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
