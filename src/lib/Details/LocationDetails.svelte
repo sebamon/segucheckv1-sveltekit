@@ -7,9 +7,44 @@
 	// export let coordenateY: '-67.66':string
 	export let province: string;
 	export let customer = {
-		id: 0,
+		customer_id: 0,
 		bussinessName: ''
 	};
+
+	// Arreglo de clientes - Esto lo lee de la DB:
+	let customerList = [
+		{ customer_id: 1, bussinessName: 'Cliente A' },
+		{ customer_id: 2, bussinessName: 'Cliente B' },
+		{ customer_id: 3, bussinessName: 'Cliente C' }
+	];
+
+	// Arreglo de provincias
+	let provinceList = [
+		'Buenos Aires',
+		'Capital Federal',
+		'Catamarca',
+		'Chaco',
+		'Chubut',
+		'Córdoba',
+		'Corrientes',
+		'Entre Ríos',
+		'Formosa',
+		'Jujuy',
+		'La Pampa',
+		'La Rioja',
+		'Mendoza',
+		'Misiones',
+		'Neuquén',
+		'Río Negro',
+		'Salta',
+		'San Juan',
+		'San Luis',
+		'Santa Cruz',
+		'Santa Fe',
+		'Santiago del Estero',
+		'Tierra del Fuego',
+		'Tucumán'
+	];
 
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
@@ -30,7 +65,7 @@
 			locationName: locationName,
 			coordenates: coordenates,
 			province: province,
-			bussinessName: customer.bussinessName
+			customer: customer.customer_id
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -46,19 +81,9 @@
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 			province: yup
-				.string()
-				.required('Debes completar este campo.')
-				.matches(
-					regexName,
-					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-			/* --- Customer debe ser un select al editar ---
-                customer: yup
-					.string()
-					.required('Debes completar este campo.')
-					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'), */
+				.mixed()
+				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),
+			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
 		onSubmit: (values) => {
 			// -- Muestra resultado en submit: BORRAR --
@@ -81,8 +106,8 @@
 			</div>
 		</div>
 	{:else}
-        <h1><i class="fas fa-map-marked me-4" />{locationName}</h1>
-        <p class="lead">Indique los detalles a continuación</p>
+		<h1><i class="fas fa-map-marked me-4" />{locationName}</h1>
+		<p class="lead">Indique los detalles a continuación</p>
 	{/if}
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
@@ -105,20 +130,31 @@
 		</div>
 		<div class="col-md-6">
 			<label for="customer" class="form-label">Cliente</label>
-			<input
-				type="text"
-				id="customer"
-				name="customer"
-				class="form-control"
-				placeholder="Cliente X"
-				aria-label="Cliente"
-				bind:value={$form.bussinessName}
-				on:blur={handleChange}
-				readonly={isReadOnly}
-				class:invalid={$errors.bussinessName}
-			/>
-			{#if $errors.bussinessName}
-				<small class="form-error">{$errors.bussinessName}</small>
+			{#if isReadOnly}
+				<input
+					type="text"
+					id="customer"
+					name="customer"
+					class="form-control"
+					placeholder="Cliente X"
+					aria-label="Cliente"
+					bind:value={$form.customer}
+					on:blur={handleChange}
+					readonly={isReadOnly}
+					class:invalid={$errors.customer}
+				/>
+			{:else}
+				<select id="customer" class="form-select" aria-label="Cliente" required>
+					<option selected disabled>Elija una opción...</option>
+					{#each customerList as { customer_id, bussinessName }}
+						<option value={customer_id} selected={customer_id == customer.customer_id}>
+							{bussinessName}
+						</option>
+					{/each}
+				</select>
+				{#if $errors.customer}
+					<small class="form-error">{$errors.customer}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>
@@ -143,49 +179,63 @@
 		</div>
 		<div class="col-md-6">
 			<label for="province" class="form-label">Provincia</label>
-			<input
-				type="text"
-				id="province"
-				name="province"
-				class="form-control"
-				placeholder="Neuquén"
-				aria-label="Provincia"
-				bind:value={$form.province}
-				on:blur={handleChange}
-				readonly={isReadOnly}
-				class:invalid={$errors.province}
-			/>
-			{#if $errors.province}
-				<small class="form-error">{$errors.province}</small>
+			{#if isReadOnly}
+				<input
+					type="text"
+					id="province"
+					name="province"
+					class="form-control"
+					placeholder="Neuquén"
+					aria-label="Provincia"
+					bind:value={$form.province}
+					readonly
+				/>
+			{:else}
+				<select
+					id="province"
+					class="form-select"
+					aria-label="Provincia"
+					bind:value={$form.province}
+					on:blur={handleChange}
+					class:invalid={$errors.province}
+				>
+					<option selected disabled>Elija una opción...</option>
+					{#each provinceList as thisProvince}
+						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
+					{/each}
+				</select>
+				{#if $errors.province}
+					<small class="form-error">{$errors.province}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>
-    {#if isReadOnly}
-        <div class="row mb-3 g-3">
-            <div class="col-md-12">
-                <small class="fst-italic">Mapa placeholder: No está integrado como API</small>
-                <iframe
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.0104807882767!2d-69.1899611978548!3d-38.92952028151186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960c6f2c11011405%3A0xe0df2e0585067db2!2sRefineria%20Ypf!5e0!3m2!1ses-419!2sar!4v1634860550780!5m2!1ses-419!2sar"
-                    width="100%"
-                    height="500px"
-                    loading="lazy"
-                    alt="Mapa de {locationName}"
-                    title="Mapa de {locationName}"
-                />
-            </div>
-        </div>
-    {:else}
-	<div class="row mb-3 g-3">
-		<div class="col-md-6"></div>
-        <div class="col-md-6 d-flex justify-content-end">
-            <button type="submit" class="btn btn-primary" disabled={!$isValid}>
-                {#if $isSubmitting}
-                    <i class="fas fa-spinner fa-pulse me-2" />Enviando...
-                {:else}
-                    <i class="fas fa-pen me-2" />Confirmar cambios
-                {/if}
-            </button>
-        </div>
-    </div>
-    {/if}
+	{#if isReadOnly}
+		<div class="row mb-3 g-3">
+			<div class="col-md-12">
+				<small class="fst-italic">Mapa placeholder: No está integrado como API</small>
+				<iframe
+					src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3691.0104807882767!2d-69.1899611978548!3d-38.92952028151186!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x960c6f2c11011405%3A0xe0df2e0585067db2!2sRefineria%20Ypf!5e0!3m2!1ses-419!2sar!4v1634860550780!5m2!1ses-419!2sar"
+					width="100%"
+					height="500px"
+					loading="lazy"
+					alt="Mapa de {locationName}"
+					title="Mapa de {locationName}"
+				/>
+			</div>
+		</div>
+	{:else}
+		<div class="row mb-3 g-3">
+			<div class="col-md-6" />
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
+				</button>
+			</div>
+		</div>
+	{/if}
 </form>
