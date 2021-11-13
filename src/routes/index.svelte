@@ -5,7 +5,7 @@
 	// console.log("session",session)
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Card, CardBody, CardSubtitle, CardTitle, Image } from 'sveltestrap';
+	import { Button, Card, CardBody, CardSubtitle, CardFooter, CardTitle, Image } from 'sveltestrap';
 
 	// Abrir modal login
 	let modalOpen = false;
@@ -75,44 +75,44 @@
 		<h1 id="sistema">Este es nuestro sistema</h1>
 		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
 	</div>
-	<div class="row g-2">
-		<Card class="col-md-6">
-			<CardBody>
-				<CardTitle class="fw-bold">Plataforma web</CardTitle>
-				<a href="/info/plataforma">
-					<Image
-						fluid
-						thumbnail
-						src="/img/thumb-dashboard.jpg"
-						alt="Panel Administrativo"
-						class="my-4"
-					/>
-				</a>
-				<CardSubtitle>
+	<div class="card-group">
+		<div class="card">
+			<a href="/info/plataforma">
+				<img
+					class="img-fluid img-thumbnail my-4"
+					src="/img/thumb-dashboard.jpg"
+					alt="Aplicación móvil"
+				/>
+			</a>
+			<div class="card-body">
+				<h5 class="card-title fw-bold">Plataforma web</h5>
+				<h6 class="card-subtitle mb-2">
 					Donde puedes cargar la documentación de tus colaboradores en sitio, y ser validada por tus
 					clientes
-				</CardSubtitle>
-				<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
-			</CardBody>
-		</Card>
-		<Card class="col-md-6">
-			<CardBody>
-				<CardTitle class="fw-bold">Plataforma móvil</CardTitle>
-				<a href="/info/movil">
-					<Image
-						fluid
-						thumbnail
-						src="/img/thumb-screen-app.jpg"
-						alt="Aplicación móvil"
-						class="my-4"
-					/>
-				</a>
-				<CardSubtitle>
+				</h6>
+				<div class="card-footer">
+					<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+				</div>
+			</div>
+		</div>
+		<div class="card">
+			<a href="/info/movil">
+				<img
+					class="img-fluid img-thumbnail my-4"
+					src="/img/thumb-screen-app.jpg"
+					alt="Aplicación móvil"
+				/>
+			</a>
+			<div class="card-body">
+				<h5 class="card-title fw-bold">Plataforma móvil</h5>
+				<h6 class="card-subtitle mb-2">
 					Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
-				</CardSubtitle>
-				<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
-			</CardBody>
-		</Card>
+				</h6>
+				<div class="card-footer">
+					<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+				</div>
+			</div>
+		</div>
 	</div>
 	<hr class="m-5" />
 </main>

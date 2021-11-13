@@ -70,12 +70,12 @@
 		validationSchema: yup.object().shape({
 			locationName: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				),
+				)
+				.required('Debes completar este campo.'),
 			coordenates: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')

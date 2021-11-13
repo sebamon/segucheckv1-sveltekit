@@ -119,7 +119,7 @@
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
-	
+
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -131,85 +131,82 @@
 	*/
 	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
-	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
-		createForm({
-			initialValues: {
-				user_id: user_id,
-				cuit: cuit,
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				phone: phone,
-				gender: gender,
-				nationality: nationality,
-				studyLevel: studyLevel,
-				degree: degree,
-				profilePic: profilePic
-			},
-			validationSchema: yup.object().shape({
-				cuit: yup
-					.string()
-					.required('Debes completar este campo.')
-					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
-				firstName: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				lastName: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				email: yup
-					.string()
-					.required('Debes completar este campo.')
-					.email('El formato de email es incorrecto')
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				phone: yup
-					.string()
-					.required('Debes completar este campo.')
-					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
-				gender: yup
-					.string()
-					.required('Debes completar este campo.')
-					.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
-				nationality: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				studyLevel: yup
-					.string()
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
-				degree: yup
-					.string()
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-			}),
-			onSubmit: (values) => {
-				// -- Muestra resultado en submit: BORRAR --
-				alert(JSON.stringify(values));
-			}
-		});
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			user_id: user_id,
+			cuit: cuit,
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			phone: phone,
+			gender: gender,
+			newDate: newDate,
+			nationality: nationality,
+			studyLevel: studyLevel,
+			degree: degree,
+			profilePic: profilePic
+		},
+		validationSchema: yup.object().shape({
+			cuit: yup
+				.string()
+				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+				.max(12, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			firstName: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.required('Debes completar este campo.'),
+			lastName: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.required('Debes completar este campo.'),
+			email: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.email('El formato de email es incorrecto')
+				.required('Debes completar este campo.'),
+			phone: yup
+				.string()
+				.required('Debes completar este campo.')
+				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+				.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
+			gender: yup
+				.string()
+				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X')
+				.required('Debes completar este campo.'),
+			newDate: yup.date().required('Debes completar este campo.'),
+			nationality: yup
+				.string()
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			studyLevel: yup
+				.string()
+				.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+			degree: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+		}),
+		onSubmit: (values) => {
+			// -- Muestra resultado en submit: BORRAR --
+			alert(JSON.stringify(values));
+		}
+	});
 </script>
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
@@ -401,10 +398,14 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={newDate}
+				bind:value={$form.newDate}
 				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.newDate}
 			/>
+			{#if $errors.newDate}
+				<small class="form-error">{$errors.newDate}</small>
+			{/if}
 		</div>
 		<div class="col-md-4">
 			<label for="nationality" class="form-label">Nacionalidad</label>
