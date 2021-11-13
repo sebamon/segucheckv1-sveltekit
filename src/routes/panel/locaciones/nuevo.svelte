@@ -119,7 +119,14 @@
 		</div>
 		<div class="col-md-6">
 			<label for="customer" class="form-label">Cliente</label>
-			<select id="customer" class="form-select" aria-label="Cliente" required>
+			<select
+				id="customer"
+				class="form-select"
+				aria-label="Cliente"
+				bind:value={$form.customer}
+				on:blur={handleChange}
+				class:invalid={$errors.customer}
+			>
 				<option selected disabled>Elija una opción...</option>
 				{#each customerList as { customer_id, bussinessName }}
 					<option value={customer_id}>{bussinessName}</option>
