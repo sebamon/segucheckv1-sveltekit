@@ -117,12 +117,6 @@
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
-	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
-	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
-	*/
-	let regexName =
-		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð&,.'\s-]+$/u;
 	let regexAZNum = /^[A-Z0-9]+$/i;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -141,37 +135,38 @@
 		validationSchema: yup.object().shape({
 			domain: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			brand: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			model: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			type: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.'),
+				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.')
+				.required('Debes completar este campo.'),
 			year: yup
 				.number()
-				.required('Debes completar este campo.')
 				.min(1900, 'El año es demasiado bajo.')
-				.max(9999, 'El año es demasiado alto.'),
+				.max(9999, 'El año es demasiado alto.')
+				.integer("El número debe ser entero.")
+				.required('Debes completar este campo.'),
 			internal_id: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			chasisNumber: yup
 				.string()
-				.required('Debes completar este campo.')
 				.min(11, 'Este campo debe ser al menos ${max} caracteres.')
 				.max(17, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			motorNumber: yup
 				.string()
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
@@ -195,7 +190,7 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-				value={$form.domain}
+				bind:value={$form.domain}
 				on:blur={handleChange}
 				class:invalid={$errors.domain}
 				readonly={isReadOnly}
@@ -214,7 +209,6 @@
 				bind:value={$form.type}
 				on:blur={handleChange}
 				class:invalid={$errors.type}
-				required
 			>
 				<option selected disabled>Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType}
@@ -240,7 +234,7 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-				value={$form.brand}
+				bind:value={$form.brand}
 				on:blur={handleChange}
 				class:invalid={$errors.brand}
 				readonly={isReadOnly}
@@ -258,7 +252,7 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-				value={$form.model}
+				bind:value={$form.model}
 				on:blur={handleChange}
 				class:invalid={$errors.model}
 				readonly={isReadOnly}
@@ -280,7 +274,7 @@
 				aria-label="Año"
 				min="1900"
 				max="9999"
-				value={$form.year}
+				bind:value={$form.year}
 				on:blur={handleChange}
 				class:invalid={$errors.year}
 				readonly={isReadOnly}
@@ -298,7 +292,7 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				value={$form.internal_id}
+				bind:value={$form.internal_id}
 				on:blur={handleChange}
 				class:invalid={$errors.internal_id}
 				readonly={isReadOnly}
@@ -318,7 +312,7 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
-				value={$form.chasisNumber}
+				bind:value={$form.chasisNumber}
 				on:blur={handleChange}
 				class:invalid={$errors.chasisNumber}
 				readonly={isReadOnly}
@@ -336,7 +330,7 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Número de motor"
-				value={$form.motorNumber}
+				bind:value={$form.motorNumber}
 				on:blur={handleChange}
 				class:invalid={$errors.motorNumber}
 				readonly={isReadOnly}
@@ -363,7 +357,9 @@
 </form>
 
 <style>
-	#domain, #chasisNumber, #motorNumber {
+	#domain,
+	#chasisNumber,
+	#motorNumber {
 		text-transform: uppercase;
 	}
 </style>
