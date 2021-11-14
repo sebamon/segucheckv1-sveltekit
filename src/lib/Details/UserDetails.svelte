@@ -20,7 +20,7 @@
 	export let profilePic: string;
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
+	let convertedDateOfBirth = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
 	// export let usersonroles = []
@@ -143,7 +143,7 @@ import { pathToFileURL } from 'url';
 				studyLevel: studyLevel,
 				degree: degree,
 				profilePic: profilePic,
-				dateOfBirth: newDate,
+				convertedDateOfBirth: convertedDateOfBirth,
 			},
 			validationSchema: yup.object().shape({
 				cuit: yup
@@ -419,13 +419,13 @@ import { pathToFileURL } from 'url';
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={$form.newDate}
+				bind:value={$form.convertedDateOfBirth}
 				on:blur={handleChange}
 				readonly={isReadOnly}
-				class:invalid={$errors.newDate}
+				class:invalid={$errors.convertedDateOfBirth}
 			/>
-			{#if $errors.newDate}
-				<small class="form-error">{$errors.newDate}</small>
+			{#if $errors.convertedDateOfBirth}
+				<small class="form-error">{$errors.convertedDateOfBirth}</small>
 			{/if}
 		</div>
 		<div class="col-md-4">
