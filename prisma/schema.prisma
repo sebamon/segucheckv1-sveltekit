@@ -169,13 +169,13 @@ model useraddress {
   countryOfOrigin    String
   stateOfOrigin      String
   cityOfOrigin       String
-  zipCodeOfOrigin    Int
+  zipCodeOfOrigin    String
   addressOfOrigin    String
   phoneOfOrigin      String
   countryOfResidence String
   stateOfResidence   String
   cityOfResidence    String
-  zipCodeOfResidence Int
+  zipCodeOfResidence String
   addressOfResidence String
   phoneOfResidence   String
   operator           operator @relation(fields: [operator_id], references: [operator_id], map: "UserAddress_operator_id_fkey")

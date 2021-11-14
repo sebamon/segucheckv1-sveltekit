@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { format } from 'path/posix';
-	import { validate_store } from 'svelte/internal';
+	// import { createEventDispatcher, validate_store } from 'svelte/internal';
+	import {createEventDispatcher} from 'svelte'
+	const dispatch = createEventDispatcher()
 
+	function submit() {
+		dispatch('showAlert', {
+			status:status,
+			message:message
+		})
+	} 
+
+	function showAlert() {
+		dispatch('showAlert', {
+			status:status,
+			message:message
+		})
+	}
 	// Datos del usuario a mostrar
 	export let vehicle_id: number;
 	export let domain = '';
@@ -16,10 +31,10 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	export let error: string;
-	export let message: string;
-	export let color;
-	export let status;
+	let error: string;
+	let message: string;
+	let color;
+	let status;
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -78,6 +93,29 @@
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
 	const submitForm = async (): Promise<void> => {
+			const submit = await fetch(`editar`,{
+			method : 'PUT',
+			body: JSON.stringify({
+				domain,
+				brand,
+				model,
+				type,
+				year,
+				internal_id,
+				chasisNumber,
+				motorNumber
+			})
+		})
+
+		console.log('submit',submit)
+			const data = await submit.json()
+			console.log('data',data)
+			message = data.message
+			error = data.error
+			if(data.status==='OK') {
+					color='success'
+				}
+				if(data.status==='ERROR') color='danger'
 		// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
 		const formBody = JSON.stringify({
 			domain,
@@ -88,28 +126,17 @@
 			internal_id,
 			chasisNumber,
 			motorNumber
-			// frontPic,
-			// rightSidePic,
-			// leftSidePic,
-		});
-		/* console.log(formBody); */
-		// 	const submit = await fetch(`editar`,{
-		// 	method : 'PUT',
-		// 	body: JSON.stringify({
-		// 	})
-		// })
-		// 	const data = await submit.json()
-		// 	message = data.message
-		// 	error = data.error
-		// 	if(data.status==='OK') {
-		// 			color='success'
-		// 		}
-		// 		if(data.status==='ERROR') color='danger'
 
-		// 		if(data.status===200)
-		// 		{
-		// 			console.log('message', message)
-		// 		}
+		});
+
+				if(data.status===200)
+				{
+					console.log('message', message)
+				}
+				dispatch('showAlert', {
+			status:status,
+			message:message
+		})
 	};
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
@@ -210,7 +237,7 @@
 				on:blur={handleChange}
 				class:invalid={$errors.type}
 			>
-				<option selected disabled>Elija una opción...</option>
+				<option selected disabled >Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType}
 					{#if type === vehicleType}
 						<option value={vehicleType} selected>{vehicleType}</option>

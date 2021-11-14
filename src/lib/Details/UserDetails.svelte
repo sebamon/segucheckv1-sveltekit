@@ -1,8 +1,8 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal } from 'sveltestrap';
+	import { onMount } from "svelte";
 	import moment from 'moment';
-
 	// export let useronroles
 	export const userDetails: object = {};
 	// Datos del usuario a mostrar
@@ -18,17 +18,13 @@
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
-
-	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+	let imagePic=profilePic
+	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
+	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
-
 	// export let usersonroles = []
-	// let fecha = dateString.getDate() + "/" + (dateString.getMonth() +1) + "/" + dateString.getFullYear();
-	// export let fecha = + dateString.getFullYear() + "/" + (dateString.getMonth() +1) + "/" + dateString.getDate();
-	console.log('dateOfBirth', dateOfBirth);
-	console.log('dateString', dateString);
+
 
 	let message;
 	let error;
@@ -37,9 +33,24 @@
 	let rolesList = [
 		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
+		{ rol_id: 3, rolDescription: 'Operario' },
+		{ rol_id: 4, rolDescription: 'Operario' }
 	];
-
+	
+	onMount(async() => {
+		console.log('hola')
+		let url = '/api/roles'
+		console.log(url)
+		fetch(url)
+		.then(response =>response.json())
+		.then(data => {
+			const rolesList=data.roles
+			console.log(rolesList)
+		})
+	})
+	
+	// // console.log('rolesList',{rolesList})
+	// let rolesList=
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -53,7 +64,6 @@
 		'Post universitario incompleto',
 		'Post universitario completo'
 	];
-
 	// Arreglo de géneros:
 	let genderText: string;
 	if (gender == 'M') {
@@ -68,53 +78,39 @@
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
-
 	// Por defecto, el componente se llama como solo lectura:
-	export let isReadOnly = true;
-	let action = '';
-	if (isReadOnly) {
-		// action = 'action="./create"';
-	}
+	export let isReadOnly = false;
 
-	/* Convierte un objeto Date en un String en formato YYY-MM-DD
-	 * @param Date
-	 * @return String
-	 * NO FUNCIONA
-	 */
-	function dateToYMD(date): string {
-		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-		return '2020-10-10';
-	}
 
-	const submitForm = async (): Promise<void> => {
-		const submit = await fetch(`editar`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel
-				// roles_assigned,
-			})
-		});
-		const data = await submit.json();
-		message = data.message;
-		error = data.error;
-		if (data.status === 'OK') {
-			color = 'success';
-		}
-		if (data.status === 'ERROR') color = 'danger';
+	// const submitForm = async (): Promise<void> => {
+	// 	const submit = await fetch(`editar`, {
+	// 		method: 'PUT',
+	// 		body: JSON.stringify({
+	// 			firstName,
+	// 			lastName,
+	// 			cuit,
+	// 			email,
+	// 			phone,
+	// 			dateOfBirth,
+	// 			degree,
+	// 			gender,
+	// 			nationality,
+	// 			studyLevel
+	// 			// roles_assigned,
+	// 		})
+	// 	});
+	// 	const data = await submit.json();
+	// 	message = data.message;
+	// 	error = data.error;
+	// 	if (data.status === 'OK') {
+	// 		color = 'success';
+	// 	}
+	// 	if (data.status === 'ERROR') color = 'danger';
 
-		if (data.status === 200) {
-			console.log('message', message);
-		}
-	};
+	// 	if (data.status === 200) {
+	// 		console.log('message', message);
+	// 	}
+	// };
 
 	// Abrir modal para ver foto:
 	let modalProfile = false;
@@ -124,6 +120,8 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+import { page } from '$app/stores';
+import { pathToFileURL } from 'url';
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -131,83 +129,107 @@
 	*/
 	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
-	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
-		initialValues: {
-			user_id: user_id,
-			cuit: cuit,
-			firstName: firstName,
-			lastName: lastName,
-			email: email,
-			phone: phone,
-			gender: gender,
-			newDate: newDate,
-			nationality: nationality,
-			studyLevel: studyLevel,
-			degree: degree,
-			profilePic: profilePic
-		},
-		validationSchema: yup.object().shape({
-			cuit: yup
-				.string()
-				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-				.max(12, 'Este campo debe ser de hasta ${max} caracteres.')
-				.required('Debes completar este campo.'),
-			firstName: yup
-				.string()
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(
-					regexName,
-					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
-				.required('Debes completar este campo.'),
-			lastName: yup
-				.string()
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(
-					regexName,
-					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
-				.required('Debes completar este campo.'),
-			email: yup
-				.string()
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.email('El formato de email es incorrecto')
-				.required('Debes completar este campo.'),
-			phone: yup
-				.string()
-				.required('Debes completar este campo.')
-				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-				.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
-			gender: yup
-				.string()
-				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X')
-				.required('Debes completar este campo.'),
-			newDate: yup.date().required('Debes completar este campo.'),
-			nationality: yup
-				.string()
-				.matches(
-					regexName,
-					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.required('Debes completar este campo.'),
-			studyLevel: yup
-				.string()
-				.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
-			degree: yup
-				.string()
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(
-					regexName,
-					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
-		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
-		}
-	});
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
+		createForm({
+			initialValues: {
+				user_id: user_id,
+				cuit: cuit,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				phone: phone,
+				gender: gender,
+				nationality: nationality,
+				studyLevel: studyLevel,
+				degree: degree,
+				profilePic: profilePic,
+				dateOfBirth: newDate,
+			},
+			validationSchema: yup.object().shape({
+				cuit: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
+				firstName: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				lastName: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				email: yup
+					.string()
+					.required('Debes completar este campo.')
+					.email('El formato de email es incorrecto')
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				phone: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
+				gender: yup
+					.string()
+					.required('Debes completar este campo.')
+					.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
+				nationality: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				studyLevel: yup
+					.string()
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+				degree: yup
+					.string()
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+			}),
+			onSubmit: async(values) => {
+
+				console.log(values)
+				const submit = await fetch(`editar`, {
+					method: 'PUT',
+					body: JSON.stringify({
+						values
+					})
+				});
+				console.log('submit',submit)
+				const data = await submit.json();
+				console.log('data',data)
+
+				message = data.message;
+				error = data.error;
+				if (data.status === 'OK') {
+					color = 'success';
+				}
+				if (data.status === 'ERROR') color = 'danger';
+				if (data.status === 200) {
+					console.log('message', message);
+				}
+			}
+		});
 </script>
+
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
@@ -223,17 +245,16 @@
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<span on:click={toggle}>
-				<Image
-					fluid
-					thumbnail
-					src={profilePic}
-					alt="Foto de perfil"
-					class="m-2"
-					style="max-width:150px"
+				<Image src='/img/usr-await.png'
+				fluid
+				thumbnail
+				class="m-2" 
+				alt="Foto de perfil"
+				style="max-width:150px"
 				/>
 			</span>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<Image src={profilePic} alt="Foto de perfil" />
+				<Image  alt="Foto de perfil" />
 			</Modal>
 		</div>
 		{#if !isReadOnly}
@@ -488,7 +509,7 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="rol{rol_id}"
+						id="r2ol{rol_id}"
 						name="roles"
 						class="form-check-input"
 						role="switch"

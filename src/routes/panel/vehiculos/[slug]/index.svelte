@@ -60,6 +60,7 @@
 	export let status = data.status
 	console.log('status', status)
 	export let vehicleDetails = data.vehicleDetails
+	export let isReadOnly = true
 	let vehicleDocumentation = [
 		{
 			documentation_id: 20,
@@ -89,6 +90,15 @@
 		// vehicleDetails.backPicUrl
 	];
 	let activeIndex = 0;
+	
+	const onsubmit = async(event) =>{
+		console.log('onsubmit', event)
+	}
+
+	function showAlert(event){
+		status='Hola' 
+		console.log('event',event)
+	}
 </script>
 
 <svelte:head>
@@ -132,7 +142,7 @@
 		<TabPane tabId="vehicleDetails" tab="Datos básicos" active>
 			<!-- Datos básicos -->
 			<h2 class="my-4">Datos básicos</h2>
-			<VehicleDetails {...vehicleDetails} />
+			<VehicleDetails {...vehicleDetails} on:submit={showAlert}/>
 		</TabPane>
 		<TabPane tabId="vehicleDocumentation" tab="Habilitaciones">
 			<div class="hstack gap-3">

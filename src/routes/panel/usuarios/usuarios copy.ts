@@ -1,23 +1,8 @@
 import { PrismaClient, Prisma } from '@prisma/client'
-import { stringify } from 'querystring'
 
 const prisma = new PrismaClient()
 
-// type user = {
-//     user_id:number,
-//     firstName:string,
-//     lastName:string,
-//     cuit:string,
-//     email:string,
-//     useronles : {
-//         rol_id:number,
-//         rolDescription:string
-//     }
-// }
-
-export async function get({params}){
-    // console.log(params)
-    // console.log('hola',JSON.stringify(params))
+export const get = async () =>{
     try{
         const users = await prisma.users.findMany({
             where: {
@@ -36,7 +21,7 @@ export async function get({params}){
                 },
             }
         })
-        //  console.log("result: ",users) 
+        /* console.log("result: ",users) */
         return {
             body: {
                 users: users,
