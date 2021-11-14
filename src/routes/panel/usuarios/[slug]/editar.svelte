@@ -56,4 +56,6 @@
 	</div>
 </header>
 
-<UserDetails {...userDetails} {isReadOnly} />
+<main>
+	<UserDetails {...userDetails} {isReadOnly} />
+</main>

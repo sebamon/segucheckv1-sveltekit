@@ -106,7 +106,7 @@
 			</div>
 	</div>
 	{:else}
-		<h1><i class="fas fa-map-marked me-4" />{job_id}</h1>
+		<h2><i class="fas fa-info me-4" />{job_id}</h2>
 		<p class="lead">Indique los detalles a continuación</p>
 	{/if}
 	<div class="row mb-3 g-3">

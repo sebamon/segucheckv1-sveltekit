@@ -63,26 +63,27 @@
 	<p class="lead">Indique los detalles a continuación.</p>
 </header>
 
-<form name="formUserDoc" id="formUserDoc">
-	<div class="row mb-3 g-3">
-		<div class="col-md-6">
-			<label for="documentType" class="form-label">Tipo de documento</label>
-			<select id="documentType" class="form-select" aria-label="Tipo de documento" required>
-				<option disabled selected>Elija una opción...</option>
-				{#each documentTypeList as documentType}
-					<option value={documentType.documentType_id}>
-						{documentType.description}
-					</option>
-				{/each}
-			</select>
-		</div>
-		<div class="col-md-6">
-			<label for="urlPdf" class="form-label">Adjunto</label>
-			<!-- Acepta documentos, planillas, presentaciones, imágenes y sus variantes libres-->
-			<input
-				class="form-control"
-				type="file"
-				accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
+<main>
+	<form name="formUserDoc" id="formUserDoc">
+		<div class="row mb-3 g-3">
+			<div class="col-md-6">
+				<label for="documentType" class="form-label">Tipo de documento</label>
+				<select id="documentType" class="form-select" aria-label="Tipo de documento" required>
+					<option disabled selected>Elija una opción...</option>
+					{#each documentTypeList as documentType}
+						<option value={documentType.documentType_id}>
+							{documentType.description}
+						</option>
+					{/each}
+				</select>
+			</div>
+			<div class="col-md-6">
+				<label for="urlPdf" class="form-label">Adjunto</label>
+				<!-- Acepta documentos, planillas, presentaciones, imágenes y sus variantes libres-->
+				<input
+					class="form-control"
+					type="file"
+					accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
 				application/vnd.oasis.opendocument.text, 
 				application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, 
 				application/vnd.oasis.opendocument.spreadsheet
@@ -91,30 +92,31 @@
 				application/vnd.oasis.opendocument.presentation,
 				text/plain, application/vnd.oasis.opendocument.text
 				application/pdf, image/*"
-				id="urlPdf"
-				required
-			/>
+					id="urlPdf"
+					required
+				/>
+			</div>
 		</div>
-	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6">
-			<label for="expirated_at" class="form-label">Vencimiento</label>
-			<input
-				type="date"
-				id="expirated_at"
-				name="expirated_at"
-				class="form-control"
-				aria-label="Vencimiento"
-				required
-			/>
+		<div class="row mb-3 g-3">
+			<div class="col-md-6">
+				<label for="expirated_at" class="form-label">Vencimiento</label>
+				<input
+					type="date"
+					id="expirated_at"
+					name="expirated_at"
+					class="form-control"
+					aria-label="Vencimiento"
+					required
+				/>
+			</div>
 		</div>
-	</div>
-	<div class="row mb-3 g-3">
-		<div class="col" />
-		<div class="col-md-6 d-flex justify-content-end">
-			<button type="submit" class="btn btn-primary">
-				<i class="fas fa-plus me-2" />Subir archivo
-			</button>
+		<div class="row mb-3 g-3">
+			<div class="col" />
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary">
+					<i class="fas fa-plus me-2" />Subir archivo
+				</button>
+			</div>
 		</div>
-	</div>
-</form>
+	</form>
+</main>

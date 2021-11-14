@@ -21,10 +21,10 @@
 </script>
 
 <svelte:head>
-	<title>Editar trabajo n° {jobDetails.job_id} - SeguCheck</title>
+	<title>Editar trabajo: {jobDetails.job_id} - SeguCheck</title>
 </svelte:head>
 
-<header>
+<header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
@@ -37,6 +37,10 @@
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
+	<div class="col-auto">
+		<h1><i class="fas fa-briefcase me-4" />Editar trabajo</h1>
+		<p class="lead">Modifique los detalles a continuación.</p>
+	</div>
 </header>
 
 <main>
