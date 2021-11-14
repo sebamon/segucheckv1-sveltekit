@@ -1,16 +1,19 @@
 <script lang="ts">
+	import JobDetails from '$lib/Details/JobDetails.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import LocationDetails from '$lib/Details/LocationDetails.svelte';
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
-	// Locación de ejemplo::
-	let locationDetails = {
-		location_id: 1,
-		locationName: 'Refinería Plaza Huincul',
-		coordenates: '-38.74,-67.66',
-		// coordenateY: '-67.66',
-		province: 'Neuquén',
-		customer: { customer_id: 3, bussinessName: 'YPF' }
+	// Trabajo de ejemplo:
+	let jobDetails = {
+		job_id: 1,
+		startDate: new Date('2021-12-31'),
+		finishDate: new Date('2022-12-31'),
+		status: 'Programado',
+		riskAnalysis: '/docs/doc-placeholder.pdf',
+		customer: 1,
+		location: 1,
+		internalNumber: 1,
+		checkItemGroup_id: 1
 	};
 
 	// Configurar componente LocationDetails para editar
@@ -18,7 +21,7 @@
 </script>
 
 <svelte:head>
-	<title>Editar locación: {locationDetails.locationName} - SeguCheck</title>
+	<title>Editar trabajo n° {jobDetails.job_id} - SeguCheck</title>
 </svelte:head>
 
 <header>
@@ -27,16 +30,16 @@
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/locaciones">Locaciones</a>
+			<a href="/panel/trabajos">Trabajo</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/locaciones/{locationDetails.location_id}/">{locationDetails.locationName}</a>
+			<a href="/panel/trabajos/{jobDetails.job_id}">{jobDetails.job_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>
 </header>
 
 <main>
-	<!-- Formulario detalles locación -->
-	<LocationDetails {...locationDetails} {isReadOnly} />
+	<!-- Formulario detalles trabajo -->
+	<JobDetails {...jobDetails} {isReadOnly} />
 </main>

@@ -1,6 +1,4 @@
 <script lang="ts">
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-
 	export let location_id: number;
 	export let locationName: string;
 	export let coordenates: string;
@@ -199,7 +197,7 @@
 					on:blur={handleChange}
 					class:invalid={$errors.province}
 				>
-					<option selected disabled>Elija una opción...</option>
+					<option disabled>Elija una opción...</option>
 					{#each provinceList as thisProvince}
 						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
 					{/each}

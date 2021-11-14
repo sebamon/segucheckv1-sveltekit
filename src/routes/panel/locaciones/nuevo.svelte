@@ -97,7 +97,7 @@
 	<p class="lead">Ingrese los detalles a continuación</p>
 </header>
 
-<!-- Formulario nuevo usuario -->
+<!-- Formulario nueva locación -->
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">

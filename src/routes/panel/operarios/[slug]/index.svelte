@@ -7,12 +7,7 @@
 	import HealthInfo from '$lib/Details/HealthInfo.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		TabContent,
-		TabPane
-	} from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
 
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 	let userDetails = {

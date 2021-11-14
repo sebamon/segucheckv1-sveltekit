@@ -32,12 +32,6 @@
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
-	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
-	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
-	*/
-	let regexName =
-		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			startDate: '',
