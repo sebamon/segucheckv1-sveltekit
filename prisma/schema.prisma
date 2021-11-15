@@ -191,7 +191,7 @@ model userhealthinfo {
 
 model users {
   user_id      Int            @id @default(autoincrement())
-  email        String         @unique(map: "User_email_key")
+  email        String        
   firstName    String
   lastName     String
   cuit         String
@@ -206,6 +206,10 @@ model users {
   active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
+  deleted Boolean @@default(false)
+  @@unique(fields: [cuit, password] name: "credentials")
+
+ 
 }
 
 model usersonroles {

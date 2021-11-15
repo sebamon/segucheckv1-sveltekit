@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	export async function load({ session }) {
 		// console.log(session)
 		if (session.user) {
@@ -10,11 +10,14 @@
 
 		return {};
 	}
-</script>
+</script> -->
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { session } from '$app/stores';
 	import { goto } from '$app/navigation';
+	// import { authenticated } from '$svelte/stores'
+
+	
 	import {
 		Button,
 		Card,
@@ -26,32 +29,51 @@
 		Input,
 		Label
 	} from 'sveltestrap';
+import { emitWarning } from 'process';
+import type { subscribe } from 'svelte/internal';
 	let cuit = '';
 	let password = '';
 	let errors = null;
-
-	const submitForm = async ():Promise<void> =>{
-		const response = await fetch(`auth/login`, {
+	export let message = ''
+	// const submitForm = async ():Promise<void> =>{
+	// 	const response = await fetch(`auth/login`, {
+	// 		method : "POST",
+	// 		body :JSON.stringify({
+	// 			cuit,
+	// 			password,
+	// 		})
+	// 	})
+	// 	const data = await response.json()
+	// 	// errors = response.errors;
+	// 	// if(response.user){
+	// 	// 	$session.user= response.user;
+	// 	// 	goto('/panel')
+	// 	// }
+	// }
+	const login = async () =>{
+		console.log('entro al login')
+		const response = await fetch("./auth/login",{
 			method : "POST",
-			body :JSON.stringify({
-				cuit,
-				password,
-			})
+			body: JSON.stringify({
+				cuit: cuit,
+				password: password
+				})
 		})
 		const data = await response.json()
-		// errors = response.errors;
-		// if(response.user){
-		// 	$session.user= response.user;
-		// 	goto('/panel')
-		// }
+		message=data.message
+		console.log('data', data)
+		console.log('data.user', data.user)
 	}
 </script>
 
 <main class="container py-4">
+	<!-- m -->
+	{JSON.stringify(message)}
+	<!-- <h1>{authenticated}</h1> -->
 <Card class="shadow-lg">
     <CardHeader>Ingresar a SeguCheck</CardHeader>
     <CardBody>
-		<form on:submit|preventDefault={submitForm} class="needs-validation">
+		<form on:submit|preventDefault={login} class="needs-validation">
 			<FormGroup>
 			  <Label for="user" class="small mb-1">CUIT</Label>
 			  <Input
