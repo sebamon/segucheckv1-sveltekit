@@ -23,7 +23,7 @@ const drive = google.drive({
 
 const filePath = path.join(__dirname, 'bg-hero.jpg');
 
-async function uploadFile (fileName = 'testeoTUDW4.jpg', fileMimeType = 'image/jpg') {
+export async function uploadFile (fileName = 'testeoTUDW4.jpg', fileMimeType = 'image/jpg') {
     try {
         
         const response = await drive.files.create({
@@ -36,9 +36,9 @@ async function uploadFile (fileName = 'testeoTUDW4.jpg', fileMimeType = 'image/j
                 body: fs.createReadStream(filePath)
             }            
         });
-        console.log(response.data);
+        return(response.data);
     } catch (error) {
-        console.log(error);
+        return(error);
     }
 }
 
