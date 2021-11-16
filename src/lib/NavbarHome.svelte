@@ -1,10 +1,10 @@
 <script lang="ts">
 	import ModalLogin from '$lib/ModalLogin.svelte';
-	import { authenticated } from '../stores/auth'
+	// import { authenticated } from '../stores/auth'
 
-	let auth = false
+	// let auth = false
 
-	authenticated.subscribe( a => auth = a)
+	// authenticated.subscribe( a => auth = a)
 	
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {

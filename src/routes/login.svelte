@@ -15,9 +15,7 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { session } from '$app/stores';
 	import { goto } from '$app/navigation';
-	// import { authenticated } from '$svelte/stores'
 
-	
 	import {
 		Button,
 		Card,
@@ -29,27 +27,13 @@
 		Input,
 		Label
 	} from 'sveltestrap';
-import { emitWarning } from 'process';
-import type { subscribe } from 'svelte/internal';
+	import { emitWarning } from 'process';
+	import type { subscribe } from 'svelte/internal';
 	let cuit = '';
 	let password = '';
 	let errors = null;
 	export let message = ''
-	// const submitForm = async ():Promise<void> =>{
-	// 	const response = await fetch(`auth/login`, {
-	// 		method : "POST",
-	// 		body :JSON.stringify({
-	// 			cuit,
-	// 			password,
-	// 		})
-	// 	})
-	// 	const data = await response.json()
-	// 	// errors = response.errors;
-	// 	// if(response.user){
-	// 	// 	$session.user= response.user;
-	// 	// 	goto('/panel')
-	// 	// }
-	// }
+
 	const login = async () =>{
 		console.log('entro al login')
 		const response = await fetch("./auth/login",{
@@ -60,6 +44,8 @@ import type { subscribe } from 'svelte/internal';
 				})
 		})
 		const data = await response.json()
+		localStorage.setItem('seguTokentokentoken',JSON.stringify(data))
+		console.log(data.headers)
 		message=data.message
 		console.log('data', data)
 		console.log('data.user', data.user)

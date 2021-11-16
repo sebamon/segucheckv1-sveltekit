@@ -16,8 +16,6 @@ const prisma = new PrismaClient()
 // }
 
 export async function get({params}){
-    // console.log(params)
-    // console.log('hola',JSON.stringify(params))
     try{
         const users = await prisma.users.findMany({
             where: {
@@ -36,7 +34,6 @@ export async function get({params}){
                 },
             }
         })
-        //  console.log("result: ",users) 
         return {
             body: {
                 users: users,
@@ -46,10 +43,6 @@ export async function get({params}){
         }
     }catch (e){
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            // The .code property can be accessed in a type-safe manner
-/*             console.log('entro al  error' , e)
-            console.log('e.code: ' , e.code)
-            console.log('e.meta: ' , e.meta) */
             if (e.code === 'P2002') {
             console.log(
                 'There is a unique constraint violation, a new user cannot be created with this email', e)

@@ -1,15 +1,19 @@
-import { respond } from './_respond';
 import {PrismaClient} from '@prisma/client'
 import * as cookies from 'cookie'
 import {v4 as uuidV4} from 'uuid'
 import jwt from 'jsonwebtoken'
-// import {jwt} from '../../../node_modules/jsonwebtoken'
-// var jwt = require('jsonwebtoken')
+
 
 export const post = async (request) => {
 	const prisma = new PrismaClient()
 	const credenciales = JSON.parse(request.body)
-	console.log('jwt', jwt)
+
+	console.log(authorization)
+
+	
+	//Guardo los datos que vienen del FRONT END y los guardo en como credenciales
+
+	// console.log('jwt', jwt)
 	try{
 		const user =  await prisma.users.findUnique({
 			select :{
@@ -31,64 +35,77 @@ export const post = async (request) => {
 				},
 			},
 		})
-		jwt.sign({
-			user: user
-		},
-			'hola'
-		)
 
-		// jwt.sign(user)
-		console.log('jwt', jwt)
-		
-		// const accessToken = generateAccessToken(user)
-		// request.headers('authorization', accessToken).json({
-		// 	message: 'Usuario Autenticado',
-		// 	token: accessToken
-		// })
-		// request.locals.Storage('usd',213)
+		/**
+		 * Si la consulta no devolvió usuario retorno mensaje de errror
+		 */
+		if(!user){
+			return {		
+				body : {
+					user : {},
+					message : 'Cuit o Password incorrectos',
+					status  : 401
+				}
+			}
+		}
+
 		if(user){
-			const sessionId = uuidV4()
-			console.log(sessionId)
+			const roles = user.usersonroles.map(role => role.roles.rolDescription)
+			const userForToken = {
+				id: user.user_id,
+				roles: roles,
+			}
+			const token=jwt.sign({userForToken},process.env.SECRET,{
+				expiresIn: 60 * 60 * 24 * 7
+			})
 			const headers = {
-				"set-cookie": cookies.serialize("session_id",sessionId, {
-					httpOnly: true,
-					sameSite: "lax",
-					maxAge: 60 * 60 * 24 *7,
-					patch: "/",
-					authorization: 'dasdd',
-				}),
+				'Set-Cookie': cookies.serialize('seguToken',token, {
+					httpOnly : true,
+					maxAge : 60 * 60,
+					sameSite: 'lax',
+					path: '/panel'
+				})
 			}
 			return {
-				headers,
+				headers: headers,
 				body:{
-					user:user,
-					message : 'Credenciales Exitosas'
+					 user,
+					roles : roles,
+					token,
+					message : 'Credenciales Exitosas',
+					status: 200
 				}
 			}
 		}
 		return {
+			headers: {
+				'set-cookie' : "segutoken=null",
+			},
 			body: {
 				user : {},
-				message : 'Cuit y/o contraseña Incorrectos'
+				roles: {},
+				token: null,
+				message : 'Cuit y/o contraseña Incorrectos',
+				status : 401
 			}
 		} 
 
 	}catch(e)
 	{
 		return {
+			headers: {
+				'set-cookie' : "segutoken=null",
+			},
 			body: {
 				user : {},
-				message : 'Error al intentar conectar con la DB'
+				message : 'Error al intentar conectar con la DB',
+				status: 500 //ver cual es mejor
 			}
 		} 
 	}
 }
-
-// function generateAccessToken(user){
-// 	return jwt.sign(
-// 		user,
-// 		process.env.SECRET,
-// 		{expiresIN:'5m'}
-// 	)
-	
-// }
+// headers: {
+// 	'set-cookie': 'segutoken='+token,
+// 	httpOnly : true,
+// 	maxAge : 60,
+// },

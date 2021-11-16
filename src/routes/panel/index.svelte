@@ -1,6 +1,6 @@
 <script lang="ts">
-import { onMount } from 'svelte';
-import { authenticated } from 'src/stores/auth';
+// import { onMount } from 'svelte';
+// import { authenticated } from 'src/stores/auth';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
@@ -10,23 +10,23 @@ import { authenticated } from 'src/stores/auth';
 	let actualUser = 'Juan Perez';
 	let message = ''
 
-	onMount(async () =>{
-		try{
+	// onMount(async () =>{
+	// 	try{
 
-			const response = await fetch('', {
-				headers: {'Content-Type' : 'application/json'},
-				credentials : 'include'
-			})
-			const content = await response.json()
-			actualUser = `${content.user.firstName} ${content.user.lastName}`
-			message= `Bienvenido ${actualUser}}`
-			authenticated.set(true)
-		}catch(e){
-			message = 'No estas logueado'
-			authenticated.set(false)
+	// 		const response = await fetch('', {
+	// 			headers: {'Content-Type' : 'application/json'},
+	// 			credentials : 'include'
+	// 		})
+	// 		const content = await response.json()
+	// 		actualUser = `${content.user.firstName} ${content.user.lastName}`
+	// 		message= `Bienvenido ${actualUser}}`
+	// 		authenticated.set(true)
+	// 	}catch(e){
+	// 		message = 'No estas logueado'
+	// 		authenticated.set(false)
 		
-		}
-	})
+	// 	}
+	// })
 	
 </script>
 

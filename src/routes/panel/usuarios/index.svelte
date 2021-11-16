@@ -2,11 +2,10 @@
 	// panel/usuarios.svelte: Lee de la BD y lista los usuarios registrados
 	import { session } from "$app/stores"
 	export async function load({ page, fetch , session}) {
-		// console.log(JSON.stringify(session))
 		try {
 			const response = await fetch(`./usuarios/usuarios`)
 			const data = await response.json();
-			/* console.log('ssr data:', data) */
+
 			return {
 				props: {
 					data,

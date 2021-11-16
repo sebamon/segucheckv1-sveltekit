@@ -13,12 +13,12 @@ export const get = async ( request ) =>{
                 where :{
                     user_id : id_find,
                 },
-                // include:{
-                //     usersonroles: true,
-                // }
+                include:{
+                    usersonroles: true,
+                }
                 
             })
-            
+            console.log(userDetails)
             if(userDetails.user_id!=null){
                 return {
                     body: {
