@@ -13,7 +13,7 @@
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
 	// console.log(data);

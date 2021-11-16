@@ -1,6 +1,6 @@
 <script lang="ts">
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import LocationDetails from '$lib/Details/LocationDetails.svelte';
+	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	// Locación de ejemplo:

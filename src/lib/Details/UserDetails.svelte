@@ -20,7 +20,7 @@
 	export let profilePic: string;
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
+	let convertedDateOfBirth = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
 	// export let usersonroles = []
@@ -115,7 +115,7 @@
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
-	
+
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -143,7 +143,7 @@ import { pathToFileURL } from 'url';
 				studyLevel: studyLevel,
 				degree: degree,
 				profilePic: profilePic,
-				dateOfBirth: newDate,
+				convertedDateOfBirth: convertedDateOfBirth,
 			},
 			validationSchema: yup.object().shape({
 				cuit: yup
@@ -419,10 +419,14 @@ import { pathToFileURL } from 'url';
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={newDate}
+				bind:value={$form.convertedDateOfBirth}
 				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.convertedDateOfBirth}
 			/>
+			{#if $errors.convertedDateOfBirth}
+				<small class="form-error">{$errors.convertedDateOfBirth}</small>
+			{/if}
 		</div>
 		<div class="col-md-4">
 			<label for="nationality" class="form-label">Nacionalidad</label>

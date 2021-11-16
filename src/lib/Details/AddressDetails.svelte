@@ -115,7 +115,7 @@
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${min} caracteres.'),
-			phoneOfResidence: yup.string().matches(regexPhone, 'El formato de teléfono no es válido.')
+			phoneOfResidence: yup.string().matches(regexPhone, 'El formato de teléfono es incorrecto.')
 		}),
 		onSubmit: (values) => {
 			// -- Muestra resultado en submit: BORRAR --

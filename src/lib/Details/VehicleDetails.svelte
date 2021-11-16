@@ -144,12 +144,6 @@
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
-	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
-	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
-	*/
-	let regexName =
-		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð&,.'\s-]+$/u;
 	let regexAZNum = /^[A-Z0-9]+$/i;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -168,37 +162,38 @@
 		validationSchema: yup.object().shape({
 			domain: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			brand: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			model: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			type: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.'),
+				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.')
+				.required('Debes completar este campo.'),
 			year: yup
 				.number()
-				.required('Debes completar este campo.')
 				.min(1900, 'El año es demasiado bajo.')
-				.max(9999, 'El año es demasiado alto.'),
+				.max(9999, 'El año es demasiado alto.')
+				.integer("El número debe ser entero.")
+				.required('Debes completar este campo.'),
 			internal_id: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			chasisNumber: yup
 				.string()
-				.required('Debes completar este campo.')
 				.min(11, 'Este campo debe ser al menos ${max} caracteres.')
 				.max(17, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			motorNumber: yup
 				.string()
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
@@ -241,7 +236,6 @@
 				bind:value={$form.type}
 				on:blur={handleChange}
 				class:invalid={$errors.type}
-				required
 			>
 				<option selected disabled >Elija una opción...</option>
 				{#each vehicleTypeList as vehicleType}
@@ -390,7 +384,9 @@
 </form>
 
 <style>
-	#domain, #chasisNumber, #motorNumber {
+	#domain,
+	#chasisNumber,
+	#motorNumber {
 		text-transform: uppercase;
 	}
 </style>

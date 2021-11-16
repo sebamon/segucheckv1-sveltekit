@@ -126,7 +126,7 @@
 
 		<div id="page-content-wrapper">
 			<!-- Menú superior horizontal -->
-			<Navbar color="light" light expand="md" class="border-bottom">
+			<Navbar color="light" light expand="md" class="border-bottom py-2">
 				<button class="btn btn-primary me-3" on:click={() => (showSidebar = !showSidebar)}>
 					<i class="fas fa-bars fs-6 me-1" /> Menú
 				</button>
@@ -136,22 +136,18 @@
 						id="text-logo">SeguCheck</span
 					>
 				</NavbarBrand>
-				<Nav navbar>
-					<Dropdown nav inNavbar>
-						<DropdownToggle nav caret class="text-primary me-2"
-							><i class="fas fa-user me-4" />{session.firstName +
-								' ' +
-								session.lastName}</DropdownToggle
-						>
-						<DropdownMenu end>
-							<DropdownItem href="/panel/perfil">Ver tu perfil</DropdownItem>
-							<DropdownItem>Preferencias</DropdownItem>
-							<DropdownItem href="/ayuda">Ayuda</DropdownItem>
-							<DropdownItem divider />
-							<DropdownItem href="/salir">Cerrar sesión</DropdownItem>
-						</DropdownMenu>
-					</Dropdown>
-				</Nav>
+				<Dropdown inNavbar>
+					<DropdownToggle nav caret class="text-primary me-2">
+						<i class="fas fa-user me-4" />{session.firstName + ' ' + session.lastName}
+					</DropdownToggle>
+					<DropdownMenu end>
+						<DropdownItem href="/panel/perfil">Ver tu perfil</DropdownItem>
+						<DropdownItem>Preferencias</DropdownItem>
+						<DropdownItem href="/ayuda">Ayuda</DropdownItem>
+						<DropdownItem divider />
+						<DropdownItem href="/salir">Cerrar sesión</DropdownItem>
+					</DropdownMenu>
+				</Dropdown>
 			</Navbar>
 			<!-- Contenido principal -->
 			<div class="container p-4 shadow-lg">
@@ -162,7 +158,7 @@
 {:else}
 	<NavbarHome />
 
-	<div class="container p-4">
+	<div class="container p-4 shadow-lg">
 		<Alert color="warning">
 			<h4 class="alert-heading text-capitalize">
 				<i class="fas fa-exclamation-triangle me-4" />Acceso denegado
@@ -191,7 +187,7 @@
 		padding: 0.875rem 1.25rem;
 		font-size: 1.2rem;
 	}
-	
+
 	#page-content-wrapper {
 		min-width: 0;
 		width: 100%;
@@ -207,7 +203,7 @@
 			display: none;
 		}
 		#sidebar-wrapper .list-group {
-		width: 15rem;
+			width: 15rem;
 		}
 	}
 </style>

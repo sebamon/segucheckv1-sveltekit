@@ -1,5 +1,5 @@
 <script context="module">
-    /* Configurar!
+	/* Configurar!
 	export async function load({fetch , page}){
 		const response = await fetch(`./${page.params.slug}/detalle.json`, {
 			method: "GET",
@@ -17,20 +17,16 @@
 
 <script lang="ts">
 	import AddressDetails from '$lib/Details/AddressDetails.svelte';
-import { dataset_dev } from 'svelte/internal';
+	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		Alert
-	} from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 
 	/* export let data;
 	export let userDetails=data.userDetails
 	let color = 'success' */
-	
-    // Datos placeholder:
+
+	// Datos placeholder:
 	let userDetails = {
 		user_id: 1,
 		firstName: 'Juan',
@@ -54,7 +50,6 @@ import { dataset_dev } from 'svelte/internal';
 
 	// Configurar componente AddressDetails para editar
 	let isReadOnly = false;
-
 </script>
 
 <svelte:head>
@@ -75,8 +70,10 @@ import { dataset_dev } from 'svelte/internal';
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Domicilios</BreadcrumbItem>
 	</Breadcrumb>
-    <h1><i class="fas fa-home me-4" />Editar domicilios</h1>
-    <p class="lead">Modifique los detalles a continuación.</p>
+	<h1><i class="fas fa-home me-4" />Editar domicilios</h1>
+	<p class="lead">Modifique los detalles a continuación.</p>
 </header>
 
-<AddressDetails {...userAddress} {isReadOnly} />
+<main>
+	<AddressDetails {...userAddress} {isReadOnly} />
+</main>

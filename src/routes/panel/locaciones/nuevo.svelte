@@ -56,12 +56,12 @@
 		validationSchema: yup.object().shape({
 			locationName: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				),
+				)
+				.required('Debes completar este campo.'),
 			coordenates: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
@@ -97,7 +97,7 @@
 	<p class="lead">Ingrese los detalles a continuación</p>
 </header>
 
-<!-- Formulario nuevo usuario -->
+<!-- Formulario nueva locación -->
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
@@ -119,7 +119,14 @@
 		</div>
 		<div class="col-md-6">
 			<label for="customer" class="form-label">Cliente</label>
-			<select id="customer" class="form-select" aria-label="Cliente" required>
+			<select
+				id="customer"
+				class="form-select"
+				aria-label="Cliente"
+				bind:value={$form.customer}
+				on:blur={handleChange}
+				class:invalid={$errors.customer}
+			>
 				<option selected disabled>Elija una opción...</option>
 				{#each customerList as { customer_id, bussinessName }}
 					<option value={customer_id}>{bussinessName}</option>
