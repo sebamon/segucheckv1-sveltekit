@@ -53,19 +53,6 @@ import WorkInfo from '$lib/Details/WorkInfo.svelte';
 		{ rol_id: 3, rolDescription: 'Operario' },
 		{ rol_id: 4, rolDescription: 'Operario' }
 	];
-	// Arreglo de nivel de estudios:
-	let studyLevelList = [
-		'Primario incompleto',
-		'Primario completo',
-		'Secundario incompleto',
-		'Secundario completo',
-		'Superior no universitario incompleto',
-		'Superior no universitario completo',
-		'Universitario incompleto',
-		'Universitario completo',
-		'Post universitario incompleto',
-		'Post universitario completo'
-	];
 	// Arreglo de géneros:
 	let genderText: string;
 	if (userDetails.gender == 'M') {
