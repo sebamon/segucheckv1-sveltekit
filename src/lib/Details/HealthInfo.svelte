@@ -60,7 +60,7 @@
 					name="bloodType"
 					class="form-control"
 					placeholder="A"
-					aria-label="Número ID"
+					aria-label="Tipo de sangre"
 					value={bloodType}
 					readonly
 				/>

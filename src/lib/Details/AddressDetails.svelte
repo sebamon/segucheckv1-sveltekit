@@ -266,7 +266,7 @@
 					id="countryOfResidence"
 					name="countryOfResidence"
 					class="form-control"
-					placeholder="Estados Unidos"
+					placeholder="Argentina"
 					aria-label="País"
 					bind:value={$form.countryOfResidence}
 					on:blur={handleChange}
@@ -284,7 +284,7 @@
 					id="stateOfResidence"
 					name="stateOfResidence"
 					class="form-control"
-					placeholder="Texas"
+					placeholder="Neuquén"
 					aria-label="Provincia / Estado"
 					bind:value={$form.stateOfResidence}
 					on:blur={handleChange}
@@ -304,7 +304,7 @@
 					id="cityOfResidence"
 					name="cityOfResidence"
 					class="form-control"
-					placeholder="Houston"
+					placeholder="Rincón de los Sauces"
 					aria-label="Localidad"
 					bind:value={$form.cityOfResidence}
 					on:blur={handleChange}
@@ -322,7 +322,7 @@
 					id="zipCodeOfResidence"
 					name="zipCodeOfResidence"
 					class="form-control"
-					placeholder="77001"
+					placeholder="8319"
 					aria-label="Código postal"
 					bind:value={$form.zipCodeOfResidence}
 					on:blur={handleChange}
@@ -342,7 +342,7 @@
 					id="addressOfResidence"
 					name="addressOfResidence"
 					class="form-control"
-					placeholder="6815 Eastwood St."
+					placeholder="Roca 893"
 					aria-label="Dirección"
 					bind:value={$form.addressOfResidence}
 					on:blur={handleChange}
@@ -360,7 +360,7 @@
 					id="phoneOfResidence"
 					name="phoneOfResidence"
 					class="form-control"
-					placeholder="+1-281-555-0185"
+					placeholder="299-412-3469"
 					aria-label="Teléfono"
 					bind:value={$form.phoneOfResidence}
 					on:blur={handleChange}

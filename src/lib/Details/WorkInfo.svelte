@@ -108,7 +108,7 @@
 				id="employementRel"
 				name="employementRel"
 				class="form-control"
-				placeholder="Texas"
+				placeholder="Relación de Dependencia"
 				aria-label="Relación laboral"
 				readonly={isReadOnly}
 				on:blur={handleChange}

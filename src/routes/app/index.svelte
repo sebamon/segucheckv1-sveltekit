@@ -17,16 +17,14 @@
 	let actualUser = 'Juan Perez';
 </script>
 
-<svelte:head>
-	<title>Inicio app - SeguCheck</title>
-</svelte:head>
+<header class="text-center mb-3">
+	<h1><i class="fas fa-home fs-2 me-2" />Inicio</h1>
+	<p class="lead">
+		Bienvenido, {actualUser}.
+	</p>
+</header>
 
-<h1>Esto está en construcción...</h1>
-<p class="lead">
-	Ah, hola {actualUser}! Esta sería la vista de aplicación móvil (o versión web) para el operario.
-</p>
-
-<div class="row g-4">
+<main class="row g-4">
 	<div class="col-md-6 col-xl-4">
 		<a href="app/perfil" class="hstack btn btn-secondary justify-content-between">
 			<i class="fas fa-user fs-2 m-2" />
@@ -42,7 +40,7 @@
 		</a>
 	</div>
 	<div class="col-md-6 col-xl-4">
-		<a href="app/tareaas" class="hstack btn btn-secondary justify-content-between">
+		<a href="app/tareas" class="hstack btn btn-secondary justify-content-between">
 			<i class="fas fa-briefcase fs-2 m-2" />
 			<h4 class="card-title">Tareas</h4>
 			<i class="fas fa-chevron-right fs-2 m-2" />
@@ -69,5 +67,5 @@
 			<i class="fas fa-chevron-right fs-2 m-2" />
 		</a>
 	</div>
-</div>
+</main>
 

@@ -19,6 +19,26 @@
 	// Obtener ruta actual: https://github.com/EmilTholin/svelte-routing/issues/62#issuecomment-939503161
 	import { page } from '$app/stores';
 
+	// NO FUNCIONA DE FORMA REACTIVA
+	let pageTitle = '';
+	switch ($page.path) {
+		case '/app': pageTitle = 'Inicio';
+			break;
+		case '/app/perfil': pageTitle = 'Perfil';
+			break;
+		case '/app/habilitaciones': pageTitle = 'Habilitaciones';
+			break;
+		case '/app/tareas': pageTitle = 'Tareas';
+			break;
+		case '/app/checklists': pageTitle = 'Cchecklists';
+			break;
+		case '/app/vehiculos': pageTitle = 'Vehiculos';
+			break;
+		case '/app/qr': pageTitle = 'Código QR';
+			break;
+		default: pageTitle = 'Aplicación';
+	}
+
 	// Datos de usuario - Ver si esto lo maneja un hook:
 	let session = {
 		id_user: 1,
@@ -45,6 +65,10 @@
 	};
 </script>
 
+<svelte:head>
+	<title>{pageTitle} - SeguCheck</title> <!-- Corregir reactividad -->
+</svelte:head>
+
 {#if isAuthorized()}
 	<!-- Menú superior horizontal -->
 	<Navbar color="light" light class="border-bottom py-2 justify-content-between user-select-none">
@@ -53,23 +77,20 @@
 				<img src="/img/segucheck-logo.svg" height="36" alt="logo" />
 				<span class="m-2 text-dark" id="text-logo">SeguCheck</span>
 			</NavbarBrand>
-			<div>
-				<p class="lead m-2">Bienvenido, {session.firstName}</p>
-			</div>
 		{:else}
 			<NavbarBrand href="/app">
-				<i class="fas fa-chevron-left fs-1 mx-2" />
+				<i class="fas fa-chevron-left text-dark fs-1 mx-2" />
 			</NavbarBrand>
-			<div>
-				<p class="lead m-2">{$page.path.substring(5)}</p>
-			</div>
 		{/if}
+		<div>
+			<p class="lead m-2">{pageTitle}</p>
+		</div>
 		<Dropdown inNavbar>
-			<DropdownToggle nav caret class="text-primary me-2">
-				<i class="fas fa-bars me-2" />Menú
+			<DropdownToggle nav>
+				<i class="fas fa-bars text-dark lead fs-1 mx-2" />
 			</DropdownToggle>
 			<DropdownMenu end>
-				<DropdownItem href="/panel/perfil"><i class="fas fa-user me-2" />Perfil</DropdownItem>
+				<DropdownItem href="/app/perfil"><i class="fas fa-user me-2" />Perfil</DropdownItem>
 				<DropdownItem><i class="fas fa-cog me-2" />Ajustes</DropdownItem>
 				<DropdownItem href="/ayuda"><i class="fas fa-question-circle me-2" />Ayuda</DropdownItem>
 				<DropdownItem divider />
