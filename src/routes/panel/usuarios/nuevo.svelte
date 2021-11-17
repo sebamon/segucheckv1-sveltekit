@@ -40,10 +40,6 @@
 		.split('T')[0];
 	let color: Color;
 
-	console.log("dateOfBirth: "+dateOfBirth)
-	console.log("dateString: "+dateString)
-	console.log("newDate: "+newDate)
-
 	let roles_assigned = {
 		rol1: false,
 		rol2: false,
@@ -75,38 +71,7 @@
 
 	const submitForm = async (): Promise<void> => {
 		//funcion que toma los datos del formulario y lo envia por metodo post
-		try {
-			const submit = await fetch('usuarios', {
-				method: 'POST',
-				body: JSON.stringify({
-					firstName,
-					lastName,
-					cuit,
-					email,
-					phone,
-					newDate,
-					degree,
-					gender,
-					nationality,
-					studyLevel,
-					roles_assigned
-				})
-			});
-			const data = await submit.json();
-			message = data.message;
-			status = data.status;
 
-			if (data.status === 'OK') {
-				cleanPage();
-			}
-			color = data.status === 'OK' ? 'success' : 'danger';
-
-			if (data.status === 200) {
-				console.log('message', message);
-			}
-		} catch (err) {
-			error = err;
-		}
 	};
 
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
@@ -177,7 +142,8 @@
 			nationality: "",
 			studyLevel: "",
 			degree: "",
-			profilePic: ""
+			profilePic: "",
+			roles_assigned: ""
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -233,9 +199,31 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 		}),
-		onSubmit: (values) => {
+		onSubmit: async(values) => {
 			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+			console.log(values)
+			try {
+			const submit = await fetch('usuarios', {
+				method: 'POST',
+				body: JSON.stringify({
+					values
+				})
+			});
+			const data = await submit.json();
+			message = data.message;
+			status = data.status;
+
+			if (data.status === 'OK') {
+				cleanPage();
+			}
+			color = data.status === 'OK' ? 'success' : 'danger';
+
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+		} catch (err) {
+			error = err;
+		}
 		}
 	});
 </script>

@@ -78,42 +78,7 @@
 	export let color: Color;
 
 	const submitForm = async (): Promise<any> => {
-		formVehicleDetails = document.getElementById('formVehicleDetails');
-		try {
-			const submit = await fetch('vehiculos', {
-				method: 'POST',
-				headers: {
-					'Contex-Type': 'application/json'
-				},
-				body: JSON.stringify({
-					domain,
-					brand,
-					model,
-					type,
-					year,
-					internal_id,
-					chasisNumber,
-					motorNumber,
-					frontPic,
-					rightSidePic,
-					leftSidePic
-				})
-			});
-			const data = await submit.json();
-			message = data.message;
-			status = data.status;
 
-			if (data.status === 'OK') {
-				cleanPage();
-			}
-			color = data.status === 'OK' ? 'success' : 'danger';
-
-			if (data.status === 200) {
-				console.log('message', message);
-			}
-		} catch (err) {
-			throw new Error();
-		}
 	};
 
 	function cleanPage() {
@@ -191,9 +156,44 @@
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async (values) => {
+			console.log(JSON.stringify(values))
+			formVehicleDetails = document.getElementById('formVehicleDetails');
+		try {
+			const submit = await fetch('vehiculos', {
+				method: 'POST',
+				headers: {
+					'Contex-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					domain,
+					brand,
+					model,
+					type,
+					year,
+					internal_id,
+					chasisNumber,
+					motorNumber,
+					frontPic,
+					rightSidePic,
+					leftSidePic
+				})
+			});
+			const data = await submit.json();
+			message = data.message;
+			status = data.status;
+
+			if (data.status === 'OK') {
+				cleanPage();
+			}
+			color = data.status === 'OK' ? 'success' : 'danger';
+
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+		} catch (err) {
+			throw new Error();
+		}
 		}
 	});
 </script>

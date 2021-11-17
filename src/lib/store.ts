@@ -25,8 +25,8 @@ export default class Store{
     }
     changeAuthenticationState=(user:User)=>{
         this.state.update((obj)=>{
-            console.log("old state")
-            console.log(obj)
+            // console.log("old state")
+            // console.log(obj)
             return {
                 ...obj,
                 authenticated:!obj.authenticated,

@@ -92,52 +92,52 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
-	const submitForm = async (): Promise<void> => {
-			const submit = await fetch(`editar`,{
-			method : 'PUT',
-			body: JSON.stringify({
-				domain,
-				brand,
-				model,
-				type,
-				year,
-				internal_id,
-				chasisNumber,
-				motorNumber
-			})
-		})
+	// const submitForm = async (): Promise<void> => {
+	// 		const submit = await fetch(`editar`,{
+	// 		method : 'PUT',
+	// 		body: JSON.stringify({
+	// 			domain,
+	// 			brand,
+	// 			model,
+	// 			type,
+	// 			year,
+	// 			internal_id,
+	// 			chasisNumber,
+	// 			motorNumber
+	// 		})
+	// 	})
 
-		console.log('submit',submit)
-			const data = await submit.json()
-			console.log('data',data)
-			message = data.message
-			error = data.error
-			if(data.status==='OK') {
-					color='success'
-				}
-				if(data.status==='ERROR') color='danger'
-		// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
-		const formBody = JSON.stringify({
-			domain,
-			brand,
-			model,
-			type,
-			year,
-			internal_id,
-			chasisNumber,
-			motorNumber
+	// 	console.log('submit',submit)
+	// 		const data = await submit.json()
+	// 		// console.log('data',data)
+	// 		message = data.message
+	// 		error = data.error
+	// 		if(data.status==='OK') {
+	// 				color='success'
+	// 			}
+	// 			if(data.status==='ERROR') color='danger'
+	// 	// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+	// 	const formBody = JSON.stringify({
+	// 		domain,
+	// 		brand,
+	// 		model,
+	// 		type,
+	// 		year,
+	// 		internal_id,
+	// 		chasisNumber,
+	// 		motorNumber
 
-		});
+	// 	});
 
-				if(data.status===200)
-				{
-					console.log('message', message)
-				}
-				dispatch('showAlert', {
-			status:status,
-			message:message
-		})
-	};
+	// 			if(data.status===200)
+	// 			{
+	// 				console.log('message', message)
+	// 			}
+	// 			dispatch('showAlert', {
+	// 		status:status,
+	// 		message:message
+	// 	})
+	// };
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
@@ -147,6 +147,7 @@
 	let regexAZNum = /^[A-Z0-9]+$/i;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
+			vehicle_id: vehicle_id,
 			domain: domain,
 			brand: brand,
 			model: model,
@@ -199,9 +200,44 @@
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async(values) => {
+			console.log(values)
+			const submit = await fetch(`editar`, {
+					method: 'PUT',
+					body: JSON.stringify({
+						values
+					})
+				});
+
+		console.log('submit',submit)
+			const data = await submit.json()
+			message = data.message
+			error = data.error
+			if(data.status==='OK') {
+					color='success'
+				}
+				if(data.status==='ERROR') color='danger'
+		// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+		// const formBody = JSON.stringify({
+		// 	domain,
+		// 	brand,
+		// 	model,
+		// 	type,
+		// 	year,
+		// 	internal_id,
+		// 	chasisNumber,
+		// 	motorNumber
+
+		// });
+
+				if(data.status===200)
+				{
+					console.log('message', message)
+				}
+				dispatch('showAlert', {
+			status:status,
+			message:message
+		})
 		}
 	});
 </script>

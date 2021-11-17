@@ -209,7 +209,6 @@ model users {
   deleted Boolean @@default(false)
   @@unique(fields: [cuit, password] name: "credentials")
 
- 
 }
 
 model usersonroles {

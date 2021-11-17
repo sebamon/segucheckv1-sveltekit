@@ -61,18 +61,18 @@ export async function get({params}){
 
 
 export const post = async (request)=> {
-const formBody =JSON.parse(request.body)
+const formBody =JSON.parse(request.body).values
+
 let roles=[]
    try {
        if(formBody.roles_assigned['rol1']===true){
-         roles.push({rol_id: 1, assignedBy : 1, user_id: 16})
-
+         roles.push({rol_id: 1, assignedBy : 1, user_id: 1})
        }
        if(formBody.roles_assigned['rol2']===true){
-         roles.push({rol_id: 2 , assignedBy : 1, user_id: 16})
+         roles.push({rol_id: 2 , assignedBy : 1, user_id: 1})
        }
        if(formBody.roles_assigned['rol3']===true){
-         roles.push({rol_id: 3, assignedBy : 1, user_id: 16})
+         roles.push({rol_id: 3, assignedBy : 1, user_id: 1})
        }
        const result = await prisma.users.create({
             data:{
@@ -88,11 +88,9 @@ let roles=[]
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
-                }
-        
+                }       
             }
-        )
-            
+        )         
             const newUserId = result.user_id
             roles.forEach(async element => {  
                 let rolInsert = await prisma.usersonroles.create({

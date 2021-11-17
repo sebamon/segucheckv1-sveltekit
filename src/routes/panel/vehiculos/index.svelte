@@ -10,7 +10,7 @@
 			// 	},
 			// })
 			const data = await response.json()
-			/* console.log('data') */
+
 			return {
 				props: {
 					data

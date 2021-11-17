@@ -58,7 +58,7 @@
 	export let data
 	// export const message = data.message
 	export let status = data.status
-	console.log('status', status)
+	
 	export let vehicleDetails = data.vehicleDetails
 	export let isReadOnly = true
 	let vehicleDocumentation = [

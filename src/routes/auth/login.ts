@@ -7,10 +7,6 @@ import jwt from 'jsonwebtoken'
 export const post = async (request) => {
 	const prisma = new PrismaClient()
 	const credenciales = JSON.parse(request.body)
-
-	console.log(authorization)
-
-	
 	//Guardo los datos que vienen del FRONT END y los guardo en como credenciales
 
 	// console.log('jwt', jwt)
@@ -36,8 +32,9 @@ export const post = async (request) => {
 			},
 		})
 
+		console.log(user)
 		/**
-		 * Si la consulta no devolvió usuario retorno mensaje de errror
+		 * Si la consulta no devolvió usuario retorno mensaje de error
 		 */
 		if(!user){
 			return {		
@@ -58,16 +55,14 @@ export const post = async (request) => {
 			const token=jwt.sign({userForToken},process.env.SECRET,{
 				expiresIn: 60 * 60 * 24 * 7
 			})
-			const headers = {
-				'Set-Cookie': cookies.serialize('seguToken',token, {
+	
+			
+			return {
+				headers: {'set-cookie': 'segutoken='+token,
 					httpOnly : true,
 					maxAge : 60 * 60,
 					sameSite: 'lax',
-					path: '/panel'
-				})
-			}
-			return {
-				headers: headers,
+				},
 				body:{
 					 user,
 					roles : roles,

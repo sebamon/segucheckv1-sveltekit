@@ -38,14 +38,14 @@
 	];
 	
 	onMount(async() => {
-		console.log('hola')
+		// console.log('hola')
 		let url = '/api/roles'
-		console.log(url)
+		// console.log(url)
 		fetch(url)
 		.then(response =>response.json())
 		.then(data => {
 			const rolesList=data.roles
-			console.log(rolesList)
+			// console.log(rolesList)
 		})
 	})
 	
@@ -206,16 +206,18 @@ import { pathToFileURL } from 'url';
 			}),
 			onSubmit: async(values) => {
 
-				console.log(values)
+				console.log('values', values)
+
 				const submit = await fetch(`editar`, {
 					method: 'PUT',
 					body: JSON.stringify({
 						values
 					})
 				});
-				console.log('submit',submit)
+				// console.log('submit',submit)
 				const data = await submit.json();
-				console.log('data',data)
+				console.log(data)
+				// console.log('data',data)
 
 				message = data.message;
 				error = data.error;

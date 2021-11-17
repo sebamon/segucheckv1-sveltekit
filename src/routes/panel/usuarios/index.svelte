@@ -31,7 +31,7 @@
 <svelte:head>
 	<title>Usuarios - SeguCheck</title>
 </svelte:head>
-{JSON.stringify($session)}
+
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>

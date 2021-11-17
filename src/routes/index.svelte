@@ -2,8 +2,6 @@
 	import NavbarHome from '$lib/NavbarHome.svelte';
 	import ModalLogin from '$lib/ModalLogin.svelte';
 	import { page, session } from '$app/stores';
-	// console.log("session",session)
-
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Card, CardBody, CardSubtitle, CardFooter, CardTitle, Image } from 'sveltestrap';
 

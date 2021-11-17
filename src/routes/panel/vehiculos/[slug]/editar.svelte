@@ -2,7 +2,6 @@
 	export async function load({fetch , page}){
 		const response = await fetch(`./detalle`)
 		const data  = await response.json()
-		console.log('editar data ',data)
 		return {
 			props:{
 				data,

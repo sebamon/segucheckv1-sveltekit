@@ -35,7 +35,6 @@
 	export let message = ''
 
 	const login = async () =>{
-		console.log('entro al login')
 		const response = await fetch("./auth/login",{
 			method : "POST",
 			body: JSON.stringify({
@@ -45,10 +44,8 @@
 		})
 		const data = await response.json()
 		localStorage.setItem('seguTokentokentoken',JSON.stringify(data))
-		console.log(data.headers)
 		message=data.message
-		console.log('data', data)
-		console.log('data.user', data.user)
+
 	}
 </script>
 
