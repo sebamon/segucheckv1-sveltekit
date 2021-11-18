@@ -6,3 +6,4 @@ node_modules
 /src/hooks.ts
 /src/loshooks.ts
 /src/loshooks3.ts
+.env

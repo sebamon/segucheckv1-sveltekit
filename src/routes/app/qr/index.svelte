@@ -4,26 +4,28 @@
 	let isOpen = false;
 
 	// Datos del usuario a mostrar (reemplazar con fetch):
-	let userDetails = {
-		user_id: 1234,
-		cuit: 20301001008,
-		firstName: 'Juan',
-		lastName: 'Perez'
+	const userDetails = {
+		"user_id": 1234,
+		"cuit": 20301001008,
+		"firstName": 'Juan',
+		"lastName": 'Perez'
 	};
 	// Generar link + hash acceso temporal:
-	let urlToProfile = 'http://localhost:3000/app/perfil?auth=1234';
+	const urlToProfile = 'http://localhost:3000/app/perfil?auth=1234';
 
-	async function getQR() {
-		//funcion que toma los datos del formulario y lo envia por metodo post
+	const getQR = async() => {
+		//funcion que toma	 los datos del formulario y lo envia por metodo post
+		try{
+
 		const response = await fetch('https://qrcode3.p.rapidapi.com/qrcode/text', {
 			method: 'POST',
 			headers: {
-				'content-type': 'application/json',
+				'content-type': 'multipart/form-data/',
 				'x-rapidapi-host': 'qrcode3.p.rapidapi.com',
-				'x-rapidapi-key': 'a0ed585700msh47277d8980e0c51p169d27jsnb5d5fe25b530'
+				'x-rapidapi-key': '20a2c7f086msh5f6e5c006b75dbfp1a5e6ajsne5eb5234f20e'
 			},
 			body: {
-				data: urlToProfile,
+				data: 'http://localhost:3000/app/perfil?auth=1234',
 				image: {
 					uri: 'https://i.imgur.com/QYfrqU1.png',
 					modules: false
@@ -38,6 +40,9 @@
 					},
 					outer_eye: {
 						shape: 'lightround'
+					},
+					background: {
+						color: "#c2fce6"
 					}
 				},
 				size: {
@@ -51,13 +56,32 @@
 				}
 			}
 		})
-			.then((response) => {
-				console.log(response);
-			})
-			.catch((err) => {
-				console.error(err);
-			});
-		return await response.blob();
+		console.log('response',response)
+		const blob = await response.blob()
+		// const img = await response.blob()
+		// console.log('data',blob)
+		console.log('data',blob)
+		let reader = new FileReader();
+			reader.readAsDataURL(blob);
+			
+			const image = reader.result
+	
+			console.log('urlcreate',blob.result)
+		return 
+			'hola'
+			
+		}catch(e){
+			console.log('error getRQ', e)
+			return 'data:image/png;base64,eyJkZXRhaWwiOlt7ImxvYyI6WyJib2R5IiwxXSwibXNnIjoiRXhwZWN0aW5nIHZhbHVlOiBsaW5lIDEgY29sdW1uIDIgKGNoYXIgMSkiLCJ0eXBlIjoidmFsdWVfZXJyb3IuanNvbmRlY29kZSIsImN0eCI6eyJtc2ciOiJFeHBlY3RpbmcgdmFsdWUiLCJkb2MiOiJbb2JqZWN0IE9iamVjdF0iLCJwb3MiOjEsImxpbmVubyI6MSwiY29sbm8iOjJ9fV19'
+	}
+
+		// 	.then((response) => {
+		// 		console.log(response);
+		// 	})
+		// 	.catch((err) => {
+		// 		console.error(err);
+		// 	});
+		// return await response.blob();
 		/* try {
 			
 		} catch (err) {
@@ -65,8 +89,9 @@
 		} */
 	}
 
-	let urlQRpic = getQR();
+	export const urlQRpic = getQR();
 
+	console.log('urlQRpic',urlQRpic)
 	// Alternar mensaje en Toast:
 	const copied = () => {
 		isOpen = true;
@@ -89,7 +114,7 @@
 			</Alert>
 		{:then urlQRpic}
 			<img
-				src={urlQRpic}
+				src="{urlQRpic}"
 				class="img-fluid"
 				style="max-width:500px"
 				alt="Código QR"
