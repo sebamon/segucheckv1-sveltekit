@@ -75,7 +75,7 @@ import WorkInfo from '$lib/Details/WorkInfo.svelte';
 </header>
 <main class="row g-4">
 	<Accordion stayOpen class="col-md-6">
-		<AccordionItem>
+		<AccordionItem active>
 			<h5 class="m-0" slot="header">Información básica</h5>
 			<div class="row mb-3 g-3">
 				<div class="col-lg-6">
