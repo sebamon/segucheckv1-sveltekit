@@ -1,4 +1,6 @@
 <script lang="ts">
+import { resolve } from 'path/posix';
+
 	import CopyToClipboard from 'svelte-copy-to-clipboard';
 	import { Toast, Alert } from 'sveltestrap';
 	let isOpen = false;
@@ -20,12 +22,13 @@
 		const response = await fetch('https://qrcode3.p.rapidapi.com/qrcode/text', {
 			method: 'POST',
 			headers: {
-				'content-type': 'multipart/form-data/',
+				Accept: 'image/svg+xml',
+    			'Content-Type': 'application/json',
 				'x-rapidapi-host': 'qrcode3.p.rapidapi.com',
 				'x-rapidapi-key': '20a2c7f086msh5f6e5c006b75dbfp1a5e6ajsne5eb5234f20e'
 			},
-			body: {
-				data: 'http://localhost:3000/app/perfil?auth=1234',
+			body: JSON.stringify({
+				data: urlToProfile,
 				image: {
 					uri: 'https://i.imgur.com/QYfrqU1.png',
 					modules: false
@@ -41,10 +44,10 @@
 					outer_eye: {
 						shape: 'lightround'
 					},
-					background: {
-						color: "#c2fce6"
-					}
-				},
+					// background: {
+					// 	color: "#c2fce6"
+					// }
+				},	
 				size: {
 					width: 500,
 					quiet_zone: 2,
@@ -54,40 +57,21 @@
 					filename: 'qrcode',
 					format: 'png'
 				}
-			}
+			})
 		})
 		console.log('response',response)
 		const blob = await response.blob()
-		// const img = await response.blob()
-		// console.log('data',blob)
-		console.log('data',blob)
-		let reader = new FileReader();
-			reader.readAsDataURL(blob);
-			
-			const image = reader.result
 	
-			console.log('urlcreate',blob.result)
-		return 
-			'hola'
+		
+		var objectURL = URL.createObjectURL(blob);
+		return objectURL
+
 			
 		}catch(e){
 			console.log('error getRQ', e)
-			return 'data:image/png;base64,eyJkZXRhaWwiOlt7ImxvYyI6WyJib2R5IiwxXSwibXNnIjoiRXhwZWN0aW5nIHZhbHVlOiBsaW5lIDEgY29sdW1uIDIgKGNoYXIgMSkiLCJ0eXBlIjoidmFsdWVfZXJyb3IuanNvbmRlY29kZSIsImN0eCI6eyJtc2ciOiJFeHBlY3RpbmcgdmFsdWUiLCJkb2MiOiJbb2JqZWN0IE9iamVjdF0iLCJwb3MiOjEsImxpbmVubyI6MSwiY29sbm8iOjJ9fV19'
+			return 'static/img/qr-code.png'
 	}
-
-		// 	.then((response) => {
-		// 		console.log(response);
-		// 	})
-		// 	.catch((err) => {
-		// 		console.error(err);
-		// 	});
-		// return await response.blob();
-		/* try {
-			
-		} catch (err) {
-            console.log("Esto falló :(");
-		} */
-	}
+}
 
 	export const urlQRpic = getQR();
 

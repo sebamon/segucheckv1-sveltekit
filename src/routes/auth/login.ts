@@ -2,6 +2,8 @@ import {PrismaClient} from '@prisma/client'
 import * as cookies from 'cookie'
 import {v4 as uuidV4} from 'uuid'
 import jwt from 'jsonwebtoken'
+import dotenv from 'dotenv';
+dotenv.config();
 
 
 export const post = async (request) => {
@@ -32,7 +34,7 @@ export const post = async (request) => {
 			},
 		})
 
-		console.log(user)
+		console.log('user on login.ts',user)
 		/**
 		 * Si la consulta no devolvió usuario retorno mensaje de error
 		 */
@@ -52,7 +54,7 @@ export const post = async (request) => {
 				id: user.user_id,
 				roles: roles,
 			}
-			const token=jwt.sign({userForToken},process.env.SECRET,{
+			const token=jwt.sign({userForToken},process.env['SECRET'],{
 				expiresIn: 60 * 60 * 24 * 7
 			})
 	
@@ -64,7 +66,7 @@ export const post = async (request) => {
 					sameSite: 'lax',
 				},
 				body:{
-					 user,
+					user,
 					roles : roles,
 					token,
 					message : 'Credenciales Exitosas',
@@ -87,6 +89,7 @@ export const post = async (request) => {
 
 	}catch(e)
 	{
+		console.log(e)
 		return {
 			headers: {
 				'set-cookie' : "segutoken=null",
@@ -99,8 +102,3 @@ export const post = async (request) => {
 		} 
 	}
 }
-// headers: {
-// 	'set-cookie': 'segutoken='+token,
-// 	httpOnly : true,
-// 	maxAge : 60,
-// },

@@ -43,7 +43,8 @@
 				})
 		})
 		const data = await response.json()
-		localStorage.setItem('seguTokentokentoken',JSON.stringify(data))
+		data.token ? localStorage.setItem('seguToken',data.token) : localStorage.setItem('seguToken',null)
+		
 		message=data.message
 
 	}
