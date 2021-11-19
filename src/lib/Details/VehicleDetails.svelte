@@ -1,21 +1,21 @@
 <script lang="ts">
 	import { format } from 'path/posix';
 	// import { createEventDispatcher, validate_store } from 'svelte/internal';
-	import {createEventDispatcher} from 'svelte'
-	const dispatch = createEventDispatcher()
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
 	function submit() {
 		dispatch('showAlert', {
-			status:status,
-			message:message
-		})
-	} 
+			status: status,
+			message: message
+		});
+	}
 
 	function showAlert() {
 		dispatch('showAlert', {
-			status:status,
-			message:message
-		})
+			status: status,
+			message: message
+		});
 	}
 	// Datos del usuario a mostrar
 	export let vehicle_id: number;
@@ -183,7 +183,7 @@
 				.number()
 				.min(1900, 'El año es demasiado bajo.')
 				.max(9999, 'El año es demasiado alto.')
-				.integer("El número debe ser entero.")
+				.integer('El número debe ser entero.')
 				.required('Debes completar este campo.'),
 			internal_id: yup
 				.string()
@@ -200,44 +200,43 @@
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
-		onSubmit: async(values) => {
-			console.log(values)
+		onSubmit: async (values) => {
+			console.log(values);
 			const submit = await fetch(`editar`, {
-					method: 'PUT',
-					body: JSON.stringify({
-						values
-					})
-				});
+				method: 'PUT',
+				body: JSON.stringify({
+					values
+				})
+			});
 
-		console.log('submit',submit)
-			const data = await submit.json()
-			message = data.message
-			error = data.error
-			if(data.status==='OK') {
-					color='success'
-				}
-				if(data.status==='ERROR') color='danger'
-		// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
-		// const formBody = JSON.stringify({
-		// 	domain,
-		// 	brand,
-		// 	model,
-		// 	type,
-		// 	year,
-		// 	internal_id,
-		// 	chasisNumber,
-		// 	motorNumber
+			console.log('submit', submit);
+			const data = await submit.json();
+			message = data.message;
+			error = data.error;
+			if (data.status === 'OK') {
+				color = 'success';
+			}
+			if (data.status === 'ERROR') color = 'danger';
+			// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+			// const formBody = JSON.stringify({
+			// 	domain,
+			// 	brand,
+			// 	model,
+			// 	type,
+			// 	year,
+			// 	internal_id,
+			// 	chasisNumber,
+			// 	motorNumber
 
-		// });
+			// });
 
-				if(data.status===200)
-				{
-					console.log('message', message)
-				}
-				dispatch('showAlert', {
-			status:status,
-			message:message
-		})
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+			dispatch('showAlert', {
+				status: status,
+				message: message
+			});
 		}
 	});
 </script>
@@ -264,26 +263,39 @@
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select
+			{#if isReadOnly}
+			<input
+				type="text"
 				id="type"
 				name="type"
-				class="form-select"
+				class="form-control"
+				placeholder="Pickup"
 				aria-label="Tipo de vehículo"
-				bind:value={$form.type}
-				on:blur={handleChange}
-				class:invalid={$errors.type}
-			>
-				<option selected disabled >Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType}
-					{#if type === vehicleType}
-						<option value={vehicleType} selected>{vehicleType}</option>
-					{:else}
-						<option value={vehicleType}>{vehicleType}</option>
-					{/if}
-				{/each}
-			</select>
-			{#if $errors.type}
-				<small class="form-error">{$errors.type}</small>
+				bind:value={$form.domain}
+				readonly
+			/>
+			{:else}
+				<select
+					id="type"
+					name="type"
+					class="form-select"
+					aria-label="Tipo de vehículo"
+					bind:value={$form.type}
+					on:blur={handleChange}
+					class:invalid={$errors.type}
+				>
+					<option selected disabled>Elija una opción...</option>
+					{#each vehicleTypeList as vehicleType}
+						{#if type === vehicleType}
+							<option value={vehicleType} selected>{vehicleType}</option>
+						{:else}
+							<option value={vehicleType}>{vehicleType}</option>
+						{/if}
+					{/each}
+				</select>
+				{#if $errors.type}
+					<small class="form-error">{$errors.type}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>

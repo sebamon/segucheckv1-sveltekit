@@ -40,14 +40,14 @@
 		</a>
 	</div>
 	<div class="col-md-6 col-xl-4">
-		<a href="app/tareas" class="hstack btn btn-secondary justify-content-between">
+		<a href="app/tareas" class="hstack btn btn-secondary justify-content-between disabled">
 			<i class="fas fa-briefcase fs-2 m-2" />
 			<h4 class="card-title">Tareas</h4>
 			<i class="fas fa-chevron-right fs-2 m-2" />
 		</a>
 	</div>
 	<div class="col-md-6 col-xl-4">
-		<a href="app/checklists" class="hstack btn btn-secondary justify-content-between">
+		<a href="app/checklists" class="hstack btn btn-secondary justify-content-between disabled">
 			<i class="fas fa-clipboard-check fs-2 m-2" />
 			<h4 class="card-title">Checklists</h4>
 			<i class="fas fa-chevron-right fs-2 m-2" />
