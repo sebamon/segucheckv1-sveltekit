@@ -1,6 +1,17 @@
+<script context="module" lang="ts">
+	export const load = async ({ page }) => ({
+		props: {
+			key: page.path
+		}
+	});
+</script>
+
 <script lang="ts">
 	// ./app/__layout.svelte: Encabezado y pie de página aplicación operario
 
+	// Animación al cambiar entre páginas: https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
+	import Transition from '$lib/Transition.svelte';
+	export let key;
 	import NavbarHome from '$lib/NavbarHome.svelte';
 	import {
 		Collapse,
@@ -22,21 +33,29 @@
 	// NO FUNCIONA DE FORMA REACTIVA
 	let pageTitle = '';
 	switch ($page.path) {
-		case '/app': pageTitle = 'Inicio';
+		case '/app':
+			pageTitle = 'Inicio';
 			break;
-		case '/app/perfil': pageTitle = 'Perfil';
+		case '/app/perfil':
+			pageTitle = 'Perfil';
 			break;
-		case '/app/habilitaciones': pageTitle = 'Habilitaciones';
+		case '/app/habilitaciones':
+			pageTitle = 'Habilitaciones';
 			break;
-		case '/app/tareas': pageTitle = 'Tareas';
+		case '/app/tareas':
+			pageTitle = 'Tareas';
 			break;
-		case '/app/checklists': pageTitle = 'Cchecklists';
+		case '/app/checklists':
+			pageTitle = 'Cchecklists';
 			break;
-		case '/app/vehiculos': pageTitle = 'Vehiculos';
+		case '/app/vehiculos':
+			pageTitle = 'Vehiculos';
 			break;
-		case '/app/qr': pageTitle = 'Código QR';
+		case '/app/qr':
+			pageTitle = 'Código QR';
 			break;
-		default: pageTitle = 'Aplicación';
+		default:
+			pageTitle = 'Aplicación';
 	}
 
 	// Datos de usuario - Ver si esto lo maneja un hook:
@@ -66,7 +85,8 @@
 </script>
 
 <svelte:head>
-	<title>{pageTitle} - SeguCheck</title> <!-- Corregir reactividad -->
+	<title>{pageTitle} - SeguCheck</title>
+	<!-- Corregir reactividad -->
 </svelte:head>
 
 {#if isAuthorized()}
@@ -99,9 +119,11 @@
 		</Dropdown>
 	</Navbar>
 	<!-- Contenido principal -->
-	<div class="container p-4">
-		<slot />
-	</div>
+	<Transition refresh={key}>
+		<div class="container p-4">
+			<slot />
+		</div>
+	</Transition>
 {:else}
 	<NavbarHome />
 

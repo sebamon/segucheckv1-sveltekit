@@ -20,7 +20,7 @@
 <header class="text-center mb-3">
 	<h1><i class="fas fa-home fs-2 me-2" />Inicio</h1>
 	<p class="lead">
-		Bienvenido, {actualUser}.
+		Bienvenido a SeguCheck, {actualUser}.
 	</p>
 </header>
 
