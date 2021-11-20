@@ -1,23 +1,23 @@
 <script context="module">
-	export async function load({fetch, page}){
-		const id_find = page.params.slug
+	export async function load({ fetch, page }) {
+		const id_find = page.params.slug;
 		const response = await fetch(`./${page.params.slug}/detalle`, {
 			method: 'GET',
 			headers: {
-				'Content-Type': 'application/json',
+				'Content-Type': 'application/json'
 			},
 			request: page.params.slug
-		})
-		const data = await response.json()
-		console.log('response',data)
+		});
+		const data = await response.json();
+		console.log('response', data);
 		return {
-			props:{
+			props: {
 				data
 			}
-		}
+		};
 	}
-
 </script>
+
 <script lang="ts">
 	// Importar secciones de detalles:
 	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
@@ -55,11 +55,12 @@
 	// 	rigthSidePicUrl: 'https://avatars.dicebear.com/api/bottts/1236.svg',
 	// 	backPicUrl: 'https://avatars.dicebear.com/api/bottts/1237.svg'
 	// };
-	export let data
+	export let data;
 	// export const message = data.message
-	export let status = data.status
-	console.log('status', status)
-	export let vehicleDetails = data.vehicleDetails
+	export let status = data.status;
+
+	export let vehicleDetails = data.vehicleDetails;
+	export let isReadOnly = true;
 	let vehicleDocumentation = [
 		{
 			documentation_id: 20,
@@ -89,6 +90,15 @@
 		// vehicleDetails.backPicUrl
 	];
 	let activeIndex = 0;
+
+	const onsubmit = async (event) => {
+		console.log('onsubmit', event);
+	};
+
+	function showAlert(event) {
+		status = 'Hola';
+		console.log('event', event);
+	}
 </script>
 
 <svelte:head>
@@ -121,34 +131,39 @@
 		<h5>Detalles del vehículo</h5>
 	</div>
 	<div class="col-2 ms-auto">
-		<Button color="primary" href="/panel/vehiculos/{vehicleDetails.vehicle_id}/editar"
-			><i class="fas fa-pen me-2" />Editar</Button
-		>
+		<Button color="primary" href="/panel/vehiculos/{vehicleDetails.vehicle_id}/editar">
+			<i class="fas fa-pen me-2" />Editar
+		</Button>
 	</div>
 </header>
 
 <main>
 	<TabContent>
 		<TabPane tabId="vehicleDetails" tab="Datos básicos" active>
-			<!-- Datos básicos -->
 			<h2 class="my-4">Datos básicos</h2>
-			<VehicleDetails {...vehicleDetails} />
+			<VehicleDetails {...vehicleDetails} on:submit={showAlert} />
 		</TabPane>
 		<TabPane tabId="vehicleDocumentation" tab="Habilitaciones">
-			<h2 class="my-4">Habilitaciones</h2>
+			<div class="hstack gap-3">
+				<h2 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h2>
+				<div class="ms-auto">
+					<a
+						class="btn btn-primary"
+						href="/panel/vehiculos/{vehicleDetails.user_id}/habilitaciones"
+					>
+						<i class="fas fa-plus me-2" />Nuevo
+					</a>
+				</div>
+			</div>
 			{#if vehicleDocumentation.length == 0}
-				<div class="alert alert-warning" role="alert">
-					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
+				<div class="alert alert-secondary" role="alert">
+					<h5><i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.</h5>
 					Haz click en Editar para subir archivos.
 				</div>
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-						<Accordion stayOpen class="col-md-6">
-							<AccordionItem header={thisDoc.documentType.description}>
-								<DocDetails {...thisDoc} />
-							</AccordionItem>
-						</Accordion>
+						<DocDetails {...thisDoc} />
 					{/each}
 				</div>
 			{/if}

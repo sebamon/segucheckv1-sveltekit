@@ -26,7 +26,7 @@ model checkitemgroup {
 
 model customer {
   customer_id            Int                      @id @default(autoincrement())
-  bussinesName           String
+  businessName           String
   contact                String
   phone                  String
   email                  String
@@ -169,13 +169,13 @@ model useraddress {
   countryOfOrigin    String
   stateOfOrigin      String
   cityOfOrigin       String
-  zipCodeOfOrigin    Int
+  zipCodeOfOrigin    String
   addressOfOrigin    String
   phoneOfOrigin      String
   countryOfResidence String
   stateOfResidence   String
   cityOfResidence    String
-  zipCodeOfResidence Int
+  zipCodeOfResidence String
   addressOfResidence String
   phoneOfResidence   String
   operator           operator @relation(fields: [operator_id], references: [operator_id], map: "UserAddress_operator_id_fkey")
@@ -191,10 +191,10 @@ model userhealthinfo {
 
 model users {
   user_id      Int            @id @default(autoincrement())
-  email        String         @unique(map: "User_email_key")
+  email        String         @unique
   firstName    String
   lastName     String
-  cuit         String
+  cuit         String         @unique
   gender       String
   dateOfBirth  DateTime
   phone        String
@@ -206,6 +206,9 @@ model users {
   active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
+  deleted Boolean @default(false)
+  @@unique(fields: [cuit, password], name: "credentials")
+
 }
 
 model usersonroles {

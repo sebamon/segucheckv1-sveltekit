@@ -1,8 +1,21 @@
 import { PrismaClient, Prisma } from '@prisma/client'
+import { stringify } from 'querystring'
 
 const prisma = new PrismaClient()
 
-export const get = async () =>{
+type user = {
+    user_id:number,
+    firstName:string,
+    lastName:string,
+    cuit:string,
+    email:string,
+    useronles : {
+        rol_id:number,
+        rolDescription:string
+    }
+}
+
+export async function get(){
     try{
         const users = await prisma.users.findMany({
             where: {
@@ -21,20 +34,25 @@ export const get = async () =>{
                 },
             }
         })
-        console.log("result: ",users)
-        return {
-            body: {
-                users: users,
-                message: 'Busqueda de Usuarios Exitosa',
-                status: 'OK'
+        if(users.length>0){
+            return {
+                body: {
+                    users: users,
+                    message: 'Busqueda de Usuarios Exitosa',
+                    status: 'OK'
+                }
+            }
+        }else{
+            return {
+                body: {
+                    users: {},
+                    message: 'No se hay usuarios registrados',
+                    status: 'INFO'
+                }
             }
         }
     }catch (e){
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            // The .code property can be accessed in a type-safe manner
-/*             console.log('entro al  error' , e)
-            console.log('e.code: ' , e.code)
-            console.log('e.meta: ' , e.meta) */
             if (e.code === 'P2002') {
             console.log(
                 'There is a unique constraint violation, a new user cannot be created with this email', e)
@@ -53,18 +71,18 @@ export const get = async () =>{
 
 
 export const post = async (request)=> {
-const formBody =JSON.parse(request.body)
+const formBody =JSON.parse(request.body).values
+
 let roles=[]
    try {
        if(formBody.roles_assigned['rol1']===true){
-         roles.push({rol_id: 1, assignedBy : 1, user_id: 16})
-
+         roles.push({rol_id: 1, assignedBy : 1, user_id: 1})
        }
        if(formBody.roles_assigned['rol2']===true){
-         roles.push({rol_id: 2 , assignedBy : 1, user_id: 16})
+         roles.push({rol_id: 2 , assignedBy : 1, user_id: 1})
        }
        if(formBody.roles_assigned['rol3']===true){
-         roles.push({rol_id: 3, assignedBy : 1, user_id: 16})
+         roles.push({rol_id: 3, assignedBy : 1, user_id: 1})
        }
        const result = await prisma.users.create({
             data:{
@@ -80,11 +98,9 @@ let roles=[]
                     dateOfBirth: new Date(formBody.dateOfBirth),
                     profilePic: 'Not Load',
                     password: '',
-                }
-        
+                }       
             }
-        )
-            
+        )         
             const newUserId = result.user_id
             roles.forEach(async element => {  
                 let rolInsert = await prisma.usersonroles.create({

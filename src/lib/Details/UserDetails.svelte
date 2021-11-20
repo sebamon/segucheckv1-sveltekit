@@ -1,8 +1,8 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Image, Modal, ModalBody, ModalHeader } from 'sveltestrap';
+	import { Image, Modal } from 'sveltestrap';
+	import { onMount } from "svelte";
 	import moment from 'moment';
-
 	// export let useronroles
 	export const userDetails: object = {};
 	// Datos del usuario a mostrar
@@ -18,28 +18,39 @@
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
-
-	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+	let imagePic=profilePic
+	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
+	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
-
 	// export let usersonroles = []
-	// let fecha = dateString.getDate() + "/" + (dateString.getMonth() +1) + "/" + dateString.getFullYear();
-	// export let fecha = + dateString.getFullYear() + "/" + (dateString.getMonth() +1) + "/" + dateString.getDate();
-	console.log('dateOfBirth', dateOfBirth);
-	console.log('dateString', dateString);
+
 
 	let message;
 	let error;
 	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
-		{ rol_id: 0, rolDescription: 'Gestor documental' },
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
+		{ rol_id: 3, rolDescription: 'Operario' },
+		{ rol_id: 4, rolDescription: 'Operario' }
 	];
-
+	
+	onMount(async() => {
+		// console.log('hola')
+		let url = '/api/roles'
+		// console.log(url)
+		fetch(url)
+		.then(response =>response.json())
+		.then(data => {
+			const rolesList=data.roles
+			// console.log(rolesList)
+		})
+	})
+	
+	// // console.log('rolesList',{rolesList})
+	// let rolesList=
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -53,7 +64,6 @@
 		'Post universitario incompleto',
 		'Post universitario completo'
 	];
-
 	// Arreglo de géneros:
 	let genderText: string;
 	if (gender == 'M') {
@@ -68,59 +78,162 @@
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
-
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = false;
-	let action = '';
-	if (isReadOnly) {
-		// action = 'action="./create"';
-	}
 
-	/* Convierte un objeto Date en un String en formato YYY-MM-DD
-	 * @param Date
-	 * @return String
-	 * NO FUNCIONA
-	 */
-	function dateToYMD(date): string {
-		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-		return '2020-10-10';
-	}
-	const submitForm = async (): Promise<void> => {
-		const submit = await fetch(`editar`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel
-				// roles_assigned,
-			})
-		});
-		const data = await submit.json();
-		message = data.message;
-		error = data.error;
-		if (data.status === 'OK') {
-			color = 'success';
-		}
-		if (data.status === 'ERROR') color = 'danger';
 
-		if (data.status === 200) {
-			console.log('message', message);
-		}
-	};
+	// const submitForm = async (): Promise<void> => {
+	// 	const submit = await fetch(`editar`, {
+	// 		method: 'PUT',
+	// 		body: JSON.stringify({
+	// 			firstName,
+	// 			lastName,
+	// 			cuit,
+	// 			email,
+	// 			phone,
+	// 			dateOfBirth,
+	// 			degree,
+	// 			gender,
+	// 			nationality,
+	// 			studyLevel
+	// 			// roles_assigned,
+	// 		})
+	// 	});
+	// 	const data = await submit.json();
+	// 	message = data.message;
+	// 	error = data.error;
+	// 	if (data.status === 'OK') {
+	// 		color = 'success';
+	// 	}
+	// 	if (data.status === 'ERROR') color = 'danger';
+
+	// 	if (data.status === 200) {
+	// 		console.log('message', message);
+	// 	}
+	// };
 
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
+
+	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import es from 'yup-es';
+	import { page } from '$app/stores';
+	import { pathToFileURL } from 'url';
+	yup.setLocale(es);
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
+	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
+	*/
+	let regexName =
+		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
+		createForm({
+			initialValues: {
+				user_id: user_id,
+				cuit: cuit,
+				firstName: firstName,
+				lastName: lastName,
+				email: email,
+				phone: phone,
+				gender: gender,
+				nationality: nationality,
+				studyLevel: studyLevel,
+				degree: degree,
+				profilePic: profilePic,
+				convertedDateOfBirth: convertedDateOfBirth,
+			},
+			validationSchema: yup.object().shape({
+				cuit: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
+				firstName: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				lastName: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				email: yup
+					.string()
+					.required('Debes completar este campo.')
+					.email('El formato de email es incorrecto')
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				phone: yup
+					.string()
+					.required('Debes completar este campo.')
+					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
+				gender: yup
+					.string()
+					.required('Debes completar este campo.')
+					.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
+				nationality: yup
+					.string()
+					.required('Debes completar este campo.')
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				studyLevel: yup
+					.string()
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+				degree: yup
+					.string()
+					.matches(
+						regexName,
+						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+					)
+					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+			}),
+			onSubmit: async(values) => {
+
+				console.log('values', values)
+
+				const submit = await fetch(`editar`, {
+					method: 'PUT',
+					body: JSON.stringify({
+						values
+					})
+				});
+				// console.log('submit',submit)
+				const data = await submit.json();
+				console.log(data)
+				// console.log('data',data)
+
+				message = data.message;
+				error = data.error;
+				if (data.status === 'OK') {
+					color = 'success';
+				}
+				if (data.status === 'ERROR') color = 'danger';
+				if (data.status === 200) {
+					console.log('message', message);
+				}
+			}
+		});
 </script>
 
-<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
+
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
 		<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 		{#if isReadOnly}
@@ -134,23 +247,22 @@
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<span on:click={toggle}>
-				<Image
-					fluid
-					thumbnail
-					src={profilePic}
-					alt="Foto de perfil"
-					class="m-2"
-					style="max-width:150px"
+				<Image src='/img/usr-await.png'
+				fluid
+				thumbnail
+				class="m-2" 
+				alt="Foto de perfil"
+				style="max-width:150px"
 				/>
 			</span>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<Image src={profilePic} alt="Foto de perfil" />
+				<Image  alt="Foto de perfil" />
 			</Modal>
 		</div>
 		{#if !isReadOnly}
 			<div class="col-md-6">
 				<label for="profilePic" class="form-label">Foto de perfil</label>
-				<input class="form-control" type="file" id="profilePic" />
+				<input class="form-control" type="file" accept="image/*" id="profilePic" />
 			</div>
 		{/if}
 	</div>
@@ -164,37 +276,47 @@
 				class="form-control"
 				placeholder="1234"
 				aria-label="Número ID"
-				value={user_id}
+				value={$form.user_id}
 				readonly
 			/>
 		</div>
 		<div class="col-md-6">
 			<label for="cuit" class="form-label">Número CUIT</label>
 			<input
-				type="text"
+				type="number"
 				id="cuit"
 				name="cuit"
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
+				bind:value={$form.cuit}
+				on:blur={handleChange}
 				readonly={isReadOnly}
-				bind:value={cuit}
+				class:invalid={$errors.cuit}
 			/>
+			{#if $errors.cuit}
+				<small class="form-error">{$errors.cuit}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="name" class="form-label">Nombre</label>
+			<label for="firstName" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="name"
-				name="name"
+				id="firstName"
+				name="firstName"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
-				bind:value={firstName}
+				bind:value={$form.firstName}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.firstName}
 			/>
+			{#if $errors.firstName}
+				<small class="form-error">{$errors.firstName}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="lastName" class="form-label">Apellido</label>
@@ -205,9 +327,14 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="Apellido"
-				bind:value={lastName}
+				bind:value={$form.lastName}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.lastName}
 			/>
+			{#if $errors.lastName}
+				<small class="form-error">{$errors.lastName}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -220,9 +347,14 @@
 				class="form-control"
 				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
-				bind:value={email}
+				bind:value={$form.email}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.email}
 			/>
+			{#if $errors.email}
+				<small class="form-error">{$errors.email}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="phone" class="form-label">Teléfono</label>
@@ -233,9 +365,14 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				bind:value={phone}
+				bind:value={$form.phone}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.phone}
 			/>
+			{#if $errors.phone}
+				<small class="form-error">{$errors.phone}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -253,7 +390,15 @@
 					readonly
 				/>
 			{:else}
-				<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
+				<select
+					id="gender"
+					class="form-select"
+					aria-label="Género"
+					required
+					bind:value={$form.gender}
+					on:blur={handleChange}
+					class:invalid={$errors.gender}
+				>
 					<option disabled>Elija una opción...</option>
 					{#each genderList as thisGender}
 						<option value={thisGender.genderLetter} selected={thisGender.genderLetter == gender}
@@ -261,6 +406,9 @@
 						>
 					{/each}
 				</select>
+				{#if $errors.gender}
+					<small class="form-error">{$errors.gender}</small>
+				{/if}
 			{/if}
 		</div>
 		<div class="col-md-4">
@@ -273,22 +421,32 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={newDate}
+				bind:value={$form.convertedDateOfBirth}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.convertedDateOfBirth}
 			/>
+			{#if $errors.convertedDateOfBirth}
+				<small class="form-error">{$errors.convertedDateOfBirth}</small>
+			{/if}
 		</div>
 		<div class="col-md-4">
-			<label for="lastName" class="form-label">Nacionalidad</label>
+			<label for="nationality" class="form-label">Nacionalidad</label>
 			<input
 				type="text"
-				id="lastName"
-				name="lastName"
+				id="nationality"
+				name="nationality"
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				bind:value={nationality}
+				bind:value={$form.nationality}
+				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.nationality}
 			/>
+			{#if $errors.nationality}
+				<small class="form-error">{$errors.nationality}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -310,7 +468,9 @@
 					id="studyLevel"
 					class="form-select"
 					aria-label="Nivel de formación"
-					bind:value={studyLevel}
+					bind:value={$form.studyLevel}
+					on:blur={handleChange}
+					class:invalid={$errors.studyLevel}
 				>
 					<option disabled>Elija una opción...</option>
 					{#each studyLevelList as thisStudyLevel}
@@ -319,6 +479,9 @@
 						</option>
 					{/each}
 				</select>
+				{#if $errors.studyLevel}
+					<small class="form-error">{$errors.studyLevel}</small>
+				{/if}
 			{/if}
 		</div>
 		<div class="col-md-6">
@@ -330,10 +493,14 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				bind:value={degree}
+				bind:value={$form.degree}
+				on:blur={handleChange}
 				readonly={isReadOnly}
-				required={!isReadOnly}
+				class:invalid={$errors.degree}
 			/>
+			{#if $errors.degree}
+				<small class="form-error">{$errors.degree}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -344,7 +511,7 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="rol{rol_id}"
+						id="r2ol{rol_id}"
 						name="roles"
 						class="form-check-input"
 						role="switch"
@@ -355,8 +522,12 @@
 		</div>
 		{#if !isReadOnly}
 			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
 				</button>
 			</div>
 		{/if}

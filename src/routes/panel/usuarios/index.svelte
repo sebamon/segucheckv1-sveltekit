@@ -1,24 +1,29 @@
 <script context="module">
 	// panel/usuarios.svelte: Lee de la BD y lista los usuarios registrados
-	export async function load({ page, fetch }) {
+	export async function load({ page, fetch , session}) {
 		try {
 			const response = await fetch(`./usuarios/usuarios`)
 			const data = await response.json();
-			console.log('ssr data:', data)
+
 			return {
 				props: {
-					data
+					data,
+					session
 				}
 			};
 		} catch (e) {
 			console.log('error', e);
+			return {
+				props: {}
+			}
 		}
 	}
 </script>
 
 <script>
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	export let data = {
 		users: [{}]
 	}
@@ -50,6 +55,9 @@
 
 <!-- Contenido principal -->
 <main>
+	{#if data.status}
+	<SeguAlert status={data.status} message={data.message} path=usuarios/>
+	{:else if users.length>0}
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle text-center">
 			<thead>
@@ -68,7 +76,6 @@
 					<th scope="col">Email</th>
 				</tr>
 			</thead>
-			{#if data.status==='OK'}
 			<tbody>
 				{#each users as user}
 					<tr>
@@ -100,9 +107,9 @@
 					</tr>
 				{/each}
 			</tbody>
-			{/if}
 		</table>
 	</div>
+	{/if}
 </main>
 
 <style>

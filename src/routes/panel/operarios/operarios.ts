@@ -8,7 +8,6 @@ export const post = (request) => {
     const password = formBody.password
 }
 
-
 export const get = async () => {
     try{
         const operators = await prisma.operator.findMany({
@@ -24,7 +23,7 @@ export const get = async () => {
                 }
             }
         })
-        console.log('operators.length',operators.length)
+
         if(operators.length>0){
             return {
                 body: {
@@ -34,27 +33,13 @@ export const get = async () => {
                 }
             }
         }
-        
         return {
             body: {
                 operators : {},
-                message: 'No Hay operarios registrados',
+                message: 'No hay operarios registrados',
                 status: 'INFO'
             }
         }
-        // const operators = await prisma.operator.findMany({
-            //     where: {
-                
-                //     },
-        //     select : {
-        //         operator_id : true,
-        //         users : {
-        //             include : {
-                        
-        //             }
-        //         }
-        //     },
-        // })
 
     }catch(e){
         throw e

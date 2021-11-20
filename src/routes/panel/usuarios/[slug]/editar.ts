@@ -4,12 +4,12 @@ const prisma = new PrismaClient()
 
 export const put = async (request) =>{
     let id_find = Number(request.params.slug)
-    const formBody = JSON.parse(request.body)
-
+    const formBody = JSON.parse(request.body).values
+    console.log(formBody)
     try{
         const userEdit = await prisma.users.update({
             where: {
-                user_id: id_find,
+                user_id: formBody.user_id,
             },
             data: {
                 firstName : formBody.firstName,
@@ -21,11 +21,11 @@ export const put = async (request) =>{
                 gender :formBody.gender,
                 nationality :formBody.nationality,
                 studyLevel :formBody.studyLevel,              
-                dateOfBirth: new Date(formBody.dateOfBirth),
+                // dateOfBirth: new Date(formBody.dateOfBirth),
                 profilePic: 'Not Load',
         }
         })
-        
+        console.log('edit', userEdit)
         return {
             body: {
                 userEdit,
@@ -34,6 +34,7 @@ export const put = async (request) =>{
             }
         }
     }catch(e){
+        console.log(e)
         return {
             body: {},
             message: 'Error',

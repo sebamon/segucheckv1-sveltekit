@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { format } from 'path/posix';
-	import { validate_store } from 'svelte/internal';
+	// import { createEventDispatcher, validate_store } from 'svelte/internal';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
+	function submit() {
+		dispatch('showAlert', {
+			status: status,
+			message: message
+		});
+	}
+
+	function showAlert() {
+		dispatch('showAlert', {
+			status: status,
+			message: message
+		});
+	}
 	// Datos del usuario a mostrar
 	export let vehicle_id: number;
 	export let domain = '';
@@ -16,10 +31,10 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	export let error: string;
-	export let message: string;
-	export let color;
-	export let status;
+	let error: string;
+	let message: string;
+	let color;
+	let status;
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -77,42 +92,156 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
-	const submitForm = async (): Promise<void> => {
-		const formBody = JSON.stringify({
-			domain,
-			brand,
-			model,
-			type,
-			year,
-			internal_id,
-			chasisNumber,
-			motorNumber
-			// frontPic,
-			// rightSidePic,
-			// leftSidePic,
-		});
-		console.log(formBody);
-		// 	const submit = await fetch(`editar`,{
-		// 	method : 'PUT',
-		// 	body: JSON.stringify({
-		// 	})
-		// })
-		// 	const data = await submit.json()
-		// 	message = data.message
-		// 	error = data.error
-		// 	if(data.status==='OK') {
-		// 			color='success'
-		// 		}
-		// 		if(data.status==='ERROR') color='danger'
+	// const submitForm = async (): Promise<void> => {
+	// 		const submit = await fetch(`editar`,{
+	// 		method : 'PUT',
+	// 		body: JSON.stringify({
+	// 			domain,
+	// 			brand,
+	// 			model,
+	// 			type,
+	// 			year,
+	// 			internal_id,
+	// 			chasisNumber,
+	// 			motorNumber
+	// 		})
+	// 	})
 
-		// 		if(data.status===200)
-		// 		{
-		// 			console.log('message', message)
-		// 		}
-	};
+	// 	console.log('submit',submit)
+	// 		const data = await submit.json()
+	// 		// console.log('data',data)
+	// 		message = data.message
+	// 		error = data.error
+	// 		if(data.status==='OK') {
+	// 				color='success'
+	// 			}
+	// 			if(data.status==='ERROR') color='danger'
+	// 	// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+	// 	const formBody = JSON.stringify({
+	// 		domain,
+	// 		brand,
+	// 		model,
+	// 		type,
+	// 		year,
+	// 		internal_id,
+	// 		chasisNumber,
+	// 		motorNumber
+
+	// 	});
+
+	// 			if(data.status===200)
+	// 			{
+	// 				console.log('message', message)
+	// 			}
+	// 			dispatch('showAlert', {
+	// 		status:status,
+	// 		message:message
+	// 	})
+	// };
+
+	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import es from 'yup-es';
+	yup.setLocale(es);
+	let regexAZNum = /^[A-Z0-9]+$/i;
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			vehicle_id: vehicle_id,
+			domain: domain,
+			brand: brand,
+			model: model,
+			type: type,
+			year: year,
+			internal_id: internal_id,
+			chasisNumber: chasisNumber,
+			motorNumber: motorNumber
+			// frontPic: frontPic,
+			// rightSidePic: rightSidePic,
+			// leftSidePic: leftSidePic
+		},
+		validationSchema: yup.object().shape({
+			domain: yup
+				.string()
+				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
+			brand: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			model: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			type: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.')
+				.required('Debes completar este campo.'),
+			year: yup
+				.number()
+				.min(1900, 'El año es demasiado bajo.')
+				.max(9999, 'El año es demasiado alto.')
+				.integer('El número debe ser entero.')
+				.required('Debes completar este campo.'),
+			internal_id: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			chasisNumber: yup
+				.string()
+				.min(11, 'Este campo debe ser al menos ${max} caracteres.')
+				.max(17, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
+			motorNumber: yup
+				.string()
+				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+		}),
+		onSubmit: async (values) => {
+			console.log(values);
+			const submit = await fetch(`editar`, {
+				method: 'PUT',
+				body: JSON.stringify({
+					values
+				})
+			});
+
+			console.log('submit', submit);
+			const data = await submit.json();
+			message = data.message;
+			error = data.error;
+			if (data.status === 'OK') {
+				color = 'success';
+			}
+			if (data.status === 'ERROR') color = 'danger';
+			// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+			// const formBody = JSON.stringify({
+			// 	domain,
+			// 	brand,
+			// 	model,
+			// 	type,
+			// 	year,
+			// 	internal_id,
+			// 	chasisNumber,
+			// 	motorNumber
+
+			// });
+
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+			dispatch('showAlert', {
+				status: status,
+				message: message
+			});
+		}
+	});
 </script>
 
-<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={submitForm}>
+<form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="name" class="form-label">Patente</label>
@@ -123,29 +252,51 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-				value={domain}
+				bind:value={$form.domain}
+				on:blur={handleChange}
+				class:invalid={$errors.domain}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.domain}
+				<small class="form-error">{$errors.domain}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select
+			{#if isReadOnly}
+			<input
+				type="text"
 				id="type"
 				name="type"
-				class="form-select"
+				class="form-control"
+				placeholder="Pickup"
 				aria-label="Tipo de vehículo"
-				bind:value={type}
-				required
-			>
-				<option selected disabled>Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType}
-					{#if type === vehicleType}
-						<option value={vehicleType} selected>{vehicleType}</option>)
-					{:else}
-						<option value={vehicleType}>{vehicleType}</option>
-					{/if}
-				{/each}
-			</select>
+				bind:value={$form.domain}
+				readonly
+			/>
+			{:else}
+				<select
+					id="type"
+					name="type"
+					class="form-select"
+					aria-label="Tipo de vehículo"
+					bind:value={$form.type}
+					on:blur={handleChange}
+					class:invalid={$errors.type}
+				>
+					<option selected disabled>Elija una opción...</option>
+					{#each vehicleTypeList as vehicleType}
+						{#if type === vehicleType}
+							<option value={vehicleType} selected>{vehicleType}</option>
+						{:else}
+							<option value={vehicleType}>{vehicleType}</option>
+						{/if}
+					{/each}
+				</select>
+				{#if $errors.type}
+					<small class="form-error">{$errors.type}</small>
+				{/if}
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -158,9 +309,14 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-				value={brand}
+				bind:value={$form.brand}
+				on:blur={handleChange}
+				class:invalid={$errors.brand}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.brand}
+				<small class="form-error">{$errors.brand}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="model" class="form-label">Modelo</label>
@@ -171,9 +327,14 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-				value={model}
+				bind:value={$form.model}
+				on:blur={handleChange}
+				class:invalid={$errors.model}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.model}
+				<small class="form-error">{$errors.model}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -186,9 +347,16 @@
 				class="form-control"
 				placeholder="2015"
 				aria-label="Año"
-				value={year}
+				min="1900"
+				max="9999"
+				bind:value={$form.year}
+				on:blur={handleChange}
+				class:invalid={$errors.year}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.year}
+				<small class="form-error">{$errors.year}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="internal_id" class="form-label">Número interno</label>
@@ -199,9 +367,14 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				value={internal_id}
+				bind:value={$form.internal_id}
+				on:blur={handleChange}
+				class:invalid={$errors.internal_id}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.internal_id}
+				<small class="form-error">{$errors.internal_id}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -214,9 +387,14 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
-				value={chasisNumber}
+				bind:value={$form.chasisNumber}
+				on:blur={handleChange}
+				class:invalid={$errors.chasisNumber}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.chasisNumber}
+				<small class="form-error">{$errors.chasisNumber}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="motorNumber" class="form-label">Número de motor</label>
@@ -227,26 +405,36 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Número de motor"
-				value={motorNumber}
+				bind:value={$form.motorNumber}
+				on:blur={handleChange}
+				class:invalid={$errors.motorNumber}
 				readonly={isReadOnly}
 			/>
+			{#if $errors.motorNumber}
+				<small class="form-error">{$errors.motorNumber}</small>
+			{/if}
 		</div>
-		{#if !isReadOnly}
-			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
-				</button>
-			</div>
-		{/if}
 	</div>
 	{#if !isReadOnly}
 		<div class="row mb-3 g-3">
 			<div class="col-md-6" />
 			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
-					<i class="fas fa-pen me-2" />Confirmar cambios
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
 				</button>
 			</div>
 		</div>
 	{/if}
 </form>
+
+<style>
+	#domain,
+	#chasisNumber,
+	#motorNumber {
+		text-transform: uppercase;
+	}
+</style>

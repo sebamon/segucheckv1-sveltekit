@@ -17,17 +17,25 @@ export const get = async () =>{
             type: true,
         }
         })
-        return {
-            body: {
-                vehicles,
+        if(vehicles.length>0){
+            return {
+                body: {
+                    status: 'OK',
+                    vehicles: vehicles,
+                    message: 'Vehiculos Encontrados'
+                }
+            }
+        }else{
+            return {
+                body: {
+                    status: 'INFO',
+                    vehicles: vehicles,
+                    message: 'No hay vehiculos registrados'
+                }
             }
         }
     }catch (e){
         if (e instanceof Prisma.PrismaClientKnownRequestError) {
-            // The .code property can be accessed in a type-safe manner
-/*             console.log('entro al  error' , e)
-            console.log('e.code: ' , e.code)
-            console.log('e.meta: ' , e.meta) */
             if (e.code === 'P2002') {
             console.log(
                 'There is a unique constraint violation, a new user cannot be created with this email', e)
@@ -56,13 +64,13 @@ export const post = async (request) => {
                 brand : formBody.brand,
                 model : formBody.model,
                 type : formBody.type,
-                year : formBody.year,
+                year : Number(formBody.year),
                 // intNumber : formBody.intNumber,
-                chasisNumber : formBody.chasis,
-                motorNumber : formBody.motor,
-                frontPicUrl : formBody.frontPic,
-                rigthSidePicUrl : formBody.rightSidePic,
-                leftSidePicUrl : formBody.leftSidePic,
+                chasisNumber : formBody.chasisNumber,
+                motorNumber : formBody.motorNumber,
+                // frontPicUrl : formBody.frontPic,
+                // rigthSidePicUrl : formBody.rightSidePic,
+                // leftSidePicUrl : formBody.leftSidePic,
             }
         })
         return {

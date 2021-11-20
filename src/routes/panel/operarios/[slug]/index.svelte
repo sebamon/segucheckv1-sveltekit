@@ -7,12 +7,7 @@
 	import HealthInfo from '$lib/Details/HealthInfo.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		TabContent,
-		TabPane
-	} from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
 
 	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
 	let userDetails = {
@@ -118,9 +113,9 @@
 				</div>
 			</div>
 			{#if userDocumentation.length == 0}
-				<div class="alert alert-warning" role="alert">
+				<div class="alert alert-secondary" role="alert">
 					<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.
-					Haz click en Editar para subir archivos.
+					Haz click en Nuevo para subir archivos.
 				</div>
 			{:else}
 				<div class="row g-3">

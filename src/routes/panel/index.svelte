@@ -1,9 +1,33 @@
 <script lang="ts">
+// import { onMount } from 'svelte';
+// import { authenticated } from 'src/stores/auth';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
 
+	
 	// Datos de usuario - Ver si esto lo maneja un hook
 	let actualUser = 'Juan Perez';
+	let message = ''
+
+	// onMount(async () =>{
+	// 	try{
+
+	// 		const response = await fetch('', {
+	// 			headers: {'Content-Type' : 'application/json'},
+	// 			credentials : 'include'
+	// 		})
+	// 		const content = await response.json()
+	// 		actualUser = `${content.user.firstName} ${content.user.lastName}`
+	// 		message= `Bienvenido ${actualUser}}`
+	// 		authenticated.set(true)
+	// 	}catch(e){
+	// 		message = 'No estas logueado'
+	// 		authenticated.set(false)
+		
+	// 	}
+	// })
+	
 </script>
 
 <svelte:head>

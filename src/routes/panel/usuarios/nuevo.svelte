@@ -6,13 +6,13 @@
 		console.log(roles)
 	}
 </script> -->
-
 <script lang="ts">
 	// import type { User } from '$lib/store';
 	import { dataset_dev } from 'svelte/internal';
+	import moment from 'moment';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem, Alert, Colgroup } from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 	import type { Color } from 'sveltestrap/src/shared';
 
 	// Arreglo de roles - Esto lo lee de la DB:
@@ -22,18 +22,23 @@
 		{ rol_id: 3, rolDescription: 'Operario' }
 	];
 
-	let firstName:string
-	let lastName:string;
-	let cuit:string;
-	let email:string;
-	let phone:string;
-	let dateOfBirth:Date = new Date('1989/09/02')
-	let degree:string;
-	let gender:string;
-	let nationality:string;
-	let studyLevel:string;
-	
-	let color:Color
+	let firstName: string;
+	let lastName: string;
+	let cuit: string;
+	let email: string;
+	let phone: string;
+	let dateOfBirth: Date = new Date('1989/09/02');
+	let degree: string;
+	let gender: string;
+	let nationality: string;
+	let studyLevel: string;
+	let profilePic: string;
+
+	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
+	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+		.toISOString()
+		.split('T')[0];
+	let color: Color;
 
 	let roles_assigned = {
 		rol1: false,
@@ -63,41 +68,10 @@
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
-	
-	const submitForm = async ():Promise<void> =>{  //funcion que toma los datos del formulario y lo envia por metodo post
-		try{
-			const submit = await fetch('usuarios', {
-				method : "POST",
-				body: JSON.stringify({
-					firstName,
-					lastName,
-					cuit,
-					email,
-					phone,
-					dateOfBirth,
-					degree,
-					gender,
-					nationality,
-					studyLevel,
-					roles_assigned,
-				})
-			})
-			const data = await submit.json()
-			message = data.message
-			status = data.status
 
-			if(data.status==='OK') {
-				cleanPage();
-			}
-			color = data.status==='OK' ? 'success' : 'danger'
+	const submitForm = async (): Promise<void> => {
+		//funcion que toma los datos del formulario y lo envia por metodo post
 
-			if(data.status===200){
-				console.log('message', message)
-			}
-		}catch(err)
-		{
-			error=err
-		}
 	};
 
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
@@ -131,6 +105,127 @@
 			roles_assigned['rol3'] = !roles_assigned['rol3'];
 		}
 	};
+
+	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
+	import { createForm } from 'svelte-forms-lib';
+	import * as yup from 'yup';
+	import es from 'yup-es';
+	yup.setLocale(es);
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
+	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
+	*/
+	let regexName =
+		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
+	/* regexPhone: Números de teléfono con símbolos + ( ) y espacios. 
+    Acepta número de país, 0 y 15 delante del código de área y teléfono respectivamente. 
+    Probado con:
+    +(549) 299 6667777
+    +(549)(0299)6667777
+    +5492996667777
+    299-666-7777
+    0299156667777
+    2996667777
+    156667777
+    Fuente- Variante propia de: https://ihateregex.io/expr/phone/
+    */
+	let regexPhone = /^[\+]?[(\s]?[0-9]{3,4}[)\s]?[-\s\.(]?[0-9]{3,4}[-\s\.)]?[0-9]{3,7}/;
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			cuit: "",
+			firstName: "",
+			lastName: "",
+			email: "",
+			phone: "",
+			gender: "0",
+			newDate: "",
+			nationality: "",
+			studyLevel: "",
+			degree: "",
+			profilePic: "",
+			roles_assigned: ""
+		},
+		validationSchema: yup.object().shape({
+			cuit: yup
+				.string()
+				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+				.max(12, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
+			firstName: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.required('Debes completar este campo.'),
+			lastName: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.required('Debes completar este campo.'),
+			email: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.email('El formato de email es incorrecto')
+				.required('Debes completar este campo.'),
+			phone: yup
+				.string()
+				.matches(regexPhone, 'El formato de teléfono es incorrecto.')
+				.required('Debes completar este campo.'),
+			gender: yup
+				.string()
+				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
+			newDate: yup.date().required('Debes completar este campo.'),
+			nationality: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.required('Debes completar este campo.'),
+			studyLevel: yup
+				.string()
+				.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+			degree: yup
+				.string()
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+		}),
+		onSubmit: async(values) => {
+			// -- Muestra resultado en submit: BORRAR --
+			console.log(values)
+			try {
+			const submit = await fetch('usuarios', {
+				method: 'POST',
+				body: JSON.stringify({
+					values
+				})
+			});
+			const data = await submit.json();
+			message = data.message;
+			status = data.status;
+
+			if (data.status === 'OK') {
+				cleanPage();
+			}
+			color = data.status === 'OK' ? 'success' : 'danger';
+
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+		} catch (err) {
+			error = err;
+		}
+		}
+	});
 </script>
 
 <svelte:head>
@@ -150,22 +245,20 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-users me-4" />Nuevo usuario</h1>
-		<p class="lead">Ingrese los detalles a continuación.</p>
+		<p class="lead">Ingrese los detalles a continuación</p>
 	</div>
 </header>
 
 {#if status}
-<Alert color='{color}'> 
-    <h4 class="alert-heading text-capitalize">{status}</h4>
-    {message}
-    <a href="/panel/usuarios" class="alert-link">
-      Ver Usuarios
-    </a>
-    .
-  </Alert>
-  {/if}
+	<Alert {color}>
+		<h4 class="alert-heading text-capitalize">{status}</h4>
+		{message}
+		<a href="/panel/usuarios" class="alert-link"> Ver Usuarios </a>
+		.
+	</Alert>
+{/if}
 <!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={submitForm}>
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="firstname" class="form-label">Nombre</label>
@@ -176,9 +269,13 @@
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
-				required
-				bind:value={firstName}
+				bind:value={$form.firstName}
+				on:blur={handleChange}
+				class:invalid={$errors.firstName}
 			/>
+			{#if $errors.firstName}
+				<small class="form-error">{$errors.firstName}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="lastName" class="form-label">Apellido</label>
@@ -189,9 +286,13 @@
 				class="form-control"
 				placeholder="Perez"
 				aria-label="Apellido"
-				required
-				bind:value={lastName}
+				bind:value={$form.lastName}
+				on:blur={handleChange}
+				class:invalid={$errors.lastName}
 			/>
+			{#if $errors.lastName}
+				<small class="form-error">{$errors.lastName}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -204,20 +305,35 @@
 				class="form-control"
 				placeholder="20301001008"
 				aria-label="Número CUIT"
-				required
-				bind:value={cuit}
+				bind:value={$form.cuit}
+				on:blur={handleChange}
+				class:invalid={$errors.cuit}
 			/>
+			{#if $errors.cuit}
+				<small class="form-error">{$errors.cuit}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="gender" class="form-label">Género</label>
-			<select id="gender" class="form-select" aria-label="Género" required bind:value={gender}>
-				<option selected disabled>Elija una opción...</option>
+			<select
+				id="gender"
+				class="form-select"
+				aria-label="Género"
+				required
+				bind:value={$form.gender}
+				on:blur={handleChange}
+				class:invalid={$errors.gender}
+			>
+				<option value="0" selected disabled>Elija una opción...</option>
 				{#each genderList as thisGender}
 					<option value={thisGender.genderLetter}>
 						{thisGender.genderName}
 					</option>
 				{/each}
 			</select>
+			{#if $errors.gender}
+				<small class="form-error">{$errors.gender}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -230,8 +346,13 @@
 				class="form-control"
 				placeholder="juan.perez@ejemplo.com"
 				aria-label="Correo electrónico"
-				bind:value={email}
+				bind:value={$form.email}
+				on:blur={handleChange}
+				class:invalid={$errors.email}
 			/>
+			{#if $errors.email}
+				<small class="form-error">{$errors.email}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="phone" class="form-label">Teléfono</label>
@@ -242,8 +363,13 @@
 				class="form-control"
 				placeholder="2993334444"
 				aria-label="Teléfono"
-				bind:value={phone}
+				bind:value={$form.phone}
+				on:blur={handleChange}
+				class:invalid={$errors.phone}
 			/>
+			{#if $errors.phone}
+				<small class="form-error">{$errors.phone}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -256,8 +382,13 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={dateOfBirth}
+				bind:value={$form.newDate}
+				on:blur={handleChange}
+				class:invalid={$errors.newDate}
 			/>
+			{#if $errors.newDate}
+				<small class="form-error">{$errors.newDate}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="nationality" class="form-label">Nacionalidad</label>
@@ -268,8 +399,13 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Nacionalidad"
-				bind:value={nationality}
+				bind:value={$form.nationality}
+				on:blur={handleChange}
+				class:invalid={$errors.nationality}
 			/>
+			{#if $errors.nationality}
+				<small class="form-error">{$errors.nationality}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -279,13 +415,18 @@
 				id="studyLevel"
 				class="form-select"
 				aria-label="Nivel de formación alcanzado"
-				bind:value={studyLevel}
+				bind:value={$form.studyLevel}
+				on:blur={handleChange}
+				class:invalid={$errors.studyLevel}
 			>
 				<option selected disabled>Elija una opción...</option>
 				{#each studyLevelList as thisStudyLevel}
 					<option value={thisStudyLevel}>{thisStudyLevel}</option>
 				{/each}
 			</select>
+			{#if $errors.studyLevel}
+				<small class="form-error">{$errors.studyLevel}</small>
+			{/if}
 		</div>
 		<div class="col-md-6">
 			<label for="degree" class="form-label">Título de formación</label>
@@ -296,8 +437,13 @@
 				class="form-control"
 				placeholder="Licenciado"
 				aria-label="Título de formación"
-				bind:value={degree}
+				bind:value={$form.degree}
+				on:blur={handleChange}
+				class:invalid={$errors.degree}
 			/>
+			{#if $errors.degree}
+				<small class="form-error">{$errors.degree}</small>
+			{/if}
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
@@ -319,14 +465,18 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<input class="form-control" type="file" id="profilePic" />
+			<input class="form-control" type="file" accept="image/*" id="profilePic" />
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-12 d-flex justify-content-end">
-			<Button type="submit" color="primary">
-				<i class="fas fa-plus me-2" />Crear
-			</Button>
+			<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+				{#if $isSubmitting}
+					<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+				{:else}
+					<i class="fas fa-plus me-2" />Crear
+				{/if}
+			</button>
 		</div>
 	</div>
 </form>

@@ -8,10 +8,14 @@
 			return true;
 		}
 	};
+
+		// Obtener ruta actual: https://github.com/EmilTholin/svelte-routing/issues/62#issuecomment-939503161
+		import { page } from '$app/stores';
 </script>
 
-<footer class="pt-2 {isDarkMode ? 'text-light bg-dark' : 'bg-light'} border-top" id="contacto">
+<footer class="pt-2 {isDarkMode ? 'text-light bg-dark' : 'bg-light'} user-select-none" id="contacto">
 	<div class="container p-4">
+		{#if $page.path == '/'}
 		<!-- Formulario suscribirse -->
 		<form id="formNewsletter">
 			<div class="row justify-content-around mb-4">
@@ -32,6 +36,7 @@
 				</div>
 			</div>
 		</form>
+		{/if}
 		<div class="row justify-content-around">
 			<div class="col-md-4">
 				<h4 class="my-4">
