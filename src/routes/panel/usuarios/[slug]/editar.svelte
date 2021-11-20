@@ -1,6 +1,6 @@
 <script context="module">
-	export async function load({fetch , page}){
-		const response = await fetch(`./detalle`)
+	export async function load({ fetch, page }) {
+		const response = await fetch(`./detalle`);
 		// const response = await fetch(`./detalle`, {
 		// 	method: "GET",
 		// 	headers: {
@@ -8,32 +8,28 @@
 		// 	},
 		// 	body: JSON.stringify(page.params.slug),
 		// })
-		const data  = await response.json()
+		const data = await response.json();
 		return {
-			props:{
-				data,
-			}	
-		}
+			props: {
+				data
+			}
+		};
 	}
 </script>
+
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
-import { dataset_dev } from 'svelte/internal';
+	import { dataset_dev } from 'svelte/internal';
 
-// Importar por nombre de componentes: https://sveltestrap.js.org/
-import {
-	Breadcrumb,
-	BreadcrumbItem,
-	Alert
-} from 'sveltestrap';
+	// Importar por nombre de componentes: https://sveltestrap.js.org/
+	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 
 	export let data;
-	export let userDetails=data.userDetails
-	let color = 'success'
-	
+	export let userDetails = data.userDetails;
+	let color = 'success';
+
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
-
 </script>
 
 <svelte:head>
@@ -60,4 +56,6 @@ import {
 	</div>
 </header>
 
-<UserDetails {...userDetails} {isReadOnly} />
+<main>
+	<UserDetails {...userDetails} {isReadOnly} />
+</main>

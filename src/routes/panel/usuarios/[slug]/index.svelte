@@ -1,22 +1,30 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle`);
-		const data = await response.json();
-		return {
-			props: {
-				data
+		try{
+
+			const response = await fetch(`./${page.params.slug}/detalle`);
+			const data = await response.json();
+			return {
+				props: {
+					data
+				}
+			};
+		}catch(e){
+			console.log('catch error: ',e)
+			return {
+				props:{}
 			}
-		};
+		}
 	}
 </script>
 
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
-	console.log(data);
+	// console.log(data);
 	export let userDetails = data.userDetails;
 	export let isReadOnly = true;
 	// let f = new Date(data.userDetails.dateOfBirth)
@@ -52,5 +60,6 @@
 		{isReadOnly}
 		{data.message}
 	</p>
+	<!-- Formulario detalles usuario -->
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

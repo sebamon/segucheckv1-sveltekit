@@ -3,3 +3,7 @@ node_modules
 /build
 /.svelte-kit
 /package
+/src/hooks.ts
+/src/loshooks.ts
+/src/loshooks3.ts
+.env

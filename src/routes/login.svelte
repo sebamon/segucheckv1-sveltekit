@@ -1,4 +1,4 @@
-<script context="module">
+<!-- <script context="module">
 	export async function load({ session }) {
 		// console.log(session)
 		if (session.user) {
@@ -10,11 +10,12 @@
 
 		return {};
 	}
-</script>
+</script> -->
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { session } from '$app/stores';
 	import { goto } from '$app/navigation';
+
 	import {
 		Button,
 		Card,
@@ -26,32 +27,37 @@
 		Input,
 		Label
 	} from 'sveltestrap';
+	import { emitWarning } from 'process';
+	import type { subscribe } from 'svelte/internal';
 	let cuit = '';
 	let password = '';
 	let errors = null;
+	export let message = ''
 
-	const submitForm = async ():Promise<void> =>{
-		const response = await fetch(`auth/login`, {
+	const login = async () =>{
+		const response = await fetch("./auth/login",{
 			method : "POST",
-			body :JSON.stringify({
-				cuit,
-				password,
-			})
+			body: JSON.stringify({
+				cuit: cuit,
+				password: password
+				})
 		})
 		const data = await response.json()
-		// errors = response.errors;
-		// if(response.user){
-		// 	$session.user= response.user;
-		// 	goto('/panel')
-		// }
+		data.token ? localStorage.setItem('seguToken',data.token) : localStorage.setItem('seguToken',null)
+		
+		message=data.message
+
 	}
 </script>
 
 <main class="container py-4">
+	<!-- m -->
+	{JSON.stringify(message)}
+	<!-- <h1>{authenticated}</h1> -->
 <Card class="shadow-lg">
     <CardHeader>Ingresar a SeguCheck</CardHeader>
     <CardBody>
-		<form on:submit|preventDefault={submitForm} class="needs-validation">
+		<form on:submit|preventDefault={login} class="needs-validation">
 			<FormGroup>
 			  <Label for="user" class="small mb-1">CUIT</Label>
 			  <Input

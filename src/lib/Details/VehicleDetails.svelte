@@ -1,7 +1,22 @@
 <script lang="ts">
 	import { format } from 'path/posix';
-	import { validate_store } from 'svelte/internal';
+	// import { createEventDispatcher, validate_store } from 'svelte/internal';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
 
+	function submit() {
+		dispatch('showAlert', {
+			status: status,
+			message: message
+		});
+	}
+
+	function showAlert() {
+		dispatch('showAlert', {
+			status: status,
+			message: message
+		});
+	}
 	// Datos del usuario a mostrar
 	export let vehicle_id: number;
 	export let domain = '';
@@ -16,10 +31,10 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	export let error: string;
-	export let message: string;
-	export let color;
-	export let status;
+	let error: string;
+	let message: string;
+	let color;
+	let status;
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -77,55 +92,62 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
-	const submitForm = async (): Promise<void> => {
-		// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
-		const formBody = JSON.stringify({
-			domain,
-			brand,
-			model,
-			type,
-			year,
-			internal_id,
-			chasisNumber,
-			motorNumber
-			// frontPic,
-			// rightSidePic,
-			// leftSidePic,
-		});
-		/* console.log(formBody); */
-		// 	const submit = await fetch(`editar`,{
-		// 	method : 'PUT',
-		// 	body: JSON.stringify({
-		// 	})
-		// })
-		// 	const data = await submit.json()
-		// 	message = data.message
-		// 	error = data.error
-		// 	if(data.status==='OK') {
-		// 			color='success'
-		// 		}
-		// 		if(data.status==='ERROR') color='danger'
+	// const submitForm = async (): Promise<void> => {
+	// 		const submit = await fetch(`editar`,{
+	// 		method : 'PUT',
+	// 		body: JSON.stringify({
+	// 			domain,
+	// 			brand,
+	// 			model,
+	// 			type,
+	// 			year,
+	// 			internal_id,
+	// 			chasisNumber,
+	// 			motorNumber
+	// 		})
+	// 	})
 
-		// 		if(data.status===200)
-		// 		{
-		// 			console.log('message', message)
-		// 		}
-	};
+	// 	console.log('submit',submit)
+	// 		const data = await submit.json()
+	// 		// console.log('data',data)
+	// 		message = data.message
+	// 		error = data.error
+	// 		if(data.status==='OK') {
+	// 				color='success'
+	// 			}
+	// 			if(data.status==='ERROR') color='danger'
+	// 	// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+	// 	const formBody = JSON.stringify({
+	// 		domain,
+	// 		brand,
+	// 		model,
+	// 		type,
+	// 		year,
+	// 		internal_id,
+	// 		chasisNumber,
+	// 		motorNumber
+
+	// 	});
+
+	// 			if(data.status===200)
+	// 			{
+	// 				console.log('message', message)
+	// 			}
+	// 			dispatch('showAlert', {
+	// 		status:status,
+	// 		message:message
+	// 	})
+	// };
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
-	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
-	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
-	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
-	*/
-	let regexNombre =
-		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð&,.'\s-]+$/u;
 	let regexAZNum = /^[A-Z0-9]+$/i;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
+			vehicle_id: vehicle_id,
 			domain: domain,
 			brand: brand,
 			model: model,
@@ -141,46 +163,80 @@
 		validationSchema: yup.object().shape({
 			domain: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			brand: yup
 				.string()
-				.trim()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			model: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			type: yup
 				.string()
-				.required('Debes completar este campo.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.'),
+				.oneOf(vehicleTypeList, 'El tipo no se encuentra en el listado.')
+				.required('Debes completar este campo.'),
 			year: yup
 				.number()
-				.required('Debes completar este campo.')
 				.min(1900, 'El año es demasiado bajo.')
-				.max(9999, 'El año es demasiado alto.'),
+				.max(9999, 'El año es demasiado alto.')
+				.integer('El número debe ser entero.')
+				.required('Debes completar este campo.'),
 			internal_id: yup
 				.string()
-				.required('Debes completar este campo.')
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.required('Debes completar este campo.'),
 			chasisNumber: yup
 				.string()
-				.required('Debes completar este campo.')
 				.min(11, 'Este campo debe ser al menos ${max} caracteres.')
 				.max(17, 'Este campo debe ser de hasta ${max} caracteres.')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.'),
+				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.required('Debes completar este campo.'),
 			motorNumber: yup
 				.string()
 				.max(15, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async (values) => {
+			console.log(values);
+			const submit = await fetch(`editar`, {
+				method: 'PUT',
+				body: JSON.stringify({
+					values
+				})
+			});
+
+			console.log('submit', submit);
+			const data = await submit.json();
+			message = data.message;
+			error = data.error;
+			if (data.status === 'OK') {
+				color = 'success';
+			}
+			if (data.status === 'ERROR') color = 'danger';
+			// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
+			// const formBody = JSON.stringify({
+			// 	domain,
+			// 	brand,
+			// 	model,
+			// 	type,
+			// 	year,
+			// 	internal_id,
+			// 	chasisNumber,
+			// 	motorNumber
+
+			// });
+
+			if (data.status === 200) {
+				console.log('message', message);
+			}
+			dispatch('showAlert', {
+				status: status,
+				message: message
+			});
 		}
 	});
 </script>
@@ -196,7 +252,7 @@
 				class="form-control"
 				placeholder="AB123CD"
 				aria-label="Patente"
-				value={$form.domain}
+				bind:value={$form.domain}
 				on:blur={handleChange}
 				class:invalid={$errors.domain}
 				readonly={isReadOnly}
@@ -207,27 +263,39 @@
 		</div>
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
-			<select
+			{#if isReadOnly}
+			<input
+				type="text"
 				id="type"
 				name="type"
-				class="form-select"
+				class="form-control"
+				placeholder="Pickup"
 				aria-label="Tipo de vehículo"
-				bind:value={$form.type}
-				on:blur={handleChange}
-				class:invalid={$errors.type}
-				required
-			>
-				<option selected disabled>Elija una opción...</option>
-				{#each vehicleTypeList as vehicleType}
-					{#if type === vehicleType}
-						<option value={vehicleType} selected>{vehicleType}</option>)
-					{:else}
-						<option value={vehicleType}>{vehicleType}</option>
-					{/if}
-				{/each}
-			</select>
-			{#if $errors.type}
-				<small class="form-error">{$errors.type}</small>
+				bind:value={$form.domain}
+				readonly
+			/>
+			{:else}
+				<select
+					id="type"
+					name="type"
+					class="form-select"
+					aria-label="Tipo de vehículo"
+					bind:value={$form.type}
+					on:blur={handleChange}
+					class:invalid={$errors.type}
+				>
+					<option selected disabled>Elija una opción...</option>
+					{#each vehicleTypeList as vehicleType}
+						{#if type === vehicleType}
+							<option value={vehicleType} selected>{vehicleType}</option>
+						{:else}
+							<option value={vehicleType}>{vehicleType}</option>
+						{/if}
+					{/each}
+				</select>
+				{#if $errors.type}
+					<small class="form-error">{$errors.type}</small>
+				{/if}
 			{/if}
 		</div>
 	</div>
@@ -241,7 +309,7 @@
 				class="form-control"
 				placeholder="Ford"
 				aria-label="Marca"
-				value={$form.brand}
+				bind:value={$form.brand}
 				on:blur={handleChange}
 				class:invalid={$errors.brand}
 				readonly={isReadOnly}
@@ -259,7 +327,7 @@
 				class="form-control"
 				placeholder="Ranger"
 				aria-label="Modelo"
-				value={$form.model}
+				bind:value={$form.model}
 				on:blur={handleChange}
 				class:invalid={$errors.model}
 				readonly={isReadOnly}
@@ -281,7 +349,7 @@
 				aria-label="Año"
 				min="1900"
 				max="9999"
-				value={$form.year}
+				bind:value={$form.year}
 				on:blur={handleChange}
 				class:invalid={$errors.year}
 				readonly={isReadOnly}
@@ -299,7 +367,7 @@
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				value={$form.internal_id}
+				bind:value={$form.internal_id}
 				on:blur={handleChange}
 				class:invalid={$errors.internal_id}
 				readonly={isReadOnly}
@@ -319,7 +387,7 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Número de chasis"
-				value={$form.chasisNumber}
+				bind:value={$form.chasisNumber}
 				on:blur={handleChange}
 				class:invalid={$errors.chasisNumber}
 				readonly={isReadOnly}
@@ -337,7 +405,7 @@
 				class="form-control"
 				placeholder="Argentina"
 				aria-label="Número de motor"
-				value={$form.motorNumber}
+				bind:value={$form.motorNumber}
 				on:blur={handleChange}
 				class:invalid={$errors.motorNumber}
 				readonly={isReadOnly}
@@ -364,7 +432,9 @@
 </form>
 
 <style>
-	#domain, #chasisNumber, #motorNumber {
+	#domain,
+	#chasisNumber,
+	#motorNumber {
 		text-transform: uppercase;
 	}
 </style>

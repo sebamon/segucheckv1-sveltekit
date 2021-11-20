@@ -33,7 +33,7 @@
 				página fuera creada.
 			</p>
 			<img
-				class="fluid thumbnail"
+				class="img-fluid img-thumbnail"
 				alt="Volver al futuro: Precisamente a horario"
 				title="Volver al futuro: Precisamente a horario"
 				src="https://c.tenor.com/SD-TxYTh3scAAAAd/precisely-on-schedule-right-on-schedule.gif"
@@ -43,7 +43,7 @@
 			<p class="lead">Alguien metió la pata... Digo, aquí no sucedió nada.</p>
 			<!-- Pero no te preocupes. Estamos trabajando para resolverlo. -->
 			<img
-				class="fluid thumbnail"
+				class="img-fluid img-thumbnail"
 				alt="Los Simpsons: Aquí no sucedió nada"
 				title="Los Simpsons: Aquí no sucedió nada"
 				src="https://c.tenor.com/yTxA7WgkBEUAAAAd/grandpa-abe-exit.gif"

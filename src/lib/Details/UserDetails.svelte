@@ -1,8 +1,8 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal } from 'sveltestrap';
+	import { onMount } from "svelte";
 	import moment from 'moment';
-
 	// export let useronroles
 	export const userDetails: object = {};
 	// Datos del usuario a mostrar
@@ -18,28 +18,39 @@
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
-
-	export let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
-	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
+	let imagePic=profilePic
+	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
+	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
-
 	// export let usersonroles = []
-	// let fecha = dateString.getDate() + "/" + (dateString.getMonth() +1) + "/" + dateString.getFullYear();
-	// export let fecha = + dateString.getFullYear() + "/" + (dateString.getMonth() +1) + "/" + dateString.getDate();
-	console.log('dateOfBirth', dateOfBirth);
-	console.log('dateString', dateString);
+
 
 	let message;
 	let error;
 	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
-		{ rol_id: 0, rolDescription: 'Gestor documental' },
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
+		{ rol_id: 3, rolDescription: 'Operario' },
+		{ rol_id: 4, rolDescription: 'Operario' }
 	];
-
+	
+	onMount(async() => {
+		// console.log('hola')
+		let url = '/api/roles'
+		// console.log(url)
+		fetch(url)
+		.then(response =>response.json())
+		.then(data => {
+			const rolesList=data.roles
+			// console.log(rolesList)
+		})
+	})
+	
+	// // console.log('rolesList',{rolesList})
+	// let rolesList=
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -53,7 +64,6 @@
 		'Post universitario incompleto',
 		'Post universitario completo'
 	];
-
 	// Arreglo de géneros:
 	let genderText: string;
 	if (gender == 'M') {
@@ -68,68 +78,56 @@
 		{ genderLetter: 'F', genderName: 'Femenino' },
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
-
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = false;
-	let action = '';
-	if (isReadOnly) {
-		// action = 'action="./create"';
-	}
 
-	/* Convierte un objeto Date en un String en formato YYY-MM-DD
-	 * @param Date
-	 * @return String
-	 * NO FUNCIONA
-	 */
-	function dateToYMD(date): string {
-		// return date.getFullYear() +'-'+ date.getMonth() +'-'+ date.getDate();
-		return '2020-10-10';
-	}
 
-	const submitForm = async (): Promise<void> => {
-		const submit = await fetch(`editar`, {
-			method: 'PUT',
-			body: JSON.stringify({
-				firstName,
-				lastName,
-				cuit,
-				email,
-				phone,
-				dateOfBirth,
-				degree,
-				gender,
-				nationality,
-				studyLevel
-				// roles_assigned,
-			})
-		});
-		const data = await submit.json();
-		message = data.message;
-		error = data.error;
-		if (data.status === 'OK') {
-			color = 'success';
-		}
-		if (data.status === 'ERROR') color = 'danger';
+	// const submitForm = async (): Promise<void> => {
+	// 	const submit = await fetch(`editar`, {
+	// 		method: 'PUT',
+	// 		body: JSON.stringify({
+	// 			firstName,
+	// 			lastName,
+	// 			cuit,
+	// 			email,
+	// 			phone,
+	// 			dateOfBirth,
+	// 			degree,
+	// 			gender,
+	// 			nationality,
+	// 			studyLevel
+	// 			// roles_assigned,
+	// 		})
+	// 	});
+	// 	const data = await submit.json();
+	// 	message = data.message;
+	// 	error = data.error;
+	// 	if (data.status === 'OK') {
+	// 		color = 'success';
+	// 	}
+	// 	if (data.status === 'ERROR') color = 'danger';
 
-		if (data.status === 200) {
-			console.log('message', message);
-		}
-	};
+	// 	if (data.status === 200) {
+	// 		console.log('message', message);
+	// 	}
+	// };
 
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
-	
+
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+	import { page } from '$app/stores';
+	import { pathToFileURL } from 'url';
 	yup.setLocale(es);
-	/* regexNombre: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
+	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
 	Fuente: https://andrewwoods.net/blog/2018/name-validation-regex/
 	*/
-	let regexNombre =
+	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
@@ -144,7 +142,8 @@
 				nationality: nationality,
 				studyLevel: studyLevel,
 				degree: degree,
-				profilePic: profilePic
+				profilePic: profilePic,
+				convertedDateOfBirth: convertedDateOfBirth,
 			},
 			validationSchema: yup.object().shape({
 				cuit: yup
@@ -154,10 +153,9 @@
 					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
 				firstName: yup
 					.string()
-					.trim()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -165,7 +163,7 @@
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -187,31 +185,53 @@
 					.string()
 					.required('Debes completar este campo.')
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 				studyLevel: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
 				degree: yup
 					.string()
 					.matches(
-						regexNombre,
+						regexName,
 						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 					)
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 			}),
-			onSubmit: (values) => {
-				// -- Muestra resultado en submit: BORRAR --
-				alert(JSON.stringify(values));
+			onSubmit: async(values) => {
+
+				console.log('values', values)
+
+				const submit = await fetch(`editar`, {
+					method: 'PUT',
+					body: JSON.stringify({
+						values
+					})
+				});
+				// console.log('submit',submit)
+				const data = await submit.json();
+				console.log(data)
+				// console.log('data',data)
+
+				message = data.message;
+				error = data.error;
+				if (data.status === 'OK') {
+					color = 'success';
+				}
+				if (data.status === 'ERROR') color = 'danger';
+				if (data.status === 200) {
+					console.log('message', message);
+				}
 			}
 		});
 </script>
+
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
@@ -227,17 +247,16 @@
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<span on:click={toggle}>
-				<Image
-					fluid
-					thumbnail
-					src={profilePic}
-					alt="Foto de perfil"
-					class="m-2"
-					style="max-width:150px"
+				<Image src='/img/usr-await.png'
+				fluid
+				thumbnail
+				class="m-2" 
+				alt="Foto de perfil"
+				style="max-width:150px"
 				/>
 			</span>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<Image src={profilePic} alt="Foto de perfil" />
+				<Image  alt="Foto de perfil" />
 			</Modal>
 		</div>
 		{#if !isReadOnly}
@@ -402,10 +421,14 @@
 				class="form-control"
 				placeholder="1980-12-31"
 				aria-label="Fecha de nacimiento"
-				bind:value={newDate}
+				bind:value={$form.convertedDateOfBirth}
 				on:blur={handleChange}
 				readonly={isReadOnly}
+				class:invalid={$errors.convertedDateOfBirth}
 			/>
+			{#if $errors.convertedDateOfBirth}
+				<small class="form-error">{$errors.convertedDateOfBirth}</small>
+			{/if}
 		</div>
 		<div class="col-md-4">
 			<label for="nationality" class="form-label">Nacionalidad</label>
@@ -488,7 +511,7 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="rol{rol_id}"
+						id="r2ol{rol_id}"
 						name="roles"
 						class="form-check-input"
 						role="switch"

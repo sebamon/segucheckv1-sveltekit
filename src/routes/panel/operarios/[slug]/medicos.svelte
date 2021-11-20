@@ -1,5 +1,5 @@
 <script context="module">
-    /* Configurar!
+	/* Configurar!
 	export async function load({fetch , page}){
 		const response = await fetch(`./${page.params.slug}/detalle.json`, {
 			method: "GET",
@@ -17,20 +17,16 @@
 
 <script lang="ts">
 	import HealthInfo from '$lib/Details/HealthInfo.svelte';
-import { dataset_dev } from 'svelte/internal';
+	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import {
-		Breadcrumb,
-		BreadcrumbItem,
-		Alert
-	} from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 
 	/* export let data;
 	export let userDetails=data.userDetails
 	let color = 'success' */
-	
-    // Datos placeholder:
+
+	// Datos placeholder:
 	let userDetails = {
 		user_id: 1,
 		firstName: 'Juan',
@@ -45,11 +41,12 @@ import { dataset_dev } from 'svelte/internal';
 
 	// Configurar componente AddressDetails para editar
 	let isReadOnly = false;
-
 </script>
 
 <svelte:head>
-	<title>Editar datos médicos: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
+	<title
+		>Editar datos médicos: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title
+	>
 </svelte:head>
 
 <!-- Encabezado -->
@@ -66,8 +63,10 @@ import { dataset_dev } from 'svelte/internal';
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Médicos</BreadcrumbItem>
 	</Breadcrumb>
-    <h1><i class="fas fa-briefcase me-4" />Editar datos médicos</h1>
-    <p class="lead">Modifique los detalles a continuación.</p>
+	<h1><i class="fas fa-briefcase me-4" />Editar datos médicos</h1>
+	<p class="lead">Modifique los detalles a continuación.</p>
 </header>
 
-<HealthInfo {...userHealthInfo} {isReadOnly} />
+<main>
+	<HealthInfo {...userHealthInfo} {isReadOnly} />
+</main>

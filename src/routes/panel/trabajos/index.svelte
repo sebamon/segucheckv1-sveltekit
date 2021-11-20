@@ -161,3 +161,16 @@
 		</table>
 	</div>
 </main>
+
+<style>
+	/* Solución filas de tablas como links: https://stackoverflow.com/questions/1460958/html-table-row-like-a-link */
+	table tr td a {
+		display: block;
+		height: 100%;
+		width: 100%;
+	}
+	table tr td {
+		padding-left: 0;
+		padding-right: 0;
+	}
+</style>
