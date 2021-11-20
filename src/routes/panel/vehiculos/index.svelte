@@ -29,6 +29,8 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
+import { string } from 'yup/lib/locale';
 	// type vehicle = {
 	// 	vehicle_id : number,
 	// 	domain : string,
@@ -36,9 +38,7 @@
 	// 	brand : string,
 	// 	model : string,
 	// }
-	export let data = {
-		vehicles: []
-	}
+	export let data
 	export let vehicles = data.vehicles
 </script>
 
@@ -65,8 +65,13 @@
 		</div>
 	</div>
 </header>
-
 <main>
+	{JSON.stringify(data)}
+	{JSON.stringify(vehicles)}
+	{#if data.status!=='OK'}
+	<SeguAlert status={data.status} message={data.message} path=vehiculos/>
+	{/if}
+	{#if vehicles.length > 0}
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
@@ -114,6 +119,7 @@
 			</tbody>
 		</table>
 	</div>
+{/if}
 </main>
 
 <style>

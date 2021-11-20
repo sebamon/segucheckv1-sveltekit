@@ -17,9 +17,9 @@
 
 	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
-		{ customer_id: 1, bussinessName: 'Cliente A' },
-		{ customer_id: 2, bussinessName: 'Cliente B' },
-		{ customer_id: 3, bussinessName: 'Cliente C' }
+		{ customer_id: 1, businessName: 'Cliente A' },
+		{ customer_id: 2, businessName: 'Cliente B' },
+		{ customer_id: 3, businessName: 'Cliente C' }
 	];
 	// Arreglo de locaciones - Esto lo lee de la DB:
 	let locationList = [
@@ -221,7 +221,7 @@ application/pdf, image/*"
 			{#if isReadOnly}
 				<p class="form-control">
 					<a href="/panel/clientes/{customer}">
-						{customerList[0].bussinessName}
+						{customerList[0].businessName}
 					</a>
 				</p>
 			{:else}
@@ -234,8 +234,8 @@ application/pdf, image/*"
 					class:invalid={$errors.customer}
 				>
 					<option selected disabled>Elija una opción...</option>
-					{#each customerList as { customer_id, bussinessName }}
-						<option value={customer_id} selected={customer_id == customer}>{bussinessName}</option>
+					{#each customerList as { customer_id, businessName }}
+						<option value={customer_id} selected={customer_id == customer}>{businessName}</option>
 					{/each}
 				</select>
 				{#if $errors.customer}

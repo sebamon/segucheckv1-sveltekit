@@ -17,9 +17,21 @@ export const get = async () =>{
             type: true,
         }
         })
-        return {
-            body: {
-                vehicles,
+        if(vehicles.length>0){
+            return {
+                body: {
+                    status: 'OK',
+                    vehicles: vehicles,
+                    message: 'Vehiculos Encontrados'
+                }
+            }
+        }else{
+            return {
+                body: {
+                    status: 'INFO',
+                    vehicles: vehicles,
+                    message: 'No hay vehiculos registrados'
+                }
             }
         }
     }catch (e){

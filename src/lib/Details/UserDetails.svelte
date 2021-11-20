@@ -20,7 +20,7 @@
 	export let profilePic: string;
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
-	let convertedDateOfBirth = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset())
+	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
 		.toISOString()
 		.split('T')[0];
 	// export let usersonroles = []
@@ -120,8 +120,8 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-import { page } from '$app/stores';
-import { pathToFileURL } from 'url';
+	import { page } from '$app/stores';
+	import { pathToFileURL } from 'url';
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos

@@ -1,24 +1,29 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-
+	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import type { Color } from 'sveltestrap/src/shared';
 	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
-		{ customer_id: 1, bussinessName: 'Cliente A' },
-		{ customer_id: 2, bussinessName: 'Cliente B' },
-		{ customer_id: 3, bussinessName: 'Cliente C' }
+		{ customer_id: 1, businessName: 'Cliente A' },
+		{ customer_id: 2, businessName: 'Cliente B' },
+		{ customer_id: 3, businessName: 'Cliente C' }
 	];
 	// Atributos
 	let customer_id: string;
-	let bussinessName: string;
+	let businessName: string;
 	let contact: string;
 	let phone: string;
 	let email: string;
+	let message:string
+	let status:string
+	let error:string
+	let color:Color
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -41,13 +46,13 @@
 	let regexPhone = /^[\+]?[(\s]?[0-9]{3,4}[)\s]?[-\s\.(]?[0-9]{3,4}[-\s\.)]?[0-9]{3,7}/;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
-			bussinessName: '',
+			businessName: '',
 			contact: '',
 			phone: '',
 			email: '',
 		},
 		validationSchema: yup.object().shape({
-			bussinessName: yup
+			businessName: yup
 				.string()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.matches(
@@ -73,9 +78,29 @@
 				.matches(regexPhone, 'El formato de teléfono es incorrecto')
 				.required('Debes completar este campo.'),
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async(values) => {
+			alert(JSON.stringify(values))
+			try {
+				const submit = await fetch('clientes',{
+					method : 'POST',
+					body : JSON.stringify({
+						values
+					})
+				})
+				const data = await submit.json()
+				message = data.message
+				status=data.status
+
+				if(data.status===200){
+					businessName= ''
+					contact= ''
+					phone= ''
+					email= ''
+				}
+				color = status === 'OK' ? 'success' : 'danger';
+			} catch (error) {
+				
+			}
 		}
 	});
 </script>
@@ -100,30 +125,37 @@
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
-
+{#if status==='OK'}
+	<Alert {color}>
+		<h4 class="alert-heading text-capitalize">{status}</h4>
+		{message}
+		<a href="/panel/clientes" class="alert-link"> Ver Clientes </a>
+		.
+	</Alert>
+{/if}
 <!-- Formulario nuevo usuario -->
-<form name="formCustomerDetails" id="formCustomerDetails">
+<form name="formCustomerDetails" id="formCustomerDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="bussinessName" class="form-label">Empresa cliente</label>
+			<label for="businessName" class="form-label">Empresa cliente</label>
 			<input
 				type="text"
-				id="bussinessName"
-				name="bussinessName"
+				id="businessName"
+				name="businessName"
 				class="form-control"
 				placeholder="YPF"
 				aria-label="Nombre del cliente"
 				required
-				bind:value={$form.bussinessName}
+				bind:value={$form.businessName}
 				on:blur={handleChange}
-				class:invalid={$errors.bussinessName}
+				class:invalid={$errors.businessName}
 			/>
-			{#if $errors.bussinessName}
-				<small class="form-error">{$errors.bussinessName}</small>
+			{#if $errors.businessName}
+				<small class="form-error">{$errors.businessName}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">
-			<label for="bussinessName" class="form-label">Nombre del contacto</label>
+			<label for="businessName" class="form-label">Nombre del contacto</label>
 			<input
 				type="text"
 				id="contact"
@@ -157,7 +189,6 @@
 			{#if $errors.email}
 				<small class="form-error">{$errors.email}</small>
 			{/if}
-			/>
 		</div>
 		<div class="col-md-6">
 			<label for="phone" class="form-label">Teléfono</label>

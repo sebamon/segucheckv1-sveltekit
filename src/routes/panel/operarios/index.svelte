@@ -26,6 +26,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte'; 
 	export let data;
 	export let operators = data.operators;
 
@@ -35,6 +36,7 @@
 		lastName: string;
 		cuit: string;
 	}
+
 </script>
 
 <svelte:head>
@@ -61,11 +63,8 @@
 </header>
 
 <main>
-	{#if data.status === 'INFO'}
-		<Alert color="secondary">
-			<h4 class="alert-heading text-capitalize">Atención:</h4>
-			<p>{data.message}</p>
-		</Alert>
+	{#if data.status}
+	<SeguAlert status={data.status} message={data.message} path=operarios/>>
 	{:else if operators.length > 0}
 		<div class="table-responsive">
 			<table class="table table-striped table-hover align-middle">

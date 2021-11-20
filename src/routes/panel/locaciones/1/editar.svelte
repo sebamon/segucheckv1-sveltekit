@@ -10,7 +10,7 @@
 		coordenates: '-38.74,-67.66',
 		// coordenateY: '-67.66',
 		province: 'Neuquén',
-		customer: { customer_id: 3, bussinessName: 'YPF' }
+		customer: { customer_id: 3, businessName: 'YPF' }
 	};
 
 	// Configurar componente LocationDetails para editar

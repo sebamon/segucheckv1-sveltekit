@@ -1,12 +1,20 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		const response = await fetch(`./${page.params.slug}/detalle`);
-		const data = await response.json();
-		return {
-			props: {
-				data
+		try{
+
+			const response = await fetch(`./${page.params.slug}/detalle`);
+			const data = await response.json();
+			return {
+				props: {
+					data
+				}
+			};
+		}catch(e){
+			console.log('catch error: ',e)
+			return {
+				props:{}
 			}
-		};
+		}
 	}
 </script>
 

@@ -4,9 +4,9 @@
 
 	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
-		{ customer_id: 1, bussinessName: 'Cliente A' },
-		{ customer_id: 2, bussinessName: 'Cliente B' },
-		{ customer_id: 3, bussinessName: 'Cliente C' }
+		{ customer_id: 1, businessName: 'Cliente A' },
+		{ customer_id: 2, businessName: 'Cliente B' },
+		{ customer_id: 3, businessName: 'Cliente C' }
 	];
 	// Arreglo de provincias
 	let provinceList = [
@@ -128,8 +128,8 @@
 				class:invalid={$errors.customer}
 			>
 				<option selected disabled>Elija una opción...</option>
-				{#each customerList as { customer_id, bussinessName }}
-					<option value={customer_id}>{bussinessName}</option>
+				{#each customerList as { customer_id, businessName }}
+					<option value={customer_id}>{businessName}</option>
 				{/each}
 			</select>
 			{#if $errors.customer}

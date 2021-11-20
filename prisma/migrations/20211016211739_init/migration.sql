@@ -128,7 +128,7 @@ CREATE TABLE `RiskAnalysis` (
 -- CreateTable
 CREATE TABLE `Customer` (
     `customer_id` INTEGER NOT NULL AUTO_INCREMENT,
-    `bussinesName` VARCHAR(191) NOT NULL,
+    `businessName` VARCHAR(191) NOT NULL,
     `contact` VARCHAR(191) NOT NULL,
     `phone` VARCHAR(191) NOT NULL,
     `email` VARCHAR(191) NOT NULL,

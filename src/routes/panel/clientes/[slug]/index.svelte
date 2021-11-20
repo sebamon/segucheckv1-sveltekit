@@ -1,37 +1,49 @@
+<script context="module">
+	export async function load({fetch,page}){
+		try {
+			const response = await fetch(`./${page.params.slug}/detalle`);
+			const data =  await response.json()
+
+			return {
+				props:{
+					data
+				}
+			}
+		} catch (error) {
+			console.error(error)
+		}
+	}
+</script>
 <script lang="ts">
+import { dataset_dev } from 'svelte/internal';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem,
 		TabContent,
 		TabPane, } from 'sveltestrap';
 
 	// Info cliente placeholder (esto lo recibe del servidor en estructura similar):
-	let customerDetails = {
-		customer_id: '1',
-		bussinessName: 'YPF',
-		contact: 'Juan Perez',
-		phone: '2993334444',
-		email: 'juan.perez@ejemplo.com',
-		jobs: {},
-		location: [
-			{ location_id: 1, locationName: 'Locación A' },
-			{ location_id: 2, locationName: 'Locación B' },
-			{ location_id: 3, locationName: 'Locación C' }
-		],
-		requiereddocumentation: {}
-	}
-	// Atributos
-	/* 	customer_id           
-	bussinessName          
-	contact               
-	phone                 
-	email                 
-	jobs                  []
-	location              []
-	requiereddocumentation [] */
+	// let customerDetails = {
+	// 	customer_id: '1',
+	// 	businessName: 'YPF',
+	// 	contact: 'Juan Perez',
+	// 	phone: '2993334444',
+	// 	email: 'juan.perez@ejemplo.com',
+	// 	jobs: {},
+	// 	location: [
+	// 		{ location_id: 1, locationName: 'Locación A' },
+	// 		{ location_id: 2, locationName: 'Locación B' },
+	// 		{ location_id: 3, locationName: 'Locación C' }
+	// 	],
+	// 	requiereddocumentation: {}
+	// }
+	export let data
+	export let customerDetails=data.customerDetails
+	
 </script>
 
 <svelte:head>
-	<title>Cliente: {customerDetails.bussinessName} - SeguCheck</title>
+	<title>Cliente: {customerDetails.businessName} - SeguCheck</title>
 </svelte:head>
 
 <!-- Encabezado -->
@@ -46,7 +58,7 @@
 		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-industry me-4" />{customerDetails.bussinessName}</h1>
+		<h1><i class="fas fa-industry me-4" />{customerDetails.businessName}</h1>
 		<p class="lead">Detalles del cliente</p>
 	</div>
 </header>
@@ -65,40 +77,27 @@
 						class="form-control"
 						placeholder="1234"
 						aria-label="Número ID"
-						value={customerDetails.customer_id}
+						bind:value={customerDetails.customer_id}
 						readonly
 					/>
 				</div>
 				<div class="col-md-6">
-					<label for="bussinessName" class="form-label">Nombre de empresa</label>
+					<label for="businessName" class="form-label">Nombre de empresa</label>
 					<input
 						type="text"
-						id="bussinessName"
-						name="bussinessName"
+						id="businessName"
+						name="businessName"
 						class="form-control"
 						placeholder="YPF"
 						aria-label="Nombre de empresa"
-						value={customerDetails.contact}
-						readonly
-					/>
-				</div>
-				<div class="col-md-6">
-					<label for="bussinessName" class="form-label">Nombre del contacto</label>
-					<input
-						type="text"
-						id="contact"
-						name="contact"
-						class="form-control"
-						placeholder="Juan Perez"
-						aria-label="Nombre del contacto"
-						value={customerDetails.contact}
+						bind:value={customerDetails.businessName}
 						readonly
 					/>
 				</div>
 			</div>
 			<div class="row mb-3 g-3">
 				<div class="col-md-6">
-					<label for="bussinessName" class="form-label">Nombre del contacto</label>
+					<label for="businessName" class="form-label">Nombre del contacto</label>
 					<input
 						type="text"
 						id="contact"
@@ -106,7 +105,7 @@
 						class="form-control"
 						placeholder="Juan Perez"
 						aria-label="Nombre del contacto"
-						value={customerDetails.contact}
+						bind:value={customerDetails.contact}
 						readonly
 					/>
 				</div>
@@ -123,7 +122,7 @@
 						class="form-control"
 						placeholder="juan.perez@ejemplo.com"
 						aria-label="Correo electrónico"
-						value={customerDetails.email}
+						bind:value={customerDetails.email}
 						readonly
 					/>
 				</div>
@@ -136,7 +135,7 @@
 						class="form-control"
 						placeholder="2993334444"
 						aria-label="Teléfono"
-						value={customerDetails.phone}
+						bind:value={customerDetails.phone}
 						readonly
 					/>
 				</div>

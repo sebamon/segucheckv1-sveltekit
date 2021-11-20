@@ -26,7 +26,7 @@ model checkitemgroup {
 
 model customer {
   customer_id            Int                      @id @default(autoincrement())
-  bussinesName           String
+  businessName           String
   contact                String
   phone                  String
   email                  String
@@ -191,10 +191,10 @@ model userhealthinfo {
 
 model users {
   user_id      Int            @id @default(autoincrement())
-  email        String        
+  email        String         @unique
   firstName    String
   lastName     String
-  cuit         String
+  cuit         String         @unique
   gender       String
   dateOfBirth  DateTime
   phone        String
@@ -206,8 +206,8 @@ model users {
   active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
-  deleted Boolean @@default(false)
-  @@unique(fields: [cuit, password] name: "credentials")
+  deleted Boolean @default(false)
+  @@unique(fields: [cuit, password], name: "credentials")
 
 }
 

@@ -3,19 +3,19 @@ import { stringify } from 'querystring'
 
 const prisma = new PrismaClient()
 
-// type user = {
-//     user_id:number,
-//     firstName:string,
-//     lastName:string,
-//     cuit:string,
-//     email:string,
-//     useronles : {
-//         rol_id:number,
-//         rolDescription:string
-//     }
-// }
+type user = {
+    user_id:number,
+    firstName:string,
+    lastName:string,
+    cuit:string,
+    email:string,
+    useronles : {
+        rol_id:number,
+        rolDescription:string
+    }
+}
 
-export async function get({params}){
+export async function get(){
     try{
         const users = await prisma.users.findMany({
             where: {
@@ -34,11 +34,21 @@ export async function get({params}){
                 },
             }
         })
-        return {
-            body: {
-                users: users,
-                message: 'Busqueda de Usuarios Exitosa',
-                status: 'OK'
+        if(users.length>0){
+            return {
+                body: {
+                    users: users,
+                    message: 'Busqueda de Usuarios Exitosa',
+                    status: 'OK'
+                }
+            }
+        }else{
+            return {
+                body: {
+                    users: {},
+                    message: 'No se hay usuarios registrados',
+                    status: 'INFO'
+                }
             }
         }
     }catch (e){
