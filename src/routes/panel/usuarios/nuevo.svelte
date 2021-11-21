@@ -245,6 +245,8 @@
 		<h4 class="alert-heading">El correo ingresado ya existe en el sistema</h4>
 		<p>Ingresa una dirección de correo diferente, o <a href="/panel/usuarios?email={$form.email}" class="alert-link">gestiona el usuario existente</a></p>
 	</Alert>
+{:else if status==''}
+	<!-- Carga inicialmente la página sin datos -->
 {:else}
 	<Alert color="danger">
 		<h4 class="alert-heading">No se pudo registrar el usuario</h4>
