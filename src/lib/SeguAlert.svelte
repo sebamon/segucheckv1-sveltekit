@@ -1,7 +1,6 @@
 <script lang='ts'>
     import { Alert } from 'sveltestrap';
     import type { Color } from 'sveltestrap/src/shared';
-    // export let color:Color = 'primary'
     export let message:string = ''
     export let status:string
     export let path:string = "\\"
@@ -18,18 +17,21 @@
     const DEFAULT_COLOR='primary'
     const COLOR = {
         'OK' : 'success',
+        'NEW' : 'success',
         'ERROR': 'danger',
         'INFO' : 'info'
     }
     const DEFAULT_LINK= `/panel/`
     const LINKS = {
-        'OK' : `/panle/${path}`,
+        'OK' : `/panel/${path}`,
+        'NEW' : `/panel/${path}`,
         'ERROR': 'danger',
         'INFO' : `/panel/${path}/nuevo`,
     }
     const DEFAULT_TEXTO = 'Ir al Inicio'
     const TEXTO = {
         'OK' : `Ver  `,
+        'NEW' : `Ver  `,
         'ERROR': `Regresá a  `  ,
         'INFO' : `Creá tu primer  `
 

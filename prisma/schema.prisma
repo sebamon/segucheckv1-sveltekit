@@ -97,10 +97,11 @@ model jobs {
 model location {
   location_id  Int      @id @default(autoincrement())
   locationName String
-  coordenates  String
+  coordenites  String?
   customer_id  Int
   customer     customer @relation(fields: [customer_id], references: [customer_id], map: "Location_customer_id_fkey")
   jobs         jobs[]
+  province    String
 
   @@index([customer_id], map: "Location_customer_id_fkey")
 }
