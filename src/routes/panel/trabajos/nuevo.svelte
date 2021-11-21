@@ -72,7 +72,7 @@
 				.required('Debes completar este campo.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});

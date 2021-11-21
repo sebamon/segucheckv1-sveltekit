@@ -49,7 +49,7 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: '',
-			coordenates: '',
+			coordinates: '',
 			province: '',
 			customer: ''
 		},
@@ -62,7 +62,7 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenates: yup
+			coordinates: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -72,7 +72,7 @@
 			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});
@@ -139,34 +139,34 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenates" class="form-label">Coordenadas</label>
+			<label for="coordinates" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenates"
-				name="coordenates"
+				id="coordinates"
+				name="coordinates"
 				class="form-control"
 				placeholder="-38.74,-67.66"
 				aria-label="Coordenadas"
-				bind:value={$form.coordenates}
+				bind:value={$form.coordinates}
 				on:blur={handleChange}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordinates}
 			/>
-			{#if $errors.coordenates}
-				<small class="form-error">{$errors.coordenates}</small>
+			{#if $errors.coordinates}
+				<small class="form-error">{$errors.coordinates}</small>
 			{/if}
 		</div>
 		<!-- Editar BD si lo usamos:
-			<label for="coordenates" class="form-label">Coordenada Y</label>
+			<label for="coordinates" class="form-label">Coordenada Y</label>
 			<input
 				type="text"
-				id="coordenateY"
-				name="coordenateY"
+				id="coordinateY"
+				name="coordinateY"
 				class="form-control"
 				placeholder="-67.66"
 				aria-label="Coordenada Y"
-				bind:value={$form.coordenateY}
+				bind:value={$form.coordinateY}
 				on:blur={handleChange}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordinates}
 			/> -->
 		<div class="col-md-6">
 			<label for="province" class="form-label">Provincia</label>

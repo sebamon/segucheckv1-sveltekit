@@ -84,7 +84,7 @@
 			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});

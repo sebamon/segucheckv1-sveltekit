@@ -1,14 +1,4 @@
-<!-- <script context="module">
-	export async function load({fetch , page}) {
-		const response = await fetch(`../../../api/roles`)
-		console.log(response)
-		const roles = await response.json()
-		console.log(roles)
-	}
-</script> -->
 <script lang="ts">
-	// import type { User } from '$lib/store';
-	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -200,7 +190,7 @@
 				)
 		}),
 		onSubmit: async(values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			console.log(values)
 			try {
 			const submit = await fetch('usuarios', {

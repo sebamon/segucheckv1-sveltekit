@@ -51,7 +51,7 @@
 					.matches(regexName, 'Este campo solo permite letras y espacios, no números ni otros símbolos.')
 			}),
 			onSubmit: (values) => {
-				// -- Muestra resultado en submit: BORRAR --
+				// Realiza la carga de datos al cliquear Enviar
 				alert(JSON.stringify(values));
 			}
 		});
