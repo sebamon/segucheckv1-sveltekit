@@ -24,7 +24,7 @@
 		"eslint-plugin-svelte3": "^3.2.1",
 		"prettier": "^2.4.1",
 		"prettier-plugin-svelte": "^2.4.0",
-		"prisma": "^3.4.1",
+		"prisma": "^3.5.0",
 		"sass": "^1.43.4",
 		"svelte": "^3.43.2",
 		"svelte-carousel": "^1.0.16",

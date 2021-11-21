@@ -26,7 +26,18 @@ Por lo tanto, esta aplicación permitirá:
 
 ## Instalación
 
-Clonar este proyecto, instalar dependencias con `npm install` (sino `pnpm install` o `yarn`), e iniciar el servidor:
+Sigue estos pasos:
+* Clonar este proyecto
+* Instalar dependencias con `npm install` (sino `pnpm install` o `yarn`)
+* Iniciar servidor MySQL y ejecutar Prisma ORM para cargar base de datos:
+```bash
+npx prisma db push
+npx prisma db seed
+
+# Si ya estaba creado anteriormente:
+npx prisma db push --force-reset --accept-data-loss
+```
+* Iniciar el servidor con:
 ```bash
 npm run dev
 
@@ -40,6 +51,7 @@ El proyecto se encuentra desarrollado mediante el framework [**Svelte**](https:/
 
 Entre otros, utilizamos:
 * Librería CSS: [**Bootstrap**](https://getbootstrap.com/), mediante tema [**Bootswatch Pulse**](https://bootswatch.com/pulse/) y librería de componentes [**Sveltestrap**](https://sveltestrap.js.org/)
+* Manejo de datos: [**Prisma ORM**](https://www.prisma.io/)
 * Formularios: [**svelte-forms-lib**](https://svelte-forms-lib-sapper-docs.vercel.app/) junto a la validación mediante [**Yup**](https://github.com/jquense/yup)
 * Manejo de fechas: [**Moment.js**](https://momentjs.com/)
 * Copiar al portapapeles: [**svelte-copy-to-clipboard**](https://github.com/henriquecaraujo/svelte-copy-to-clipboard)
