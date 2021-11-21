@@ -121,7 +121,7 @@ let roles=[]
 
             return{
                 body: {
-                    status: 'OK',
+                    status: 'NEW',
                     message: 'Usuario Creado',
                     data: {
                         user_id : result.user_id,                    

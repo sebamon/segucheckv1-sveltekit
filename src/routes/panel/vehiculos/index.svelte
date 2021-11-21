@@ -66,8 +66,6 @@ import { string } from 'yup/lib/locale';
 	</div>
 </header>
 <main>
-	{JSON.stringify(data)}
-	{JSON.stringify(vehicles)}
 	{#if data.status!=='OK'}
 	<SeguAlert status={data.status} message={data.message} path=vehiculos/>
 	{/if}

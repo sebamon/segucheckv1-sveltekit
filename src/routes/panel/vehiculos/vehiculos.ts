@@ -20,17 +20,17 @@ export const get = async () =>{
         if(vehicles.length>0){
             return {
                 body: {
-                    status: 'OK',
                     vehicles: vehicles,
-                    message: 'Vehiculos Encontrados'
+                    message: 'Vehiculos Encontrados',
+                    status: 'OK',
                 }
             }
         }else{
             return {
                 body: {
-                    status: 'INFO',
                     vehicles: vehicles,
-                    message: 'No hay vehiculos registrados'
+                    message: 'No hay vehiculos registrados',
+                    status: 'INFO',
                 }
             }
         }

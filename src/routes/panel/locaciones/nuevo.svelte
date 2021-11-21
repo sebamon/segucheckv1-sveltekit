@@ -1,13 +1,42 @@
+<script context="module">
+	export async function load({fetch , page}){
+		console.log('load: locaciones nuevo')
+		try {
+			console.log()
+		const customerRequest = await fetch('http://localhost:3000/panel/clientes/clientes', {
+			method : 'GET',
+		})
+		const data = await customerRequest.json()
+
+		console.log(data)
+		return {
+			props:{
+				data
+			}
+		}
+		}catch (error) {
+			console.error(error)
+			return {
+				props : {}
+			}
+		}
+	}	
+</script>
+
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 
+	export let data
 	// Arreglo de clientes - Esto lo lee de la DB:
-	let customerList = [
-		{ customer_id: 1, businessName: 'Cliente A' },
-		{ customer_id: 2, businessName: 'Cliente B' },
-		{ customer_id: 3, businessName: 'Cliente C' }
-	];
+
+	export let customers = data.customers ? data.customers : []
+	export let status = 'NEW'
+	// export let customers = data.customers
+
+	console.log('customerList', data)
+	console.log('customerList', customers)
 	// Arreglo de provincias
 	let provinceList = [
 		'Buenos Aires',
@@ -39,6 +68,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+	
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -49,9 +79,9 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: '',
-			coordenates: '',
+			coordenites: '',
 			province: '',
-			customer: ''
+			customer: customers,
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -62,18 +92,25 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenates: yup
+			coordenites: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 			province: yup
 				.mixed()
-				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),
-			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
+				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),			
+			customer: yup.mixed() //yup.mixed().oneOf(customers, 'El cliente indicado no se encuentra en la lista.')
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async (values) => {
+			console.log(values)
+			const submit = await fetch(`locaciones`, {
+				method : 'POST',
+				body : JSON.stringify({
+					values,
+				}),
+			})
+			const newLocation = await submit.json()
+			console.log('newLocation', newLocation)
 		}
 	});
 </script>
@@ -98,6 +135,9 @@
 </header>
 
 <!-- Formulario nueva locación -->
+{#if status!=='NEW' }
+	<SeguAlert message={data.message} status={data.status} path=locaciones/>
+{/if}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
@@ -123,13 +163,13 @@
 				id="customer"
 				class="form-select"
 				aria-label="Cliente"
-				bind:value={$form.customer}
+				value={$form.customer}
 				on:blur={handleChange}
 				class:invalid={$errors.customer}
 			>
 				<option selected disabled>Elija una opción...</option>
-				{#each customerList as { customer_id, businessName }}
-					<option value={customer_id}>{businessName}</option>
+				{#each customers as customer}
+					<option value={customer.customer_id}>{customer.businessName}</option>
 				{/each}
 			</select>
 			{#if $errors.customer}
@@ -139,34 +179,34 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenates" class="form-label">Coordenadas</label>
+			<label for="coordenites" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenates"
-				name="coordenates"
+				id="coordenites"
+				name="coordenites"
 				class="form-control"
 				placeholder="-38.74,-67.66"
-				aria-label="Coordenadas"
-				bind:value={$form.coordenates}
+				aria-label="Coordenidas"
+				bind:value={$form.coordenites}
 				on:blur={handleChange}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordenites}
 			/>
-			{#if $errors.coordenates}
-				<small class="form-error">{$errors.coordenates}</small>
+			{#if $errors.coordenites}
+				<small class="form-error">{$errors.coordenites}</small>
 			{/if}
 		</div>
 		<!-- Editar BD si lo usamos:
-			<label for="coordenates" class="form-label">Coordenada Y</label>
+			<label for="coordenites" class="form-label">Coordenida Y</label>
 			<input
 				type="text"
-				id="coordenateY"
-				name="coordenateY"
+				id="coordeniteY"
+				name="coordeniteY"
 				class="form-control"
 				placeholder="-67.66"
-				aria-label="Coordenada Y"
-				bind:value={$form.coordenateY}
+				aria-label="Coordenida Y"
+				bind:value={$form.coordeniteY}
 				on:blur={handleChange}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordenites}
 			/> -->
 		<div class="col-md-6">
 			<label for="province" class="form-label">Provincia</label>
