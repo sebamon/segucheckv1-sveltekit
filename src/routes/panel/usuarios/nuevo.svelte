@@ -206,11 +206,7 @@
 			if (data.status === 'OK') {
 				cleanPage();
 			}
-			color = data.status === 'OK' ? 'success' : 'danger';
-
-			if (data.status === 200) {
-				console.log('message', message);
-			}
+			color = data.status === 'OK' ? 'secondary' : 'warning';
 		} catch (err) {
 			error = err;
 		}
@@ -239,12 +235,20 @@
 	</div>
 </header>
 
-{#if status}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<a href="/panel/usuarios" class="alert-link"> Ver Usuarios </a>
-		.
+{#if status==='NEW'}
+	<Alert color="secondary">
+		<h4 class="alert-heading">El usuario fue registrado con éxito</h4>
+		<a href="/panel/usuarios" class="alert-link">Volver al listado</a>
+	</Alert>
+{:else if status==='ERROR'}
+	<Alert color="warning">
+		<h4 class="alert-heading">El correo ingresado ya existe en el sistema</h4>
+		<p>Ingresa una dirección de correo diferente, o <a href="/panel/usuarios?email={$form.email}" class="alert-link">gestiona el usuario existente</a></p>
+	</Alert>
+{:else}
+	<Alert color="danger">
+		<h4 class="alert-heading">No se pudo registrar el usuario</h4>
+		<p>Revisa los datos cargados e inténtalo nuevamente.</p>
 	</Alert>
 {/if}
 <!-- Formulario nuevo usuario -->
