@@ -49,7 +49,6 @@
 		"image-to-blob": "^0.2.0",
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.1",
-		"multer": "^1.4.3",
 		"path": "^0.12.7",
 		"sk-auth": "^0.3.7",
 		"svelte-copy-to-clipboard": "^0.2.5",

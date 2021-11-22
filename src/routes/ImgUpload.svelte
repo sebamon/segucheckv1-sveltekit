@@ -8,14 +8,16 @@
 	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
  -->
 <script>
+	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
+	import {v4 as uuidV4} from 'uuid';
 	/* Ruta donde guardaremos dentro del directorio static */
 	export const filesPath = './img/temp-pics'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
 	let avatar;
-	export let fileName = 'profilePic';
-	let fileExtension;
+	export let fileName = uuidV4();
+	let fileExtension; 
 
 	/* The button status */
 	let disabled;
@@ -25,9 +27,7 @@
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {
 			fileToUpload = event.target.files[0];
-			console.log(fileToUpload);
 			fileExtension = fileToUpload.type.split('/').pop(); // toma la extensión de la propiedad 'type'
-			console.log(fileExtension);
 			onFileSelected(fileToUpload);
 		}
 	};
@@ -37,25 +37,11 @@
 		/* Verifica que todas las variables se inicialicen */
 		if (fileToUpload && fileName) {
 			
-			/* Generador de tokens para nombre de archivo */
-			const url = 'https://www.uuidtools.com/api/generate/v4';
-			function uuidFetch(url) {
-				fetch(url)
-					.then((response) => response.text())
-					.then((text) => {
-						return(text);
-					})
-					.catch((err) => {
-						console.error('La operación falló: ', err);
-						return err
-					});
-			}
-						
 			/* Se crea el form data */
 			let formData = new FormData();
 			formData.append('size', fileToUpload.size);
 			formData.append('file', fileToUpload);
-			formData.append('name', setTimeout(uuidFetch(url),3000) + '.' + fileExtension);
+			formData.append('name', fileName + '.' + fileExtension);
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
 			/* Llamando al plugin 'upload' en el servidor */
@@ -116,14 +102,6 @@
 		{:else}
 			<img class="avatar" src="../static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
-		<!-- <div class="top-1">
-            <label for="file-name">Give it a name + ext:</label>
-            <input type="text"
-                   id="file-name"
-                   name="file-name"
-                   bind:value={fileName}
-            >
-        </div> -->
 		<div class="top-1">
 			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
 		</div>

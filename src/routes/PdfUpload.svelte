@@ -7,14 +7,19 @@
 
 	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
  -->
+ <svelte:head>
+	 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.0.943/pdf.min.js"> </script>
+ </svelte:head>
 <script>
+	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
+	import {v4 as uuidV4} from 'uuid';
 	/* Ruta donde guardaremos dentro del directorio static */
-	export const filesPath = './doc/temp-docs'; // in this example: static root
+	export const filesPath = './docs/temp-docs'; 
 
 	/* The File object from the form */
 	let fileToUpload = false;
-	let avatar;
-	export let fileName = 'profilePic';
+	let pdfFile;
+	export let fileName = uuidV4();
 	let fileExtension;
 
 	/* The button status */
@@ -25,9 +30,7 @@
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {
 			fileToUpload = event.target.files[0];
-			console.log(fileToUpload);
 			fileExtension = fileToUpload.type.split('/').pop(); // toma la extensión de la propiedad 'type'
-			console.log(fileExtension);
 			onFileSelected(fileToUpload);
 		}
 	};
@@ -70,13 +73,6 @@
 			return;
 		}
 
-		let img = new Image();
-		img.src = URL.createObjectURL(image);
-		let reader = new FileReader();
-		reader.readAsDataURL(image);
-		reader.onload = (e) => {
-			avatar = e.target.result;
-		};
 	};
 </script>
 
@@ -93,19 +89,7 @@
 				on:change={handleFileChange}
 			/>
 		</div>
-		{#if avatar}
-			<img class="avatar" src={avatar} alt="foto de perfil" />
-		{:else}
-			<img class="avatar" src="../static/img/doc-upload.png" alt="foto de perfil sin cargar" />
-		{/if}
-		<!-- <div class="top-1">
-            <label for="file-name">Nombre de archivo:</label>
-            <input type="text"
-                   id="file-name"
-                   name="file-name"
-                   bind:value={fileName}
-            >
-        </div> -->
+			<img class="pdfFile" src="../static/img/doc-upload.png" alt="logo archivo pdf" />		
 		<div class="top-1">
 			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir documento </button>
 		</div>
@@ -113,7 +97,7 @@
 </div>
 
 <style>
-	.avatar {
+	.pdfFile {
 		width: 150px;
 		height: 150px;
 	}
