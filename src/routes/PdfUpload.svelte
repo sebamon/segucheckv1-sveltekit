@@ -1,6 +1,6 @@
 <!-- 
-	ImgUpload
-	Componente para poder subuir una imagen, previsualizarla y almacenarla en el servidor.Acerca
+	PdfUpload
+	Componente para poder subir un documento PDF, previsualizarla y almacenarla en el servidor.
 	Permite recibir los siguientes parámetros:
 	filesPath: directorio donde se guardará el archivo dentro de '/static/'
 	fileName: nombre deseado para almacenar el archivo. La extensión se deduce del archivo subido, no hace falta colocarla.
@@ -9,7 +9,7 @@
  -->
 <script>
 	/* Ruta donde guardaremos dentro del directorio static */
-	export const filesPath = './img/temp-pics'; // in this example: static root
+	export const filesPath = './doc/temp-docs'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
@@ -32,30 +32,15 @@
 		}
 	};
 
-	/* Manejo del submit */
+	/* Handles the submit event */
 	const handleSubmit = () => {
-		/* Verifica que todas las variables se inicialicen */
+		/* Checks if all the data is set */
 		if (fileToUpload && fileName) {
-			
-			/* Generador de tokens para nombre de archivo */
-			const url = 'https://www.uuidtools.com/api/generate/v4';
-			function uuidFetch(url) {
-				fetch(url)
-					.then((response) => response.text())
-					.then((text) => {
-						return(text);
-					})
-					.catch((err) => {
-						console.error('La operación falló: ', err);
-						return err
-					});
-			}
-						
-			/* Se crea el form data */
+			/* Creates the form data */
 			let formData = new FormData();
 			formData.append('size', fileToUpload.size);
 			formData.append('file', fileToUpload);
-			formData.append('name', setTimeout(uuidFetch(url),3000) + '.' + fileExtension);
+			formData.append('name', fileName + '.' + fileExtension);
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
 			/* Llamando al plugin 'upload' en el servidor */
@@ -81,20 +66,17 @@
 	const onFileSelected = (fileToShow) => {
 		let image = fileToShow;
 		if (!window.FileReader) {
-			alert('El navegador no soporta la lectura de archivos');
+			console.log('El navegador no soporta la lectura de archivos');
 			return;
 		}
-		if (!/.(jpg|jpeg|png|gif)$/i.test(image.name)) {
-			alert('El archivo a adjuntar no es una imagen');
-		} else {
-			let img = new Image();
-			img.src = URL.createObjectURL(image);
-			let reader = new FileReader();
-			reader.readAsDataURL(image);
-			reader.onload = (e) => {
-				avatar = e.target.result;
-			};
-		}
+
+		let img = new Image();
+		img.src = URL.createObjectURL(image);
+		let reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onload = (e) => {
+			avatar = e.target.result;
+		};
 	};
 </script>
 
@@ -102,22 +84,22 @@
 	<!-- Formulario subida de archivo -->
 	<div>
 		<div>
-			<label for="input-file">Seleccionar imagen:</label>
+			<label for="input-file">Seleccionar documento:</label>
 			<input
 				type="file"
 				id="input-file"
 				name="input-file"
-				accept=".jpg, .jpeg, .png, .gif, .webp"
+				accept=".pdf"
 				on:change={handleFileChange}
 			/>
 		</div>
 		{#if avatar}
 			<img class="avatar" src={avatar} alt="foto de perfil" />
 		{:else}
-			<img class="avatar" src="../static/img/usr-await.png" alt="foto de perfil sin cargar" />
+			<img class="avatar" src="../static/img/doc-upload.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<!-- <div class="top-1">
-            <label for="file-name">Give it a name + ext:</label>
+            <label for="file-name">Nombre de archivo:</label>
             <input type="text"
                    id="file-name"
                    name="file-name"
@@ -125,7 +107,7 @@
             >
         </div> -->
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
+			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir documento </button>
 		</div>
 	</div>
 </div>
