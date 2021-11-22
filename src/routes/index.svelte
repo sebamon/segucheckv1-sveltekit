@@ -68,7 +68,7 @@
 </header>
 
 <!-- Más info al scrollear -->
-<main class="container py-4">
+<main class="container py-4 shadow-lg">
 	<div class="py-5">
 		<h1 id="sistema">Este es nuestro sistema</h1>
 		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>

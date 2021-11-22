@@ -120,7 +120,7 @@
 	</Navbar>
 	<!-- Contenido principal -->
 	<Transition refresh={key}>
-		<div class="container p-4">
+		<div class="container p-4 shadow-lg">
 			<slot />
 		</div>
 	</Transition>
