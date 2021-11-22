@@ -68,10 +68,25 @@
 		}
 	];
 
-    // Método para evaluar cada documento vigente del usuario y vehículo
-	let docUpdated = () => {
-		return false;
+	function docValid(arrayDoc) {
+        /* Método para evaluar cada documento vigente del usuario y vehículo
+        @param arrayDoc: Arreglo de objetos
+        @return boolean
+        */
+        let isUpdated = true;
+        let actualDate = new Date();
+        for (const thisDoc of arrayDoc) {
+            if (thisDoc.expirated_at < actualDate) {
+                isUpdated = false;
+                break;
+            }
+        }
+		return isUpdated;
 	};
+
+    let userValid = docValid(userDocumentation);
+    let vehicleValid = docValid(userDocumentation);
+    let allValid = userValid && vehicleValid;
 </script>
 
 <!-- Menú de navegación -->
@@ -103,12 +118,12 @@
 		</div>
 		<div class="col-auto text-center">
 			<h1>{userDetails.lastName + ', ' + userDetails.firstName}</h1>
-			{#if docUpdated}
+			{#if allValid }
 				<p class="lead text-success">
-					<i class="fas fa-check me-2" />Toda la documentación está al día
+					<i class="fas fa-check-circle me-2" />Toda la documentación está al día
 				</p>
 			{:else}
-				<p class="lead text-danger"><i class="fas fa-times me-2" />Hay documentación vencida</p>
+				<p class="lead text-danger"><i class="fas fa-times-circle me-2" />Hay documentación vencida</p>
 			{/if}
 		</div>
 	</header>
@@ -143,7 +158,7 @@
 					<div class="row mb-3 g-3" />
 				</form>
 				<hr />
-				<h3 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h3>
+                <h3 class="my-4" class:text-sucess={userValid} class:text-danger={!userValid}><i class="fas fa-paperclip me-4" />Habilitaciones</h3>
 				{#if userDocumentation.length == 0}
 					<div class="alert alert-warning" role="alert">
 						<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta
@@ -181,7 +196,7 @@
 					<div class="row mb-3 g-3" />
 				</form>
 				<hr />
-				<h3 class="my-4"><i class="fas fa-paperclip me-4" />Habilitaciones</h3>
+				<h3 class="my-4" class:text-sucess={vehicleValid} class:text-danger={!vehicleValid}><i class="fas fa-paperclip me-4" />Habilitaciones</h3>
                 {#if vehicleDocumentation.length == 0}
 					<div class="alert alert-warning" role="alert">
 						<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta
