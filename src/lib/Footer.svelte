@@ -50,27 +50,29 @@
 					<a
 						href="https://github.com/sebamon/segucheckv1-sveltekit"
 						class="text-decoration-none"
-						class:text-secondary={isDarkMode}>SanguCheck Dozen</a
+						class:text-secondary={isDarkMode}
 					>
+						SanguCheck Dozen
+					</a>
 				</p>
 			</div>
 			<div class="col-auto">
 				<h5>Enlaces</h5>
 				<ul class="list-unstyled">
 					<li>
-						<a href="/info/acerca" class="text-decoration-none" class:text-secondary={isDarkMode}
-							>Acerca de</a
-						>
+						<a href="/info/acerca" class="text-decoration-none" class:text-secondary={isDarkMode}>
+							Acerca de
+						</a>
 					</li>
 					<li>
-						<a href="/descargar" class="text-decoration-none" class:text-secondary={isDarkMode}
-							>Descargar app</a
-						>
+						<a href="/descargar" class="text-decoration-none" class:text-secondary={isDarkMode}>
+							Descargar app
+						</a>
 					</li>
 					<li>
-						<a href="/info/index" class="text-decoration-none" class:text-secondary={isDarkMode}
-							>Tutoriales</a
-						>
+						<a href="/info/index" class="text-decoration-none" class:text-secondary={isDarkMode}>
+							Tutoriales
+						</a>
 					</li>
 					<li>
 						<a

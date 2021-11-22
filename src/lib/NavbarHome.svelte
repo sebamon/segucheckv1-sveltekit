@@ -30,10 +30,8 @@
 
 <Navbar color="light" light expand="md" class="border-bottom">
 	<NavbarBrand href="/">
-		<img src="/img/segucheck-logo.svg" height="36" alt="logo" /><span
-			class="mx-2 text-dark"
-			id="text-logo">SeguCheck</span
-		>
+		<img src="/img/segucheck-logo.svg" height="36" alt="logo" />
+		<span class="mx-2 text-dark" id="text-logo">SeguCheck </span>
 	</NavbarBrand>
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
