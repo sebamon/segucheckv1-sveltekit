@@ -21,7 +21,7 @@
 					Accept: 'image/svg+xml',
 					'Content-Type': 'application/json',
 					'x-rapidapi-host': 'qrcode3.p.rapidapi.com',
-					'x-rapidapi-key': 'fe3346470bmsh678c80ddab7ef10p1e78e4jsn5c33416d09ed'
+					'x-rapidapi-key': process.env['QR-API-KEY'],
 				},
 				body: JSON.stringify({
 					data: urlToProfile,
