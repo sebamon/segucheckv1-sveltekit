@@ -1,16 +1,8 @@
-<script lang="ts">
-	import NavbarHome from '$lib/NavbarHome.svelte';
-</script>
-
 <svelte:head>
 	<title>Acerca de - SeguCheck</title>
 </svelte:head>
 
-<!-- Menú de navegación -->
-<NavbarHome />
-
-<!-- Más info al scrollear -->
-<main class="container p-5 shadow-lg">
+<main>
 	<h1>
 		Acerca de SeguCheck <img
 			src="/img/segucheck-logo.svg"
@@ -118,9 +110,13 @@
 	<hr />
 	<h3>Tipografías</h3>
 	<ul class="lead my-3">
-        <li>Títulos: <a href="https://fonts.google.com/specimen/Poppins"><strong>Poppins</strong></a></li>
-        <li>Cuerpo: <a href="https://fonts.google.com/specimen/Archivo"><strong>Archivo</strong></a></li>
-    </ul>
+		<li>
+			Títulos: <a href="https://fonts.google.com/specimen/Poppins"><strong>Poppins</strong></a>
+		</li>
+		<li>
+			Cuerpo: <a href="https://fonts.google.com/specimen/Archivo"><strong>Archivo</strong></a>
+		</li>
+	</ul>
 	<h3>Paleta de colores</h3>
 	<div class="row row-cols-3">
 		<h3 class="bg-light text-dark p-5">Texto oscuro: #17141f</h3>

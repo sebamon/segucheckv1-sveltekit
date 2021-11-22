@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-	// ./app/__layout.svelte: Encabezado y pie de página aplicación operario
+	// ./app/__layout.svelte: Encabezado y contenedor de sección: aplicación operario
 
 	// Animación al cambiar entre páginas: https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
 	import Transition from '$lib/Transition.svelte';
