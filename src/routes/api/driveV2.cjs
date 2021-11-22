@@ -21,7 +21,7 @@ const drive = google.drive({
     auth: oauth2Client
 });
 
-const filePath = path.join(__dirname, '../bg-hero.jpg');
+const filePath = path.join(__dirname, '../../../static/panel/operarios/profilePics/manguera.jpeg');
 
 let folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx';
 let fileMetadata = {
@@ -39,7 +39,6 @@ async function uploadFile (fileName = 'testeoDefault.jpg', fileMimeType = 'image
             },
             resource: fileMetadata
         });
-        console.log("RD: " + response.data);
         return(response.data);
     } catch (error) {
         console.log(error);
