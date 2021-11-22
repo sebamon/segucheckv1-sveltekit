@@ -1,14 +1,4 @@
-<!-- <script context="module">
-	export async function load({fetch , page}) {
-		const response = await fetch(`../../../api/roles`)
-		console.log(response)
-		const roles = await response.json()
-		console.log(roles)
-	}
-</script> -->
 <script lang="ts">
-	// import type { User } from '$lib/store';
-	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -200,7 +190,7 @@
 				)
 		}),
 		onSubmit: async(values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			console.log(values)
 			try {
 			const submit = await fetch('usuarios', {
@@ -216,11 +206,7 @@
 			if (data.status === 'OK') {
 				cleanPage();
 			}
-			color = data.status === 'OK' ? 'success' : 'danger';
-
-			if (data.status === 200) {
-				console.log('message', message);
-			}
+			color = data.status === 'OK' ? 'secondary' : 'warning';
 		} catch (err) {
 			error = err;
 		}
@@ -249,12 +235,22 @@
 	</div>
 </header>
 
-{#if status}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<a href="/panel/usuarios" class="alert-link"> Ver Usuarios </a>
-		.
+{#if status==='NEW'}
+	<Alert color="secondary">
+		<h4 class="alert-heading">El usuario fue registrado con éxito</h4>
+		<a href="/panel/usuarios" class="alert-link">Volver al listado</a>
+	</Alert>
+{:else if status==='ERROR'}
+	<Alert color="warning">
+		<h4 class="alert-heading">El correo ingresado ya existe en el sistema</h4>
+		<p>Ingresa una dirección de correo diferente, o <a href="/panel/usuarios?email={$form.email}" class="alert-link">gestiona el usuario existente</a></p>
+	</Alert>
+{:else if status==''}
+	<!-- Carga inicialmente la página sin datos -->
+{:else}
+	<Alert color="danger">
+		<h4 class="alert-heading">No se pudo registrar el usuario</h4>
+		<p>Revisa los datos cargados e inténtalo nuevamente.</p>
 	</Alert>
 {/if}
 <!-- Formulario nuevo usuario -->

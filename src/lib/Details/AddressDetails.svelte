@@ -118,7 +118,7 @@
 			phoneOfResidence: yup.string().matches(regexPhone, 'El formato de teléfono es incorrecto.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});

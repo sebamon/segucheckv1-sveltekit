@@ -1,7 +1,6 @@
 <script context="module">
 	export async function load({ page, fetch }) {
-		try{
-
+		try {
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();
 			return {
@@ -9,11 +8,11 @@
 					data
 				}
 			};
-		}catch(e){
-			console.log('catch error: ',e)
+		} catch (e) {
+			console.log('catch error: ', e);
 			return {
-				props:{}
-			}
+				props: {}
+			};
 		}
 	}
 </script>

@@ -33,7 +33,7 @@
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});

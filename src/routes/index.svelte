@@ -3,10 +3,7 @@
 	import ModalLogin from '$lib/ModalLogin.svelte';
 	import { page, session } from '$app/stores';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Card, CardBody, CardSubtitle, CardFooter, CardTitle, Image } from 'sveltestrap';
-
-	// Abrir modal login
-	let modalOpen = false;
+	import { Button } from 'sveltestrap';
 
 	// Carrusel diapositivas:
 	import { onMount } from 'svelte';
@@ -16,6 +13,9 @@
 		const module = await import('svelte-carousel');
 		Carousel = module.default;
 	});
+
+	// Abrir modal login:
+	let modalOpen = false;
 </script>
 
 <svelte:head>
@@ -38,10 +38,10 @@
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
 			</h3>
 			<div class="mb-5 g-3">
-				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4">
+				<button on:click={() => (modalOpen = !modalOpen)} class="btn btn-primary btn-lg px-4">
 					Iniciar sesión
-				</Button>
-				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
+				</button>
+				<button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</button>
 			</div>
 		</div>
 		<div class="col-6 col-md-4 col-lg-3" id="showCarousel">
@@ -68,7 +68,7 @@
 </header>
 
 <!-- Más info al scrollear -->
-<main class="container py-4">
+<main class="container py-4 shadow-lg">
 	<div class="py-5">
 		<h1 id="sistema">Este es nuestro sistema</h1>
 		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>

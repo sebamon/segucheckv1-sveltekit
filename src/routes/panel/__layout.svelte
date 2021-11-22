@@ -1,6 +1,16 @@
+<script context="module" lang="ts">
+	export const load = async ({ page }) => ({
+		props: {
+			key: page.path
+		}
+	});
+</script>
+
 <script lang="ts">
 	// ./panel/__layout.svelte: Encabezado y pie de página panel
-
+	// Animación al cambiar entre páginas: https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
+	import Transition from '$lib/Transition.svelte';
+	export let key;
 	import NavbarHome from '$lib/NavbarHome.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -150,9 +160,11 @@
 				</Dropdown>
 			</Navbar>
 			<!-- Contenido principal -->
-			<div class="container p-4 shadow-lg">
-				<slot />
-			</div>
+			<Transition refresh={key}>
+				<div class="container p-4 shadow-lg">
+					<slot />
+				</div>
+			</Transition>
 		</div>
 	</div>
 {:else}
