@@ -21,8 +21,9 @@
 	import { emitWarning } from 'process';
 	import type { subscribe } from 'svelte/internal';
 	export let message = '';
+	/* Oculto sin usar (error TS):
 	export let status = '';
-	export let error = '';
+	export let error = ''; */
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
