@@ -31,6 +31,7 @@
 							id="emailNewsletter"
 							class="form-control"
 							placeholder="Deja tu correo electrónico"
+							aria-label="Deja tu correo electrónico"
 							required
 						/>
 					</div>
@@ -43,7 +44,7 @@
 		<div class="row justify-content-around">
 			<div class="col-md-4">
 				<h4 class="my-4">
-					<img src="/img/segucheck-logo.svg" height="36" alt="logo" class="me-3" />SeguCheck © 2021
+					<img src="/img/segucheck-logo.svg" height="36" alt="Logo SeguCheck" class="me-3" />SeguCheck © 2021
 				</h4>
 				<p>
 					Desarrollado por

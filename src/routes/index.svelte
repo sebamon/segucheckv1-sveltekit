@@ -32,7 +32,7 @@
 <header class="py-4">
 	<div class="container row mt-4 align-items-center justify-content-around">
 		<div class="col-12 col-md-8 col-lg-9">
-			<img src="img/segucheck-logo.svg" alt="logo" id="logoHeader" class="m-5" />
+			<img src="img/segucheck-logo.svg" alt="Logo SeguCheck" id="logoHeader" class="m-5" />
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
@@ -54,8 +54,8 @@
 				dots={false}
 				let:loaded
 			>
-				<img src="/img/screen-app1.png" alt="Vista de aplicación móvil 1" />
-				<img src="/img/screen-app2.png" alt="Vista de aplicación móvil 2" />
+				<img src="/img/screen-app1.png" alt="Ejemplo de aplicación móvil: Menú principal" />
+				<img src="/img/screen-app2.png" alt="Ejemplo de aplicación móvil: Escanear QR" />
 			</svelte:component>
 		</div>
 	</div>
@@ -75,7 +75,7 @@
 	</div>
 	<div class="card-group">
 		<div class="card">
-			<a href="/info/plataforma">
+			<a href="/info/acerca">
 				<img
 					class="img-fluid img-thumbnail my-4"
 					src="/img/thumb-dashboard.jpg"
@@ -89,12 +89,12 @@
 					clientes
 				</h6>
 				<div class="card-footer">
-					<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+					<a href="/info/acerca"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 				</div>
 			</div>
 		</div>
 		<div class="card">
-			<a href="/info/movil">
+			<a href="/info/descargar">
 				<img
 					class="img-fluid img-thumbnail my-4"
 					src="/img/thumb-screen-app.jpg"
@@ -107,7 +107,7 @@
 					Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
 				</h6>
 				<div class="card-footer">
-					<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+					<a href="/info/descargar"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 				</div>
 			</div>
 		</div>
