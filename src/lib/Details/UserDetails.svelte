@@ -1,10 +1,22 @@
+<script context="module">
+	export async function load({fetch, page}){
+		const response = await fetch(`http://localhost:3000/api/roles`)
+		const roles = await response.json()
+		console.log('nuevo load data',roles)
+		return {
+			props: {
+				roles
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	import { onMount } from "svelte";
 	import moment from 'moment';
-	// export let useronroles
-	export const userDetails: object = {};
+	// export const userDetails: object = {};
 	// Datos del usuario a mostrar
 	export let user_id: number;
 	export let cuit: number;
@@ -21,33 +33,37 @@
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
-		.toISOString()
-		.split('T')[0];
+	.toISOString()
+	.split('T')[0];
 	// export let usersonroles = []
-
-
-	let message;
-	let error;
-	let color;
-	// Arreglo de roles - Esto lo lee de la DB:
-	let rolesList = [
-		{ rol_id: 1, rolDescription: 'Gestor documental' },
-		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' },
-		{ rol_id: 4, rolDescription: 'Operario' }
-	];
 	
-	onMount(async() => {
-		// console.log('hola')
-		let url = '/api/roles'
-		// console.log(url)
-		fetch(url)
-		.then(response =>response.json())
-		.then(data => {
-			const rolesList=data.roles
-			// console.log(rolesList)
-		})
-	})
+	
+	export let roles
+	// export let usersonroles = []
+	let message;
+	let status = 'OK';
+	
+	console.log('data', roles)
+	export let rolesList = roles.roles 
+	// Arreglo de roles - Esto lo lee de la DB:
+	// let rolesList = [
+	// 	{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+	// 	{ rol_id: 3, rolDescription: 'Operario' },
+	// 	{ rol_id: 4, rolDescription: 'Operario' }
+	// ];
+	
+	// onMount(async() => {
+	// 	// console.log('hola')
+	// 	let url = '/api/roles'
+	// 	// console.log(url)
+	// 	fetch(url)
+	// 	.then(response =>response.json())
+	// 	.then(data => {
+	// 		const rolesList=data.roles
+	// 		// console.log(rolesList)
+	// 	})
+	// })
 	
 	// // console.log('rolesList',{rolesList})
 	// let rolesList=
@@ -80,37 +96,6 @@
 	];
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = false;
-
-
-	// const submitForm = async (): Promise<void> => {
-	// 	const submit = await fetch(`editar`, {
-	// 		method: 'PUT',
-	// 		body: JSON.stringify({
-	// 			firstName,
-	// 			lastName,
-	// 			cuit,
-	// 			email,
-	// 			phone,
-	// 			dateOfBirth,
-	// 			degree,
-	// 			gender,
-	// 			nationality,
-	// 			studyLevel
-	// 			// roles_assigned,
-	// 		})
-	// 	});
-	// 	const data = await submit.json();
-	// 	message = data.message;
-	// 	error = data.error;
-	// 	if (data.status === 'OK') {
-	// 		color = 'success';
-	// 	}
-	// 	if (data.status === 'ERROR') color = 'danger';
-
-	// 	if (data.status === 200) {
-	// 		console.log('message', message);
-	// 	}
-	// };
 
 	// Abrir modal para ver foto:
 	let modalProfile = false;
@@ -205,33 +190,37 @@
 					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 			}),
 			onSubmit: async(values) => {
-
-				console.log('values', values)
-
 				const submit = await fetch(`editar`, {
 					method: 'PUT',
 					body: JSON.stringify({
 						values
 					})
 				});
-				// console.log('submit',submit)
 				const data = await submit.json();
-				console.log(data)
-				// console.log('data',data)
-
 				message = data.message;
 				error = data.error;
-				if (data.status === 'OK') {
-					color = 'success';
-				}
-				if (data.status === 'ERROR') color = 'danger';
-				if (data.status === 200) {
-					console.log('message', message);
-				}
+				status = data.status
+				// status==='NEW' ? cleanPage() : null
 			}
 		});
+		function cleanPage(){
+			user_id = null
+			cuit = null
+			firstName = ''
+			lastName = ''
+			email = ''
+			phone = ''
+			gender = ''
+			dateOfBirth = ''
+			nationality = ''
+			studyLevel = ''
+			degree = ''
+			profilePic = ''
+		}
 </script>
-
+{#if status!=='OK'}
+	<SeguAlert status={status} message={message} path=usuarios/>
+{/if}	
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">

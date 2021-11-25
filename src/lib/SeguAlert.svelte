@@ -27,7 +27,7 @@
     const LINKS = {
         'OK' : `/panel/${path}`,
         'NEW' : `/panel/${path}`,
-        'ERROR': 'danger',
+        'ERROR': `/panel/${path}`,
         'INFO' : `/panel/${path}/nuevo`,
     }
     const DEFAULT_TEXT = 'Ir al Inicio'

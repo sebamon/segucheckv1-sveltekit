@@ -1,9 +1,9 @@
 <script context="module">
 	export async function load({ page, fetch }) {
 		try{
-
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();
+			console.log('** SSR LOAD Usuarios slug**', data)
 			return {
 				props: {
 					data
@@ -24,7 +24,7 @@
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
-	// console.log(data);
+	console.log('data en usuario slug', data);
 	export let userDetails = data.userDetails;
 	export let isReadOnly = true;
 	// let f = new Date(data.userDetails.dateOfBirth)
@@ -56,10 +56,6 @@
 </header>
 
 <main>
-	<p>
-		{isReadOnly}
-		{data.message}
-	</p>
 	<!-- Formulario detalles usuario -->
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

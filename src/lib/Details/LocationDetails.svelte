@@ -1,7 +1,14 @@
+<script context="module">
+	export async function load({page, fetch}){
+		const response = await fetch('locaciones')
+		const data = await response.json()
+		console.log('location detailks',data)
+	}
+</script>
 <script lang="ts">
 	export let location_id: number;
 	export let locationName: string;
-	export let coordenates: string;
+	export let coordenites: string;
 	// export let coordenateY: '-67.66':string
 	export let province: string;
 	export let customer = {
@@ -61,7 +68,7 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: locationName,
-			coordenates: coordenates,
+			coordenites: coordenites,
 			province: province,
 			customer: customer.customer_id
 		},
@@ -74,7 +81,7 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenates: yup
+			coordenites: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -158,21 +165,21 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenates" class="form-label">Coordenadas</label>
+			<label for="coordenites" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenates"
-				name="coordenates"
+				id="coordenites"
+				name="coordenites"
 				class="form-control"
 				placeholder="-38.74,-67.66"
 				aria-label="Coordenadas"
-				bind:value={$form.coordenates}
+				bind:value={$form.coordenites}
 				on:blur={handleChange}
 				readonly={isReadOnly}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordenites}
 			/>
-			{#if $errors.coordenates}
-				<small class="form-error">{$errors.coordenates}</small>
+			{#if $errors.coordenites}
+				<small class="form-error">{$errors.coordenites}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">

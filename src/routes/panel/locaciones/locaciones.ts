@@ -1,5 +1,4 @@
 import { PrismaClient } from '@prisma/client'
-import type { string } from 'yup';
 
 const prisma = new PrismaClient()
 
@@ -9,7 +8,13 @@ export async function get(){
             select : {
                 location_id : true,
                 locationName : true,
-                customer : true,
+                coordenites : true,
+                customer : {
+                    select: {
+                        contact : true
+                    }
+                }
+                
             }
         });
 

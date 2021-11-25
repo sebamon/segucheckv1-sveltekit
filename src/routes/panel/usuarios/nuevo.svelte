@@ -1,23 +1,36 @@
+<script context="module">
+	export async function load({fetch, page}){
+		const response = await fetch(`http://localhost:3000/api/roles`)
+		const data = await response.json()
+		console.log('nuevo load data',data)
+		return {
+			props: {
+				data
+			}
+		}
+	}
+</script>
 <script lang="ts">
-	import moment from 'moment';
-
+	export let data
+	export let rolesList= data.roles
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 	import type { Color } from 'sveltestrap/src/shared';
+	import moment from 'moment';
 
 	// Arreglo de roles - Esto lo lee de la DB:
-	let rolesList = [
-		{ rol_id: 1, rolDescription: 'Gestor documental' },
-		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
-	];
+	// let rolesList = [
+	// 	{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+	// 	{ rol_id: 3, rolDescription: 'Operario' }
+	// ];
 
 	let firstName: string;
 	let lastName: string;
 	let cuit: string;
 	let email: string;
 	let phone: string;
-	let dateOfBirth: Date = new Date('1989/09/02');
+	let dateOfBirth: Date = new Date('2000/01/01');
 	let degree: string;
 	let gender: string;
 	let nationality: string;
@@ -59,11 +72,6 @@
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 
-	const submitForm = async (): Promise<void> => {
-		//funcion que toma los datos del formulario y lo envia por metodo post
-
-	};
-
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
 	const cleanPage = () => {
 		firstName = '';
@@ -84,7 +92,7 @@
 	};
 
 	//Funcion para asignar roles
-	const assign_rol = (id: any) => {
+	function assign_rol(id){
 		if (id.rol_id === 1 || id.rol_id === '1') {
 			roles_assigned['rol1'] = !roles_assigned['rol1'];
 		}
@@ -95,6 +103,7 @@
 			roles_assigned['rol3'] = !roles_assigned['rol3'];
 		}
 	};
+	
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
@@ -133,7 +142,7 @@
 			studyLevel: "",
 			degree: "",
 			profilePic: "",
-			roles_assigned: ""
+			roles_assigned: {}
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -170,6 +179,7 @@
 				.string()
 				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
 			newDate: yup.date().required('Debes completar este campo.'),
+			dateOfBirth: yup.date().required('Debes completar este campo.'),
 			nationality: yup
 				.string()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
@@ -187,29 +197,30 @@
 				.matches(
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
+				),
+			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			console.log(values)
+			values.roles_assigned = roles_assigned
 			try {
-			const submit = await fetch('usuarios', {
-				method: 'POST',
-				body: JSON.stringify({
-					values
-				})
-			});
-			const data = await submit.json();
-			message = data.message;
-			status = data.status;
+				const submit = await fetch('usuarios', {
+					method: 'POST',
+					body: JSON.stringify({
+						values
+					})
+				});
+				const data = await submit.json();
+				message = data.message;
+				status = data.status;
 
-			if (data.status === 'OK') {
-				cleanPage();
+				if (data.status === 'OK') {
+					cleanPage();
+				}
+				color = data.status === 'OK' ? 'secondary' : 'warning';
+			} catch (err) {
+				error = err;
 			}
-			color = data.status === 'OK' ? 'secondary' : 'warning';
-		} catch (err) {
-			error = err;
-		}
 		}
 	});
 </script>
@@ -257,11 +268,11 @@
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="firstname" class="form-label">Nombre</label>
+			<label for="firstName" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="firstname"
-				name="firstname"
+				id="firstName"
+				name="firstName"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
