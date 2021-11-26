@@ -21,7 +21,7 @@ const drive = google.drive({
     auth: oauth2Client
 });
 
-const filePath = path.join(__dirname, '../../../static/panel/operarios/profilePics/manguera.jpeg');
+const filePath = path.join(__dirname, '../../../static/img/temp-pics/5859.png');
 
 let folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx';
 let fileMetadata = {
@@ -29,7 +29,7 @@ let fileMetadata = {
     parents: [folderId]
 }
 
-async function uploadFile (fileName = 'testeoDefault.jpg', fileMimeType = 'image/jpg') {
+export async function uploadFile (fileName = 'testeoDefault.jpg', fileMimeType = 'image/jpg') {
     try {
         
         const response = await drive.files.create({
@@ -46,4 +46,4 @@ async function uploadFile (fileName = 'testeoDefault.jpg', fileMimeType = 'image
     }
 }
 
-uploadFile();
+// uploadFile();

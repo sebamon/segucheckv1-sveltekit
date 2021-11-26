@@ -7,17 +7,19 @@
 
 	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
  -->
+
 <script>
+	import {uploadFile} from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
-	import {v4 as uuidV4} from 'uuid';
+	// import {v4 as uuidV4} from 'uuid'; - probando en padre
 	/* Ruta donde guardaremos dentro del directorio static */
 	export const filesPath = './img/temp-pics'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
 	let avatar;
-	export let fileName = uuidV4();
-	let fileExtension; 
+	export let fileName = "dummyFilename";
+	export let fileExtension; 
 
 	/* The button status */
 	let disabled;
@@ -100,12 +102,16 @@
 		{#if avatar}
 			<img class="avatar" src={avatar} alt="foto de perfil" />
 		{:else}
-			<img class="avatar" src="../static/img/usr-await.png" alt="foto de perfil sin cargar" />
+			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
 			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
 		</div>
 	</div>
+	<button on:click={uploadFile}>
+		Apretame
+	</button>
+
 </div>
 
 <style>

@@ -8,6 +8,8 @@
 </script> -->
 <script lang="ts">
 	// import type { User } from '$lib/store';
+	import {v4 as uuidV4} from 'uuid';
+	import ImgUpload from '../../ImgUpload.svelte';
 	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
 
@@ -33,6 +35,8 @@
 	let nationality: string;
 	let studyLevel: string;
 	let profilePic: string;
+	let fileName = uuidV4(); // fileName es un String que contiene un nombre de archivo generado de manera aleatoria
+	let fileExtension: string; // fileExtension contendrá la extensión del archivo subido por ImgUpload
 
 	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
@@ -464,8 +468,10 @@
 			{/each}
 		</div>
 		<div class="col-md-6">
-			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<input class="form-control" type="file" accept="image/*" id="profilePic" />
+			<!-- <label for="profilePic" class="form-label">Foto de perfil</label>
+			<input class="form-control" type="file" accept="image/*" id="profilePic" /> -->
+			
+			<ImgUpload {fileName}{fileExtension} />
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
