@@ -1,26 +1,25 @@
 <script context="module">
-	export async function load({fetch,page}){
+	export async function load({ fetch, page }) {
 		try {
 			const response = await fetch(`./${page.params.slug}/detalle`);
-			const data =  await response.json()
+			const data = await response.json();
 
 			return {
-				props:{
+				props: {
 					data
 				}
-			}
+			};
 		} catch (error) {
-			console.error(error)
+			console.error(error);
 		}
 	}
 </script>
+
 <script lang="ts">
-import { dataset_dev } from 'svelte/internal';
+	import { dataset_dev } from 'svelte/internal';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem,
-		TabContent,
-		TabPane, } from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
 
 	// Info cliente placeholder (esto lo recibe del servidor en estructura similar):
 	// let customerDetails = {
@@ -37,9 +36,8 @@ import { dataset_dev } from 'svelte/internal';
 	// 	],
 	// 	requiereddocumentation: {}
 	// }
-	export let data
-	export let customerDetails=data.customerDetails
-	
+	export let data;
+	export let customerDetails = data.customerDetails;
 </script>
 
 <svelte:head>
@@ -109,8 +107,7 @@ import { dataset_dev } from 'svelte/internal';
 						readonly
 					/>
 				</div>
-				<div class="col-md-6">
-				</div>
+				<div class="col-md-6" />
 			</div>
 			<div class="row mb-3 g-3">
 				<div class="col-md-6">
@@ -140,27 +137,15 @@ import { dataset_dev } from 'svelte/internal';
 					/>
 				</div>
 			</div>
-			<div class="row mb-3 g-3">
-				<div class="col-md-6" />
-				<div class="col-md-6 d-flex justify-content-end">
-					<Button type="submit" color="primary">
-						<i class="fas fa-plus me-2" />Crear
-					</Button>
-				</div>
-			</div>
 		</form>
-
 	</TabPane>
 	<TabPane tabId="customerJobs" tab="Trabajos">
 		<h2 class="my-4">Trabajos</h2>
-		
 	</TabPane>
 	<TabPane tabId="customerLocations" tab="Locaciones">
 		<h2 class="my-4">Locaciones</h2>
-		
 	</TabPane>
 	<TabPane tabId="customerReqDocs" tab="Documentación requerida">
 		<h2 class="my-4">Documentación requerida</h2>
-		
 	</TabPane>
 </TabContent>
