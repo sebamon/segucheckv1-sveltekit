@@ -236,21 +236,24 @@ model userworkinfo {
 
 model vehicle {
   vehicle_id                  Int                           @id @default(autoincrement())
-  domain                      String
+  domain                      String                        @unique 
   brand                       String
   model                       String
   type                        String
   year                        Int
+  internNumber                Int
   chasisNumber                String?
   motorNumber                 String?
   frontPicUrl                 String?
   leftSidePicUrl              String?
   rightSidePicUrl             String?
   backPicUrl                  String?
+  status                      Boolean                       @default(true)
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime?
   jobs                        jobs[]
   vehicleonvehiclerequirement vehicleonvehiclerequirement[]
+
 }
 
 model vehicleonvehiclerequirement {

@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { stringify } from 'querystring';
 
 const prisma = new PrismaClient();
 
@@ -59,9 +58,9 @@ export async function get() {
 			}
 			return {
 				body: {
+					users: {},
 					status: 'ERROR',
 					message: 'El Usuario no se pudo crear, email ya existente',
-					users: {}
 				}
 			};
 		}
@@ -82,7 +81,7 @@ export const post = async (request) => {
 		if (formBody.roles_assigned['rol3'] === true) {
 			roles.push({ rol_id: 3, assignedBy: 1, user_id: 1 });
 		}
-		const result = await prisma.users.create({
+		const newUser = await prisma.users.create({
 			data: {
 				firstName: formBody.firstName,
 				lastName: formBody.lastName,
@@ -98,7 +97,7 @@ export const post = async (request) => {
 				password: ''
 			}
 		});
-		const newUserId = result.user_id;
+		const newUserId = newUser.user_id;
 		roles.forEach(async (element) => {
 			let rolInsert = await prisma.usersonroles.create({
 				data: {
@@ -117,11 +116,9 @@ export const post = async (request) => {
 		});
 		return {
 			body: {
+				users: newUser,
 				status: 'NEW',
 				message: 'Usuario creado con éxito',
-				data: {
-					user_id: result.user_id
-				}
 			}
 		};
 	} catch (e) {
@@ -137,7 +134,7 @@ export const post = async (request) => {
 				body: {
 					status: 'ERROR',
 					message: 'El usuario no se pudo crear, email ya existente',
-					data: e
+					users: e
 				}
 			};
 		}

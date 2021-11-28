@@ -111,9 +111,8 @@
 							{customer.phone}
 						</a>
 					</td>
-					</tr>
-			{/each}
-					
+				</tr>
+			{/each}		
 			</tbody>
 		</table>
 	</div>

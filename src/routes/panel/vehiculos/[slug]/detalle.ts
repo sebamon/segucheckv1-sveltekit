@@ -3,9 +3,10 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const get = async ( request ) =>{
-    // console.log(request)
+    console.log(request)
     let id_find = Number(request.params.slug)
     console.log('id_find',id_find)
+    if(!isNaN(id_find)){
     try{
         const vehicleDetails = await prisma.vehicle.findUnique({
             where :{
@@ -31,4 +32,4 @@ export const get = async ( request ) =>{
             }
         }
     }
-}
+}}
