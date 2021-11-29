@@ -8,10 +8,10 @@
 </script> -->
 <script lang="ts">
 	// import type { User } from '$lib/store';
-	import {v4 as uuidV4} from 'uuid';
-	import ImgUpload from '../../ImgUpload.svelte';
+	import ImgUpload from '$lib/ImgUpload.svelte';
 	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
+	import { imgReadyToUpload, imgGoogleDriveAccessLink, imgFileName, imgFileExtension } from '../../../stores/fileUploads';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
@@ -35,8 +35,24 @@
 	let nationality: string;
 	let studyLevel: string;
 	let profilePic: string;
-	let fileName = uuidV4(); // fileName es un String que contiene un nombre de archivo generado de manera aleatoria
+	let fileName: string; // fileName es un String que contiene un nombre de archivo generado de manera aleatoria
 	let fileExtension: string; // fileExtension contendrá la extensión del archivo subido por ImgUpload
+	let readyToUpload: boolean; // readyToUpload dará aviso al componente de que debe lanzar la función 'subir()'
+	let googleDriveAccessLink: string; // googleDriveAccessLink almacenará el v´nculo para obtener nuestro archivo desde Google Drive
+
+	imgReadyToUpload.subscribe(value => {
+		readyToUpload = value;
+	})
+	imgFileName.subscribe(value => {
+		fileName = value;
+	})
+
+	imgFileExtension.subscribe(value => {
+		fileExtension = value;
+	})
+	imgGoogleDriveAccessLink.subscribe(value => {
+		googleDriveAccessLink = value;
+	})
 
 	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
@@ -114,6 +130,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+import { GoogleApis } from 'googleapis';
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -207,6 +224,9 @@
 			// -- Muestra resultado en submit: BORRAR --
 			console.log(values)
 			try {
+			imgReadyToUpload.update((n)=>!n);
+			console.log('imgReadyToUpload: ' + readyToUpload )
+			//asignarprofilepic = blah; document.getElementById('profilePic')
 			const submit = await fetch('usuarios', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -471,7 +491,7 @@
 			<!-- <label for="profilePic" class="form-label">Foto de perfil</label>
 			<input class="form-control" type="file" accept="image/*" id="profilePic" /> -->
 			
-			<ImgUpload {fileName}{fileExtension} />
+			<ImgUpload />
 		</div>
 	</div>
 	<div class="row mb-3 g-3">

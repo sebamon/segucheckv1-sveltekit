@@ -23,8 +23,6 @@ const drive = google.drive({
 
 // const {pathname: root} = new URL('../src', import.meta.url)
 
-
-
 export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx') {
     let fileName = fileData.fileName + '.' + fileData.fileExtension;
     let filePath = path.join('static/img/temp-pics/', fileName);

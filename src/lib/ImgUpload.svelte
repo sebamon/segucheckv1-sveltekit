@@ -11,18 +11,49 @@
 	// import { uploadFile } from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	import { v4 as uuidV4 } from 'uuid'; // probando en padre
+	import {
+		imgReadyToUpload,
+		imgGoogleDriveAccessLink,
+		imgFileName,
+		imgFileExtension
+	} from './../stores/fileUploads';
+
 	/* Ruta donde guardaremos dentro del directorio static */
 	export const filesPath = './img/temp-pics'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
 	let avatar;
-	export let fileName = uuidV4();
-	export let fileExtension;
+	let fileName, fileExtension, readyToUpload, googleDriveAccessLink; //variables globales
+
+	/* Vinculamos las variables globales a sus Stores */
+	imgReadyToUpload.subscribe((value) => {
+		readyToUpload = value;
+	});
+	imgFileName.subscribe(value => {
+		fileName = value;
+	})
+
+	imgFileExtension.subscribe(value => {
+		fileExtension = value;
+	})
+	imgGoogleDriveAccessLink.subscribe(value => {
+		googleDriveAccessLink = value;
+	})
+
+	/* Inicializamos el nombre del archivo a guardar */
+	fileName = uuidV4();
+
+	/* Seteamos el nombre con el que se almacenará el archivo de imagen en nuestro store */
+	imgFileName.set(fileName);
 
 	/* The button status */
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
+	$: {if(readyToUpload){
+		console.log("imgready: " + readyToUpload)
+		subir();	
+	}}
 
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
@@ -30,6 +61,8 @@
 			fileToUpload = event.target.files[0];
 			// @ts-ignore
 			fileExtension = fileToUpload.type.split('/').pop(); // toma la extensión de la propiedad 'type'
+			/* Seteamos el nombre con el que se almacenará el archivo de imagen en nuestro store */
+			imgFileExtension.set(fileExtension);
 			onFileSelected(fileToUpload);
 		}
 	};
@@ -49,7 +82,7 @@
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
 			/* Llamando al plugin 'upload' en el servidor */
-			fetch('upload', {
+			fetch('http://localhost:3000/upload', {
 				method: 'POST',
 				body: formData
 				/* Te amamos, Muffinman!!( https://muffinman.io/uploading-files-using-fetch-multipart-form-data/ ) */
@@ -62,6 +95,7 @@
 					} else {
 						// Todo salió bien!!
 						console.log('Archivo cargado en la carpeta static');
+						// document.getElementById("functionSubir").removeAttribute('disabled');
 					}
 				})
 				.catch((err) => console.log('Ooops: ' + err));
@@ -71,7 +105,7 @@
 	const onFileSelected = (fileToShow) => {
 		let image = fileToShow;
 		if (!window.FileReader) {
-			alert('El navegador no soporta la lectura de archivos');
+			console.log('El navegador no soporta la lectura de archivos');
 			return;
 		}
 		if (!/.(jpg|jpeg|png|gif)$/i.test(image.name)) {
@@ -89,18 +123,18 @@
 
 	// Subir archivo a Drive
 
-	async function subir() {
-		let url = './api/driveV2';
+	export async function subir() {
+		let url = 'http://localhost:3000/api/driveV2';
 		let fileData = {
-			'fileName': fileName,
-			'fileExtension': fileExtension
-		}
+			fileName: fileName,
+			fileExtension: fileExtension
+		};
 
 		let response = await fetch(url, {
 			method: 'POST',
 			body: JSON.stringify(fileData)
 		});
-		let result = await response.json();
+		return await response.json();
 	}
 </script>
 
@@ -123,10 +157,12 @@
 			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
+			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit}>
+				Subir imagen
+			</button>
 		</div>
 	</div>
-	<button on:click={subir}> Apretame </button>
+	<!-- <button id = "functionSubir" class="btn" on:click={subir} disabled> Apretame </button> -->
 </div>
 
 <style>
