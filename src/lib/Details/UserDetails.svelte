@@ -137,7 +137,7 @@
 				.string()
 				.required('Debes completar este campo.')
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-				.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(11, 'Este campo debe ser de hasta ${max} caracteres.'),
 			firstName: yup
 				.string()
 				.required('Debes completar este campo.')

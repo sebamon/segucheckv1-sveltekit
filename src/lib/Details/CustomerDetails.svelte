@@ -77,13 +77,12 @@
 
 <form name="formCustomerDetails" id="formCustomerDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
-		<div class="row">
+		<div class="row my-3">
 			<div class="col-auto">
-				<h1><i class="fas fa-industry me-4" />{businessName}</h1>
-				<p class="lead">Detalles del cliente</p>
+				<h2>Datos básicos</h2>
 			</div>
 			<div class="col-2 ms-auto">
-				<a class="btn btn-primary" href="/panel/locaciones/{customer_id}/editar">
+				<a class="btn btn-primary" href="/panel/clientes/{customer_id}/editar">
 					<i class="fas fa-pen me-2" />Editar
 				</a>
 			</div>
