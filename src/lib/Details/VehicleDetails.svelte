@@ -193,16 +193,16 @@
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
 			{#if isReadOnly}
-			<input
-				type="text"
-				id="type"
-				name="type"
-				class="form-control"
-				placeholder="Pickup"
-				aria-label="Tipo de vehículo"
-				bind:value={$form.domain}
-				readonly
-			/>
+				<input
+					type="text"
+					id="type"
+					name="type"
+					class="form-control"
+					placeholder="Pickup"
+					aria-label="Tipo de vehículo"
+					bind:value={$form.domain}
+					readonly
+				/>
 			{:else}
 				<select
 					id="type"

@@ -99,8 +99,8 @@
 			province: yup
 				.mixed()
 				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),			
-			customer: yup.mixed()
-			 //yup.mixed().oneOf(customers, 'El cliente indicado no se encuentra en la lista.')
+			/* customer: yup.mixed()
+			 yup.mixed().oneOf(customers, 'El cliente indicado no se encuentra en la lista.') */
 		}),
 		onSubmit: async (values) => {
 			// Realiza la carga de datos al cliquear Enviar

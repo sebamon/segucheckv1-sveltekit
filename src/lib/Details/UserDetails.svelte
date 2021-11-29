@@ -19,14 +19,15 @@
 			return {
 				data : rolesList
 			}
-		}
+		};
 	}
 </script>
+
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
-	import { onMount } from "svelte";
+	import { onMount } from 'svelte';
 	import moment from 'moment';
 	// export const userDetails: object = {};
 	// Datos del usuario a mostrar
@@ -45,16 +46,19 @@
 	export let usersonroles = []
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
-	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
-	.toISOString()
-	.split('T')[0];
+	let convertedDateOfBirth = new Date(
+		new Date(dateString).getTime() - new Date().getTimezoneOffset()
+	)
+		.toISOString()
+		.split('T')[0];
 	// export let usersonroles = []
 	
 	
 	export let data
 	// console.log('srr data', JSON.parse(data.roles))
 	// export let usersonroles = []
-	let message;
+	let message: string;
+	let error: string;
 	let status = 'OK';
 	// export let rolesList = data 
 	// console.log('useronroles',usersonroles)
@@ -80,7 +84,7 @@
 	// 		// console.log(rolesList)
 	// 	})
 	// })
-	
+
 	// // console.log('rolesList',{rolesList})
 	// let rolesList=
 	// Arreglo de nivel de estudios:
@@ -130,113 +134,113 @@
 	*/
 	let regexName =
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
-	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
-		createForm({
-			initialValues: {
-				user_id: user_id,
-				cuit: cuit,
-				firstName: firstName,
-				lastName: lastName,
-				email: email,
-				phone: phone,
-				gender: gender,
-				nationality: nationality,
-				studyLevel: studyLevel,
-				degree: degree,
-				profilePic: profilePic,
-				convertedDateOfBirth: convertedDateOfBirth,
-			},
-			validationSchema: yup.object().shape({
-				cuit: yup
-					.string()
-					.required('Debes completar este campo.')
-					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
-				firstName: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				lastName: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				email: yup
-					.string()
-					.required('Debes completar este campo.')
-					.email('El formato de email es incorrecto')
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				phone: yup
-					.string()
-					.required('Debes completar este campo.')
-					.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-					.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
-				gender: yup
-					.string()
-					.required('Debes completar este campo.')
-					.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
-				nationality: yup
-					.string()
-					.required('Debes completar este campo.')
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
-				studyLevel: yup
-					.string()
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
-				degree: yup
-					.string()
-					.matches(
-						regexName,
-						'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-					)
-					.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
-			}),
-			onSubmit: async(values) => {
-				const submit = await fetch(`editar`, {
-					method: 'PUT',
-					body: JSON.stringify({
-						values
-					})
-				});
-				const data = await submit.json();
-				message = data.message;
-				error = data.error;
-				status = data.status
-				// status==='NEW' ? cleanPage() : null
-			}
-		});
-		function cleanPage(){
-			user_id = null
-			cuit = null
-			firstName = ''
-			lastName = ''
-			email = ''
-			phone = ''
-			gender = ''
-			dateOfBirth = ''
-			nationality = ''
-			studyLevel = ''
-			degree = ''
-			profilePic = ''
+	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
+		initialValues: {
+			user_id: user_id,
+			cuit: cuit,
+			firstName: firstName,
+			lastName: lastName,
+			email: email,
+			phone: phone,
+			gender: gender,
+			nationality: nationality,
+			studyLevel: studyLevel,
+			degree: degree,
+			profilePic: profilePic,
+			convertedDateOfBirth: convertedDateOfBirth
+		},
+		validationSchema: yup.object().shape({
+			cuit: yup
+				.string()
+				.required('Debes completar este campo.')
+				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+				.max(11, 'Este campo debe ser de hasta ${max} caracteres.'),
+			firstName: yup
+				.string()
+				.required('Debes completar este campo.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			lastName: yup
+				.string()
+				.required('Debes completar este campo.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			email: yup
+				.string()
+				.required('Debes completar este campo.')
+				.email('El formato de email es incorrecto')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			phone: yup
+				.string()
+				.required('Debes completar este campo.')
+				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
+				.max(20, 'Este campo debe ser de hasta ${max} caracteres.'),
+			gender: yup
+				.string()
+				.required('Debes completar este campo.')
+				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
+			nationality: yup
+				.string()
+				.required('Debes completar este campo.')
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			studyLevel: yup
+				.string()
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.oneOf(studyLevelList, 'El nivel de estudios ingresado no es ninguno de la lista.'),
+			degree: yup
+				.string()
+				.matches(
+					regexName,
+					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
+				)
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+		}),
+		onSubmit: async (values) => {
+			const submit = await fetch(`editar`, {
+				method: 'PUT',
+				body: JSON.stringify({
+					values
+				})
+			});
+			const data = await submit.json();
+			message = data.message;
+			error = data.error;
+			status = data.status;
+			// status==='NEW' ? cleanPage() : null
 		}
+	});
+	function cleanPage() {
+		user_id = null;
+		cuit = null;
+		firstName = '';
+		lastName = '';
+		email = '';
+		phone = '';
+		gender = '';
+		dateOfBirth = '';
+		nationality = '';
+		studyLevel = '';
+		degree = '';
+		profilePic = '';
+	}
 </script>
-{#if status!=='OK'}
-	<SeguAlert status={status} message={message} path=usuarios/>
-{/if}	
+
+{#if status !== 'OK'}
+	<SeguAlert {status} {message} path="usuarios" />
+{/if}
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
@@ -251,17 +255,15 @@
 	</div>
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
-			<span on:click={toggle}>
-				<Image src='/img/usr-await.png'
-				fluid
-				thumbnail
-				class="m-2" 
+			<img
+				src={profilePic}
+				class="img-fluid img-thumbnail m-2"
 				alt="Foto de perfil"
 				style="max-width:150px"
-				/>
-			</span>
+				on:click={toggle}
+			/>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<Image  alt="Foto de perfil" />
+				<img src={profilePic} class="img-fluid" alt="Foto de perfil" on:click={toggle} />
 			</Modal>
 		</div>
 		{#if !isReadOnly}

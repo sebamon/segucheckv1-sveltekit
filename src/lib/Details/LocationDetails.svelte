@@ -9,6 +9,7 @@
 			}
 	}
 </script>
+
 <script lang="ts">
 	export let location_id: number;
 	export let locationName: string;
