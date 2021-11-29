@@ -14,37 +14,44 @@ const oauth2Client = new google.auth.OAuth2(
     CLIENT_SECRET,
     REDIRECT_URI
 );
-oauth2Client.setCredentials({refresh_token: REFRESH_TOKEN});
+oauth2Client.setCredentials({ refresh_token: REFRESH_TOKEN });
 
 const drive = google.drive({
     version: 'v3',
     auth: oauth2Client
 });
 
-const filePath = path.join('../../../static/img/temp-pics/', '5859.png');
 // const {pathname: root} = new URL('../src', import.meta.url)
 
-let folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx';
-let fileMetadata = {
-    'name': 'testeoNew.jpg',
-    parents: [folderId]
-}
 
-export async function uploadFile (fileName = 'testeoDefault.jpg', fileMimeType = 'image/jpg') {
+
+export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx') {
+    let fileName = fileData.fileName + '.' + fileData.fileExtension;
+    let filePath = path.join('static/img/temp-pics/', fileName);
     try {
-        
+        let fileMetadata = {
+            'name': fileName,
+            parents: [folderId]
+        }
+        // @ts-ignore
         const response = await drive.files.create({
             media: {
-                mimeType: 'image/jpg',
+                mimeType: 'image/' + fileData.fileExtension,
                 body: fs.createReadStream(filePath)
             },
             resource: fileMetadata
         });
-        return(response.data);
+        return (response.data);
     } catch (error) {
         console.log(error);
-        return(error);
+        return (error);
     }
 }
 
-uploadFile();
+// Recibiendo info
+export const post = async (request)=> {
+    const fileData = JSON.parse(request.body);
+    // console.log(request.body);
+    // console.log('Request Jasoneado: ' + fileData.fileName);
+    return uploadFile(fileData);
+}

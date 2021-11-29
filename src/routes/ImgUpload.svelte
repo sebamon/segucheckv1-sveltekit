@@ -7,19 +7,18 @@
 
 	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
  -->
-
 <script>
-	// import {uploadFile} from './api/driveV2';
+	// import { uploadFile } from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
-	// import {v4 as uuidV4} from 'uuid'; - probando en padre
+	import { v4 as uuidV4 } from 'uuid'; // probando en padre
 	/* Ruta donde guardaremos dentro del directorio static */
 	export const filesPath = './img/temp-pics'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
 	let avatar;
-	export let fileName = "dummyFilename";
-	export let fileExtension; 
+	export let fileName = uuidV4();
+	export let fileExtension;
 
 	/* The button status */
 	let disabled;
@@ -29,6 +28,7 @@
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {
 			fileToUpload = event.target.files[0];
+			// @ts-ignore
 			fileExtension = fileToUpload.type.split('/').pop(); // toma la extensión de la propiedad 'type'
 			onFileSelected(fileToUpload);
 		}
@@ -38,12 +38,14 @@
 	const handleSubmit = () => {
 		/* Verifica que todas las variables se inicialicen */
 		if (fileToUpload && fileName) {
-			
 			/* Se crea el form data */
 			let formData = new FormData();
+			// @ts-ignore
 			formData.append('size', fileToUpload.size);
+			// @ts-ignore
 			formData.append('file', fileToUpload);
 			formData.append('name', fileName + '.' + fileExtension);
+			// @ts-ignore
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
 			/* Llamando al plugin 'upload' en el servidor */
@@ -84,6 +86,22 @@
 			};
 		}
 	};
+
+	// Subir archivo a Drive
+
+	async function subir() {
+		let url = './api/driveV2';
+		let fileData = {
+			'fileName': fileName,
+			'fileExtension': fileExtension
+		}
+
+		let response = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(fileData)
+		});
+		let result = await response.json();
+	}
 </script>
 
 <div>
@@ -108,10 +126,7 @@
 			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
 		</div>
 	</div>
-	<!-- <button on:click={uploadFile}>
-		Apretame
-	</button> -->
-
+	<button on:click={subir}> Apretame </button>
 </div>
 
 <style>
