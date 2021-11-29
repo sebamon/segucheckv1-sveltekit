@@ -11,7 +11,7 @@
 	import ImgUpload from '$lib/ImgUpload.svelte';
 	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
-	import { imgReadyToUpload, imgGoogleDriveAccessLink, imgFileName, imgFileExtension } from '../../../stores/fileUploads';
+	// import { imgReadyToUpload, imgGoogleDriveAccessLink, imgFileName, imgFileExtension } from '../../../stores/fileUploads';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
@@ -40,19 +40,19 @@
 	let readyToUpload: boolean; // readyToUpload dará aviso al componente de que debe lanzar la función 'subir()'
 	let googleDriveAccessLink: string; // googleDriveAccessLink almacenará el v´nculo para obtener nuestro archivo desde Google Drive
 
-	imgReadyToUpload.subscribe(value => {
-		readyToUpload = value;
-	})
-	imgFileName.subscribe(value => {
-		fileName = value;
-	})
+	// imgReadyToUpload.subscribe(value => {
+	// 	readyToUpload = value;
+	// })
+	// imgFileName.subscribe(value => {
+	// 	fileName = value;
+	// })
 
-	imgFileExtension.subscribe(value => {
-		fileExtension = value;
-	})
-	imgGoogleDriveAccessLink.subscribe(value => {
-		googleDriveAccessLink = value;
-	})
+	// imgFileExtension.subscribe(value => {
+	// 	fileExtension = value;
+	// })
+	// imgGoogleDriveAccessLink.subscribe(value => {
+	// 	googleDriveAccessLink = value;
+	// })
 
 	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
@@ -224,7 +224,7 @@ import { GoogleApis } from 'googleapis';
 			// -- Muestra resultado en submit: BORRAR --
 			console.log(values)
 			try {
-			imgReadyToUpload.update((n)=>!n);
+			// imgReadyToUpload.update((n)=>!n);
 			console.log('imgReadyToUpload: ' + readyToUpload )
 			//asignarprofilepic = blah; document.getElementById('profilePic')
 			const submit = await fetch('usuarios', {

@@ -10,13 +10,13 @@
 <script>
 	// import { uploadFile } from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
-	import { v4 as uuidV4 } from 'uuid'; // probando en padre
-	import {
-		imgReadyToUpload,
-		imgGoogleDriveAccessLink,
-		imgFileName,
-		imgFileExtension
-	} from './../stores/fileUploads';
+	import { v4 as uuidV4 } from 'uuid';
+	// import {
+	// 	imgReadyToUpload,
+	// 	imgGoogleDriveAccessLink,
+	// 	imgFileName,
+	// 	imgFileExtension
+	// } from './../stores/fileUploads';
 
 	/* Ruta donde guardaremos dentro del directorio static */
 	export const filesPath = './img/temp-pics'; // in this example: static root
@@ -27,33 +27,32 @@
 	let fileName, fileExtension, readyToUpload, googleDriveAccessLink; //variables globales
 
 	/* Vinculamos las variables globales a sus Stores */
-	imgReadyToUpload.subscribe((value) => {
-		readyToUpload = value;
-	});
-	imgFileName.subscribe(value => {
-		fileName = value;
-	})
+	// imgReadyToUpload.subscribe((value) => {
+	// 	readyToUpload = value;
+	// });
+	// imgFileName.subscribe(value => {
+	// 	fileName = value;
+	// })
 
-	imgFileExtension.subscribe(value => {
-		fileExtension = value;
-	})
-	imgGoogleDriveAccessLink.subscribe(value => {
-		googleDriveAccessLink = value;
-	})
+	// imgFileExtension.subscribe(value => {
+	// 	fileExtension = value;
+	// })
+	// imgGoogleDriveAccessLink.subscribe(value => {
+	// 	googleDriveAccessLink = value;
+	// })
 
 	/* Inicializamos el nombre del archivo a guardar */
 	fileName = uuidV4();
 
 	/* Seteamos el nombre con el que se almacenará el archivo de imagen en nuestro store */
-	imgFileName.set(fileName);
+	// imgFileName.set(fileName);
 
 	/* The button status */
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
-	$: {if(readyToUpload){
-		console.log("imgready: " + readyToUpload)
-		subir();	
-	}}
+	// $: {if(readyToUpload){
+	// 	//subir();	
+	// }}
 
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
@@ -62,7 +61,7 @@
 			// @ts-ignore
 			fileExtension = fileToUpload.type.split('/').pop(); // toma la extensión de la propiedad 'type'
 			/* Seteamos el nombre con el que se almacenará el archivo de imagen en nuestro store */
-			imgFileExtension.set(fileExtension);
+			// imgFileExtension.set(fileExtension);
 			onFileSelected(fileToUpload);
 		}
 	};
@@ -95,7 +94,6 @@
 					} else {
 						// Todo salió bien!!
 						console.log('Archivo cargado en la carpeta static');
-						// document.getElementById("functionSubir").removeAttribute('disabled');
 					}
 				})
 				.catch((err) => console.log('Ooops: ' + err));
