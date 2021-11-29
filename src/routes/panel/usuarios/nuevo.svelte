@@ -1,57 +1,43 @@
 <script context="module">
-	export async function load({fetch , page}) {
-		const response = await fetch(`../../../api/roles`)
-		console.log(response)
-		const roles = await response.json()
-		console.log(roles)
+	export async function load({fetch, page}){
+		const response = await fetch(`http://localhost:3000/api/roles`)
+		const data = await response.json()
+		console.log('nuevo load data',data)
+		return {
+			props: {
+				data
+			}
+		}
 	}
 </script>
 <script lang="ts">
-	// import type { User } from '$lib/store';
-	import ImgUpload from '$lib/ImgUpload.svelte';
-	import moment from 'moment';
-	// import { imgReadyToUpload, imgGoogleDriveAccessLink, imgFileName, imgFileExtension } from '../../../stores/fileUploads';
-
+	export let data
+	export let rolesList= data.roles
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import ImgUpload from '$lib/ImgUpload.svelte'
 	import type { Color } from 'sveltestrap/src/shared';
+	import moment from 'moment';
 
 	// Arreglo de roles - Esto lo lee de la DB:
-	let rolesList = [
-		{ rol_id: 1, rolDescription: 'Gestor documental' },
-		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
-	];
+	// let rolesList = [
+	// 	{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+	// 	{ rol_id: 3, rolDescription: 'Operario' }
+	// ];
 
 	let firstName: string;
 	let lastName: string;
 	let cuit: string;
 	let email: string;
 	let phone: string;
-	let dateOfBirth: Date = new Date('1989/09/02');
+	let dateOfBirth: Date = new Date('2000/01/01');
 	let degree: string;
 	let gender: string;
 	let nationality: string;
 	let studyLevel: string;
 	let profilePic: string;
-	let fileName: string; // fileName es un String que contiene un nombre de archivo generado de manera aleatoria
-	let fileExtension: string; // fileExtension contendrá la extensión del archivo subido por ImgUpload
-	let readyToUpload: boolean; // readyToUpload dará aviso al componente de que debe lanzar la función 'subir()'
-	let googleDriveAccessLink: string; // googleDriveAccessLink almacenará el v´nculo para obtener nuestro archivo desde Google Drive
-
-	// imgReadyToUpload.subscribe(value => {
-	// 	readyToUpload = value;
-	// })
-	// imgFileName.subscribe(value => {
-	// 	fileName = value;
-	// })
-
-	// imgFileExtension.subscribe(value => {
-	// 	fileExtension = value;
-	// })
-	// imgGoogleDriveAccessLink.subscribe(value => {
-	// 	googleDriveAccessLink = value;
-	// })
+	let prueba
 
 	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
@@ -88,11 +74,6 @@
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 
-	const submitForm = async (): Promise<void> => {
-		//funcion que toma los datos del formulario y lo envia por metodo post
-
-	};
-
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
 	const cleanPage = () => {
 		firstName = '';
@@ -113,7 +94,7 @@
 	};
 
 	//Funcion para asignar roles
-	const assign_rol = (id: any) => {
+	function assign_rol(id){
 		if (id.rol_id === 1 || id.rol_id === '1') {
 			roles_assigned['rol1'] = !roles_assigned['rol1'];
 		}
@@ -124,12 +105,12 @@
 			roles_assigned['rol3'] = !roles_assigned['rol3'];
 		}
 	};
+	
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-import { GoogleApis } from 'googleapis';
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -163,7 +144,7 @@ import { GoogleApis } from 'googleapis';
 			studyLevel: "",
 			degree: "",
 			profilePic: "",
-			roles_assigned: ""
+			roles_assigned: {}
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -200,6 +181,7 @@ import { GoogleApis } from 'googleapis';
 				.string()
 				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
 			newDate: yup.date().required('Debes completar este campo.'),
+			dateOfBirth: yup.date().required('Debes completar este campo.'),
 			nationality: yup
 				.string()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
@@ -217,30 +199,30 @@ import { GoogleApis } from 'googleapis';
 				.matches(
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
+				),
+			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			console.log(values)
+			// Realiza la carga de datos al cliquear Enviar
+			values.roles_assigned = roles_assigned
 			try {
-			// imgReadyToUpload.update((n)=>!n);
-			console.log('imgReadyToUpload: ' + readyToUpload )
-			//asignarprofilepic = blah; document.getElementById('profilePic')
-			const submit = await fetch('usuarios', {
-				method: 'POST',
-				body: JSON.stringify({
-					values
-				})
-			});
-			const data = await submit.json();
-			message = data.message;
-			status = data.status;
-			if (data.status === 'OK') {
-				cleanPage();
+				const submit = await fetch('usuarios', {
+					method: 'POST',
+					body: JSON.stringify({
+						values
+					})
+				});
+				const data = await submit.json();
+				message = data.message;
+				status = data.status;
+
+				if (data.status === 'OK') {
+					cleanPage();
+				}
+				color = data.status === 'OK' ? 'secondary' : 'warning';
+			} catch (err) {
+				error = err;
 			}
-		} catch (err) {
-			error = err;
-		}
 		}
 	});
 </script>
@@ -266,23 +248,33 @@ import { GoogleApis } from 'googleapis';
 	</div>
 </header>
 
-{#if status}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<a href="/panel/usuarios" class="alert-link"> Ver Usuarios </a>
-		.
+{#if status==='NEW'}
+	<Alert color="secondary">
+		<h4 class="alert-heading">El usuario fue registrado con éxito</h4>
+		<a href="/panel/usuarios" class="alert-link">Volver al listado</a>
+	</Alert>
+{:else if status==='ERROR'}
+	<Alert color="warning">
+		<h4 class="alert-heading">El correo ingresado ya existe en el sistema</h4>
+		<p>Ingresa una dirección de correo diferente, o <a href="/panel/usuarios?email={$form.email}" class="alert-link">gestiona el usuario existente</a></p>
+	</Alert>
+{:else if status==''}
+	<!-- Carga inicialmente la página sin datos -->
+{:else}
+	<Alert color="danger">
+		<h4 class="alert-heading">No se pudo registrar el usuario</h4>
+		<p>Revisa los datos cargados e inténtalo nuevamente.</p>
 	</Alert>
 {/if}
 <!-- Formulario nuevo usuario -->
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="firstname" class="form-label">Nombre</label>
+			<label for="firstName" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="firstname"
-				name="firstname"
+				id="firstName"
+				name="firstName"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
@@ -481,12 +473,11 @@ import { GoogleApis } from 'googleapis';
 			{/each}
 		</div>
 		<div class="col-md-6">
-			<!-- <label for="profilePic" class="form-label">Foto de perfil</label>
-			<input class="form-control" type="file" accept="image/*" id="profilePic" /> -->
-			
-			<ImgUpload />
+			<label for="profilePic" class="form-label">Foto de perfil</label>
+			<ImgUpload bind:subir={prueba} />
 		</div>
 	</div>
+	PRUEBAAAAAA:{JSON.stringify(prueba)}
 	<div class="row mb-3 g-3">
 		<div class="col-md-12 d-flex justify-content-end">
 			<button type="submit" class="btn btn-primary" disabled={!$isValid}>

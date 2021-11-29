@@ -10,9 +10,14 @@ export async function get(){
                 status : true,
                 location : true,
                 startDate : true,
-                finishDate: true,                
-            }
-        });
+                finishDate: true,
+                checkitemgroup : {
+                    include : {
+                        checkitem : true
+                    }
+                },
+        }
+    });
 
         if(jobs.length>0){
             return {

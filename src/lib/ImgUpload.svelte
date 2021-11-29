@@ -121,7 +121,9 @@
 
 	// Subir archivo a Drive
 
-	export async function subir() {
+	export const subir = async() => {
+	// export async function subir() {
+		console.log('subir')
 		let url = 'http://localhost:3000/api/driveV2';
 		let fileData = {
 			fileName: fileName,

@@ -11,7 +11,7 @@ model checkitem {
   checkItem_id   Int              @id @default(autoincrement())
   item           String
   description    String
-  checkitemgroup checkitemgroup[]
+  checkitemgroup checkitemgroup[]?
 }
 
 model checkitemgroup {
@@ -19,7 +19,7 @@ model checkitemgroup {
   groupName         String
   checkItem_id      Int
   checkitem         checkitem @relation(fields: [checkItem_id], references: [checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
-  jobs              jobs[]
+  # jobs              jobs[]
 
   @@index([checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
 }
