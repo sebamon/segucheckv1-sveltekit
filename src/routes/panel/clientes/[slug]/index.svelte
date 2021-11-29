@@ -55,7 +55,10 @@
 		<BreadcrumbItem>
 			<a href="/panel/clientes">Clientes</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/clientes/{customerDetails.customer_id}">{customerDetails.customer_id}</a>
+		</BreadcrumbItem>
+		<BreadcrumbItem active>Detalle</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-industry me-4" />{customerDetails.businessName}</h1>

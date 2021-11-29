@@ -29,7 +29,7 @@
 			<a href="/panel/clientes">Clientes</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/{customerDetails.customer_id}">{customerDetails.customer_id}</a>
+			<a href="/panel/clientes/{customerDetails.customer_id}">{customerDetails.customer_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>

@@ -15,12 +15,22 @@ export const get = async ( request ) =>{
     
         })
         // console.log(vehicleDetails)
-        return {
-          body: {
-            vehicleDetails : vehicleDetails,
-            message: 'Vehicle Found',
-            status: 'OK'
-          }
+        if(vehicleDetails){
+            return {
+                body: {
+                    vehicleDetails : vehicleDetails,
+                    message: 'Vehicle Found',
+                    status: 'OK'
+                }
+            }
+        }else{
+            return {
+                body: {
+                    vehicleDetails : {},
+                    message: 'Vehicle Not Found',
+                    status: 'INFO'
+                }
+            }
         }
     }catch(e){
         console.log("Error: ",e)

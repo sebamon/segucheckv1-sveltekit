@@ -11,7 +11,8 @@ export async function get(){
                 coordenites : true,
                 customer : {
                     select: {
-                        contact : true
+                        contact : true,
+                        customer_id : true
                     }
                 }
                 

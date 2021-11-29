@@ -47,6 +47,7 @@
 			yupLocation.push(element.locationName)
 		});
 	}
+	export let newLocationList = locationList
 
 	// Arreglo de vehículos - Esto lo lee de la DB:
 	export let vehiclesList = data.vehiclesList.vehicles
@@ -127,6 +128,11 @@
 			}
 		},
 	});
+
+	export function showLocation(e){
+		console.log('showLocation', e.target.value)
+		newLocationList = locationList.filter(location => location.customer.customer_id == e.target.value)	
+	}
 </script>
 
 <svelte:head>
@@ -241,7 +247,7 @@
 				class="form-select"
 				aria-label="Cliente"
 				bind:value={$form.customer}
-				
+				on:change={showLocation}				
 				class:invalid={$errors.customer}
 			>
 				<option selected disabled>Elija una opción...</option>
@@ -264,7 +270,7 @@
 				class:invalid={$errors.location}
 			>
 				<option selected disabled>Elija una opción...</option>
-				{#each locationList as { location_id, locationName }}
+				{#each newLocationList as { location_id, locationName }}
 					<option value={location_id}>{locationName}</option>
 				{/each}
 			</select>
