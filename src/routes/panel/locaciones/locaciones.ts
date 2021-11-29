@@ -17,7 +17,7 @@ export async function get(){
                 
             }
         });
-
+        
         if(locations.length>0){
             return {
                 body: {

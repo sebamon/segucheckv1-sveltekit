@@ -1,11 +1,23 @@
 <script context="module">
 	export async function load({fetch, page}){
-		const response = await fetch(`http://localhost:3000/api/roles`)
-		const roles = await response.json()
-		console.log('nuevo load data',roles)
-		return {
-			props: {
-				roles
+		try{
+			const response = await fetch(`http://localhost:3000/api/roles`)
+			const data = await response.json()
+			console.log('nuevo load data',data)
+			return {
+				props: {
+					data : data
+				}
+			}
+		}catch(e){
+			console.log(e)
+			let rolesList =[
+							{ rol_id: 1, rolDescription: 'Gestor documental' },
+							{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+							{ rol_id: 3, rolDescription: 'Operario' },
+							]
+			return {
+				data : rolesList
 			}
 		}
 	}
@@ -30,6 +42,7 @@
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
+	export let usersonroles = []
 	let imagePic=profilePic
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let convertedDateOfBirth = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
@@ -38,20 +51,23 @@
 	// export let usersonroles = []
 	
 	
-	export let roles
+	export let data
+	// console.log('srr data', JSON.parse(data.roles))
 	// export let usersonroles = []
 	let message;
 	let status = 'OK';
+	// export let rolesList = data 
+	// console.log('useronroles',usersonroles)
+	// console.log('data roles', rolesList)
 	
-	console.log('data', roles)
-	export let rolesList = roles.roles 
+
+
 	// Arreglo de roles - Esto lo lee de la DB:
-	// let rolesList = [
-	// 	{ rol_id: 1, rolDescription: 'Gestor documental' },
-	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-	// 	{ rol_id: 3, rolDescription: 'Operario' },
-	// 	{ rol_id: 4, rolDescription: 'Operario' }
-	// ];
+	let rolesList = [
+		{ rol_id: 1, rolDescription: 'Gestor documental' },
+		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+		{ rol_id: 3, rolDescription: 'Operario' },
+	];
 	
 	// onMount(async() => {
 	// 	// console.log('hola')

@@ -6,9 +6,9 @@
 	export let startDate: Date;
 	export let finishDate: Date;
 	export let status: string;
-	export let riskAnalysis: string;
-	export let customer: number;
-	export let location: number;
+	export let riskAnalysis
+	export let customer
+	export let location
 	export let internalNumber: number;
 	export let checkItemGroup_id: number;
 

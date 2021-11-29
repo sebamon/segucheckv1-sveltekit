@@ -50,41 +50,68 @@ export async function post(request){
     const formBody = JSON.parse(request.body).values
     console.log('formBody',formBody)
 
-    type LocationType ={
-        locationName:string,
-        coordenites:string,
-        customer_id:number,
-        province:string
+    type JobType ={
+        startDate:string,
+        finishDate:string,
+        status:string ,
+        riskAnalysis:string,
+        customer: number,
+        location: number,
+        internalNumber: number,
+        checkItemGroup_id:number,
+        vehicleSelect:number
     }
-    let object:LocationType = {
-        locationName : formBody.locationName,
-        coordenites : formBody.coordenites,
-        customer_id :  formBody.customer,
-        province : formBody.province,
-    }
-    console.log('object', object)
+    
+    let objeto:JobType = {...formBody}
+    console.log('objeto',objeto)
+
+    // console.log('object', object)
     const newJob = 'Trabajo'
     try {
-        // const newJob = await prisma.jobs.create({
-        //     data: {
-        //         startDate : formBody.startDate,
-        //         finishDate : formBody.finishDate,
-        //         status : formBody.status,
-        //         riskAnalysis_id : formBody.riskAnalysis_id,
-        //         location_id : formBody.location_id,
-        //         customer_id : formBody.customer_id,
-        //         vehicle_id : formBody.vehicle_id,
-        //         checkItemGroup_id : formBody.checkItemGroup_id,
-        //         requiredDocumentation_id : formBody.requiredDocumentation_id,
-        //         checkitemgroup : formBody.checkitemgroup,
-        //         customer : formBody.customer,
-        //         location : formBody.location,
-        //         requiereddocumentation : formBody.requiereddocumentation,
-        //         riskanalysis : formBody.riskanalysis,
-        //         vehicle : formBody.vehicle,
-        //         operatoronjobs : formBody.operatoronjobs,
-        //     }
-        // })
+        const newJob = await prisma.jobs.create({
+            include: {
+                customer : true,
+                location : true,
+                riskanalysis : true,
+                vehicle : true,
+            },
+            data: {
+                startDate : new Date(objeto.startDate),
+                finishDate : new Date(objeto.finishDate),
+                status : objeto.status,
+
+                riskanalysis : {
+                    connect: {riskAnalysis_id : 1}
+                },
+
+                // location_id : objeto.location,
+                location : {
+                    connect: {
+                        location_id : Number(objeto.location)
+                    }
+                },
+                
+                // customer_id : objeto.customer,
+                customer : {
+                    connect: {customer_id : Number(objeto.customer)}
+                },
+                // vehicle_id : Number(objeto.vehicleSelected),
+
+                // checkItemGroup_id : objeto.checkItemGroup_id,
+                checkitemgroup : {
+                    connect : {checkItemGroup_id : Number(objeto.checkItemGroup_id)}
+                },
+                
+                // requiredDocumentation_id : objeto.requiredDocumentation_id,
+                // requiereddocumentation : {
+                //     connect : {requiredDocumentation_id : 1}
+                // },
+                vehicle : {
+                    connect :{vehicle_id : Number(objeto.vehicleSelect)}
+                }
+                
+            }
+        })
         console.log('Nueva Locacion:', newJob)
         // const body = newLocation 
         // ? {locations: newLocation, message: 'Locacion Creada con Exito', status: 'OK'}

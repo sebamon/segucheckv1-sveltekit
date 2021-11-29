@@ -9,6 +9,9 @@ export async function get(request){
         const locationDetails = await prisma.location.findUnique({
             where :{
                 location_id : id_find
+            },
+            include: {
+                customer : true
             }
         })
         console.log('locationDetails' ,locationDetails)

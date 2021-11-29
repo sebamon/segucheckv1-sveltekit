@@ -1,6 +1,30 @@
+<script context="module">
+	export async function load({fetch , page}){
+		try {
+			const response = await fetch('./trabajos/trabajos')
+			const data = await response.json()
+
+			return{
+				props: {
+					data
+				}
+			}
+		} catch (error) {
+			console.log(error)
+			return {
+				props:{}
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
+
+	export let data
+	export let jobs = data.jobs
+
 </script>
 
 <svelte:head>
@@ -26,6 +50,10 @@
 </header>
 
 <main>
+	{#if data.status!=='OK'}
+		<SeguAlert status={data.status} message={data.message} path=trabajos/>
+	{/if}
+	{#if jobs.length > 0}
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
@@ -38,128 +66,46 @@
 				</tr>
 				<tr>
 					<th scope="col">Número</th>
-					<th scope="col">Categoría</th>
+					<th scope="col">Locación</th>
 					<th scope="col">Fecha inicio</th>
 					<th scope="col">Estado</th>
 					<th scope="col">Cliente</th>
 				</tr>
 			</thead>
 			<tbody>
+				{#each jobs as job}
 				<tr>
-					<td>1,001</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
+							{job.job_id}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
+							{job.location.locationName}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
+							{job.startDate}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
+							{job.status}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
+							{job.customer.businessName}
+						</a>
+					</td>
 				</tr>
-				<tr>
-					<td>1,002</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,004</td>
-					<td>text</td>
-					<td>random</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,005</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>placeholder</td>
-				</tr>
-				<tr>
-					<td>1,006</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,007</td>
-					<td>placeholder</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>irrelevant</td>
-				</tr>
-				<tr>
-					<td>1,008</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,009</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,010</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,011</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,012</td>
-					<td>text</td>
-					<td>placeholder</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,013</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>visual</td>
-				</tr>
-				<tr>
-					<td>1,014</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,015</td>
-					<td>random</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>text</td>
-				</tr>
+				{/each}
 			</tbody>
 		</table>
 	</div>
+	{/if}
 </main>
 
 <style>

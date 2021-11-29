@@ -9,7 +9,6 @@
 					data
 				}
 			}
-
 		}catch(error)
 		{
 			console.log(error)
@@ -28,15 +27,6 @@
 
 	export let data
 	export let locationDetails = data.locationDetails
-	// Locación de ejemplo:
-	// let locationDetails = {
-	// 	location_id: 1,
-	// 	locationName: 'Refinería Plaza Huincul',
-	// 	coordenates: '-38.74,-67.66',
-	// 	// coordenateY: '-67.66',
-	// 	province: 'Neuquén',
-	// 	customer: { customer_id: 3, businessName: 'YPF' }
-	// };
 
 	// Configurar componente LocationDetails para solo lectura
 	export let isReadOnly = true;

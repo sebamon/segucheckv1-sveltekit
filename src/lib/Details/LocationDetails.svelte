@@ -1,22 +1,52 @@
 <script context="module">
-	export async function load({page, fetch}){
-		const response = await fetch('locaciones')
-		const data = await response.json()
-		console.log('location detailks',data)
+	//ESTO NO SE EJECUTA
+	export async function load({fetch , page}){
+			const response = await fetch(`http://localhost:3000/panel/clientes/clientes`)
+			const data = await response.json()
+			console.log(response)
+			return {
+				data
+			}
 	}
 </script>
 <script lang="ts">
 	export let location_id: number;
 	export let locationName: string;
-	export let coordenites: string;
 	// export let coordenateY: '-67.66':string
+	export let coordenites: string;
 	export let province: string;
 	export let customer = {
 		customer_id: 0,
 		businessName: ''
 	};
+	export let data
+	// let customerFetch=data.customers
+	// export let customerFetch
+	// console.log('customerFetch', customerFetch)
+	// export let customirList= customerFetch.customers
+	// async function loadCustomer(){
+	// 		const response = await fetch(`http://localhost:3000/panel/clientes/clientes`, {
+	// 			method : 'GET',
+	// 			headers : {
+	// 				"context-type" : "application/json"
+	// 			}
+	// 		})
+	// 		const data = await response.json()
+	// 		return customerFetch = data
+	// }
+	// export const customerFetch = async () =>{
+	
+	// let yupCustomer = []
+	// if(customerList2.status==='OK')
+	// 	customerList2.forEach((element) => {
+	// 		console.log('element ',element)
+	// 		let asoc = {
+	// 			customer_id: element.customer_id,
+	// 			businessName: element.businessName
+	// 		}			
+	// 		yupCustomer.push(asoc)
+	// 	});	
 
-	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
 		{ customer_id: 1, businessName: 'Cliente A' },
 		{ customer_id: 2, businessName: 'Cliente B' },
@@ -56,6 +86,7 @@
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
+import { dataset_dev } from 'svelte/internal';
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
@@ -70,7 +101,7 @@
 			locationName: locationName,
 			coordenites: coordenites,
 			province: province,
-			customer: customer.customer_id
+			customer: customer.businessName
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -96,7 +127,7 @@
 		}
 	});
 </script>
-
+Hola DATA{data}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="row">
@@ -206,7 +237,7 @@
 				>
 					<option disabled>Elija una opción...</option>
 					{#each provinceList as thisProvince}
-						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
+						<option value={thisProvince} selected={thisProvince === province}>{thisProvince}</option>
 					{/each}
 				</select>
 				{#if $errors.province}
