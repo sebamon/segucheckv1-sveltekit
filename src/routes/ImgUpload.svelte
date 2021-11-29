@@ -9,7 +9,7 @@
  -->
 
 <script>
-	import {uploadFile} from './api/driveV2';
+	// import {uploadFile} from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	// import {v4 as uuidV4} from 'uuid'; - probando en padre
 	/* Ruta donde guardaremos dentro del directorio static */
@@ -108,9 +108,9 @@
 			<button class="btn" {disabled} type="submit" on:click={handleSubmit}> Subir imagen </button>
 		</div>
 	</div>
-	<button on:click={uploadFile}>
+	<!-- <button on:click={uploadFile}>
 		Apretame
-	</button>
+	</button> -->
 
 </div>
 
