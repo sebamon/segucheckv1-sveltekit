@@ -1,25 +1,64 @@
+<script context="module">
+	export async function load({fetch, page}){
+		let data = await Promise.all([
+			fetch('http://localhost:3000/panel/clientes/clientes'),
+			fetch('http://localhost:3000/panel/locaciones/locaciones'),
+			fetch('http://localhost:3000/panel/vehiculos/vehiculos'),
+		])
+		.then(async(result) => {
+			const customerList = await result[0].json()
+			const locationList = await result[1].json()
+			const vehiclesList = await result[2].json()
+			
+			return {customerList , locationList, vehiclesList}
+		})
+	return {
+			props: {
+				data
+			}
+		}
+	}
+</script>
+
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	export let data
+
 
 	// Arreglo de clientes - Esto lo lee de la DB:
-	let customerList = [
-		{ customer_id: 1, businessName: 'Cliente A' },
-		{ customer_id: 2, businessName: 'Cliente B' },
-		{ customer_id: 3, businessName: 'Cliente C' }
-	];
+	export let customerList = data.customerList.customers || null
+
+	let yupCustomer = []
+	if(customerList.status==='OK')
+		customerList.forEach((element) => {
+			let asoc = {
+				customer_id: element.customer_id,
+				businessName: element.businessName
+			}			
+			yupCustomer.push(asoc)
+		});	
+
 	// Arreglo de locaciones - Esto lo lee de la DB:
-	let locationList = [
-		{ location_id: 1, locationName: 'Locación A' },
-		{ location_id: 2, locationName: 'Locación B' },
-		{ location_id: 3, locationName: 'Locación C' }
-	];
+	export let locationList = data.locationList.locations
+	if(locationList.status==='OK'){
+		let yupLocation =  []	
+		locationList.forEach((element) => {
+			yupLocation.push(element.locationName)
+		});
+	}
+	export let newLocationList = locationList
+
 	// Arreglo de vehículos - Esto lo lee de la DB:
-	let internalNumberList = [
-		{ vehicle_id: 1, internalNumber: 1000, domain: 'AA123BB', brand: 'Marca A', model: 'Modelo X' },
-		{ vehicle_id: 2, internalNumber: 1001, domain: 'CC456DD', brand: 'Marca B', model: 'Modelo Y' },
-		{ vehicle_id: 3, internalNumber: 1002, domain: 'EE789FF', brand: 'Marca C', model: 'Modelo Z' }
-	];
+	export let vehiclesList = data.vehiclesList.vehicles
+	if(vehiclesList.status==='OK'){
+		let yupVehicles = []
+		vehiclesList.forEach(element => {
+			yupVehicles.push(element.vehicle_id)
+		});
+
+	}
+
 	// Arreglo de checkgroups - Esto lo lee de la DB:
 	let checkItemGroupList = [
 		{ checkItemGroup_id: 1, groupName: 'Checkgroup A' },
@@ -31,6 +70,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+	import { array } from 'yup/lib/locale';
 	yup.setLocale(es);
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
@@ -41,7 +81,8 @@
 			customer: '',
 			location: '',
 			internalNumber: '',
-			checkItemGroup_id: ''
+			checkItemGroup_id: '' ,
+			vehicleSelect: '',
 		},
 		validationSchema: yup.object().shape({
 			startDate: yup.date().required('Debes completar este campo.'),
@@ -56,26 +97,42 @@
 			riskAnalysis: yup.mixed().required('Debes adjuntar el archivo.'),
 			customer: yup
 				.mixed()
-				.oneOf(customerList, 'La selección no se encuentra en la lista.')
+				// .oneOf(yupCustomer, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.'),
 			location: yup
 				.mixed()
-				.oneOf(locationList, 'La selección no se encuentra en la lista.')
+				// .oneOf(yupLocation, 'La selección no se encuentra en la lista.')	
 				.required('Debes completar este campo.'),
-			internalNumber: yup
+			vehicleSelect: yup
 				.mixed()
-				.oneOf(internalNumberList, 'La selección no se encuentra en la lista.')
+				// .oneOf(vehiclesList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.'),
 			checkItemGroup_id: yup
 				.mixed()
-				.oneOf(checkItemGroupList, 'La selección no se encuentra en la lista.')
-				.required('Debes completar este campo.')
+				// .oneOf(checkItemGroupList, 'La selección no se encuentra en la lista.'),
+				.required('Debes completar este campo.'),
+		
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
-		}
+		onSubmit: async(values) => {
+			console.log(values)
+			try {
+				const response = await fetch('trabajos', {
+					method: 'POST',
+					body: JSON.stringify({
+						values
+					}),
+				})
+				const data = await response.json()
+			} catch (error) {
+				console.error(error)
+			}
+		},
 	});
+
+	export function showLocation(e){
+		console.log('showLocation', e.target.value)
+		newLocationList = locationList.filter(location => location.customer.customer_id == e.target.value)	
+	}
 </script>
 
 <svelte:head>
@@ -190,12 +247,12 @@
 				class="form-select"
 				aria-label="Cliente"
 				bind:value={$form.customer}
-				on:blur={handleChange}
+				on:change={showLocation}				
 				class:invalid={$errors.customer}
 			>
 				<option selected disabled>Elija una opción...</option>
-				{#each customerList as { customer_id, businessName }}
-					<option value={customer_id}>{businessName}</option>
+				{#each customerList as  customer }
+					<option value={customer.customer_id}>{customer.businessName}</option>
 				{/each}
 			</select>
 			{#if $errors.customer}
@@ -209,11 +266,11 @@
 				class="form-select"
 				aria-label="Locación"
 				bind:value={$form.location}
-				on:blur={handleChange}
+				
 				class:invalid={$errors.location}
 			>
 				<option selected disabled>Elija una opción...</option>
-				{#each locationList as { location_id, locationName }}
+				{#each newLocationList as { location_id, locationName }}
 					<option value={location_id}>{locationName}</option>
 				{/each}
 			</select>
@@ -232,17 +289,17 @@
 				class="form-control"
 				placeholder="1234"
 				aria-label="Número interno de vehículo"
-				list="internalNumberList"
-				bind:value={$form.internalNumber}
-				on:blur={handleChange}
-				class:invalid={$errors.internalNumber}
+				list=internalNumberList
+				bind:value={$form.vehicleSelect}
+			
+				class:invalid={$errors.vehicleSelect}
 			/>
 			<datalist id="internalNumberList">
-				{#each internalNumberList as { internalNumber, domain, brand, model }}
-					<option value={internalNumber} label="{domain} - {brand} {model}" />
+				{#each vehiclesList as { vehicle_id, domain, brand, model }}
+					<option value={vehicle_id} label="{domain} - {brand} {model}">{domain} - {brand} {model}</option>
 				{/each}
 			</datalist>
-			{#if $errors.internalNumber}
+			{#if $errors.vehicleSelect}
 				<small class="form-error">{$errors.internalNumber}</small>
 			{/if}
 		</div>
@@ -253,7 +310,7 @@
 				class="form-select"
 				aria-label="Número de checkgroup"
 				bind:value={$form.checkItemGroup_id}
-				on:blur={handleChange}
+				
 				class:invalid={$errors.checkItemGroup_id}
 			>
 				<option selected disabled>Elija una opción...</option>

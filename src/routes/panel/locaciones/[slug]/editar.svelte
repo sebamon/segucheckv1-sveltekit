@@ -1,18 +1,34 @@
+<script context="module">
+	export async function load({page , fetch}){
+		try{
+			const response = await fetch(`./detalle`)
+			const data = await response.json()
+			return {
+				props: {
+					data
+				}
+			}
+		}catch(error)
+		{
+			console.log(error)
+			return {
+				props: {}
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import LocationDetails from '$lib/Details/LocationDetails.svelte';
+	import SeguAlert from '$lib/SeguAlert.svelte';
+	import { stringify } from 'querystring';
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
-	// Locación de ejemplo::
-	let locationDetails = {
-		location_id: 1,
-		locationName: 'Refinería Plaza Huincul',
-		coordenates: '-38.74,-67.66',
-		// coordenateY: '-67.66',
-		province: 'Neuquén',
-		customer: { customer_id: 3, businessName: 'YPF' }
-	};
-
+	
+	export let data
+	export let locationDetails = data.locationDetails
+	console.log('script interno locationDetails', locationDetails)
+	
 	// Configurar componente LocationDetails para editar
 	export let isReadOnly = false;
 </script>
@@ -37,6 +53,10 @@
 </header>
 
 <main>
+	{#if data.status==='OK'}
+		<LocationDetails {...locationDetails} {isReadOnly} />
+	{:else}
+		<SeguAlert message={data.message} status={data.status} path=locaciones />
+	{/if}
 	<!-- Formulario detalles locación -->
-	<LocationDetails {...locationDetails} {isReadOnly} />
 </main>

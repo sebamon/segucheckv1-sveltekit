@@ -1,15 +1,14 @@
-<!-- <script context="module">
+<script context="module">
 	export async function load({fetch , page}) {
 		const response = await fetch(`../../../api/roles`)
 		console.log(response)
 		const roles = await response.json()
 		console.log(roles)
 	}
-</script> -->
+</script>
 <script lang="ts">
 	// import type { User } from '$lib/store';
 	import ImgUpload from '$lib/ImgUpload.svelte';
-	import { dataset_dev } from 'svelte/internal';
 	import moment from 'moment';
 	// import { imgReadyToUpload, imgGoogleDriveAccessLink, imgFileName, imgFileExtension } from '../../../stores/fileUploads';
 
@@ -236,14 +235,8 @@ import { GoogleApis } from 'googleapis';
 			const data = await submit.json();
 			message = data.message;
 			status = data.status;
-
 			if (data.status === 'OK') {
 				cleanPage();
-			}
-			color = data.status === 'OK' ? 'success' : 'danger';
-
-			if (data.status === 200) {
-				console.log('message', message);
 			}
 		} catch (err) {
 			error = err;

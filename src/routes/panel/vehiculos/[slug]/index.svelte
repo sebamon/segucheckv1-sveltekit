@@ -1,20 +1,21 @@
 <script context="module">
 	export async function load({ fetch, page }) {
-		const id_find = page.params.slug;
-		const response = await fetch(`./${page.params.slug}/detalle`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			request: page.params.slug
-		});
-		const data = await response.json();
-		console.log('response', data);
-		return {
-			props: {
-				data
+		try{
+			const response = await fetch(`./${page.params.slug}/detalle`);
+			const data = await response.json();
+			console.log('response', data);
+			
+			return {
+				props: {
+					data
+				}
+			};
+		}catch(e){
+			console.log('catch error: ',e)
+			return {
+				props:{}
 			}
-		};
+		}
 	}
 </script>
 
@@ -57,9 +58,7 @@
 	// };
 	export let data;
 	// export const message = data.message
-	export let status = data.status;
-
-	export let vehicleDetails = data.vehicleDetails;
+		export let vehicleDetails = data.vehicleDetails;
 	export let isReadOnly = true;
 	let vehicleDocumentation = [
 		{
@@ -79,7 +78,8 @@
 			created_at: new Date('2021-08-31'),
 			updated_at: new Date('2021-08-31'),
 			expirated_at: new Date('2021-09-31')
-		}
+		},
+
 	];
 
 	// Fotos del vehículo para carrusel:

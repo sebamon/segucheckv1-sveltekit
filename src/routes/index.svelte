@@ -3,10 +3,7 @@
 	import ModalLogin from '$lib/ModalLogin.svelte';
 	import { page, session } from '$app/stores';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Card, CardBody, CardSubtitle, CardFooter, CardTitle, Image } from 'sveltestrap';
-
-	// Abrir modal login
-	let modalOpen = false;
+	import { Button } from 'sveltestrap';
 
 	// Carrusel diapositivas:
 	import { onMount } from 'svelte';
@@ -16,6 +13,9 @@
 		const module = await import('svelte-carousel');
 		Carousel = module.default;
 	});
+
+	// Abrir modal login:
+	let modalOpen = false;
 </script>
 
 <svelte:head>
@@ -32,16 +32,16 @@
 <header class="py-4">
 	<div class="container row mt-4 align-items-center justify-content-around">
 		<div class="col-12 col-md-8 col-lg-9">
-			<img src="img/segucheck-logo.svg" alt="logo" id="logoHeader" class="m-5" />
+			<img src="img/segucheck-logo.svg" alt="Logo SeguCheck" id="logoHeader" class="m-5" />
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
 				Lleva el control de tus credenciales, permisos y checklists en tu bolsillo
 			</h3>
 			<div class="mb-5 g-3">
-				<Button color="primary" on:click={() => (modalOpen = !modalOpen)} class="btn-lg px-4">
+				<button on:click={() => (modalOpen = !modalOpen)} class="btn btn-primary btn-lg px-4">
 					Iniciar sesión
-				</Button>
-				<Button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</Button>
+				</button>
+				<button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</button>
 			</div>
 		</div>
 		<div class="col-6 col-md-4 col-lg-3" id="showCarousel">
@@ -54,8 +54,8 @@
 				dots={false}
 				let:loaded
 			>
-				<img src="/img/screen-app1.png" alt="Vista de aplicación móvil 1" />
-				<img src="/img/screen-app2.png" alt="Vista de aplicación móvil 2" />
+				<img src="/img/screen-app1.png" alt="Ejemplo de aplicación móvil: Menú principal" />
+				<img src="/img/screen-app2.png" alt="Ejemplo de aplicación móvil: Escanear QR" />
 			</svelte:component>
 		</div>
 	</div>
@@ -68,14 +68,14 @@
 </header>
 
 <!-- Más info al scrollear -->
-<main class="container py-4">
+<main class="container py-4 shadow-lg">
 	<div class="py-5">
 		<h1 id="sistema">Este es nuestro sistema</h1>
 		<h3 class="lead">Las herramientas que facilitarán tu jornada</h3>
 	</div>
 	<div class="card-group">
 		<div class="card">
-			<a href="/info/plataforma">
+			<a href="/info/acerca">
 				<img
 					class="img-fluid img-thumbnail my-4"
 					src="/img/thumb-dashboard.jpg"
@@ -89,12 +89,12 @@
 					clientes
 				</h6>
 				<div class="card-footer">
-					<a href="/info/plataforma"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+					<a href="/info/acerca"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 				</div>
 			</div>
 		</div>
 		<div class="card">
-			<a href="/info/movil">
+			<a href="/info/descargar">
 				<img
 					class="img-fluid img-thumbnail my-4"
 					src="/img/thumb-screen-app.jpg"
@@ -107,7 +107,7 @@
 					Donde tus colaboradores pueden visualizar su documentos, tareas y checklists
 				</h6>
 				<div class="card-footer">
-					<a href="/info/movil"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
+					<a href="/info/descargar"> Conocé más <i class="fas fa-arrow-right me-2" /></a>
 				</div>
 			</div>
 		</div>

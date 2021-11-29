@@ -1,15 +1,53 @@
+<script context="module">
+	//ESTO NO SE EJECUTA
+	export async function load({fetch , page}){
+			const response = await fetch(`http://localhost:3000/panel/clientes/clientes`)
+			const data = await response.json()
+			console.log(response)
+			return {
+				data
+			}
+	}
+</script>
+
 <script lang="ts">
 	export let location_id: number;
 	export let locationName: string;
-	export let coordenates: string;
 	// export let coordenateY: '-67.66':string
+	export let coordenites: string;
 	export let province: string;
 	export let customer = {
 		customer_id: 0,
 		businessName: ''
 	};
+	export let data
+	// let customerFetch=data.customers
+	// export let customerFetch
+	// console.log('customerFetch', customerFetch)
+	// export let customirList= customerFetch.customers
+	// async function loadCustomer(){
+	// 		const response = await fetch(`http://localhost:3000/panel/clientes/clientes`, {
+	// 			method : 'GET',
+	// 			headers : {
+	// 				"context-type" : "application/json"
+	// 			}
+	// 		})
+	// 		const data = await response.json()
+	// 		return customerFetch = data
+	// }
+	// export const customerFetch = async () =>{
+	
+	// let yupCustomer = []
+	// if(customerList2.status==='OK')
+	// 	customerList2.forEach((element) => {
+	// 		console.log('element ',element)
+	// 		let asoc = {
+	// 			customer_id: element.customer_id,
+	// 			businessName: element.businessName
+	// 		}			
+	// 		yupCustomer.push(asoc)
+	// 	});	
 
-	// Arreglo de clientes - Esto lo lee de la DB:
 	let customerList = [
 		{ customer_id: 1, businessName: 'Cliente A' },
 		{ customer_id: 2, businessName: 'Cliente B' },
@@ -49,6 +87,7 @@
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
+import { dataset_dev } from 'svelte/internal';
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
@@ -61,9 +100,9 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: locationName,
-			coordenates: coordenates,
+			coordenites: coordenites,
 			province: province,
-			customer: customer.customer_id
+			customer: customer.businessName
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -74,7 +113,7 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenates: yup
+			coordenites: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
@@ -84,12 +123,12 @@
 			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
 		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
+			// Realiza la carga de datos al cliquear Enviar
 			alert(JSON.stringify(values));
 		}
 	});
 </script>
-
+Hola DATA{data}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="row">
@@ -158,21 +197,21 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenates" class="form-label">Coordenadas</label>
+			<label for="coordenites" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenates"
-				name="coordenates"
+				id="coordenites"
+				name="coordenites"
 				class="form-control"
 				placeholder="-38.74,-67.66"
 				aria-label="Coordenadas"
-				bind:value={$form.coordenates}
+				bind:value={$form.coordenites}
 				on:blur={handleChange}
 				readonly={isReadOnly}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordenites}
 			/>
-			{#if $errors.coordenates}
-				<small class="form-error">{$errors.coordenates}</small>
+			{#if $errors.coordenites}
+				<small class="form-error">{$errors.coordenites}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">
@@ -199,7 +238,7 @@
 				>
 					<option disabled>Elija una opción...</option>
 					{#each provinceList as thisProvince}
-						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
+						<option value={thisProvince} selected={thisProvince === province}>{thisProvince}</option>
 					{/each}
 				</select>
 				{#if $errors.province}

@@ -64,9 +64,8 @@
 
 <main>
 	{#if data.status !== 'OK'}
-	<SeguAlert status={data.status} message={data.message} path=operarios/>
+		<SeguAlert status={data.status} message={data.message} path=operarios/>
 	{/if}
-	
 	{#if operators.length > 0}
 		<div class="table-responsive">
 			<table class="table table-striped table-hover align-middle">

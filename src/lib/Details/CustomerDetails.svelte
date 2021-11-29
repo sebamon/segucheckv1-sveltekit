@@ -1,29 +1,18 @@
 <script lang="ts">
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-	import type { Color } from 'sveltestrap/src/shared';
-	// Arreglo de clientes - Esto lo lee de la DB:
-	let customerList = [
-		{ customer_id: 1, businessName: 'Cliente A' },
-		{ customer_id: 2, businessName: 'Cliente B' },
-		{ customer_id: 3, businessName: 'Cliente C' }
-	];
-	// Atributos
-	let customer_id: string;
-	let businessName: string;
-	let contact: string;
-	let phone: string;
-	let email: string;
-	let message:string
-	let status:string
-	let error:string
-	let color:Color
+	// Por defecto, el componente se llama como solo lectura:
+	export let isReadOnly = true;
+
+	// Info cliente placeholder (esto lo recibe del servidor en estructura similar):
+    export let customer_id: number;
+    export let businessName: string;
+    export let contact: string;
+    export let phone: string;
+    export let email: string;
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -46,10 +35,11 @@
 	let regexPhone = /^[\+]?[(\s]?[0-9]{3,4}[)\s]?[-\s\.(]?[0-9]{3,4}[-\s\.)]?[0-9]{3,7}/;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
-			businessName: '',
-			contact: '',
-			phone: '',
-			email: '',
+			customer_id: customer_id,
+			businessName: businessName,
+			contact: contact,
+			phone: phone,
+            email: email
 		},
 		validationSchema: yup.object().shape({
 			businessName: yup
@@ -78,63 +68,44 @@
 				.matches(regexPhone, 'El formato de teléfono es incorrecto')
 				.required('Debes completar este campo.'),
 		}),
-		onSubmit: async(values) => {
-			
-			try {
-				const submit = await fetch('clientes',{
-					method : 'POST',
-					body : JSON.stringify({
-						values
-					})
-				})
-				const data = await submit.json()
-				message = data.message
-				status=data.status
-
-				$form.businessName = ''
-				$form.contact = ''
-				$form.phone = ''
-				$form.email = ''
-				
-			} catch (error) {
-				
-			}
+		onSubmit: (values) => {
+			// Realiza la carga de datos al cliquear Enviar
+			alert(JSON.stringify(values));
 		}
 	});
 </script>
 
-<svelte:head>
-	<title>Nuevo cliente - SeguCheck</title>
-</svelte:head>
-
-<!-- Encabezado -->
-<header class="row">
-	<Breadcrumb>
-		<BreadcrumbItem>
-			<a href="/panel/">Inicio</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem>
-			<a href="/panel/clientes">Clientes</a>
-		</BreadcrumbItem>
-		<BreadcrumbItem active>Nuevo</BreadcrumbItem>
-	</Breadcrumb>
-	<div class="col-auto">
-		<h1><i class="fas fa-industry me-4" />Nuevo cliente</h1>
-		<p class="lead">Ingrese los detalles a continuación.</p>
-	</div>
-</header>
-{#if status==='OK'}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<a href="/panel/clientes" class="alert-link"> Ver Clientes </a>
-		.
-	</Alert>
-{/if}
-<!-- Formulario nuevo usuario -->
 <form name="formCustomerDetails" id="formCustomerDetails" on:submit|preventDefault={handleSubmit}>
+	{#if isReadOnly}
+		<div class="row my-3">
+			<div class="col-auto">
+				<h2>Datos básicos</h2>
+			</div>
+			<div class="col-2 ms-auto">
+				<a class="btn btn-primary" href="/panel/clientes/{customer_id}/editar">
+					<i class="fas fa-pen me-2" />Editar
+				</a>
+			</div>
+		</div>
+	{:else}
+		<h1><i class="fas fa-industry me-4" />{businessName}</h1>
+		<p class="lead">Indique los detalles a continuación</p>
+	{/if}
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
+			<label for="customer_id" class="form-label">Número de empresa</label>
+			<input
+				type="number"
+				id="customer_id"
+				name="customer_id"
+				class="form-control"
+				placeholder="1234"
+				aria-label="Número de empresa"
+				bind:value={$form.customer_id}
+				readonly
+			/>
+		</div>
+        <div class="col-md-6">
 			<label for="businessName" class="form-label">Empresa cliente</label>
 			<input
 				type="text"
@@ -146,13 +117,16 @@
 				required
 				bind:value={$form.businessName}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.businessName}
 			/>
 			{#if $errors.businessName}
 				<small class="form-error">{$errors.businessName}</small>
 			{/if}
 		</div>
-		<div class="col-md-6">
+	</div>
+	<div class="row mb-3 g-3">
+        <div class="col-md-4">
 			<label for="businessName" class="form-label">Nombre del contacto</label>
 			<input
 				type="text"
@@ -163,15 +137,14 @@
 				aria-label="Nombre del contacto"
 				bind:value={$form.contact}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.contact}
 			/>
 			{#if $errors.contact}
 				<small class="form-error">{$errors.contact}</small>
 			{/if}
 		</div>
-	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<label for="email" class="form-label">Correo electrónico</label>
 			<input
 				type="email"
@@ -182,13 +155,14 @@
 				aria-label="Correo electrónico"
 				bind:value={$form.email}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.email}
 			/>
 			{#if $errors.email}
 				<small class="form-error">{$errors.email}</small>
 			{/if}
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<label for="phone" class="form-label">Teléfono</label>
 			<input
 				type="tel"
@@ -199,6 +173,7 @@
 				aria-label="Teléfono"
 				bind:value={$form.phone}
 				on:blur={handleChange}
+				readonly={isReadOnly}
 				class:invalid={$errors.phone}
 			/>
 			{#if $errors.phone}
@@ -206,16 +181,18 @@
 			{/if}
 		</div>
 	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6" />
-		<div class="col-md-6 d-flex justify-content-end">
-			<button type="submit" class="btn btn-primary" disabled={!$isValid}>
-				{#if $isSubmitting}
-					<i class="fas fa-spinner fa-pulse me-2" />Enviando...
-				{:else}
-					<i class="fas fa-plus me-2" />Crear
-				{/if}
-			</button>
+	{#if !isReadOnly}
+		<div class="row mb-3 g-3">
+			<div class="col-md-6" />
+			<div class="col-md-6 d-flex justify-content-end">
+				<button type="submit" class="btn btn-primary" disabled={!$isValid}>
+					{#if $isSubmitting}
+						<i class="fas fa-spinner fa-pulse me-2" />Enviando...
+					{:else}
+						<i class="fas fa-pen me-2" />Confirmar cambios
+					{/if}
+				</button>
+			</div>
 		</div>
-	</div>
+	{/if}
 </form>

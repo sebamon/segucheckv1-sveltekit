@@ -6,31 +6,29 @@ const prisma = new PrismaClient()
 export const get = async () =>{
     try{
         const vehicles = await prisma.vehicle.findMany({
-        where: {
-
-        },
-        select: {
-            vehicle_id : true,
-            domain : true,
-            brand : true,
-            model : true,
-            type: true,
-        }
+            select: {
+                vehicle_id : true,
+                domain : true,
+                brand : true,
+                model : true,
+                type: true,
+                status: true,
+            }
         })
         if(vehicles.length>0){
             return {
                 body: {
-                    status: 'OK',
                     vehicles: vehicles,
-                    message: 'Vehiculos Encontrados'
+                    message: 'Vehiculos Encontrados',
+                    status: 'OK',
                 }
             }
         }else{
             return {
                 body: {
-                    status: 'INFO',
                     vehicles: vehicles,
-                    message: 'No hay vehiculos registrados'
+                    message: 'No hay vehiculos registrados',
+                    status: 'INFO',
                 }
             }
         }
@@ -44,7 +42,7 @@ export const get = async () =>{
                 body: {
                     status: 'ERROR',
                     message: 'El Usuario no se pudo crear, email ya existente',
-                    data : e
+                    vehicles : e
                 }
             }
         }
@@ -53,32 +51,40 @@ export const get = async () =>{
 }
 
 export const post = async (request) => {
-    const formBody =JSON.parse(request.body)
-    console.log('formBody', formBody)
-    // 
+    console.log('request vehiculo post',request)
+    const formBody =JSON.parse(request.body).values 
+    console.log('formBody' ,formBody)
     try{
-
-        const result = await prisma.vehicle.create({
+        const newVehicle = await prisma.vehicle.create({
             data:{
                 domain : formBody.domain,
                 brand : formBody.brand,
                 model : formBody.model,
                 type : formBody.type,
                 year : Number(formBody.year),
-                // intNumber : formBody.intNumber,
+                internNumber : Number(formBody.internNumber), //No esta definido en Prisma
                 chasisNumber : formBody.chasisNumber,
                 motorNumber : formBody.motorNumber,
                 // frontPicUrl : formBody.frontPic,
-                // rigthSidePicUrl : formBody.rightSidePic,
+                // rightSidePicUrl : formBody.rightSidePic,
                 // leftSidePicUrl : formBody.leftSidePic,
             }
         })
-        return {
-            body:{
-                status: 'OK',
-                message: 'Vehiculo Creado',
-                data:{
-                    vehicle_id : result.vehicle_id
+        if(newVehicle){
+            return {
+                body : {
+                    vehicle : newVehicle,
+                    status : 'NEW',
+                    message : 'Vehículo Creado'
+                }
+            }
+        }
+        else{
+            return {
+                body:{
+                    vehicle: {},
+                    status: 'ERROR',
+                    message: 'Problemas al crear Vehículo',
                 }
             }
         }
@@ -94,7 +100,7 @@ export const post = async (request) => {
                 body: {
                     status: 'ERROR',
                     message: 'El dominio ya existe',
-                    data: e
+                    vehicle: e
                 }
             }
                

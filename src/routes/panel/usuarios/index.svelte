@@ -55,9 +55,10 @@
 
 <!-- Contenido principal -->
 <main>
-	{#if data.status}
+	{#if data.status!=='OK'}
 	<SeguAlert status={data.status} message={data.message} path=usuarios/>
-	{:else if users.length>0}
+	{/if}
+	{#if users.length>0}
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle text-center">
 			<thead>

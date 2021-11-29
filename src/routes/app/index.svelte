@@ -1,18 +1,4 @@
 <script lang="ts">
-	import {
-		Collapse,
-		Navbar,
-		NavbarToggler,
-		NavbarBrand,
-		Nav,
-		NavItem,
-		Dropdown,
-		DropdownItem,
-		DropdownMenu,
-		DropdownToggle,
-		Alert
-	} from 'sveltestrap';
-
 	// Datos de usuario - Ver si esto lo maneja un hook
 	let actualUser = 'Juan Perez';
 </script>
