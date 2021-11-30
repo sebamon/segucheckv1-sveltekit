@@ -82,6 +82,7 @@
 			// @ts-ignore
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
+			console.log('FormData previo al upload: ' + formData);
 			/* Llamando al plugin 'upload' en el servidor */
 			fetch('http://localhost:3000/upload', {
 				method: 'POST',
@@ -125,7 +126,7 @@
 
 	export const subir = async() => {
 	// export async function subir() {
-		console.log('subir')
+		console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
 		try{
 
 			let url = 'http://localhost:3000/api/driveSet';
@@ -139,7 +140,7 @@
 				body: JSON.stringify(fileData)
 			});
 			const data = await response.json()
-			console.log('la imagen subida: ',data)
+			// console.log('la imagen subida: ',data)
 			let fileId = {
 				fileId: data.id,
 			};
@@ -178,8 +179,9 @@
 			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
-				on:click={() => dispatch('subir',subir())}>
+			<!-- <button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
+				on:click={() => dispatch('subir',subir())}> -->
+			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})}>
 				Subir imagen
 			</button>
 		</div>
