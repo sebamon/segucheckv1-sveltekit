@@ -1,9 +1,21 @@
+<script context="module">
+	export async function load({fetch , page}){
+		const response = await fetch(`./detalle`)
+		const data  = await response.json()
+		return {
+			props:{
+				data,
+			}	
+		}
+	}
+</script>
 <script lang="ts">
 	import CustomerDetails from '$lib/Details/CustomerDetails.svelte';
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
+	export let data
     // Info cliente placeholder (esto lo recibe del servidor en estructura similar):
-	let customerDetails = {
+	let customerDetails = data.customerDetails || {
 		customer_id: 1,
 		businessName: 'YPF',
 		contact: 'Juan Perez',

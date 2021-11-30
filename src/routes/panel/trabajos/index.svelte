@@ -21,9 +21,15 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
-
+	import moment from 'moment';
 	export let data
 	export let jobs = data.jobs
+	export let dateString = moment.utc(jobs.startDate).format('YYYY/MM/DD');
+	let convertedStartDate = new Date(
+		new Date(dateString).getTime() - new Date().getTimezoneOffset()
+	)
+		.toISOString()
+		.split('T')[0];
 
 </script>
 
@@ -87,12 +93,12 @@
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
-							{job.startDate}
+							{moment(job.startDate).add(1,'day').format('DD/MM/YYYY')}
 						</a>
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./trabajos/{job.job_id}">
-							{job.status}
+							{job.statusJob}
 						</a>
 					</td>
 					<td>

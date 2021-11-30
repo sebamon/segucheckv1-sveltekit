@@ -36,10 +36,28 @@
 	let gender: string;
 	let nationality: string;
 	let studyLevel: string;
-	let profilePic: string;
-	let prueba
+	let profilePic;
+	export let prueba
+	// export let captureImage
+	export function captureImage(e){
+		console.log('captureImage',e.detail)
+		profilePic=e.detail
+	}
+	export async function subirImage(e){
+		console.log('subirImagen Nuevo e',e)
+		try{
+			const quehay =  e
+			prueba=quehay
+		console.log('subirImagen',e)
+		console.log('quehayy',quehay)
+	}catch(e){
+		console.log(e)
+	}
+	
 
-	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
+	}
+
+	let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
 		.toISOString()
 		.split('T')[0];
@@ -75,13 +93,13 @@
 	];
 
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
-	const cleanPage = () => {
+	function cleanPage(){
 		firstName = '';
 		lastName = '';
 		cuit = '';
 		email = '';
 		phone = '';
-		// dateOfBirth = new Date('now()')
+		dateOfBirth = new Date('now()')
 		degree = '';
 		gender = '';
 		nationality = '';
@@ -91,6 +109,7 @@
 			rol2: false,
 			rol3: false
 		};
+		profilePic= ''
 	};
 
 	//Funcion para asignar roles
@@ -111,6 +130,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+import { captureRejectionSymbol } from 'events';
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -144,7 +164,8 @@
 			studyLevel: "",
 			degree: "",
 			profilePic: "",
-			roles_assigned: {}
+			roles_assigned: {},
+			prueba : '',
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -203,8 +224,14 @@
 			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
+			console.log('values', values)
+			console.log('profilePic', profilePic)
+			console.log('prueba', prueba)
 			// Realiza la carga de datos al cliquear Enviar
 			values.roles_assigned = roles_assigned
+			values.profilePic = profilePic
+			values.prueba=prueba
+			console.log(values)
 			try {
 				const submit = await fetch('usuarios', {
 					method: 'POST',
@@ -213,13 +240,10 @@
 					})
 				});
 				const data = await submit.json();
-				message = data.message;
-				status = data.status;
 
-				if (data.status === 'OK') {
+				if (data.status === 'NEW') {
 					cleanPage();
 				}
-				color = data.status === 'OK' ? 'secondary' : 'warning';
 			} catch (err) {
 				error = err;
 			}
@@ -267,7 +291,7 @@
 	</Alert>
 {/if}
 <!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit} >
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
 			<label for="firstName" class="form-label">Nombre</label>
@@ -474,10 +498,9 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<ImgUpload bind:subir={prueba} />
+			<ImgUpload on:loadImage={captureImage} on:subir={subirImage}/>
 		</div>
 	</div>
-	PRUEBAAAAAA:{JSON.stringify(prueba)}
 	<div class="row mb-3 g-3">
 		<div class="col-md-12 d-flex justify-content-end">
 			<button type="submit" class="btn btn-primary" disabled={!$isValid}>

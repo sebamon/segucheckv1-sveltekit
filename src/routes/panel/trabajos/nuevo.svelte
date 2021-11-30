@@ -23,7 +23,11 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	export let data
+
+	let message = ''
+	let status = ''
 
 
 	// Arreglo de clientes - Esto lo lee de la DB:
@@ -76,7 +80,7 @@
 		initialValues: {
 			startDate: '',
 			finishDate: '',
-			status: '',
+			statusJob: '',
 			riskAnalysis: '',
 			customer: '',
 			location: '',
@@ -87,7 +91,7 @@
 		validationSchema: yup.object().shape({
 			startDate: yup.date().required('Debes completar este campo.'),
 			finishDate: yup.date().required('Debes completar este campo.'),
-			status: yup
+			statusJob: yup
 				.string()
 				.oneOf(
 					['Programado', 'En curso', 'Finalizado'],
@@ -114,7 +118,7 @@
 		
 		}),
 		onSubmit: async(values) => {
-			console.log(values)
+			console.log('values submit',values)
 			try {
 				const response = await fetch('trabajos', {
 					method: 'POST',
@@ -123,11 +127,25 @@
 					}),
 				})
 				const data = await response.json()
+				message = data.message
+				status = data.status
+				cleanPage()
 			} catch (error) {
 				console.error(error)
 			}
 		},
 	});
+	function cleanPage(){
+		$form.startDate = ''
+		$form.finishDate = ''
+		$form.statusJob = ''
+		$form.riskAnalysis = ''
+		$form.customer = ''
+		$form.location = ''
+		$form.internalNumber = ''
+		$form.checkItemGroup_id = ''
+		$form.vehicleSelect = ''
+	}
 
 	export function showLocation(e){
 		console.log('showLocation', e.target.value)
@@ -156,6 +174,9 @@
 	</div>
 </header>
 
+{#if status}
+	<SeguAlert message={message} status={status} path=trabajos />
+{/if}
 <!-- Formulario nuevo trabajo -->
 <form name="formJobDetails" id="formJobDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
@@ -196,22 +217,22 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="status" class="form-label">Estado</label>
+			<label for="statusJob" class="form-label">Estado</label>
 			<select
-				id="status"
+				id="statusJob"
 				class="form-select"
 				aria-label="Estado"
-				bind:value={$form.status}
+				bind:value={$form.statusJob}
 				on:blur={handleChange}
-				class:invalid={$errors.status}
+				class:invalid={$errors.statusJob}
 			>
 				<option selected disabled>Elija una opción...</option>
 				<option value="Programado">Programado</option>
 				<option value="En curso">En curso</option>
 				<option value="Finalizado">Finalizado</option>
 			</select>
-			{#if $errors.status}
-				<small class="form-error">{$errors.status}</small>
+			{#if $errors.statusJob}
+				<small class="form-error">{$errors.statusJob}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">

@@ -2,12 +2,13 @@ import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function get(){
+    console.log('** API : Trabajos : GET **')
     try {
         const jobs = await prisma.jobs.findMany({
             select : {
                 job_id : true,
                 customer : true,
-                status : true,
+                statusJob : true,
                 location : true,
                 startDate : true,
                 finishDate: true,
@@ -58,7 +59,7 @@ export async function post(request){
     type JobType ={
         startDate:string,
         finishDate:string,
-        status:string ,
+        statusJob:string ,
         riskAnalysis:string,
         customer: number,
         location: number,
@@ -83,7 +84,7 @@ export async function post(request){
             data: {
                 startDate : new Date(objeto.startDate),
                 finishDate : new Date(objeto.finishDate),
-                status : objeto.status,
+                statusJob : objeto.statusJob,
 
                 riskanalysis : {
                     connect: {riskAnalysis_id : 1}

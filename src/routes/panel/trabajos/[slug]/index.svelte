@@ -24,13 +24,14 @@
 	export let data
 	export let jobDetails = data.job
 
+	
 
 	// Trabajo de ejemplo:
 	// let jobDetails = {
 	// 	job_id: 1,
 	// 	startDate: new Date('2021-12-31'),
 	// 	finishDate: new Date('2022-12-31'),
-	// 	status: 'Programado',
+	// 	statusJob: 'Programado',
 	// 	riskAnalysis: '/docs/doc-placeholder.pdf',
 	// 	customer: 1,
 	// 	location: 1,
@@ -45,7 +46,7 @@
 <svelte:head>
 	<title>Trabajo n° {jobDetails.job_id} - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(jobDetails)}
+
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>

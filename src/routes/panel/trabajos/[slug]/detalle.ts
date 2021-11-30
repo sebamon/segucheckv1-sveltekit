@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
 export async function get(request){
+    console.log('** API : Trabajos Detalle : GET **')
     let id_find = Number(request.params.slug)
     if(!isNaN(id_find)){
         try{
@@ -14,6 +15,9 @@ export async function get(request){
                     riskanalysis: true,
                     checkitemgroup: true,
                     location : true,
+                    vehicle : true,
+                    requiereddocumentation : true,
+                    
                 }
             })
             if(jobDetails){

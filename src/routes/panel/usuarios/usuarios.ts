@@ -81,6 +81,7 @@ export const post = async (request) => {
 		if (formBody.roles_assigned['rol3'] === true) {
 			roles.push({ rol_id: 3, assignedBy: 1, user_id: 1 });
 		}
+		console.log('formBody post usuarios', formBody)
 		const newUser = await prisma.users.create({
 			data: {
 				firstName: formBody.firstName,
@@ -93,7 +94,7 @@ export const post = async (request) => {
 				nationality: formBody.nationality,
 				studyLevel: formBody.studyLevel,
 				dateOfBirth: new Date(formBody.dateOfBirth),
-				profilePic: 'Not Load',
+				profilePic: formBody.profilePic,
 				password: ''
 			}
 		});

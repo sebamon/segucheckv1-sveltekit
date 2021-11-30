@@ -4,6 +4,7 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const get = async () =>{
+    console.log('** API : Vehiculos : GET **')
     try{
         const vehicles = await prisma.vehicle.findMany({
             select: {

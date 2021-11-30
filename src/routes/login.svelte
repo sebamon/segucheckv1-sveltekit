@@ -134,7 +134,7 @@
 					</button>
 					<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
 				</div>
-				{JSON.stringify(message)}
+
 			</form>
 		</CardBody>
 		<CardFooter>

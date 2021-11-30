@@ -1,54 +1,19 @@
-<script context="module">
-	//ESTO NO SE EJECUTA
-	export async function load({fetch , page}){
-			const response = await fetch(`http://localhost:3000/panel/clientes/clientes`)
-			const data = await response.json()
-			console.log(response)
-			return {
-				data
-			}
-	}
-</script>
-
 <script lang="ts">
+	import SeguAlert from '$lib/SeguAlert.svelte'
 	export let location_id: number;
 	export let locationName: string;
 	// export let coordenateY: '-67.66':string
-	export let coordenites: string;
+	export let coordinates: string;
 	export let province: string;
 	export let customer = {
 		customer_id: 0,
 		businessName: ''
 	};
 	export let data
-	// let customerFetch=data.customers
-	// export let customerFetch
-	// console.log('customerFetch', customerFetch)
-	// export let customirList= customerFetch.customers
-	// async function loadCustomer(){
-	// 		const response = await fetch(`http://localhost:3000/panel/clientes/clientes`, {
-	// 			method : 'GET',
-	// 			headers : {
-	// 				"context-type" : "application/json"
-	// 			}
-	// 		})
-	// 		const data = await response.json()
-	// 		return customerFetch = data
-	// }
-	// export const customerFetch = async () =>{
+	let message, status
 	
-	// let yupCustomer = []
-	// if(customerList2.status==='OK')
-	// 	customerList2.forEach((element) => {
-	// 		console.log('element ',element)
-	// 		let asoc = {
-	// 			customer_id: element.customer_id,
-	// 			businessName: element.businessName
-	// 		}			
-	// 		yupCustomer.push(asoc)
-	// 	});	
-
-	let customerList = [
+	console.log('data!!!!!!!!!!!!!!!!!!!!! location',)
+	export let customerList = [
 		{ customer_id: 1, businessName: 'Cliente A' },
 		{ customer_id: 2, businessName: 'Cliente B' },
 		{ customer_id: 3, businessName: 'Cliente C' }
@@ -100,9 +65,9 @@ import { dataset_dev } from 'svelte/internal';
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: locationName,
-			coordenites: coordenites,
+			coordinates: coordinates,
 			province: province,
-			customer: customer.businessName
+			customer: customer.customer_id
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -113,22 +78,43 @@ import { dataset_dev } from 'svelte/internal';
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenites: yup
+			coordinates: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 			province: yup
 				.mixed()
 				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),
-			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
+			customer: yup.mixed(),
+			// .oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
-		onSubmit: (values) => {
+		onSubmit: async(values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			console.log(values)
+			try{
+				const submit = await fetch(`editar`, {
+					method : 'PUT',
+					body : JSON.stringify({
+						values
+					}),
+				})
+				console.log(submit)
+					const data = await submit.json()
+					console.log('message',data.message)
+					if(data){
+						message = data.message
+						status = data.status
+					}
+			}catch(e){
+				console.log(JSON.stringify(e))
+			}
 		}
 	});
 </script>
-Hola DATA{data}
+
+{#if status}
+	<SeguAlert {message} {status} path="locaciones" />
+{/if}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="row">
@@ -197,21 +183,21 @@ Hola DATA{data}
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenites" class="form-label">Coordenadas</label>
+			<label for="coordinates" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenites"
-				name="coordenites"
+				id="coordinates"
+				name="coordinates"
 				class="form-control"
 				placeholder="-38.74,-67.66"
 				aria-label="Coordenadas"
-				bind:value={$form.coordenites}
+				bind:value={$form.coordinates}
 				on:blur={handleChange}
 				readonly={isReadOnly}
-				class:invalid={$errors.coordenites}
+				class:invalid={$errors.coordinates}
 			/>
-			{#if $errors.coordenites}
-				<small class="form-error">{$errors.coordenites}</small>
+			{#if $errors.coordinates}
+				<small class="form-error">{$errors.coordinates}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">

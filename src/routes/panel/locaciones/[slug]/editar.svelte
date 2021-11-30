@@ -1,18 +1,22 @@
 <script context="module">
 	export async function load({page , fetch}){
-		try{
-			const response = await fetch(`./detalle`)
-			const data = await response.json()
-			return {
-				props: {
-					data
-				}
-			}
-		}catch(error)
-		{
-			console.log(error)
-			return {
-				props: {}
+		let data = await Promise.all([
+			fetch(`./detalle`),
+			fetch(`http://localhost:3000/panel/clientes/clientes`),			
+			])
+			.then(async(result) => {
+				
+				const locationDetails = await result[0].json()
+				const customerList = await result[1].json()
+
+				console.log('ssrrrr',customerList)
+
+				return { locationDetails , customerList }
+				
+		})
+		return {
+			props: {
+				data
 			}
 		}
 	}
@@ -26,8 +30,9 @@
 
 	
 	export let data
-	export let locationDetails = data.locationDetails
-	console.log('script interno locationDetails', locationDetails)
+	export let locationDetails = data.locationDetails.locationDetails
+	export let customerList = data.customerList.customers
+	console.log('script interno locationDetails', data)
 	
 	// Configurar componente LocationDetails para editar
 	export let isReadOnly = false;
@@ -53,8 +58,8 @@
 </header>
 
 <main>
-	{#if data.status==='OK'}
-		<LocationDetails {...locationDetails} {isReadOnly} />
+	{#if data.status!=='OK'}
+		<LocationDetails {...locationDetails} {isReadOnly} {customerList} />
 	{:else}
 		<SeguAlert message={data.message} status={data.status} path=locaciones />
 	{/if}

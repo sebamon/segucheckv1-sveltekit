@@ -94,12 +94,12 @@
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
-							{location.coordenites}
+							{location.coordinates}
 						</a>
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
-							chau
+							Algo
 						</a>
 					</td>
 				</tr>

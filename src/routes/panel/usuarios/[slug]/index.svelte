@@ -1,5 +1,5 @@
 <script context="module">
-	export async function load({ page, fetch }) {
+	export async function load({ fetch , page }) {
 		try {
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();

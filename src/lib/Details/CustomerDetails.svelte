@@ -8,7 +8,10 @@
     export let contact: string;
     export let phone: string;
     export let email: string;
+	let status
+	let message
 
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -68,13 +71,33 @@
 				.matches(regexPhone, 'El formato de teléfono es incorrecto')
 				.required('Debes completar este campo.'),
 		}),
-		onSubmit: (values) => {
+		onSubmit: async(values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			console.log(values)
+			try{
+				const submit = await fetch(`editar`, {
+					method : 'PUT',
+					body : JSON.stringify({
+						values
+					}),
+				})
+				console.log(submit)
+					const data = await submit.json()
+					console.log('message',data.message)
+					if(data){
+						message = data.message
+						status = data.status
+					}
+			}catch(e){
+				console.log(JSON.stringify(e))
+			}
 		}
 	});
 </script>
 
+{#if status}
+	<SeguAlert {message} {status} path="clientes" />
+{/if}
 <form name="formCustomerDetails" id="formCustomerDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="row my-3">

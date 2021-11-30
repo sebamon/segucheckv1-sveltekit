@@ -1,20 +1,45 @@
+<script context="module">
+	export async function load({fetch, page})
+	{
+		
+			let data = await Promise.all([
+			fetch('http://localhost:3000/panel/clientes/clientes'),
+			fetch('http://localhost:3000/panel/locaciones/locaciones'),
+			fetch('http://localhost:3000/panel/vehiculos/vehiculos'),
+			fetch(`./detalle`),
+			])
+			.then(async(result) => {
+				
+				const customerList = await result[0].json()
+				const locationList = await result[1].json()
+				const vehiclesList = await result[2].json()
+				const jobDetails   = await result[3].json()
+
+				return {customerList , locationList, vehiclesList, jobDetails}
+				
+		})
+		return {
+			props: {
+				data
+			}
+		}
+		
+	}
+</script>
 <script lang="ts">
 	import JobDetails from '$lib/Details/JobDetails.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte'
+	export let data
 
-	// Trabajo de ejemplo:
-	let jobDetails = {
-		job_id: 1,
-		startDate: new Date('2021-12-31'),
-		finishDate: new Date('2022-12-31'),
-		status: 'Programado',
-		riskAnalysis: '/docs/doc-placeholder.pdf',
-		customer: 1,
-		location: 1,
-		internalNumber: 1,
-		checkItemGroup_id: 1
-	};
+	// export let jobDetails =(data.JobDetails.status==='OK') ? data.JobDetails.job : []
+
+	export let jobDetails = data.jobDetails.job
+	export let customerList = data.customerList.customers
+	export let locationList = data.locationList.locations
+	export let vehiclesList = data.vehiclesList.vehicles
+	console.log('jobDetails dataaa', data)
 
 	// Configurar componente LocationDetails para editar
 	export let isReadOnly = false;
@@ -45,5 +70,9 @@
 
 <main>
 	<!-- Formulario detalles trabajo -->
-	<JobDetails {...jobDetails} {isReadOnly} />
+	<JobDetails {...jobDetails} {isReadOnly}
+	 {customerList} {locationList} {vehiclesList}
+	 /> 
 </main>
+
+

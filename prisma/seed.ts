@@ -172,18 +172,18 @@ async function main(){
      await prisma.location.createMany({
         data : [{
             locationName : 'Refinería YPF',
-            coordenites : '-45.48 10.45',
+            coordinates : '-45.48 10.45',
             province : 'Neuquén',
             customer_id : 1, 
          },
          {
             locationName : 'Campo Medanito',
-            coordenites : '-47.10 200.45',
+            coordinates : '-47.10 200.45',
             province : 'Neuquén',
             customer_id : 1,
          },{
             locationName : 'Allen City',
-            coordenites : '-15.10 245.45',
+            coordinates : '-15.10 245.45',
             province : 'Río Negro',
             customer_id : 2,
          }]

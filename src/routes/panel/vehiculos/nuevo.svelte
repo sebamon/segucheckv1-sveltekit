@@ -173,11 +173,7 @@
 			if (data.status === 'OK') {
 				cleanPage();
 			}
-			color = data.status === 'OK' ? 'success' : 'danger';
 
-			if (data.status === 200) {
-				console.log('message', message);
-			}
 		} catch (err) {
 			throw new Error();
 		}

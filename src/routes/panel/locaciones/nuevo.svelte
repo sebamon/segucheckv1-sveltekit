@@ -142,8 +142,8 @@
 </header>
 
 <!-- Formulario nueva locación -->
-{#if data.status!=='OK' }
-	<SeguAlert message={data.message} status={data.status} path=locaciones/>
+{#if status }
+	<SeguAlert message={message} status={status} path='locaciones'/>
 {/if}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">

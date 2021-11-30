@@ -18,8 +18,7 @@ export const get = async ( request ) =>{
                 }
                 
             })
-            console.log(userDetails)
-            if(userDetails.user_id!=null){
+            if(userDetails){
                 return {
                     body: {
                         userDetails: userDetails,
@@ -47,4 +46,3 @@ export const get = async ( request ) =>{
         }
         }
     }
-    

@@ -54,7 +54,7 @@
 
 <main>
 	<!-- Formulario detalles locación -->
-	{#if data.status==='OK'}
+	{#if data.status}
 		<LocationDetails {...locationDetails} {isReadOnly} />
 	{:else}
 		<SeguAlert status={data.status} message={data.message} path=locaciones />

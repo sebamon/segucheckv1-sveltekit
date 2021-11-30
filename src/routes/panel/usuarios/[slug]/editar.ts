@@ -21,7 +21,7 @@ export const put = async (request) =>{
                 gender :formBody.gender,
                 nationality :formBody.nationality,
                 studyLevel :formBody.studyLevel,              
-                dateOfBirth: new Date(formBody.dateOfBirth),
+                dateOfBirth: new Date(formBody.convertedDateOfBirth),
                 profilePic: 'Not Load',
         }
         })
