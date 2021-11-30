@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	import Checklists from '$lib/Checklists.svelte';
 </script>
 
 <svelte:head>
@@ -159,6 +160,9 @@
 				</tr>
 			</tbody>
 		</table>
+	</div>
+	<div id="checktest">
+		<Checklists />
 	</div>
 </main>
 

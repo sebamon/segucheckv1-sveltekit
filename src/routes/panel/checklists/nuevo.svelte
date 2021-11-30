@@ -27,11 +27,13 @@
 
 <!-- Formulario nuevo usuario -->
 <form name="formJobDetails" id="formJobDetails">
-    <p class="text-muted fst-italic">Trabajo en progreso....</p>
+    <!-- <p class="text-muted fst-italic">Trabajo en progreso....</p>
     <img
         class="fluid thumbnail"
         alt="John Travolta perdido"
         title="John Travolta perdido"
         src="https://c.tenor.com/kVrGzZGZnUUAAAAC/pulp-fiction-wtf.gif"
-    />
+    /> -->
+	<label for="checklistName">Nombre de la Checklist</label>
+	<input type="text" placeholder="Control vehicular" style="">
 </form>
