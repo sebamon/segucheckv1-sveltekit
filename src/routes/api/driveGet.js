@@ -1,3 +1,15 @@
+/*
+    driveGet nos vincula a la API de Google Drive, específicamente para recuperar info de un archivo en la nube.
+
+    Requisitos:
+        'fileId' recibe un JSON con el ID del archivo en Google Drive, con la siguiente estructura:
+        fileId = {
+				fileId: 'ID_del_archivo',
+			};
+    Retorno:
+            
+*/
+
 import { google } from 'googleapis';
 import path from 'path';
 import fs from 'fs';
@@ -21,25 +33,26 @@ const drive = google.drive({
     auth: oauth2Client
 });
 
+
 // const {pathname: root} = new URL('../src', import.meta.url)
 
-export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx') {
-    let fileName = fileData.fileName + '.' + fileData.fileExtension;
-    let filePath = path.join('static/img/temp-pics/', fileName);
+export async function getFile(fileId) {
     try {
-        let fileMetadata = {
-            'name': fileName,
-            parents: [folderId]
-        }
-        // @ts-ignore
-        const response = await drive.files.create({
-            media: {
-                mimeType: 'image/' + fileData.fileExtension,
-                body: fs.createReadStream(filePath)
-            },
-            resource: fileMetadata
+        const response = await drive.files.get({
+            'fileId': fileId
         });
-        console.log("Mi Response Data: " + response.data);
+
+        /************ probando cosas ************/
+        
+        console.log("Mi FileID: " + fileId);
+        console.log("Mi Response: " + JSON.stringify(response));
+        console.log('Título: ' + response.title);
+        console.log('Descripción: ' + response.description);
+        console.log('MIME type: ' + response.mimeType);
+        console.log('Link para compartir: ' + response.webViewLink);
+
+        /************ probando cosas ************/
+
         return (response.data);
     } catch (error) {
         console.log(error);
@@ -48,9 +61,9 @@ export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7
 }
 
 // Recibiendo info
-export const post = async (request)=> {
-    const fileData = JSON.parse(request.body);
-    // console.log(request.body);
+export const post = async (request) => {
+    const fileId = JSON.parse(request.body);
+    console.log(request.body);
     // console.log('Request Jasoneado: ' + fileData.fileName);
-    return uploadFile(fileData);
+    return getFile(fileId);
 }

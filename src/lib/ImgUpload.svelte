@@ -10,7 +10,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher()
-// import { uploadFile } from './api/driveV2';
+// import { uploadFile } from './api/driveSet';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	import { v4 as uuidV4 } from 'uuid';
 	// import {
@@ -128,7 +128,7 @@
 		console.log('subir')
 		try{
 
-			let url = 'http://localhost:3000/api/driveV2';
+			let url = 'http://localhost:3000/api/driveSet';
 			let fileData = {
 				fileName: fileName,
 				fileExtension: fileExtension
@@ -140,6 +140,16 @@
 			});
 			const data = await response.json()
 			console.log('la imagen subida: ',data)
+			let fileId = {
+				fileId: data.id,
+			};
+			let urlId = 'http://localhost:3000/api/driveGet';
+			let responseId = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(fileId)
+			});
+			const dataId = await responseId.json()
+			console.log('Mi link para compartir: ' + JSON.parse(dataId));
 			return data
 		}catch(e){
 			console.log(e)
