@@ -35,5 +35,5 @@
         src="https://c.tenor.com/kVrGzZGZnUUAAAAC/pulp-fiction-wtf.gif"
     /> -->
 	<label for="checklistName">Nombre de la Checklist</label>
-	<input type="text" placeholder="Control vehicular" style="">
+	<input type="text" placeholder="Control vehicular">
 </form>

@@ -39,6 +39,7 @@ export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7
             },
             resource: fileMetadata
         });
+        console.log("Mi Response Data: " + response.data);
         return (response.data);
     } catch (error) {
         console.log(error);
