@@ -501,7 +501,7 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="r2ol{rol_id}"
+						id="rol{rol_id}"
 						name="roles"
 						class="form-check-input"
 						role="switch"
