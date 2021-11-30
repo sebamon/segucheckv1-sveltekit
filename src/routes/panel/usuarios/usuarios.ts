@@ -94,10 +94,11 @@ export const post = async (request) => {
 				nationality: formBody.nationality,
 				studyLevel: formBody.studyLevel,
 				dateOfBirth: new Date(formBody.dateOfBirth),
-				profilePic: formBody.profilePic,
-				password: ''
+				profilePic: formBody.profilePic.fiName+formBody.profilePic.fileExtension,
+				password: '1234'
 			}
 		});
+	  
 		const newUserId = newUser.user_id;
 		roles.forEach(async (element) => {
 			let rolInsert = await prisma.usersonroles.create({
@@ -115,13 +116,23 @@ export const post = async (request) => {
 				});
 			}
 		});
-		return {
-			body: {
-				users: newUser,
-				status: 'NEW',
-				message: 'Usuario creado con éxito',
+		if(newUserId){
+			return {
+				body: {
+					users: newUser,
+					status: 'NEW',
+					message: 'Usuario creado con éxito',
+				}
 			}
-		};
+		}else{
+			return {
+				body: {
+					users: {},
+					status: 'INFO',
+					message: 'No se pudo crear el usuario',
+				}
+			}
+		}
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			// The .code property can be accessed in a type-safe manner

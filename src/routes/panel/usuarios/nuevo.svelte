@@ -94,22 +94,22 @@
 
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
 	function cleanPage(){
-		firstName = '';
-		lastName = '';
-		cuit = '';
-		email = '';
-		phone = '';
-		dateOfBirth = new Date('now()')
-		degree = '';
-		gender = '';
-		nationality = '';
-		studyLevel = '';
-		roles_assigned = {
+		$form.firstName = '';
+		$form.lastName = '';
+		$form.cuit = '';
+		$form.email = '';
+		$form.phone = '';
+		$form.newDate = ''
+		$form.degree = '';
+		$form.gender = '';
+		$form.nationality = '';
+		$form.studyLevel = '';
+		$form.roles_assigned = {
 			rol1: false,
 			rol2: false,
 			rol3: false
 		};
-		profilePic= ''
+		$form.profilePic= ''
 	};
 
 	//Funcion para asignar roles
@@ -240,6 +240,8 @@ import { captureRejectionSymbol } from 'events';
 					})
 				});
 				const data = await submit.json();
+				message = data.message
+				status = data.status
 
 				if (data.status === 'NEW') {
 					cleanPage();

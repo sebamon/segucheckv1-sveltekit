@@ -5,8 +5,8 @@
 	filesPath: directorio donde se guardará el archivo dentro de '/static/'
 	fileName: nombre deseado para almacenar el archivo. La extensión se deduce del archivo subido, no hace falta colocarla.
 
-	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
- -->
+	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas -->
+
 <script>
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher()
@@ -174,7 +174,7 @@
 			</button>
 		</div>
 	</div>
-	<!-- <button id = "functionSubir" class="btn" on:click={subir} disabled> Apretame </button> --> -->
+	<!-- <button id = "functionSubir" class="btn" on:click={subir} disabled> Apretame </button> --> 
 </div>
 
 <style>
