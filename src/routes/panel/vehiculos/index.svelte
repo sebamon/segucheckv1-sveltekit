@@ -3,12 +3,6 @@
 		try{
 
 			const response = await fetch('./vehiculos/vehiculos')
-			// const response = await fetch('./vehiculos/vehiculos',{
-			// 	method : "GET",
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// })
 			const data = await response.json()
 
 			return {
@@ -30,14 +24,7 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
-import { string } from 'yup/lib/locale';
-	// type vehicle = {
-	// 	vehicle_id : number,
-	// 	domain : string,
-	// 	type : string,
-	// 	brand : string,
-	// 	model : string,
-	// }
+
 	export let data
 	export let vehicles = data.vehicles
 </script>
@@ -66,10 +53,8 @@ import { string } from 'yup/lib/locale';
 	</div>
 </header>
 <main>
-	{JSON.stringify(data)}
-	{JSON.stringify(vehicles)}
 	{#if data.status!=='OK'}
-	<SeguAlert status={data.status} message={data.message} path=vehiculos/>
+		<SeguAlert status={data.status} message={data.message} path=vehiculos/>
 	{/if}
 	{#if vehicles.length > 0}
 	<div class="table-responsive">
@@ -113,7 +98,15 @@ import { string } from 'yup/lib/locale';
 									{vehicle.model}
 								</a>
 							</td>
-							<td>text</td>
+							<td>
+								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+									{#if vehicle.status }
+										Valido poner icono
+									{:else}
+										Invalido
+									{/if}
+								</a>
+							</td>
 						</tr>
 				{/each}
 			</tbody>

@@ -66,7 +66,7 @@
 	let model: string;
 	let type: string;
 	let year: number;
-	let internal_id: number;
+	let internNumber: number;
 	let chasisNumber: string;
 	let motorNumber: string;
 	let frontPic: FileReader;
@@ -88,7 +88,7 @@
 		model = null;
 		type = '';
 		year = 0;
-		internal_id = null;
+		internNumber = null;
 		chasisNumber = '';
 		motorNumber = '';
 		frontPic = null;
@@ -109,7 +109,7 @@
 			model: '',
 			type: '',
 			year: '',
-			internal_id: '',
+			internNumber: '',
 			chasisNumber: '',
 			motorNumber: '',
 			frontPic: '',
@@ -141,8 +141,8 @@
 				.max(9999, 'El año es demasiado alto.')
 				.integer("El número debe ser entero.")
 				.required('Debes completar este campo.'),
-			internal_id: yup
-				.string()
+			internNumber: yup
+				.number()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.required('Debes completar este campo.'),
 			chasisNumber: yup
@@ -157,26 +157,13 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
 		onSubmit: async (values) => {
-			console.log(JSON.stringify(values))
-			formVehicleDetails = document.getElementById('formVehicleDetails');
+			// console.log(JSON.stringify(values))
+			// formVehicleDetails = document.getElementById('formVehicleDetails');
 		try {
 			const submit = await fetch('vehiculos', {
 				method: 'POST',
-				headers: {
-					'Contex-Type': 'application/json'
-				},
 				body: JSON.stringify({
-					domain,
-					brand,
-					model,
-					type,
-					year,
-					internal_id,
-					chasisNumber,
-					motorNumber,
-					frontPic,
-					rightSidePic,
-					leftSidePic
+					values
 				})
 			});
 			const data = await submit.json();
@@ -186,11 +173,7 @@
 			if (data.status === 'OK') {
 				cleanPage();
 			}
-			color = data.status === 'OK' ? 'success' : 'danger';
 
-			if (data.status === 200) {
-				console.log('message', message);
-			}
 		} catch (err) {
 			throw new Error();
 		}
@@ -327,20 +310,20 @@
 			{/if}
 		</div>
 		<div class="col-md-6">
-			<label for="internal_id" class="form-label">Número interno</label>
+			<label for="internNumber" class="form-label">Número interno</label>
 			<input
 				type="text"
-				id="internal_id"
-				name="internal_id"
+				id="internNumber"
+				name="internNumber"
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				bind:value={$form.internal_id}
+				bind:value={$form.internNumber}
 				on:blur={handleChange}
-				class:invalid={$errors.internal_id}
+				class:invalid={$errors.internNumber}
 			/>
-			{#if $errors.internal_id}
-				<small class="form-error">{$errors.internal_id}</small>
+			{#if $errors.internNumber}
+				<small class="form-error">{$errors.internNumber}</small>
 			{/if}
 		</div>
 	</div>

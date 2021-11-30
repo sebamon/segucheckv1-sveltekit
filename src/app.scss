@@ -14,6 +14,13 @@ h6 {
 	font-family: 'Poppins', 'sans-serif';
 }
 
+body {
+	background: $gray-300;
+}
+div .shadow-lg {
+	background: $white;
+}
+
 // --- Bootswatch - Pulse 5.1.2 ---
 
 // Buttons

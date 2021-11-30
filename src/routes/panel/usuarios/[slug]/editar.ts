@@ -21,24 +21,26 @@ export const put = async (request) =>{
                 gender :formBody.gender,
                 nationality :formBody.nationality,
                 studyLevel :formBody.studyLevel,              
-                // dateOfBirth: new Date(formBody.dateOfBirth),
+                dateOfBirth: new Date(formBody.convertedDateOfBirth),
                 profilePic: 'Not Load',
         }
         })
         console.log('edit', userEdit)
         return {
             body: {
-                userEdit,
+                user: userEdit,
                 message: 'Usuario Modificado',
-                status: 'OK'
+                status: 'UPDATE'
             }
         }
     }catch(e){
         console.log(e)
         return {
-            body: {},
-            message: 'Error',
-            status: 'ERROR'
+            body: {
+                user: {},
+                message: 'Error',
+                status: 'ERROR'
+            },
         }
     }
 }

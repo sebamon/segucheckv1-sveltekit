@@ -1,16 +1,19 @@
 <script lang="ts">
+	import SeguAlert from '$lib/SeguAlert.svelte'
 	export let location_id: number;
 	export let locationName: string;
-	export let coordenates: string;
 	// export let coordenateY: '-67.66':string
+	export let coordinates: string;
 	export let province: string;
 	export let customer = {
 		customer_id: 0,
 		businessName: ''
 	};
-
-	// Arreglo de clientes - Esto lo lee de la DB:
-	let customerList = [
+	export let data
+	let message, status
+	
+	console.log('data!!!!!!!!!!!!!!!!!!!!! location',)
+	export let customerList = [
 		{ customer_id: 1, businessName: 'Cliente A' },
 		{ customer_id: 2, businessName: 'Cliente B' },
 		{ customer_id: 3, businessName: 'Cliente C' }
@@ -49,6 +52,7 @@
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
+import { dataset_dev } from 'svelte/internal';
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
@@ -61,7 +65,7 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
 			locationName: locationName,
-			coordenates: coordenates,
+			coordinates: coordinates,
 			province: province,
 			customer: customer.customer_id
 		},
@@ -74,22 +78,43 @@
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
 				.required('Debes completar este campo.'),
-			coordenates: yup
+			coordinates: yup
 				.string()
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
 			province: yup
 				.mixed()
 				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),
-			customer: yup.mixed().oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
+			customer: yup.mixed(),
+			// .oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
 		}),
-		onSubmit: (values) => {
-			// -- Muestra resultado en submit: BORRAR --
-			alert(JSON.stringify(values));
+		onSubmit: async(values) => {
+			// Realiza la carga de datos al cliquear Enviar
+			console.log(values)
+			try{
+				const submit = await fetch(`editar`, {
+					method : 'PUT',
+					body : JSON.stringify({
+						values
+					}),
+				})
+				console.log(submit)
+					const data = await submit.json()
+					console.log('message',data.message)
+					if(data){
+						message = data.message
+						status = data.status
+					}
+			}catch(e){
+				console.log(JSON.stringify(e))
+			}
 		}
 	});
 </script>
 
+{#if status}
+	<SeguAlert {message} {status} path="locaciones" />
+{/if}
 <form name="formLocationDetails" id="formLocationDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
 		<div class="row">
@@ -158,21 +183,21 @@
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="coordenates" class="form-label">Coordenadas</label>
+			<label for="coordinates" class="form-label">Coordenadas</label>
 			<input
 				type="text"
-				id="coordenates"
-				name="coordenates"
+				id="coordinates"
+				name="coordinates"
 				class="form-control"
 				placeholder="-38.74,-67.66"
 				aria-label="Coordenadas"
-				bind:value={$form.coordenates}
+				bind:value={$form.coordinates}
 				on:blur={handleChange}
 				readonly={isReadOnly}
-				class:invalid={$errors.coordenates}
+				class:invalid={$errors.coordinates}
 			/>
-			{#if $errors.coordenates}
-				<small class="form-error">{$errors.coordenates}</small>
+			{#if $errors.coordinates}
+				<small class="form-error">{$errors.coordinates}</small>
 			{/if}
 		</div>
 		<div class="col-md-6">
@@ -199,7 +224,7 @@
 				>
 					<option disabled>Elija una opción...</option>
 					{#each provinceList as thisProvince}
-						<option value={thisProvince} selected={thisProvince == province}>{thisProvince}</option>
+						<option value={thisProvince} selected={thisProvince === province}>{thisProvince}</option>
 					{/each}
 				</select>
 				{#if $errors.province}

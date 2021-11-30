@@ -1,8 +1,8 @@
-import { PrismaClient, Prisma } from '@prisma/client'
+import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function get(request){
-    console.error('hola request')
+    console.log('** API Clientes Get** ')
     let id_find = Number (request.params.slug)
     console.log(id_find)
     if(!isNaN(id_find)){

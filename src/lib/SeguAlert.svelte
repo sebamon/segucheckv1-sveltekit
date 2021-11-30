@@ -1,7 +1,8 @@
 <script lang='ts'>
+    // Genera avisos en pantalla según el status
+
     import { Alert } from 'sveltestrap';
     import type { Color } from 'sveltestrap/src/shared';
-    // export let color:Color = 'primary'
     export let message:string = ''
     export let status:string
     export let path:string = "\\"
@@ -9,41 +10,56 @@
     const DEFAULT_MODEL = ''
     const MODEL = {
         'clientes' : 'Cliente',
-        'vehiculos' : 'Veh+iculo',
+        'vehiculos' : 'Vehículo',
         'operarios' : 'Operario',
         'usuarios' : 'Usuario',
         'locaciones' : 'Locación',
         'trabajos' : 'Trabajo',
     }
-    const DEFAULT_COLOR='primary'
+    const DEFAULT_COLOR='secondary'
     const COLOR = {
         'OK' : 'success',
+        'NEW' : 'success',
         'ERROR': 'danger',
-        'INFO' : 'info'
+        'INFO' : 'info',
+        'UPDATE' : 'success'
     }
     const DEFAULT_LINK= `/panel/`
     const LINKS = {
-        'OK' : `/panle/${path}`,
-        'ERROR': 'danger',
+        'OK' : `/panel/${path}`,
+        'NEW' : `/panel/${path}`,
+        'ERROR': `/panel/${path}`,
         'INFO' : `/panel/${path}/nuevo`,
+        'UPDATE' : `/panel/${path}/`,
     }
-    const DEFAULT_TEXTO = 'Ir al Inicio'
-    const TEXTO = {
-        'OK' : `Ver  `,
-        'ERROR': `Regresá a  `  ,
-        'INFO' : `Creá tu primer  `
-
+    const DEFAULT_TEXT = 'Ir al Inicio'
+    const TEXT = {
+        'OK' : `Ver `,
+        'NEW' : `Ver `,
+        'ERROR': `Regresá a `  ,
+        'INFO' : `Creá tu primer `,
+        'UPDATE' : `Volver a `
+    }
+    const DEFAULT_TITLE = 'SeguCheck'
+    const TITLE = {
+        'OK' : `Exito `,
+        'NEW' : `Creación Exitosa`,
+        'ERROR': `Error`  ,
+        'INFO' : `Información`,
+        'UPDATE' : `Actualización Exitosa`
     }
 
 
     let color:Color = COLOR[status] || DEFAULT_COLOR
     let link = LINKS[status] || DEFAULT_LINK
     let model = MODEL[path] ||  DEFAULT_MODEL
-    let texto = TEXTO[status] || DEFAULT_TEXTO
+    let text = TEXT[status] || DEFAULT_TEXT
+    let title = TITLE[status] || DEFAULT_TITLE
 </script>
 
 <Alert {color}>
-    <h4 class="alert-heading text-capitalize">{status}</h4>
-    {message}
-    <a href={link} class="alert-link"> {texto} {model}</a>
+    <h4 class="alert-heading">{title}</h4>
+    <p>{message}
+        <a href={link} class="alert-link"> {text} {model}</a>
+    </p>
 </Alert>

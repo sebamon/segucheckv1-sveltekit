@@ -69,21 +69,21 @@ model jobs {
   job_id                   Int                    @id @default(autoincrement())
   startDate                DateTime
   finishDate               DateTime
-  status                   String
-  riskAnalysis_id          Int
+  statusJob                String
+  riskAnalysis_id          Int?
   location_id              Int
   customer_id              Int
-  vehicle_id               Int
-  checkItemGroup_id        Int
-  requiredDocumentation_id Int
+  vehicle_id               Int?
+  checkItemGroup_id        Int?
+  requiredDocumentation_id Int?
   created_at               DateTime               @default(now())
   updated_at               DateTime?
-  checkitemgroup           checkitemgroup         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
+  checkitemgroup           checkitemgroup?         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
   customer                 customer               @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
   location                 location               @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
-  requiereddocumentation   requiereddocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
-  riskanalysis             riskanalysis           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
-  vehicle                  vehicle                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
+  requiereddocumentation   requiereddocumentation? @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
+  riskanalysis             riskanalysis?           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
+  vehicle                  vehicle?                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
   operatoronjobs           operatoronjobs[]
 
   @@index([checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
@@ -97,10 +97,11 @@ model jobs {
 model location {
   location_id  Int      @id @default(autoincrement())
   locationName String
-  coordenates  String
+  coordinates  String?
   customer_id  Int
   customer     customer @relation(fields: [customer_id], references: [customer_id], map: "Location_customer_id_fkey")
   jobs         jobs[]
+  province    String
 
   @@index([customer_id], map: "Location_customer_id_fkey")
 }
@@ -235,21 +236,24 @@ model userworkinfo {
 
 model vehicle {
   vehicle_id                  Int                           @id @default(autoincrement())
-  domain                      String
+  domain                      String                        @unique 
   brand                       String
   model                       String
   type                        String
   year                        Int
+  internNumber                Int
   chasisNumber                String?
   motorNumber                 String?
   frontPicUrl                 String?
   leftSidePicUrl              String?
   rightSidePicUrl             String?
   backPicUrl                  String?
+  status                      Boolean                       @default(true)
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime?
   jobs                        jobs[]
   vehicleonvehiclerequirement vehicleonvehiclerequirement[]
+
 }
 
 model vehicleonvehiclerequirement {

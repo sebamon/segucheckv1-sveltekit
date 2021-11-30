@@ -62,15 +62,4 @@ import {
 	</div>
 </header>
 
-{#if status==='OK'}
-<Alert color='{color}'> 
-    <h4 class="alert-heading text-capitalize">{status}</h4>
-    {message}
-    <a href="/panel/usuarios" class="alert-link">
-      Ver Usuarios
-    </a>
-    .
-  </Alert>
-{/if}
-
 <VehicleDetails {...vehicleDetails} {isReadOnly} on:submit{handleSubmit}/>

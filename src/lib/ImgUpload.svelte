@@ -8,7 +8,9 @@
 	Próximamente: podrán evaluarse medidas de la imagen, tamaños máximos, extensiones aceptadas
  -->
 <script>
-	// import { uploadFile } from './api/driveV2';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher()
+// import { uploadFile } from './api/driveV2';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	import { v4 as uuidV4 } from 'uuid';
 	// import {
@@ -121,18 +123,29 @@
 
 	// Subir archivo a Drive
 
-	export async function subir() {
-		let url = 'http://localhost:3000/api/driveV2';
-		let fileData = {
-			fileName: fileName,
-			fileExtension: fileExtension
-		};
+	export const subir = async() => {
+	// export async function subir() {
+		console.log('subir')
+		try{
 
-		let response = await fetch(url, {
-			method: 'POST',
-			body: JSON.stringify(fileData)
-		});
-		return await response.json();
+			let url = 'http://localhost:3000/api/driveV2';
+			let fileData = {
+				fileName: fileName,
+				fileExtension: fileExtension
+			};
+			
+			let response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(fileData)
+			});
+			const data = await response.json()
+			console.log('la imagen subida: ',data)
+			return data
+		}catch(e){
+			console.log(e)
+			return 'Sin Datos'
+		}
+		
 	}
 </script>
 
@@ -155,12 +168,13 @@
 			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit}>
+			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
+				on:click={() => dispatch('subir',subir())}>
 				Subir imagen
 			</button>
 		</div>
 	</div>
-	<!-- <button id = "functionSubir" class="btn" on:click={subir} disabled> Apretame </button> -->
+	<!-- <button id = "functionSubir" class="btn" on:click={subir} disabled> Apretame </button> --> -->
 </div>
 
 <style>

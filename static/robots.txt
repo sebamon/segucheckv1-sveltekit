@@ -1,0 +1,13 @@
+User-agent: *
+Disallow: /panel/checklists
+Disallow: /panel/clientes
+Disallow: /panel/locaciones
+Disallow: /panel/operarios
+Disallow: /panel/trabajos
+Disallow: /panel/usuarios
+Disallow: /panel/vehiculos
+Disallow: /app/habilitaciones
+Disallow: /app/perfil
+Disallow: /app/qr
+Disallow: /app/vehiculos
+Disallow: /app/ver

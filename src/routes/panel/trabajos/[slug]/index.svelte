@@ -1,20 +1,43 @@
+<script context="module">
+	export async function load({fetch, page})
+	{
+		try {
+			const response = await fetch(`./${page.params.slug}/detalle`)
+			const data = await response.json()
+			return{
+				props: {
+					data
+				}
+			}
+		} catch (error) {
+			console.log(error)
+			return {
+				props:{}
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	import JobDetails from '$lib/Details/JobDetails.svelte';
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
+	export let data
+	export let jobDetails = data.job
+
+	
 
 	// Trabajo de ejemplo:
-	let jobDetails = {
-		job_id: 1,
-		startDate: new Date('2021-12-31'),
-		finishDate: new Date('2022-12-31'),
-		status: 'Programado',
-		riskAnalysis: '/docs/doc-placeholder.pdf',
-		customer: 1,
-		location: 1,
-		internalNumber: 1,
-		checkItemGroup_id: 1
-	};
+	// let jobDetails = {
+	// 	job_id: 1,
+	// 	startDate: new Date('2021-12-31'),
+	// 	finishDate: new Date('2022-12-31'),
+	// 	statusJob: 'Programado',
+	// 	riskAnalysis: '/docs/doc-placeholder.pdf',
+	// 	customer: 1,
+	// 	location: 1,
+	// 	internalNumber: 1,
+	// 	checkItemGroup_id: 1
+	// };
 
 	// Configurar componente JobDetails para solo lectura
 	export let isReadOnly = true;

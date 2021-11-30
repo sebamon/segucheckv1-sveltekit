@@ -2,6 +2,7 @@ import { PrismaClient, Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export async function get(){
+    console.log('** API : Clientes : GET **')
     try {
         const clients = await prisma.customer.findMany()
         if(clients.length>0){
