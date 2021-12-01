@@ -61,7 +61,7 @@
 
 <main>
 {#if data.status!=='OK'}
-<SeguAlert status={data.status} message={data.message} path=clientes/>
+	<SeguAlert status={data.status} message={data.message} path=clientes/>
 {/if}
 
 {#if customers.length > 0}

@@ -128,7 +128,7 @@ export async function post(request){
             body: {
                job : newJob,
                status : 'NEW',
-               message: 'Locación Creada',
+               message: 'Trabajo Creado',
             }
         }
 
@@ -136,8 +136,8 @@ export async function post(request){
         console.error(error)
         return {
             body : {
-                locations : {},
-                message: 'Error al registrar locación',
+                job : {},
+                message: 'Error al registrar trabajo',
                 status: 'ERROR'
             }
         }

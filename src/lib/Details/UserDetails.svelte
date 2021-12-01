@@ -63,8 +63,6 @@
 	// export let rolesList = data 
 	// console.log('useronroles',usersonroles)
 	// console.log('data roles', rolesList)
-	
-
 
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
@@ -72,18 +70,39 @@
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' },
 	];
-	
-	// onMount(async() => {
-	// 	// console.log('hola')
-	// 	let url = '/api/roles'
-	// 	// console.log(url)
-	// 	fetch(url)
-	// 	.then(response =>response.json())
-	// 	.then(data => {
-	// 		const rolesList=data.roles
-	// 		// console.log(rolesList)
-	// 	})
-	// })
+
+	let roles_assigned = {
+		rol1: false,
+		rol2: false,
+		rol3: false
+	};
+
+	function assign_rol(id){
+		if (id.rol_id === 1 || id.rol_id === '1') {
+			roles_assigned['rol1'] = !roles_assigned['rol1'];
+		}
+		if (id.rol_id === 2 || id.rol_id === '2') {
+			roles_assigned['rol2'] = !roles_assigned['rol2'];
+		}
+		if (id.rol_id === 3 || id.rol_id === '3') {
+			roles_assigned['rol3'] = !roles_assigned['rol3'];
+		}
+	};
+
+	onMount(() => {
+		console.log('holaMount',usersonroles)
+		usersonroles.forEach(rol => {
+			if(rol.rol_id==1){
+				roles_assigned['rol1'] = true
+			}
+			if(rol.rol_id==2){
+				roles_assigned['rol2'] = true
+			}
+			if(rol.rol_id==3){
+				roles_assigned['rol3'] = true
+			}
+		})
+	})
 
 	// // console.log('rolesList',{rolesList})
 	// let rolesList=
@@ -147,10 +166,10 @@
 			studyLevel: studyLevel,
 			degree: degree,
 			profilePic: profilePic,
-			convertedDateOfBirth: convertedDateOfBirth
+			convertedDateOfBirth: convertedDateOfBirth,
+			roles : roles_assigned,
 		},
-		validationSchema: yup.object().shape({
-			cuit: yup
+		validationSchema: yup.object().shape({			cuit: yup
 				.string()
 				.required('Debes completar este campo.')
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
@@ -206,7 +225,9 @@
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			roles: yup
+				.mixed()
 		}),
 		onSubmit: async (values) => {
 			const submit = await fetch(`editar`, {
@@ -237,7 +258,6 @@
 		profilePic = '';
 	}
 </script>
-
 {#if status !== 'OK'}
 	<SeguAlert {status} {message} path="usuarios" />
 {/if}
@@ -518,10 +538,16 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="r2ol{rol_id}"
+						id="rol{rol_id}"
 						name="roles"
+						
 						class="form-check-input"
 						role="switch"
+						bind:value={rol_id}	
+						checked={roles_assigned['rol'+rol_id]}
+						readonly={isReadOnly}
+						on:click={assign_rol({ rol_id })}
+						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>

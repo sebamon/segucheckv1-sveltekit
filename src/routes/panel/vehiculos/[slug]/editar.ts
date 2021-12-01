@@ -3,7 +3,6 @@ import { PrismaClient , Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const put = async (request) =>{
-    console.log('hola')
     let id_find = Number(request.params.slug)
     const formBody = JSON.parse(request.body).values
     console.log(formBody)
@@ -31,7 +30,7 @@ export const put = async (request) =>{
             body: {
                 vehicleEdit,
                 message: 'Vehiculo Modificado',
-                status: 'OK'
+                status: 'UPDATE'
             }
         }
     }catch(e){

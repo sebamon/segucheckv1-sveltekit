@@ -1,7 +1,8 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-	import type { Color } from 'sveltestrap/src/shared';
+	import SeguAlert from '$lib/SeguAlert.svelte'
+
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
 		'Aeronaves - Avión Comercial',
@@ -60,7 +61,6 @@
 	];
 
 	let formVehicleDetails;
-	let vehicle_id: number;
 	let domain: string;
 	let brand: string;
 	let model: string;
@@ -73,27 +73,21 @@
 	let rightSidePic: ImageData;
 	let leftSidePic = [];
 
-	export let status: string;
-	export let message: string;
-	export let color: Color;
-
-	const submitForm = async (): Promise<any> => {
-
-	};
+	let status: string;
+	let message: string;
 
 	function cleanPage() {
-		vehicle_id = null;
-		domain = '';
-		brand = '';
-		model = null;
-		type = '';
-		year = 0;
-		internNumber = null;
-		chasisNumber = '';
-		motorNumber = '';
-		frontPic = null;
-		rightSidePic = null;
-		leftSidePic = null;
+		$form.domain = '';
+		$form.brand = '';
+		$form.model = '';
+		$form.type = '';
+		$form.year = '';
+		$form.internNumber = '';
+		$form.chasisNumber = '';
+		$form.motorNumber = '';
+		$form.frontPic = '';
+		$form.rightSidePic = '';
+		$form.leftSidePic = '';
 	}
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
@@ -170,7 +164,7 @@
 			message = data.message;
 			status = data.status;
 
-			if (data.status === 'OK') {
+			if (status === 'NEW') {
 				cleanPage();
 			}
 
@@ -203,11 +197,7 @@
 </header>
 
 {#if status}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<p><a href="/panel/vehiculos" class="alert-link"> Volver al listado </a></p>
-	</Alert>
+	<SeguAlert {message} {status} path='vehiculos' />
 {/if}
 
 <!-- Formulario nuevo usuario -->

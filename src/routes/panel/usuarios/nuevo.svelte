@@ -14,7 +14,7 @@
 	export let data
 	export let rolesList= data.roles
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import { Breadcrumb, BreadcrumbItem, Alert, FormGroup } from 'sveltestrap';
 	import ImgUpload from '$lib/ImgUpload.svelte'
 	import type { Color } from 'sveltestrap/src/shared';
 	import moment from 'moment';
@@ -104,7 +104,7 @@
 		$form.gender = '';
 		$form.nationality = '';
 		$form.studyLevel = '';
-		$form.roles_assigned = {
+		roles_assigned = {
 			rol1: false,
 			rol2: false,
 			rol3: false
@@ -164,7 +164,7 @@ import { captureRejectionSymbol } from 'events';
 			studyLevel: "",
 			degree: "",
 			profilePic: "",
-			roles_assigned: {},
+			roles_assigned: roles_assigned,
 			prueba : '',
 		},
 		validationSchema: yup.object().shape({

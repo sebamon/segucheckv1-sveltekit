@@ -69,7 +69,7 @@ export async function get() {
 }
 
 export const post = async (request) => {
-	const formBody = JSON.parse(request.body).values;
+	const formBody = (request.body).values;
 	let roles = [];
 	try {
 		if (formBody.roles_assigned['rol1'] === true) {
@@ -80,6 +80,12 @@ export const post = async (request) => {
 		}
 		if (formBody.roles_assigned['rol3'] === true) {
 			roles.push({ rol_id: 3, assignedBy: 1, user_id: 1 });
+		}
+		if(!formBody.profilePic){
+			formBody.profilePic = {
+				fileName : 'Error',
+				fileExtension : 'error'
+			}
 		}
 		console.log('formBody post usuarios', formBody)
 		const newUser = await prisma.users.create({
@@ -94,7 +100,7 @@ export const post = async (request) => {
 				nationality: formBody.nationality,
 				studyLevel: formBody.studyLevel,
 				dateOfBirth: new Date(formBody.dateOfBirth),
-				profilePic: formBody.profilePic.fiName+formBody.profilePic.fileExtension,
+				profilePic: formBody.profilePic.fileName+formBody.profilePic.fileExtension,
 				password: '1234'
 			}
 		});
@@ -111,7 +117,7 @@ export const post = async (request) => {
 			if (element.rol_id == 3) {
 				let operator = await prisma.operator.create({
 					data: {
-						user_id: newUserId
+						user_id: newUserId,						
 					}
 				});
 			}

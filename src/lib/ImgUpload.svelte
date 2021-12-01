@@ -52,10 +52,9 @@
 	/* The button status */
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
-	// $: {if(readyToUpload){
-	// 	//subir();	
-	// }}
-
+	// $: subir = readyToUpload == true
+	
+	
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {
@@ -169,7 +168,8 @@
 		{/if}
 		<div class="top-1">
 			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
-				on:click={() => dispatch('subir',subir())}>
+				on:click={() => dispatch('subir',subir())}
+			>
 				Subir imagen
 			</button>
 		</div>
