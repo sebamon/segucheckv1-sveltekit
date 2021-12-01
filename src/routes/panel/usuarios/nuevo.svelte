@@ -37,11 +37,56 @@
 	let nationality: string;
 	let studyLevel: string;
 	let profilePic;
+
+	// Controles globales
+	let fileName, fileExtension, readyToUpload;
 	export let prueba
+
+	const subir = async(fileName, fileExtension) => {
+
+		console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+		try{
+
+			let url = 'http://localhost:3000/api/driveSet';
+			let fileData = {
+				fileName: fileName,
+				fileExtension: fileExtension
+			};
+			
+			let response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(fileData)
+			});
+			const data = await response.json()
+			// console.log('la imagen subida: ',data)
+			let fileId = {
+				fileId: data.id,
+			};
+			let urlId = 'http://localhost:3000/api/driveGet';
+			let responseId = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(fileId)
+			});
+			const dataId = await responseId.json()
+			console.log('Mi link para compartir: ' + JSON.parse(dataId));
+			profilePic = JSON.parse(dataId);
+		}catch(e){
+			console.log(e)
+			return 'Sin Datos'
+		}
+		
+	}
+
 	// export let captureImage
 	export function captureImage(e){
-		console.log('captureImage',e.detail)
-		profilePic=e.detail
+		console.log('captureImage',e.detail);
+		fileName = e.detail.fileName;
+		fileExtension = e.detail.fileExtension;
+		readyToUpload = e.detail.readyToUpload;
+		setTimeout(()=>{
+			subir(fileName, fileExtension)
+		}, 6000);
+		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', profilePic: ' + profilePic);
 	}
 	export async function subirImage(e){
 		console.log('subirImagen Nuevo e',e)
@@ -224,14 +269,14 @@ import { captureRejectionSymbol } from 'events';
 			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
-			console.log('values', values)
-			console.log('profilePic', profilePic)
-			console.log('prueba', prueba)
-			// Realiza la carga de datos al cliquear Enviar
+			// console.log('values', values)
+			// console.log('profilePic', profilePic)
+			// console.log('prueba', prueba)
+			// // Realiza la carga de datos al cliquear Enviar
 			values.roles_assigned = roles_assigned
 			values.profilePic = profilePic
 			values.prueba=prueba
-			console.log(values)
+			// console.log(values)
 			try {
 				const submit = await fetch('usuarios', {
 					method: 'POST',

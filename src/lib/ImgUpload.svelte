@@ -72,6 +72,8 @@
 	const handleSubmit = () => {
 		/* Verifica que todas las variables se inicialicen */
 		if (fileToUpload && fileName) {
+			readyToUpload = true;
+			console.log('Ready: ' + readyToUpload + ', File: ' + fileName+ '.' + fileExtension);
 			/* Se crea el form data */
 			let formData = new FormData();
 			// @ts-ignore
@@ -124,40 +126,40 @@
 
 	// Subir archivo a Drive
 
-	export const subir = async() => {
-	// export async function subir() {
-		console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
-		try{
+	// export const subir = async() => {
+	// // export async function subir() {
+	// 	console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+	// 	try{
 
-			let url = 'http://localhost:3000/api/driveSet';
-			let fileData = {
-				fileName: fileName,
-				fileExtension: fileExtension
-			};
+	// 		let url = 'http://localhost:3000/api/driveSet';
+	// 		let fileData = {
+	// 			fileName: fileName,
+	// 			fileExtension: fileExtension
+	// 		};
 			
-			let response = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(fileData)
-			});
-			const data = await response.json()
-			// console.log('la imagen subida: ',data)
-			let fileId = {
-				fileId: data.id,
-			};
-			let urlId = 'http://localhost:3000/api/driveGet';
-			let responseId = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(fileId)
-			});
-			const dataId = await responseId.json()
-			console.log('Mi link para compartir: ' + JSON.parse(dataId));
-			return data
-		}catch(e){
-			console.log(e)
-			return 'Sin Datos'
-		}
+	// 		let response = await fetch(url, {
+	// 			method: 'POST',
+	// 			body: JSON.stringify(fileData)
+	// 		});
+	// 		const data = await response.json()
+	// 		// console.log('la imagen subida: ',data)
+	// 		let fileId = {
+	// 			fileId: data.id,
+	// 		};
+	// 		let urlId = 'http://localhost:3000/api/driveGet';
+	// 		let responseId = await fetch(url, {
+	// 			method: 'POST',
+	// 			body: JSON.stringify(fileId)
+	// 		});
+	// 		const dataId = await responseId.json()
+	// 		console.log('Mi link para compartir: ' + JSON.parse(dataId));
+	// 		return data
+	// 	}catch(e){
+	// 		console.log(e)
+	// 		return 'Sin Datos'
+	// 	}
 		
-	}
+	// }
 </script>
 
 <div>
