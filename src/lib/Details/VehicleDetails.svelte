@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { format } from 'path/posix';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	// import { createEventDispatcher, validate_store } from 'svelte/internal';
 	// import { createEventDispatcher } from 'svelte';
 	// const dispatch = createEventDispatcher();
@@ -31,9 +32,7 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	let error: string;
 	let message: string;
-	let color;
 	let status;
 
 	// Arreglo de tipo de vehículos:
@@ -161,15 +160,15 @@
 					values
 				})
 			});
-
-			console.log('submit', submit);
 			const data = await submit.json();
 			message = data.message;
-			error = data.error;
+			status = data.status		
 		}
 	});
 </script>
-
+{#if status}
+	<SeguAlert {message} {status} path='vehiculos' />
+{/if}
 <form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">

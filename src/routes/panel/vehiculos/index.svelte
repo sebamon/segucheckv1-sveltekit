@@ -99,11 +99,11 @@
 								</a>
 							</td>
 							<td>
-								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
+								<a class="text-decoration-none text-dark text-center" href="./vehiculos/{vehicle.vehicle_id}">
 									{#if vehicle.status }
-										Valido poner icono
+										<i class="fas fa-check-circle me-2 text-success" />
 									{:else}
-										Invalido
+										<i class="fas fa-times-circle me-2 text-danger" />
 									{/if}
 								</a>
 							</td>

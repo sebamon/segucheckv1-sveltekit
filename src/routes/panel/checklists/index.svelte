@@ -1,13 +1,29 @@
+<script context="module">
+	export async function load({fetch ,paage}){
+		const response = await fetch('./checklists/checklist')
+		const data = await response.json()
+		return {
+			props: {
+				data
+			}
+		}
+	}
+</script>
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import Checklists from '$lib/Checklists.svelte';
+	import SeguAlert from '$lib/SeguAlert.svelte'
+
+	export let data
+	let checkList = data.checkList
+
 </script>
 
 <svelte:head>
 	<title>Checkgroups - SeguCheck</title>
 </svelte:head>
-
+{JSON.stringify(checkList)}
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -46,118 +62,35 @@
 				</tr>
 			</thead>
 			<tbody>
+				{#each checkList as checkgroup }
 				<tr>
-					<td>1,001</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+							{checkgroup.checkItemGroup_id}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+							{checkgroup.groupName}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+							Personalizable
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+							Personalizable
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+							Personalizable
+						</a>
+					</td>
 				</tr>
-				<tr>
-					<td>1,002</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,003</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,004</td>
-					<td>text</td>
-					<td>random</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,005</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>placeholder</td>
-				</tr>
-				<tr>
-					<td>1,006</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,007</td>
-					<td>placeholder</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>irrelevant</td>
-				</tr>
-				<tr>
-					<td>1,008</td>
-					<td>random</td>
-					<td>data</td>
-					<td>placeholder</td>
-					<td>text</td>
-				</tr>
-				<tr>
-					<td>1,009</td>
-					<td>placeholder</td>
-					<td>irrelevant</td>
-					<td>visual</td>
-					<td>layout</td>
-				</tr>
-				<tr>
-					<td>1,010</td>
-					<td>data</td>
-					<td>rich</td>
-					<td>dashboard</td>
-					<td>tabular</td>
-				</tr>
-				<tr>
-					<td>1,011</td>
-					<td>information</td>
-					<td>placeholder</td>
-					<td>illustrative</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,012</td>
-					<td>text</td>
-					<td>placeholder</td>
-					<td>layout</td>
-					<td>dashboard</td>
-				</tr>
-				<tr>
-					<td>1,013</td>
-					<td>dashboard</td>
-					<td>irrelevant</td>
-					<td>text</td>
-					<td>visual</td>
-				</tr>
-				<tr>
-					<td>1,014</td>
-					<td>dashboard</td>
-					<td>illustrative</td>
-					<td>rich</td>
-					<td>data</td>
-				</tr>
-				<tr>
-					<td>1,015</td>
-					<td>random</td>
-					<td>tabular</td>
-					<td>information</td>
-					<td>text</td>
-				</tr>
+				{/each}
 			</tbody>
 		</table>
 	</div>

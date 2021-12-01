@@ -52,10 +52,9 @@
 	/* The button status */
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
-	// $: {if(readyToUpload){
-	// 	//subir();	
-	// }}
-
+	// $: subir = readyToUpload == true
+	
+	
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {

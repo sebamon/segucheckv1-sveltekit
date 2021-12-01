@@ -74,11 +74,10 @@ model jobs {
   location_id              Int
   customer_id              Int
   vehicle_id               Int?
-  checkItemGroup_id        Int?
   requiredDocumentation_id Int?
   created_at               DateTime               @default(now())
   updated_at               DateTime?
-  checkitemgroup           checkitemgroup?         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
+  checkitemgroup           checkitemgroup[]         
   customer                 customer               @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
   location                 location               @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
   requiereddocumentation   requiereddocumentation? @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
@@ -86,7 +85,6 @@ model jobs {
   vehicle                  vehicle?                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
   operatoronjobs           operatoronjobs[]
 
-  @@index([checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
   @@index([customer_id], map: "Jobs_customer_id_fkey")
   @@index([location_id], map: "Jobs_location_id_fkey")
   @@index([requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
