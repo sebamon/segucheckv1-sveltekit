@@ -10,7 +10,7 @@
 <script>
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher()
-// import { uploadFile } from './api/driveV2';
+// import { uploadFile } from './api/driveSet';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	import { v4 as uuidV4 } from 'uuid';
 	// import {
@@ -71,6 +71,8 @@
 	const handleSubmit = () => {
 		/* Verifica que todas las variables se inicialicen */
 		if (fileToUpload && fileName) {
+			readyToUpload = true;
+			console.log('Ready: ' + readyToUpload + ', File: ' + fileName+ '.' + fileExtension);
 			/* Se crea el form data */
 			let formData = new FormData();
 			// @ts-ignore
@@ -81,6 +83,7 @@
 			// @ts-ignore
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
+			console.log('FormData previo al upload: ' + formData);
 			/* Llamando al plugin 'upload' en el servidor */
 			fetch('http://localhost:3000/upload', {
 				method: 'POST',
@@ -122,30 +125,40 @@
 
 	// Subir archivo a Drive
 
-	export const subir = async() => {
-	// export async function subir() {
-		console.log('subir')
-		try{
+	// export const subir = async() => {
+	// // export async function subir() {
+	// 	console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+	// 	try{
 
-			let url = 'http://localhost:3000/api/driveV2';
-			let fileData = {
-				fileName: fileName,
-				fileExtension: fileExtension
-			};
+	// 		let url = 'http://localhost:3000/api/driveSet';
+	// 		let fileData = {
+	// 			fileName: fileName,
+	// 			fileExtension: fileExtension
+	// 		};
 			
-			let response = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(fileData)
-			});
-			const data = await response.json()
-			console.log('la imagen subida: ',data)
-			return data
-		}catch(e){
-			console.log(e)
-			return 'Sin Datos'
-		}
+	// 		let response = await fetch(url, {
+	// 			method: 'POST',
+	// 			body: JSON.stringify(fileData)
+	// 		});
+	// 		const data = await response.json()
+	// 		// console.log('la imagen subida: ',data)
+	// 		let fileId = {
+	// 			fileId: data.id,
+	// 		};
+	// 		let urlId = 'http://localhost:3000/api/driveGet';
+	// 		let responseId = await fetch(url, {
+	// 			method: 'POST',
+	// 			body: JSON.stringify(fileId)
+	// 		});
+	// 		const dataId = await responseId.json()
+	// 		console.log('Mi link para compartir: ' + JSON.parse(dataId));
+	// 		return data
+	// 	}catch(e){
+	// 		console.log(e)
+	// 		return 'Sin Datos'
+	// 	}
 		
-	}
+	// }
 </script>
 
 <div>
@@ -167,9 +180,9 @@
 			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
-				on:click={() => dispatch('subir',subir())}
-			>
+			<!-- <button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
+				on:click={() => dispatch('subir',subir())}> -->
+			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})}>
 				Subir imagen
 			</button>
 		</div>

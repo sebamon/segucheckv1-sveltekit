@@ -12,6 +12,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
+	//import Checklists from '$lib/Checklists.svelte';
 	import SeguAlert from '$lib/SeguAlert.svelte'
 
 	export let data
@@ -92,6 +93,8 @@
 				{/each}
 			</tbody>
 		</table>
+	</div>
+	<div id="checktest">
 	</div>
 </main>
 
