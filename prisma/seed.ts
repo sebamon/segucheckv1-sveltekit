@@ -90,27 +90,93 @@ async function main(){
         }
     })
 
-    
-    await prisma.checkitem.createMany({
+    await prisma.checkcategory.createMany({
         data: [{
-            item : 'Mata Fuego',
-            description : 'Matafuego de 2kg',
-        },{
-            item : 'Casco',
-            description : 'Casco Reglamentario para trabajo en altura',
-        }]
+            categoryName : 'Control Vehicular',                
+            },{
+            categoryName : 'Básico Seguridad',                
+            },{
+            categoryName : 'Trabajo en Altura',                
+            },
+        ]
     })
 
-    await prisma.checkitemgroup.createMany({
-        data : [{
-            groupName : 'Basico Vehiculo',
-            checkItem_id : 1
-        },{
-            groupName : 'Basico Altura',
-            checkItem_id : 2
+    await prisma.checkitem.create({
+        data: {
+            item : 'Mata Fuego',
+            description : 'Matafuego de 2kg',
+            categories: {
+                connectOrCreate : {
+                    where : {
+                        category_id: 1
+                    },
+                    create : {
+                        categoryName : 'Control Vehicular'
+                    }
+                }
+            }
+        },
+        include: {
+            categories : true
         }
-    ]
     })
+
+    await prisma.checkitem.create({
+        data: {
+            item : 'Escalera',
+            description : 'Escalera reglamentaria',
+            categories: {
+                connectOrCreate : {
+                    where : {
+                        categoryName: 'Trabajo en Altura',
+                    },
+                    create : {
+                        categoryName : 'Trabajo en Altura'
+                    }
+                }
+            }
+        },
+        include: {
+            categories : true
+        }
+    })
+    await prisma.checkitem.create({
+        data: {
+            item : 'Botas Seguridad',
+            description : 'Botas puntera acero norma iso 241',
+            categories: {
+                connectOrCreate : {
+                    where : {
+                        categoryName: 'Vestimenta',
+                    },
+                    create : {
+                        categoryName : 'Vestimenta'
+                    }
+                }
+            }
+        },
+        include: {
+            categories : true
+        }
+    })
+
+    await prisma.checkitem.create({
+        data : {
+            item : 'Casco',
+            description : 'Casco Reglamentario para trabajo en altura',
+        },
+    })
+
+    // await prisma.checkitemgroup.createMany({
+    //     data : [{
+    //         groupName : 'Basico Vehiculo',
+    //         checkItem_id : 1
+    //     },{
+    //         groupName : 'Basico Altura',
+    //         checkItem_id : 2
+    //     }
+    // ]
+    // })
 
      await prisma.vehicle.createMany({
          data:[{

@@ -8,20 +8,45 @@ datasource db {
 }
 
 model checkitem {
-  checkItem_id   Int              @id @default(autoincrement())
-  item           String
-  description    String
-  checkitemgroup checkitemgroup[]
+  checkItem_id Int             @id @default(autoincrement())
+  item         String
+  description  String
+  categories   checkcategory[] @relation(references: [category_id])
+  verifyItem verifyItem[]
+  
 }
 
-model checkitemgroup {
-  checkItemGroup_id Int       @id @default(autoincrement())
-  groupName         String
-  checkItem_id      Int
-  checkitem         checkitem @relation(fields: [checkItem_id], references: [checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
-  jobs              jobs[]
+model checkcategory {
+  category_id  Int         @id @default(autoincrement())
+  categoryName String      @unique
+  checkitems   checkitem[] @relation(references: [checkItem_id])
+  
+}
 
-  @@index([checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
+model verifyItem {
+  verifyItem_id Int       @id @default(autoincrement())
+  checkItem_id  Int
+  checkItem     checkitem @relation(fields: [checkItem_id], references: [checkItem_id])
+  checked       Boolean
+  observation   String
+
+  verify          verify? @relation(fields: [verifyVerify_id], references: [verify_id])
+  verifyVerify_id Int?
+}
+
+model verify {
+  verify_id    Int          @id @default(autoincrement())
+  checklist_id Int
+  list         verifyItem[]
+  checklist    checklist[]
+}
+
+model checklist {
+  checklist_id  Int    @id @default(autoincrement())
+  checkListName String
+  verify_id     Int
+  verify        verify @relation(fields: [verify_id], references: [verify_id])
+  jobs          jobs[]
 }
 
 model customer {
@@ -66,7 +91,7 @@ model folder {
 }
 
 model jobs {
-  job_id                   Int                    @id @default(autoincrement())
+  job_id                   Int                     @id @default(autoincrement())
   startDate                DateTime
   finishDate               DateTime
   statusJob                String
@@ -75,11 +100,12 @@ model jobs {
   customer_id              Int
   vehicle_id               Int?
   requiredDocumentation_id Int?
-  created_at               DateTime               @default(now())
+  checklist_id             Int?
+  created_at               DateTime                @default(now())
   updated_at               DateTime?
-  checkitemgroup           checkitemgroup[]         
-  customer                 customer               @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
-  location                 location               @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
+  checklist                checklist?              @relation(fields: [checklist_id], references: [checklist_id], map: "Jobs_checklist_id_id_fkey")
+  customer                 customer                @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
+  location                 location                @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
   requiereddocumentation   requiereddocumentation? @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
   riskanalysis             riskanalysis?           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
   vehicle                  vehicle?                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
@@ -99,7 +125,7 @@ model location {
   customer_id  Int
   customer     customer @relation(fields: [customer_id], references: [customer_id], map: "Location_customer_id_fkey")
   jobs         jobs[]
-  province    String
+  province     String
 
   @@index([customer_id], map: "Location_customer_id_fkey")
 }
@@ -205,9 +231,9 @@ model users {
   active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
-  deleted Boolean @default(false)
-  @@unique(fields: [cuit, password], name: "credentials")
+  deleted      Boolean        @default(false)
 
+  @@unique(fields: [cuit, password], name: "credentials")
 }
 
 model usersonroles {
@@ -234,7 +260,7 @@ model userworkinfo {
 
 model vehicle {
   vehicle_id                  Int                           @id @default(autoincrement())
-  domain                      String                        @unique 
+  domain                      String                        @unique
   brand                       String
   model                       String
   type                        String
