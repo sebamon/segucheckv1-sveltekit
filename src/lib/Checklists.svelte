@@ -61,9 +61,16 @@
 		console.log('Mi elemento dentro de editCatName: ', element);
 		let catId = element.split('_').pop();
 		catId = catId.split('"');
+		let catNumber = catId[0].split('-').pop();
+		let catDemo = 'category-demo-'+catNumber;
 
-		console.log('catId', catId);
-		document.getElementById(catId[0]).innerHTML = 'Nombre nuevo';
+		console.log('catId', catNumber);
+		console.log('Category blah blah: ', categoryCollection[catNumber-1]);
+		let categoryName: string = catNumber + ' - Trululu';
+		categoryCollection[catNumber-1].categoryName = categoryName;
+		document.getElementById(catId[0]).innerHTML = `<h5>${categoryName}</h5>`;
+		document.getElementById(catDemo).innerHTML = `<h5>${categoryName}</h5>`;
+
 	};
 	
 	const addCategory = () => {
@@ -71,11 +78,7 @@
 		// Renombrar categoría
 		document.addEventListener('click', function (e) {
 			if (e.target) {
-				console.log("Mi e: ", e);
-				// console.log("Mi id: ", JSON.stringify(e.path[0].id));
-				// editCatName(JSON.stringify(e.path[1]));
 				editCatName(JSON.stringify(e.path[0].id));
-				//e.target.
 			}
 		});
 
@@ -90,7 +93,8 @@
 		categoryCollection.push(newCategory);
 
 		// Creo el elemento para el formulario
-		let catDomId = 'category-' + newCategory.category_id + 1;
+		let savedId = newCategory.category_id + 1;
+		let catDomId = 'category-' + savedId;
 		newCategoryDivForm.setAttribute('id', catDomId);
 		newCategoryDivForm.innerHTML = `<h5>${newCategory.category_id + 1} - ${
 			newCategory.categoryName
@@ -167,11 +171,12 @@
 		</select> -->
 
 		<Button id="addCategory" on:click={toggle}>
-			<img src="/img/add.png" alt="agregar categoría" id="tinyAdd" />
+			<!-- <img src="/img/add.png" alt="agregar categoría" id="tinyAdd" /> -->
 			Agregar categoría</Button
 		>
 		<Button id="substractCategory" on:click={substractCategory}>
-			<img src="/img/sub.png" alt="remover categoría" id="tinySubs" />
+			<!-- <img src="/img/sub.png" alt="remover categoría" id="tinySubs" /> -->
+			-
 		</Button>
 
 		<h4>Items</h4>
@@ -200,10 +205,12 @@
 			bind:value={optionsCheck[1].description}
 		/><br />
 		<Button id="addItem">
-			<img src="/img/add.png" alt="agregar ítem" id="tinyAdd" />
+			<!-- <img src="/img/add.png" alt="agregar ítem" id="tinyAdd" /> -->
+			+
 		</Button>
 		<Button id="substractItem">
-			<img src="/img/sub.png" alt="remover ítem" id="tinySubs" />
+			<!-- <img src="/img/sub.png" alt="remover ítem" id="tinySubs" /> -->
+			-
 		</Button>
 	</div>
 
