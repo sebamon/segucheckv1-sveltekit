@@ -5,9 +5,9 @@ const prisma = new PrismaClient()
 
 export async function get(){
     try{
-        const checkList = await prisma.checkitemgroup.findMany({
+        const checkList = await prisma.checkcategory.findMany({
             include: {
-                checkitem : true
+                checkitems : true
             }
         })
         if(checkList){

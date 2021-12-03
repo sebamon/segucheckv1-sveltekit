@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({fetch ,paage}){
-		const response = await fetch('./checklists/checklist')
+		const response = await fetch('http://localhost:3000/api/category')
 		const data = await response.json()
 		return {
 			props: {
@@ -13,19 +13,19 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	
-	import Checklists from '$lib/Checklists.svelte';
 	import SeguAlert from '$lib/SeguAlert.svelte'
 	import SeguCheck from '$lib/SeguCheck.svelte';
 
 	export let data
-	let checkList = data.checkList
+	export let categories = data.categories
 
 </script>
 
 <svelte:head>
 	<title>Checkgroups - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(checkList)}
+{JSON.stringify(categories)}
+
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -45,6 +45,7 @@
 </header>
 
 <main>
+	<SeguCheck />
 	<div class="table-responsive">
 		<table class="table table-striped table-hover align-middle">
 			<thead>
@@ -58,37 +59,19 @@
 				<tr>
 					<th scope="col">ID checkgroup</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">etc1</th>
-					<th scope="col">etc2</th>
-					<th scope="col">etc3</th>
 				</tr>
 			</thead>
 			<tbody>
-				{#each checkList as checkgroup }
+				{#each categories as { category_id , categoryName} }
 				<tr>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							{checkgroup.checkItemGroup_id}
+						<a class="text-decoration-none text-dark" href="./checklists/{category_id}">
+							{category_id}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							{checkgroup.groupName}
-						</a>
-					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							Personalizable
-						</a>
-					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							Personalizable
-						</a>
-					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							Personalizable
+						<a class="text-decoration-none text-dark" href="./checklists/{category_id}">
+							{categoryName}
 						</a>
 					</td>
 				</tr>
