@@ -9,10 +9,11 @@ datasource db {
 
 model checkitem {
   checkItem_id Int             @id @default(autoincrement())
-  item         String
+  item         String          @unique
   description  String
   categories   checkcategory[] @relation(references: [category_id])
-  verifyItem verifyItem[]
+  verifyItem   verifyItem[]
+
   
 }
 
@@ -20,7 +21,8 @@ model checkcategory {
   category_id  Int         @id @default(autoincrement())
   categoryName String      @unique
   checkitems   checkitem[] @relation(references: [checkItem_id])
-  
+
+
 }
 
 model verifyItem {
