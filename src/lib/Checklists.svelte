@@ -88,6 +88,74 @@
 		document.getElementById(catDemo).innerHTML = `<h5>${categoryName}</h5>`;
 	};
 
+	
+	const addCategory = () => {
+		let newCategoryDivForm = document.createElement('div');
+		let newCategoryDivDemo = document.createElement('div');
+		let newItemDiv = document.createElement('div');
+		
+		let category_id = categoryIndex;
+		let categoryName = nombreCheckCategory;
+		let checkItems = [];
+		let newCategory: checkcategory = { category_id, categoryName, checkItems };
+		categoryCollection.push(newCategory);
+		
+		// Creo el elemento para el formulario
+		let savedId = newCategory.category_id + 1;
+		let catDomId = 'category-' + savedId;
+		newCategoryDivForm.setAttribute('id', catDomId);
+		newCategoryDivForm.innerHTML = `<h5>${newCategory.category_id + 1} - ${
+			newCategory.categoryName
+		}</h5>`;
+		// <button class="btn btn-primary"  id="btn_${catDomId}">Editar nombre categoría</button><br />
+		// 	<input class="form-control" hidden type="text bind:value="${newCategory.categoryName}" placeholder="${newCategory.category_id + 1} - ${newCategory.categoryName}" />`;
+		// newCategoryDivForm.innerHTML = `<h5>${newCategory.category_id+1} - ${newCategory.categoryName}</h5>`;
+		
+		newItemDiv.setAttribute('id', `item-container-${categoryIndex + 1}`);
+		//newItemDiv.innerHTML = addItem(categoryIndex+1);
+		newCategoryDivForm.appendChild(newItemDiv);
+
+		document.getElementById('itemsContainer').appendChild(newCategoryDivForm);
+		newCategoryDivForm.innerHTML += addButtons(categoryIndex + 1);
+		
+		// Creo el elemento para la vista previa
+		newCategoryDivDemo.setAttribute('id', `category-demo-${categoryIndex + 1}`);
+		newCategoryDivDemo.innerHTML = `<h5>${categoryIndex + 1} - ${nombreCheckCategory}</h5>`;
+		document.getElementById('itemsContainerDemo').appendChild(newCategoryDivDemo);
+
+		// Parámetros finales
+		categoryIndex += 1;
+		nombreCheckCategory = '';
+		toggle();
+	};
+	
+	const substractCategory = () => {};
+	const addButtons = (id) => {
+		return `<button class="btn btn-primary" id="addItem-${id}">+</button><button class="btn btn-primary" id="substractItem-${id}">-</button>`;
+	};
+	const substractButtons = (id) => {
+		return `<button class="btn btn-primary" id="substractCategory-${id}" on:click={substractCategory}>-</button>`;
+	};
+	
+	/* ************************ Valores demo ************************ */
+
+	let nombreCheck = 'Control de Camionetas - Salida';
+	let optionsCheck = [
+		{
+			id: '1',
+			item: 'Control Vehicular',
+			description: 'Verificar que la carga del extintor esté completa'
+		},
+		{
+			id: '2',
+			item: 'Control Salud',
+			description: 'Controlar que la presión de los neumáticos sea adecuada'
+		}
+	];
+	let selectedOption = 1;
+
+	/* ************************ Autostart ************************ */
+	
 	onMount(() => {
 		// Handler de eventos
 		document.addEventListener('click', function (e) {
@@ -108,73 +176,6 @@
 			}
 		});
 	});
-
-	const addCategory = () => {
-		let newCategoryDivForm = document.createElement('div');
-		let newCategoryDivDemo = document.createElement('div');
-		let newItemDiv = document.createElement('div');
-
-		let category_id = categoryIndex;
-		let categoryName = nombreCheckCategory;
-		let checkItems = [];
-		let newCategory: checkcategory = { category_id, categoryName, checkItems };
-		categoryCollection.push(newCategory);
-
-		// Creo el elemento para el formulario
-		let savedId = newCategory.category_id + 1;
-		let catDomId = 'category-' + savedId;
-		newCategoryDivForm.setAttribute('id', catDomId);
-		newCategoryDivForm.innerHTML = `<h5>${newCategory.category_id + 1} - ${
-			newCategory.categoryName
-		}</h5>`;
-		// <button class="btn btn-primary"  id="btn_${catDomId}">Editar nombre categoría</button><br />
-		// 	<input class="form-control" hidden type="text bind:value="${newCategory.categoryName}" placeholder="${newCategory.category_id + 1} - ${newCategory.categoryName}" />`;
-		// newCategoryDivForm.innerHTML = `<h5>${newCategory.category_id+1} - ${newCategory.categoryName}</h5>`;
-
-		newItemDiv.setAttribute('id', `item-container-${categoryIndex + 1}`);
-		//newItemDiv.innerHTML = addItem(categoryIndex+1);
-		newCategoryDivForm.appendChild(newItemDiv);
-
-		document.getElementById('itemsContainer').appendChild(newCategoryDivForm);
-		newCategoryDivForm.innerHTML += addButtons(categoryIndex + 1);
-
-		// Creo el elemento para la vista previa
-		newCategoryDivDemo.setAttribute('id', `category-demo-${categoryIndex + 1}`);
-		newCategoryDivDemo.innerHTML = `<h5>${categoryIndex + 1} - ${nombreCheckCategory}</h5>`;
-		document.getElementById('itemsContainerDemo').appendChild(newCategoryDivDemo);
-
-		// Parámetros finales
-		categoryIndex += 1;
-		nombreCheckCategory = '';
-		toggle();
-	};
-
-	const substractCategory = () => {};
-	const addButtons = (id) => {
-		return `<button class="btn btn-primary" id="addItem-${id}">+</button><button class="btn btn-primary" id="substractItem-${id}">-</button>`;
-	};
-	const substractButtons = (id) => {
-		return `<button class="btn btn-primary" id="substractCategory-${id}" on:click={substractCategory}>-</button>`;
-	};
-
-	/* ************************ Valores demo ************************ */
-
-	let nombreCheck = 'Control de Camionetas - Salida';
-	let optionsCheck = [
-		{
-			id: '1',
-			item: 'Control Vehicular',
-			description: 'Verificar que la carga del extintor esté completa'
-		},
-		{
-			id: '2',
-			item: 'Control Salud',
-			description: 'Controlar que la presión de los neumáticos sea adecuada'
-		}
-	];
-	let selectedOption = 1;
-	/* ************************ Valores demo ************************ */
-
 
 </script>
 
