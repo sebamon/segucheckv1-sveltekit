@@ -8,7 +8,7 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	// Arreglo de tipo de vehículos:
+	// Arreglo de tipo de sangre:
 	let bloodTypeList = ['A', 'B', 'AB', 'O'];
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/

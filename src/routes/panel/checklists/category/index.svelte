@@ -15,6 +15,7 @@
 	
 	import SeguAlert from '$lib/SeguAlert.svelte'
 	import SeguCheck from '$lib/SeguCheck.svelte';
+	import ChecklistsExodus from '$lib/ChecklistsExodus.svelte';
 
 	export let data
 	export let categories = data.categories
@@ -80,6 +81,7 @@
 		</table>
 	</div>
 	<div id="checktest">
+		<ChecklistsExodus />
 	</div>
 </main>
 
