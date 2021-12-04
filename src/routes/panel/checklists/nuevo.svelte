@@ -2,7 +2,6 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import Checklists from '$lib/Checklists.svelte';
-	import ChecklistsExodus from '$lib/ChecklistsExodus.svelte';
 </script>
 
 <svelte:head>
@@ -25,6 +24,6 @@
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
-<!-- <Checklists /> -->
-<ChecklistsExodus />
+
+<Checklists />
 
