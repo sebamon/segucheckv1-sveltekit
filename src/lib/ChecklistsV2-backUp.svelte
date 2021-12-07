@@ -2,12 +2,12 @@
 	/* 
 		Elementos para la renderización
 		- Tabs para el sistema de pestañas
-		- MultiSelect para el manejo de etiquetas 
+		- Svelecte y DnDzone para el manejo de etiquetas 
 	*/
 
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
-	import MultiSelect from './MultiSelect.svelte';
-
+	// import Svelecte from 'svelecte';
+	// import { dndzone, overrideItemIdKeyNameBeforeInitialisingDndZones } from 'svelte-dnd-action';
 
 	/* 
 		Declaración de tipos
@@ -101,15 +101,22 @@
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
-	/*
-		Crea un ítem nuevo
-	*/
 	const addItem = () => {
-		if (itemCollection.length != 0){
-			itemCollection[itemCollection.length-1].isNew = false;
-		}
-		let newItem: checkItem = {
-			checkItem_id: itemCollection.length,
+		const itemIndexToSave = itemCollection.findIndex((itemCompound) => itemCompound.isNew == true);
+		const itemToSave = itemCollection[itemIndexToSave];
+		if (itemToSave.checkitem.item != '') {
+			//console.log('dentro del addItem: ', itemToSave);
+			itemToSave.checkitem.categories.push(itemSelectedCatToAdd);
+			itemToSave.isNew = false;
+			addStartItem();
+			itemSelectedCatToAdd = categoryCollection[0].category;
+			//console.log('lista salida: ', itemCollection);
+		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
+	};
+
+	const addStartItem = () => {
+		let thisItem: checkItem = {
+			checkItem_id: itemCollection.length + 1,
 			item: 'Nuevo elemento',
 			description: 'Nueva descripción',
 			categories: []
@@ -117,7 +124,7 @@
 		itemCollection = [
 			...itemCollection,
 			{
-				checkitem: newItem,
+				checkitem: thisItem,
 				selectedCategory: categoryCollection[0].category,
 				active: '',
 				checked: false,
@@ -134,50 +141,35 @@
 		alert('Yey! Vamos a enviar ésto!');
 	};
 
-	/*
-	 * Carga inicial de datos provenientes del controlador
-	 * Se generan dos arrays (itemCollection y categoryCollection), encargados de
-	 * almacenar todos los items y categorías existentes y nuevos
-	 */
 	categories.forEach((element) => {
-		if (!element.checkItems){
-			if (element.checkitems){
-				let repairedElement: checkcategory = {
-					category_id: element.category_id,
-					categoryName: element.categoryName,
-					checkItems: element.checkitems
-				}
-				element = repairedElement;
-			}
-			else{
-			element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
-			}
-		}
-		let myItemList = element.checkItems;
+		element.category_id = categoryCollection.length;
+
+		let categoryToLoad: categoryCompound = {
+			category: element,
+			isNew: false
+		};
+
+		let myItemList = element.checkitems;
 		myItemList.forEach((thisCheckitem) => {
-			if (!itemCollection.includes(thisCheckitem)) {
-				thisCheckitem.item_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
-				
-				itemCollection = [
-					...itemCollection,
-					{
-						checkitem: thisCheckitem,
-						selectedCategory: element,
-						active: '',
-						checked: false,
-						isNew: false
-					}
-				];
-			}
+			itemCollection = [
+				...itemCollection,
+				{
+					checkitem: thisCheckitem,
+					selectedCategory: categoryToLoad.category,
+					active: '',
+					checked: false,
+					isNew: false
+				}
+			];
+			// if (!itemCollection.includes(thisItemCompound)) {
+			// 	itemCollection.push(thisItemCompound);
+			// }
 		});
-		categoryCollection = [
-			...categoryCollection,
-			{
-				category: element,
-				isNew: false
-			}
-		];
+		categoryCollection.push(categoryToLoad);
 	});
+	// Creamos un item inicial, que se modificará si el usuario quiere crear un nuevo ítem:
+	addStartItem();
+	// overrideItemIdKeyNameBeforeInitialisingDndZones('value');
 </script>
 
 <svelte:head>
@@ -207,16 +199,23 @@
 					<TabPanel>
 						<h3>{categoryCompound.category.categoryName}</h3>
 						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
-						{#if categoryCompound.category.checkItems.length != 0}
-							<!-- <select multiple bind:value={itemCheckedCollection}> -->
-							<MultiSelect id='itemsSelected' bind:value={itemCheckedCollection}>
+						<!-- {JSON.stringify(categoryCompound.category)}-->
+						{#if categoryCompound.category.checkItems}
+							<!-- {JSON.stringify(categoryCompound.category)}-->
+							<select multiple bind:value={itemCheckedCollection}>
 								{#each categoryCompound.category.checkItems as item}
-									item: {JSON.stringify(item)}
-									categoría: {JSON.stringify(categoryCompound)}
 									<option class="form-select" value={item}>{item.item}</option>
 								{/each}
-							</MultiSelect>
-							<!-- </select> -->
+							</select>
+							<!-- <Svelecte
+							options={categoryCompound.category.checkItems}
+							multiple
+							bind:value
+							valueAsObject
+							{dndzone}
+						/>
+						<hr />
+						<pre> {JSON.stringify(value.map(i => i.text))}</pre> -->
 						{/if}
 					</TabPanel>
 				{/each}
@@ -231,6 +230,7 @@
 					<!-- {#if categoryCompound.category.checkitems.length != 0} -->
 					<h5 class="preview-header">{categoryCompound.category.categoryName}</h5>
 					{#each itemCollection as itemCompound}
+						<!-- {JSON.stringify(itemCompound)} -->
 						{#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id}
 							<input class="form-check-input previewCheck" type="checkbox" />
 							{itemCompound.checkitem.item}<br />
@@ -257,27 +257,23 @@
 		</div>
 
 		<div id="dynamicItem" class="col-6">
-			<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
-			{#each itemCollection as itemCompound}
-				<div class="dynamicContainer">
+			<div class="dynamicContainer">
+				{#each itemCollection as itemCompound}
+					<!-- Cada item que llega:{JSON.stringify(itemCompound)} -->
 					{#if itemCompound.isNew == true}
-						<div class="row">
+						<div class="row {itemCompound.active}">
 							<div class="col-9">
 								<input
 									type="text"
 									class="form-control addedButton"
-									id={`item-${itemCompound.checkitem.checkItem_id}`}
 									bind:value={itemCompound.checkitem.item}
 								/>
 							</div>
-							<!-- <div class="col-3">
-							<button
-								class="btn btn-primary"
-								on:click={removeItem(itemCompound.checkItem.checkItem_id)}>Quitar item</button
-							>
-						</div> -->
+							<div class="col-3">
+								<button class="btn btn-primary" on:click={addItem}>Crear item</button>
+							</div>
 						</div>
-						<select bind:value={itemCompound.selectedCategory}>
+						<select bind:value={itemSelectedCatToAdd}>
 							{#each categoryCollection as categoryCompound}
 								<option class="form-select" value={categoryCompound.category}
 									>{categoryCompound.category.categoryName}</option
@@ -285,8 +281,8 @@
 							{/each}
 						</select>
 					{/if}
-				</div>
-			{/each}
+				{/each}
+			</div>
 		</div>
 
 		<div id="checklistPreview" class="col-5" />
