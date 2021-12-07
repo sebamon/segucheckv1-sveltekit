@@ -8,7 +8,6 @@
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
 	import MultiSelect from './MultiSelect.svelte';
 
-
 	/* 
 		Declaración de tipos
 	*/
@@ -105,8 +104,8 @@
 		Crea un ítem nuevo
 	*/
 	const addItem = () => {
-		if (itemCollection.length != 0){
-			itemCollection[itemCollection.length-1].isNew = false;
+		if (itemCollection.length != 0) {
+			itemCollection[itemCollection.length - 1].isNew = false;
 		}
 		let newItem: checkItem = {
 			checkItem_id: itemCollection.length,
@@ -140,24 +139,23 @@
 	 * almacenar todos los items y categorías existentes y nuevos
 	 */
 	categories.forEach((element) => {
-		if (!element.checkItems){
-			if (element.checkitems){
+		if (!element.checkItems) {
+			if (element.checkitems) {
 				let repairedElement: checkcategory = {
 					category_id: element.category_id,
 					categoryName: element.categoryName,
 					checkItems: element.checkitems
-				}
+				};
 				element = repairedElement;
-			}
-			else{
-			element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
+			} else {
+				element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
 			}
 		}
 		let myItemList = element.checkItems;
 		myItemList.forEach((thisCheckitem) => {
 			if (!itemCollection.includes(thisCheckitem)) {
 				thisCheckitem.item_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
-				
+
 				itemCollection = [
 					...itemCollection,
 					{
@@ -209,7 +207,7 @@
 						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
 						{#if categoryCompound.category.checkItems.length != 0}
 							<!-- <select multiple bind:value={itemCheckedCollection}> -->
-							<MultiSelect id='itemsSelected' bind:value={itemCheckedCollection}>
+							<MultiSelect id="itemsSelected" bind:value={itemCheckedCollection}>
 								{#each categoryCompound.category.checkItems as item}
 									item: {JSON.stringify(item)}
 									categoría: {JSON.stringify(categoryCompound)}
@@ -257,36 +255,32 @@
 		</div>
 
 		<div id="dynamicItem" class="col-6">
-			<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
-			{#each itemCollection as itemCompound}
-				<div class="dynamicContainer">
-					{#if itemCompound.isNew == true}
-						<div class="row">
-							<div class="col-9">
+			<div class="dynamicContainer">
+				<div class="row">
+					<div class="col-9">
+						{#each itemCollection as itemCompound}
+							{#if itemCompound.isNew == true}
 								<input
 									type="text"
 									class="form-control addedButton"
 									id={`item-${itemCompound.checkitem.checkItem_id}`}
 									bind:value={itemCompound.checkitem.item}
 								/>
-							</div>
-							<!-- <div class="col-3">
-							<button
-								class="btn btn-primary"
-								on:click={removeItem(itemCompound.checkItem.checkItem_id)}>Quitar item</button
-							>
-						</div> -->
-						</div>
-						<select bind:value={itemCompound.selectedCategory}>
-							{#each categoryCollection as categoryCompound}
-								<option class="form-select" value={categoryCompound.category}
-									>{categoryCompound.category.categoryName}</option
-								>
-							{/each}
-						</select>
-					{/if}
+								<select bind:value={itemCompound.selectedCategory}>
+									{#each categoryCollection as categoryCompound}
+										<option class="form-select" value={categoryCompound.category}
+											>{categoryCompound.category.categoryName}</option
+										>
+									{/each}
+								</select>
+							{/if}
+						{/each}
+					</div>
+					<div class="col-3">
+						<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
+					</div>
 				</div>
-			{/each}
+			</div>
 		</div>
 
 		<div id="checklistPreview" class="col-5" />
