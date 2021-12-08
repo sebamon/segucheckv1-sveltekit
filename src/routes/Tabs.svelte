@@ -5,11 +5,12 @@
 <script>
 	import { setContext, onDestroy } from 'svelte';
 	import { writable } from 'svelte/store';
-
+	
 	const tabs = [];
 	const panels = [];
 	const selectedTab = writable(null);
 	const selectedPanel = writable(null);
+	//export let tabInfoProps;
 
 	setContext(TABS, {
 		registerTab: tab => {
@@ -47,4 +48,5 @@
 
 <div class="tabs">
 	<slot></slot>
+	<!-- {JSON.stringify(tabInfoProps)} -->
 </div>

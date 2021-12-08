@@ -6,7 +6,8 @@
 	*/
 
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
-	import MultiSelect from './MultiSelect.svelte';
+	import MultiSelect from '$lib/MultiSelect.svelte';
+import { tick } from 'svelte';
 
 	/* 
 		Declaración de tipos
@@ -47,6 +48,8 @@
 	*/
 	let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
 	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
+	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
+	let selectedCategory: checkcategory;
 	let itemVerification: verifyItem[]; // Colección creada para inicializar una checklist
 	let verification: verify = {
 		// Variable creada para inicializar una checklist
@@ -85,7 +88,7 @@
 	const addCategory = () => {
 		if (newCategoryNameToAdd != '') {
 			let newCategory: checkcategory = {
-				category_id: categoryCollection.length + 1,
+				category_id: categoryCollection.length,
 				categoryName: newCategoryNameToAdd,
 				checkItems: []
 			};
@@ -96,7 +99,7 @@
 					isNew: true
 				}
 			];
-			newCategoryNameToAdd = '';
+			newCategoryNameToAdd = 'Categoría nueva';
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -104,25 +107,37 @@
 		Crea un ítem nuevo
 	*/
 	const addItem = () => {
-		if (itemCollection.length != 0) {
-			itemCollection[itemCollection.length - 1].isNew = false;
-		}
-		let newItem: checkItem = {
-			checkItem_id: itemCollection.length,
-			item: 'Nuevo elemento',
-			description: 'Nueva descripción',
-			categories: []
-		};
-		itemCollection = [
-			...itemCollection,
-			{
-				checkitem: newItem,
-				selectedCategory: categoryCollection[0].category,
-				active: '',
-				checked: false,
-				isNew: true
-			}
-		];
+		// if (itemCollection.length != 0) {
+		// 	itemCollection[itemCollection.length - 1].isNew = false;
+		// }
+		if (newItemNameToAdd != '') {
+
+			let newItem: checkItem = {
+				checkItem_id: itemCollection.length,
+				item: newItemNameToAdd,
+				description: 'Nueva descripción',
+				categories: [selectedCategory]
+			};
+			itemCollection = [
+				...itemCollection,
+				{
+					checkitem: newItem,
+					selectedCategory: selectedCategory,
+					active: '',
+					checked: false,
+					isNew: true
+				}
+			];
+			// Actualizamos la colección de Categorías
+			let categoryIndex = selectedCategory.category_id;
+			let categoryItemCol = categoryCollection[categoryIndex].category.checkItems;
+			categoryItemCol = [...categoryItemCol, newItem];
+			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
+
+			// Reestablecemos el nombre por defecto
+			newItemNameToAdd = 'Item nuevo';
+
+		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
 	const removeItemField = (item_id) => {
@@ -147,9 +162,8 @@
 					checkItems: element.checkitems
 				};
 				element = repairedElement;
-			} else {
-				element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
 			}
+			element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
 		}
 		let myItemList = element.checkItems;
 		myItemList.forEach((thisCheckitem) => {
@@ -176,6 +190,12 @@
 			}
 		];
 	});
+
+	// export let tabInfoProps = {
+	// 	itemCollection: itemCollection,
+	// 	itemCheckedCollection: itemCheckedCollection,
+	// 	categoryCollection: categoryCollection
+	// 	}
 </script>
 
 <svelte:head>
@@ -195,6 +215,7 @@
 	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
 		<div id="panel" class="col-8">
 			<Tabs>
+				<!-- <svelte:component this={Tabs} {tabInfoProps}> -->
 				<TabList>
 					{#each categoryCollection as categoryCompound}
 						<Tab>{categoryCompound.category.categoryName}</Tab>
@@ -203,21 +224,22 @@
 
 				{#each categoryCollection as categoryCompound}
 					<TabPanel>
+						<!--  -->
 						<h3>{categoryCompound.category.categoryName}</h3>
 						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
-						{#if categoryCompound.category.checkItems.length != 0}
-							<!-- <select multiple bind:value={itemCheckedCollection}> -->
-							<MultiSelect id="itemsSelected" bind:value={itemCheckedCollection}>
-								{#each categoryCompound.category.checkItems as item}
-									item: {JSON.stringify(item)}
-									categoría: {JSON.stringify(categoryCompound)}
-									<option class="form-select" value={item}>{item.item}</option>
-								{/each}
-							</MultiSelect>
-							<!-- </select> -->
-						{/if}
+						<!-- {#if categoryCompound.category.checkItems.length != 0} -->
+						<!-- <select multiple bind:value={itemCheckedCollection}> -->
+						<MultiSelect id="itemsSelected" bind:value={itemCheckedCollection}>
+							{#each categoryCompound.category.checkItems as item}
+								<option class="form-select" value={item}>{item.item}</option>
+							{/each}
+						</MultiSelect>
+						<!-- </select> -->
+						<!-- {/if} -->
+						<!-- </svelte:component> -->
 					</TabPanel>
 				{/each}
+				<!-- </svelte:component> -->
 			</Tabs>
 		</div>
 		<div id="preview" class="col-4">
@@ -258,23 +280,14 @@
 			<div class="dynamicContainer">
 				<div class="row">
 					<div class="col-9">
-						{#each itemCollection as itemCompound}
-							{#if itemCompound.isNew == true}
-								<input
-									type="text"
-									class="form-control addedButton"
-									id={`item-${itemCompound.checkitem.checkItem_id}`}
-									bind:value={itemCompound.checkitem.item}
-								/>
-								<select bind:value={itemCompound.selectedCategory}>
-									{#each categoryCollection as categoryCompound}
-										<option class="form-select" value={categoryCompound.category}
-											>{categoryCompound.category.categoryName}</option
-										>
-									{/each}
-								</select>
-							{/if}
-						{/each}
+						<input type="text" class="form-control addedButton" bind:value={newItemNameToAdd} />
+						<select bind:value={selectedCategory}>
+							{#each categoryCollection as categoryCompound}
+								<option class="form-select" value={categoryCompound.category}
+									>{categoryCompound.category.categoryName}</option
+								>
+							{/each}
+						</select>
 					</div>
 					<div class="col-3">
 						<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
