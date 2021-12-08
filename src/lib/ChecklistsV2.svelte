@@ -113,7 +113,7 @@ import { tick } from 'svelte';
 		if (newItemNameToAdd != '') {
 
 			let newItem: checkItem = {
-				checkItem_id: itemCollection.length,
+				checkItem_id: itemCollection.length+1,
 				item: newItemNameToAdd,
 				description: 'Nueva descripción',
 				categories: [selectedCategory]
@@ -136,6 +136,9 @@ import { tick } from 'svelte';
 
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
+
+			console.log('Lista items: ', itemCollection);
+			console.log('Lista items chequeados: ', itemCheckedCollection);
 
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
@@ -190,12 +193,6 @@ import { tick } from 'svelte';
 			}
 		];
 	});
-
-	// export let tabInfoProps = {
-	// 	itemCollection: itemCollection,
-	// 	itemCheckedCollection: itemCheckedCollection,
-	// 	categoryCollection: categoryCollection
-	// 	}
 </script>
 
 <svelte:head>
@@ -231,15 +228,11 @@ import { tick } from 'svelte';
 						<!-- <select multiple bind:value={itemCheckedCollection}> -->
 						<MultiSelect id="itemsSelected" bind:value={itemCheckedCollection}>
 							{#each categoryCompound.category.checkItems as item}
-								<option class="form-select" value={item}>{item.item}</option>
+								<option class="form-select" value={item.checkItem_id}>{item.item}</option>
 							{/each}
 						</MultiSelect>
-						<!-- </select> -->
-						<!-- {/if} -->
-						<!-- </svelte:component> -->
 					</TabPanel>
 				{/each}
-				<!-- </svelte:component> -->
 			</Tabs>
 		</div>
 		<div id="preview" class="col-4">
