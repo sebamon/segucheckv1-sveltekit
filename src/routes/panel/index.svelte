@@ -1,22 +1,21 @@
 <script context="module">
 	export async function load() {
-		const responseOp = await fetch('http://localhost:3000/panel/operarios/operarios');
-		const operatorData = await responseOp.json();
-		const responseVh = await fetch('http://localhost:3000/panel/vehiculos/vehiculos');
-		const vehicleData = await responseVh.json();
-		const responseUs = await fetch('http://localhost:3000/panel/usuarios/usuarios');
-		const userData = await responseUs.json();
-		const responseJob = await fetch('http://localhost:3000/panel/trabajos/trabajos');
-		const jobData = await responseJob.json();
+		const data = await Promise.all([
+			fetch('../usuarios/usuarios'),
+			fetch('../operarios/operarios'),
+			fetch('../vehiculos/vehiculos'),
+			fetch('../trabajos/trabajos')
+		]).then(async (result) => {
+			const userData = await result[0].json();
+			const operatorData = await result[1].json();
+			const vehiclesData = await result[2].json();
+			const jobsData = await result[3].json();
 
+			return { userData, operatorData, vehiclesData, jobsData };
+		});
 		return {
 			props: {
-				data: {
-					operatorData,
-					vehicleData,
-					userData,
-					jobData
-				}
+				data
 			}
 		};
 	}
@@ -31,10 +30,10 @@
 	export let data;
 
 	type warning = {
-		none: number;
-		low: number;
-		medium: number;
-		high: number;
+		none: string;
+		low: string;
+		medium: string;
+		high: string;
 	};
 
 	let operatorData = data.operatorData;
@@ -64,16 +63,14 @@
 		// var date1 = new Date('06/30/2019');
 		// var date2 = new Date('07/30/2019');
 
-		// To calculate the time difference of two dates
+		// Calcula la diferencia de tiempo entre dos fechas
 		var difference_In_Time = date2.getTime() - date1.getTime();
 
-		// To calculate the no. of days between two dates
+		// Convierte el dato anterior en diferencia en días
 		var difference_In_Days = difference_In_Time / (1000 * 3600 * 24);
 
-		return difference_In_Days
+		return difference_In_Days;
 	};
-
-
 </script>
 
 <svelte:head>

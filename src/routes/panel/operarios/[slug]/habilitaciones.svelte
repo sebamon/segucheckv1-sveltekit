@@ -17,6 +17,7 @@
 
 <script lang="ts">
 	import { dataset_dev } from 'svelte/internal';
+	import PdfUpload from '$lib/PdfUpload.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
@@ -35,6 +36,7 @@
 		{ documentType_id: 1, description: 'Certificación para Trabajo en Altura' },
 		{ documentType_id: 2, description: 'Carnet de Manejo Defensivo' }
 	];
+	export let fileName;
 
 	// Configurar componente AddressDetails para editar
 	let isReadOnly = false;
@@ -80,7 +82,7 @@
 			<div class="col-md-6">
 				<label for="urlPdf" class="form-label">Adjunto</label>
 				<!-- Acepta documentos, planillas, presentaciones, imágenes y sus variantes libres-->
-				<input
+				<!-- <input
 					class="form-control"
 					type="file"
 					accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, 
@@ -94,7 +96,8 @@
 				application/pdf, image/*"
 					id="urlPdf"
 					required
-				/>
+				/> -->
+				<PdfUpload />
 			</div>
 		</div>
 		<div class="row mb-3 g-3">

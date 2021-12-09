@@ -50,7 +50,7 @@
 			
 		
 		// setTimeout(()=>{
-		subir(fileName, fileExtension)
+		//subir(fileName, fileExtension)
 		// }, 6000);
 		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', profilePic: ' + profilePic);
 	}
@@ -292,7 +292,7 @@
 				const data = await submit.json();
 				message = data.message
 				status = data.status
- 
+				//subir(fileName, fileExtension);
 				if (data.status === 'NEW') {
 					cleanPage()
 				}
@@ -550,7 +550,7 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<ImgUpload on:loadImage={captureImage} on:subir={subirImage}/>
+			<ImgUpload on:loadImage={captureImage}/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">

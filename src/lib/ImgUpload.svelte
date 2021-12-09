@@ -104,8 +104,6 @@
 </script>
 
 <div>
-	{JSON.stringify(name)}
-	{JSON.stringify(filesPath)}
 	<!-- Formulario subida de archivo -->
 	<div>
 		<div>
