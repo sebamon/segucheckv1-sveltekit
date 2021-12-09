@@ -8,6 +8,8 @@
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
 	import MultiSelect from '$lib/MultiSelect.svelte';
 	import { fade } from 'svelte/transition';
+	import { each } from 'svelte/internal';
+import { reseller } from 'googleapis/build/src/apis/reseller';
 
 	/* 
 		Declaración de tipos
@@ -69,6 +71,7 @@
 	let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
+	let nameTooltip = 'Doble click para editar';
 
 	/*
 		Declaración de funciones
@@ -81,9 +84,11 @@
 		if (titleH2 == 'visible') {
 			titleH2 = 'hidden';
 			titleEdit = 'visible';
+			nameTooltip = '<Enter> para guardar';
 		} else {
 			titleH2 = 'visible';
 			titleEdit = 'hidden';
+			nameTooltip = 'Doble click para editar';
 		}
 	};
 
@@ -109,8 +114,36 @@
 				categoryId: newCategory.category_id,
 				itemId: []
 			};
-			console.log('Colección de chequeados', itemCheckedCollection);
+			// Reestablecemos el nombre por defecto
 			newCategoryNameToAdd = 'Categoría nueva';
+
+			// Guardamos categoría en base de datos
+			let items = [];
+			newCategory.checkItems.forEach((item) => {
+				items = [
+					...items,
+					{
+						item: item.item,
+						description: item.description
+					}
+				];
+			});
+			let values = {
+				category_id: null,
+				categoryName: newCategory.categoryName,
+				checkItems: items
+			};
+			const submitCat = async (values) => {
+				try {
+					let response = await fetch('../../../api/category', { //http://localhost:3000/api/category
+						method: 'POST',
+						body: JSON.stringify(values)
+					});
+
+					const data = await response.json().then(() => console.log('Retorno de submitCat: ' + data));
+				} catch (error) {}
+			};
+			submitCat(values);
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -141,11 +174,37 @@
 			categoryItemCol = [...categoryItemCol, newItem];
 			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
 
-			// Guardamos item en base de datos
-			
-			
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
+
+			// Guardamos categoría en base de datos
+			let categories = [];
+			newItem.categories.forEach((category) => {
+				categories = [
+					...categories,
+					{
+						categoryName: category.categoryName
+					}
+				];
+			});
+			let values = {
+				checkItem_id: null,
+				item: newItem.item,
+				description: newItem.description,
+				categories: categories
+			};
+			const submitItem = async (values) => {
+				try {
+					console.log('dentro del try, envío: ', values);
+					let response = await fetch('../../../api/checkItem', { //http://localhost:3000/api/checkItem
+						method: 'POST',
+						body: JSON.stringify(values)
+					});
+
+					const data = await response.json().then(() => console.log('Retorno de submitItem: ' + data));
+				} catch (error) {}
+			};
+			submitItem(values);
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -212,13 +271,15 @@
 </svelte:head>
 
 {#if itemCollection}
-	<div id="dynamicChecklistName" data-tooltip="Doble click para editar ⇩">
+	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
+		<i class="fas fa-save {titleEdit}" />
 		<input
 			type="text"
 			class="form-control {titleEdit}"
 			on:keydown={({ key }) => key === 'Enter' && toggle()}
 			bind:value={thisChecklist.checkListName}
 		/>
+		<i class="fas fa-edit {titleH2}" on:dblclick={toggle} />
 		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
 	</div>
 	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
