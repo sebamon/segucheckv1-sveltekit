@@ -12,12 +12,31 @@ export async function get(request){
                 },
                 include: {
                     customer : true,
-                    riskanalysis: true,
-                    checkitemgroup: true,
+                    // riskanalysis: true,
+                    // checklist: true,
                     location : true,
                     vehicle : true,
-                    requiereddocumentation : true,
-                    
+                    // requiereddocumentation : true,
+                    operatoronjobs : {
+                        include : {
+                            operator : {
+                                select : {
+                                    operator_id : true,
+                                    users : {
+                                        select : {
+                                            user_id : true,
+                                            email : true,
+                                            firstName : true,
+                                            lastName : true,
+                                            cuit : true,
+                                            phone : true,
+                                            active : true
+                                        }
+                                    },
+                                }
+                            }
+                        }
+                    },
                 }
             })
             if(jobDetails){

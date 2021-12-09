@@ -2,6 +2,7 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte'
+	import ImgUpload from '$lib/ImgUpload.svelte'
 
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
@@ -69,9 +70,9 @@
 	let internNumber: number;
 	let chasisNumber: string;
 	let motorNumber: string;
-	let frontPic: FileReader;
-	let rightSidePic: ImageData;
-	let leftSidePic = [];
+	let frontPic: string;
+	let rightSidePic: string;
+	let leftSidePic : string;
 
 	let status: string;
 	let message: string;
@@ -173,12 +174,73 @@
 		}
 		}
 	});
+
+	export function captureImage(e){
+		console.log('captureImage',e);
+		let name = e.detail.name
+		let fileName = e.detail.fileName
+		let fileExtension = e.detail.fileExtension
+		let filesPath = e.detail.filesPath
+		if(name === 'frontPic'){
+			frontPic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}
+		if(name === 'leftPic'){
+			leftSidePic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}
+		if(name === 'rightPic'){
+			rightSidePic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}				
+		subir(fileName, fileExtension, filesPath)
+		console.log('file: ' + fileName + ', fileExt: ' + fileExtension );
+	}
+const subir = async(fileName, fileExtension, filesPath) => {
+
+	console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+	try{
+
+		let url = '../../../api/driveSet';
+		let fileData = {
+			fileName: fileName,
+			fileExtension: fileExtension,
+			filesPath : filesPath
+		};
+		console.log('subir file fileData',fileData)
+		let response = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(fileData)
+		});
+		
+		console.log(response)
+		const data = await response.json()
+		
+		console.log('la imagen subida: ',data)
+		let fileId = {
+			fileId: data.id,
+		};
+		console.log('fileID',fileId)
+		// let urlId = 'http://localhost:3000/api/driveGet';
+		// let responseId = await fetch(url, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(fileId)
+		// });
+		// const dataId = await responseId.json()
+		// console.log('Mi link para compartir: ' + JSON.parse(dataId));
+		// profilePic = JSON.parse(dataId);
+	}catch(e){
+		console.log(e)
+		return 'Sin Datos'
+	}
+}
 </script>
 
 <svelte:head>
 	<title>Nuevo vehículo - SeguCheck</title>
 </svelte:head>
-
+leftSidePic: {JSON.stringify(leftSidePic)}
+<hr>
+rightSidePic: {JSON.stringify(rightSidePic)}
+<hr>
+frontPic: {JSON.stringify(frontPic)}
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -354,37 +416,25 @@
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
-		<div class="col-md-6">
-			<div class="mb-3">
+		<div class="col-md-12 col-lg-12">
+			<div class="mb-2">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="frontPic"
-					bind:value={frontPic}
-				/>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'frontPic'}/>
 			</div>
-			<div class="mb-3">
+			<!-- <div class="mb-2">
 				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="leftSidePic"
-					bind:value={leftSidePic}
-				/>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'leftSidePic'}/>
 			</div>
-			<div class="mb-3">
+			<div class="mb-2">
 				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="rigthSidePic"
-					bind:value={rightSidePic}
-				/>
-			</div>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'rigthSidePic'}/>
+			</div> -->
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">
 			<button type="submit" class="btn btn-primary" disabled={!$isValid}>

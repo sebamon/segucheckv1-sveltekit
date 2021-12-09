@@ -15,6 +15,7 @@ type user = {
 };
 
 export async function get() {
+	console.log('** API USUARIOS - GET **')
 	try {
 		const users = await prisma.users.findMany({
 			where: {},
@@ -69,7 +70,9 @@ export async function get() {
 }
 
 export const post = async (request) => {
-	const formBody = (request.body).values;
+	console.log('** API USUARIOS - POST **')
+	const formBody = JSON.parse(request.body).values;
+	console.log('formBody ', formBody)
 	let roles = [];
 	try {
 		if (formBody.roles_assigned['rol1'] === true) {
@@ -87,6 +90,7 @@ export const post = async (request) => {
 				fileExtension : 'error'
 			}
 		}
+
 		console.log('formBody post usuarios', formBody)
 		const newUser = await prisma.users.create({
 			data: {
@@ -100,7 +104,7 @@ export const post = async (request) => {
 				nationality: formBody.nationality,
 				studyLevel: formBody.studyLevel,
 				dateOfBirth: new Date(formBody.dateOfBirth),
-				profilePic: formBody.profilePic.fileName+formBody.profilePic.fileExtension,
+				profilePic: formBody.profilePic,
 				password: '1234'
 			}
 		});

@@ -18,11 +18,9 @@ model checkitem {
 }
 
 model checkcategory {
-  category_id  Int         @id @default(autoincrement())
-  categoryName String      @unique
-  checkitems   checkitem[] @relation(references: [checkItem_id])
-
-
+  category_id         Int           @id @default(autoincrement())
+  categoryName        String        @unique
+  checkitems          checkitem[]   @relation(references: [checkItem_id])
 }
 
 model verifyItem {
@@ -151,6 +149,7 @@ model operatoronjobs {
 
   @@id([job_id, operator_id])
   @@index([operator_id], map: "OperatorOnJobs_operator_id_fkey")
+  @@index([job_id], map: "Delete All by job_id")
 }
 
 model requierddocumentationitem {

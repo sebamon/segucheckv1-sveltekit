@@ -1,19 +1,34 @@
 <script context="module">
 	export async function load({page , fetch}){
+		console.log(page.params.slug)
 		try{
-			const response = await fetch(`./${page.params.slug}/detalle`)
-			const data = await response.json()
-			console.log(JSON.stringify(data))
+			
+			let data = await Promise.all([
+			fetch('http://localhost:3000/panel/clientes/clientes'),
+			fetch(`./${page.params.slug}/detalle`),
+
+		])
+		.then(async(result) => {
+			const customerList = await result[0].json()
+			const locationDetails = await result[1].json()
+			console.log('ssr' ,locationDetails)
+
+			
+			return { customerList , locationDetails }
+		})
 			return {
 				props: {
-					data
+					...data
 				}
 			}
 		}catch(error)
 		{
 			console.log(error)
 			return {
-				props: {}
+				props: {
+					status : 'ERROR',
+					message : error
+				}
 			}
 		}
 	}
@@ -24,19 +39,33 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
+import { onMount } from 'svelte';
+import { json } from 'stream/consumers';
 
-	export let data
-	export let locationDetails = data.locationDetails
+
+	// export let data
+	// export let data2
+	// let locationDetails = data.locationDetails.locationDetails
+	export let customerList
+	// = data.customerList.customers
+	export let locationDetails
+	export let status = locationDetails.status || 'ERROR'
+	export let message = locationDetails.message || 'ERROR'
+	// let location = locationDetails
+	// = data.locationDetails.locationDetails
+
+	// export let locationDetails = data.locationDetails.locationDetails
+	// export let customerList = data.customerList.customers
 
 	// Configurar componente LocationDetails para solo lectura
 	export let isReadOnly = true;
-	console.log('data en script',data)
+	// console.log('data en script',data)
 </script>
-
 <svelte:head>
-	<title>Locación: {locationDetails.locationName} - SeguCheck</title>
+	<title>Locación: locationDetails.locationDetail.locationName - SeguCheck</title>
+	
 </svelte:head>
-
+{#await locationDetails then locationDetails}
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -46,7 +75,7 @@
 			<a href="/panel/locaciones">Locaciones</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/locaciones/{locationDetails.location_id}/">{locationDetails.locationName}</a>
+			<a href="/panel/locaciones/{locationDetails.locationDetails.location_id}/">{locationDetails.locationDetails.locationName}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
@@ -54,9 +83,14 @@
 
 <main>
 	<!-- Formulario detalles locación -->
-	{#if data.status}
-		<LocationDetails {...locationDetails} {isReadOnly} />
+
+
+	{#if status == 'OK'}
+		<LocationDetails {...locationDetails.locationDetails} {isReadOnly} {...customerList}/>
 	{:else}
-		<SeguAlert status={data.status} message={data.message} path=locaciones />
-	{/if}
+		<SeguAlert status={status} message={message} path=locaciones />
+	{/if} 
+
+
 </main>
+{/await}

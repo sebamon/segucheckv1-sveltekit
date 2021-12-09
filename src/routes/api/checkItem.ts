@@ -56,55 +56,37 @@ export async function post(request){
     const formBody = request.body
     console.log('formBody', formBody)
 
-    const category : checkcategory = {
-        category_id : formBody.category_id || null,
-        categoryName : formBody.categoryName || '',
-        checkItems : formBody.categories.checkItems || [],
-    }
-    const cate1 : checkcategory = {
-        category_id : 60,
-        categoryName : 'Sesenta',
-    }
-    const cate2 : checkcategory = {
-        category_id : 61,
-        categoryName : 'Sesenta y uno',
-    }
-
+    // const category : checkcategory = {
+    //     category_id : formBody.category_id || null,
+    //     categoryName : formBody.categoryName || '',
+    //     checkItems : formBody.categories.checkItems || [],
+    // }
     const checkItem : checkItem = {
         checkItem_id : null,
         item : formBody.item,
         description : formBody.description,
-        categories : [
-            cate1, cate2
-        ]
+        categories : formBody.categories
     }
-    const catogories = checkItem.categories
-    console.log('lista categorias', catogories)
 
-    console.log('category', category)
-    console.log('checkItem', checkItem)
-
-    // const { category_id , categoryName, checkItems } = category
     try{
         const newCheckItem = await prisma.checkitem.create({
             data: {
                 item: checkItem.item,
                 description : checkItem.description,
                 categories : {
-                    connectOrCreate :{
-                        where :{
-                            category_id : checkItem.categories[0].category_id,
-                        },
-                        create: {
-                            category_id : checkItem.categories[0].category_id,
-                            categoryName : checkItem.categories[0].categoryName
-                        }
+                    connectOrCreate : checkItem.categories.map((category)=>{
+                            return {
+                                where : {categoryName : category.categoryName},
+                                create : {categoryName : category.categoryName},
+                                
+                            };
+                        }),
                     }
-                }
             },
             include: {
                 categories : true,
-            }
+            },
+            
         })
         console.log('Objeto creado',newCheckItem)
         if(newCheckItem){
@@ -126,7 +108,7 @@ export async function post(request){
         return {
             body: {
                 category : {},
-                message : 'Error al crear checkItem',
+                message : 'Error al crear checkItem - '+ e.meta.target,
                 status : 'ERROR',
             }
         }

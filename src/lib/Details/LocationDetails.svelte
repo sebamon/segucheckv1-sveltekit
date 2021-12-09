@@ -9,11 +9,12 @@
 		customer_id: 0,
 		businessName: ''
 	};
-	export let data
-	let message, status
+	export let customers
+	let customer_id
 	
+	let message, status
 	console.log('data!!!!!!!!!!!!!!!!!!!!! location',)
-	export let customerList = [
+	export let customerList = customers || [
 		{ customer_id: 1, businessName: 'Cliente A' },
 		{ customer_id: 2, businessName: 'Cliente B' },
 		{ customer_id: 3, businessName: 'Cliente C' }
@@ -52,7 +53,7 @@
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
-import { dataset_dev } from 'svelte/internal';
+
 	import * as yup from 'yup';
 	import es from 'yup-es';
 	yup.setLocale(es);
@@ -64,10 +65,12 @@ import { dataset_dev } from 'svelte/internal';
 		/^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð,.'\s-]+$/u;
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } = createForm({
 		initialValues: {
+			location_id : location_id,
 			locationName: locationName,
 			coordinates: coordinates,
 			province: province,
-			customer: customer.customer_id
+			customer: customer.businessName,
+			customer_id: customer.customer_id
 		},
 		validationSchema: yup.object().shape({
 			locationName: yup
@@ -86,11 +89,12 @@ import { dataset_dev } from 'svelte/internal';
 				.mixed()
 				.oneOf(provinceList, 'La provincia indicada no se encuentra en la lista.'),
 			customer: yup.mixed(),
-			// .oneOf(customerList, 'El cliente indicado no se encuentra en la lista.')
+			// .oneOf(customerList, 'El cliente indicado no se encuentra en la lista.'),
 		}),
 		onSubmit: async(values) => {
 			// Realiza la carga de datos al cliquear Enviar
 			console.log(values)
+
 			try{
 				const submit = await fetch(`editar`, {
 					method : 'PUT',
@@ -111,7 +115,6 @@ import { dataset_dev } from 'svelte/internal';
 		}
 	});
 </script>
-
 {#if status}
 	<SeguAlert {message} {status} path="locaciones" />
 {/if}
@@ -165,9 +168,11 @@ import { dataset_dev } from 'svelte/internal';
 					on:blur={handleChange}
 					readonly={isReadOnly}
 					class:invalid={$errors.customer}
+					
 				/>
 			{:else}
-				<select id="customer" class="form-select" aria-label="Cliente" required>
+	
+				<select id="customer" class="form-select" aria-label="Cliente" required >
 					<option selected disabled>Elija una opción...</option>
 					{#each customerList as { customer_id, businessName }}
 						<option value={customer_id} selected={customer_id == customer.customer_id}>

@@ -1,6 +1,12 @@
 import { PrismaClient } from '@prisma/client'
 const prisma = new PrismaClient()
 
+type checkItem = {
+    checkItem_id    : number,
+    item            : string,
+    description     : string,
+    categories      : checkcategory[],
+}//Listo model checkitem
 type checkcategory = {
     category_id        : number,
     categoryName       : string,
@@ -54,27 +60,35 @@ export async function post(request){
         categoryName : formBody.categoryName,
         checkItems : formBody.checkItems,
     }
-    console.dir(category)
-    console.log('category objeto ',category.checkItems[0].item)
+    console.log('category postman',category)
+    category.checkItems.map((item) => {
+        return {
+            where : {item : item.item},
+            create : {item : item.item},
+        };
+    })
     // const { category_id , categoryName, checkItems } = category
     try{
         const newCategory = await prisma.checkcategory.create({
             data: {
                 categoryName: category.categoryName,
                 checkitems : {
-                    connectOrCreate :{
-                        where :{
-                            item : category.checkItems[0].item,
-                        },
-                        create: {
-                            item: category.checkItems[0].item,
-                            description : category.checkItems[0].description
-                        }
-                    }
-                }
+                    connectOrCreate : category.checkItems.map((item) => {
+                        return {
+                            where : {item : item.item},
+                            create : {item : item.item ,description: item.description},
+                        };
+                    })
+                },
             },
             include: {
-                checkitems : true,
+                checkitems : {
+                    select : {
+                        checkItem_id : true,
+                        item : true,
+                        description :true
+                    }
+                },
             }
         })
         console.log('Objeto creado',newCategory)
@@ -97,7 +111,7 @@ export async function post(request){
         return {
             body: {
                 category : {},
-                message : 'Error al cargar Categoria',
+                message : 'Error al cargar Categoria - '+ e.code,
                 status : 'ERROR',
               
             }

@@ -48,7 +48,7 @@
         'INFO' : `Información`,
         'UPDATE' : `Actualización Exitosa`
     }
-
+    let visible = true
 
     let color:Color = COLOR[status] || DEFAULT_COLOR
     let link = LINKS[status] || DEFAULT_LINK
@@ -57,7 +57,12 @@
     let title = TITLE[status] || DEFAULT_TITLE
 </script>
 
-<Alert {color}>
+<Alert {color} 
+    class="close" 
+    isOpen={visible}
+    toggle={() => (visible = false)}
+    fade={false}
+>
     <h4 class="alert-heading">{title}</h4>
     <p>{message}
         <a href={link} class="alert-link"> {text} {model}</a>
