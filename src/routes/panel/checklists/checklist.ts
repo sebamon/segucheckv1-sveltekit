@@ -39,3 +39,73 @@ export async function get(){
             }
         }
     }
+
+    // export async function post(request){
+    //     console.log('request.body', request.body)
+    //     const formBody = JSON.parse(request.body)
+    
+    //     const checklist : checkList = {
+    //         checklist_id : formBody.checklist_id,
+    //         checkListName : formBody.checklistName,
+    //         verify : formBody.verify,
+    //     }
+    //     console.log('category postman',category)
+    //     category.checkItems.map((item) => {
+    //         return {
+    //             where : {item : item.item},
+    //             create : {item : item.item},
+    //         };
+    //     })
+    //     // const { category_id , categoryName, checkItems } = category
+    //     try{
+    //         const newCategory = await prisma.checkcategory.create({
+    //             data: {
+    //                 categoryName: category.categoryName,
+    //                 checkitems : {
+    //                     connectOrCreate : category.checkItems.map((item) => {
+    //                         return {
+    //                             where : {item : item.item},
+    //                             create : {item : item.item ,description: item.description},
+    //                         };
+    //                     })
+    //                 },
+    //             },
+    //             include: {
+    //                 checkitems : {
+    //                     select : {
+    //                         checkItem_id : true,
+    //                         item : true,
+    //                         description :true
+    //                     }
+    //                 },
+    //             }
+    //         })
+    //         console.log('Objeto creado',newCategory)
+    //         if(newCategory){
+    //             return {
+    //                 category : newCategory,
+    //                 message: "Categoria Creada Exitosamente",
+    //                 result: "NEW"                
+    //             }
+    //         }
+    //         else{
+    //             return {
+    //                 category : newCategory,
+    //                 message: "No pudo crearse la Categoria",
+    //                 status: "INFO",
+    //             }
+    //         }
+    //     }catch(e){
+    //         console.log(e)
+    //         return {
+    //             body: {
+    //                 category : {},
+    //                 message : 'Error al cargar Categoria - '+ e.code,
+    //                 status : 'ERROR',
+                  
+    //             }
+    //         }
+    //     }
+    
+    
+    // }

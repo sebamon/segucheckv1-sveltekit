@@ -8,8 +8,6 @@
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
 	import MultiSelect from '$lib/MultiSelect.svelte';
 	import { fade } from 'svelte/transition';
-	import { each } from 'svelte/internal';
-import { reseller } from 'googleapis/build/src/apis/reseller';
 
 	/* 
 		Declaración de tipos
@@ -177,7 +175,7 @@ import { reseller } from 'googleapis/build/src/apis/reseller';
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
 
-			// Guardamos categoría en base de datos
+			// Guardamos item en base de datos
 			let categories = [];
 			newItem.categories.forEach((category) => {
 				categories = [
@@ -195,7 +193,7 @@ import { reseller } from 'googleapis/build/src/apis/reseller';
 			};
 			const submitItem = async (values) => {
 				try {
-					console.log('dentro del try, envío: ', values);
+					// console.log('dentro del try, envío: ', values);
 					let response = await fetch('../../../api/checkItem', { //http://localhost:3000/api/checkItem
 						method: 'POST',
 						body: JSON.stringify(values)
@@ -213,7 +211,10 @@ import { reseller } from 'googleapis/build/src/apis/reseller';
 	};
 
 	const submit = () => {
-		alert('Yey! Vamos a enviar ésto!');
+		itemCheckedCollection.forEach((item) => {
+			
+		})
+		// alert('Yey! Vamos a enviar ésto!');
 	};
 
 	/*
@@ -283,7 +284,7 @@ import { reseller } from 'googleapis/build/src/apis/reseller';
 		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
 	</div>
 	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
-		<div id="panel" class="col-8">
+		<div id="panel" class="col-8 ">
 			<Tabs>
 				<!-- <svelte:component this={Tabs} {tabInfoProps}> -->
 				<TabList>
@@ -296,7 +297,7 @@ import { reseller } from 'googleapis/build/src/apis/reseller';
 					<TabPanel>
 						<!--  -->
 						<h3>{categoryCompound.category.categoryName}</h3>
-						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
+						<!-- <input type="text" bind:value={categoryCompound.category.categoryName} /><br /> -->
 						<MultiSelect
 							id="itemsSelected"
 							bind:value={itemCheckedCollection[categoryCompound.category.category_id].itemId}
