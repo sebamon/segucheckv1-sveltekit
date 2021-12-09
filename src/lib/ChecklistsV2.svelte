@@ -7,7 +7,7 @@
 
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
 	import MultiSelect from '$lib/MultiSelect.svelte';
-import { tick } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	/* 
 		Declaración de tipos
@@ -26,6 +26,11 @@ import { tick } from 'svelte';
 		isNew: boolean;
 	};
 
+	type checkedItemCompound = {
+		itemId: number[];
+		categoryId: number;
+	};
+
 	/* 
 		Declaración de Variables
 	*/
@@ -41,7 +46,7 @@ import { tick } from 'svelte';
 	*/
 	let categoryCollection: categoryCompound[] = []; // Colección de las categorías `checkcategory` actuales y nuevas
 	let itemCollection: itemCompound[] = []; // Colección de los items `checkcitem` actuales y nuevos
-	let itemCheckedCollection = []; // // Colección de los items que el usuario desea cargar a la checklist
+	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario desea cargar a la checklist
 
 	/*
 		Variables auxiliares
@@ -99,6 +104,12 @@ import { tick } from 'svelte';
 					isNew: true
 				}
 			];
+			itemCheckedCollection[newCategory.category_id] = {
+				// asigno la nueva categoría a la colección de elementos chequeados
+				categoryId: newCategory.category_id,
+				itemId: []
+			};
+			console.log('Colección de chequeados', itemCheckedCollection);
 			newCategoryNameToAdd = 'Categoría nueva';
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
@@ -107,13 +118,9 @@ import { tick } from 'svelte';
 		Crea un ítem nuevo
 	*/
 	const addItem = () => {
-		// if (itemCollection.length != 0) {
-		// 	itemCollection[itemCollection.length - 1].isNew = false;
-		// }
 		if (newItemNameToAdd != '') {
-
 			let newItem: checkItem = {
-				checkItem_id: itemCollection.length+1,
+				checkItem_id: itemCollection.length + 1,
 				item: newItemNameToAdd,
 				description: 'Nueva descripción',
 				categories: [selectedCategory]
@@ -134,12 +141,10 @@ import { tick } from 'svelte';
 			categoryItemCol = [...categoryItemCol, newItem];
 			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
 
+			// Guardamos item en base de datos
+
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
-
-			console.log('Lista items: ', itemCollection);
-			console.log('Lista items chequeados: ', itemCheckedCollection);
-
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -167,6 +172,12 @@ import { tick } from 'svelte';
 				element = repairedElement;
 			}
 			element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
+
+			itemCheckedCollection[element.category_id] = {
+				// asigno la nueva categoría a la colección de elementos chequeados
+				categoryId: element.category_id,
+				itemId: []
+			};
 		}
 		let myItemList = element.checkItems;
 		myItemList.forEach((thisCheckitem) => {
@@ -200,11 +211,11 @@ import { tick } from 'svelte';
 </svelte:head>
 
 {#if itemCollection}
-	<div id="dynamicChecklistName">
+	<div id="dynamicChecklistName" data-tooltip="Doble click para editar ⇩">
 		<input
 			type="text"
 			class="form-control {titleEdit}"
-			on:mouseleave={toggle}
+			on:keydown={({ key }) => key === 'Enter' && toggle()}
 			bind:value={thisChecklist.checkListName}
 		/>
 		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
@@ -224,9 +235,10 @@ import { tick } from 'svelte';
 						<!--  -->
 						<h3>{categoryCompound.category.categoryName}</h3>
 						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
-						<!-- {#if categoryCompound.category.checkItems.length != 0} -->
-						<!-- <select multiple bind:value={itemCheckedCollection}> -->
-						<MultiSelect id="itemsSelected" bind:value={itemCheckedCollection}>
+						<MultiSelect
+							id="itemsSelected"
+							bind:value={itemCheckedCollection[categoryCompound.category.category_id].itemId}
+						>
 							{#each categoryCompound.category.checkItems as item}
 								<option class="form-select" value={item.checkItem_id}>{item.item}</option>
 							{/each}
@@ -240,16 +252,20 @@ import { tick } from 'svelte';
 			<div class="dynamicContainer border preview-container">
 				<h4 class="preview-header"><strong>{thisChecklist.checkListName}</strong></h4>
 				<!-- <p>Categoría (colección): {JSON.stringify(categoryCollection)}</p> -->
-				{#each categoryCollection as categoryCompound}
-					<!-- {#if categoryCompound.category.checkitems.length != 0} -->
-					<h5 class="preview-header">{categoryCompound.category.categoryName}</h5>
-					{#each itemCollection as itemCompound}
-						{#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id}
-							<input class="form-check-input previewCheck" type="checkbox" />
-							{itemCompound.checkitem.item}<br />
-						{/if}
-					{/each}
-					<!-- {/if} -->
+				{#each itemCheckedCollection as checkedItem}
+					{#if checkedItem.itemId.length != 0}
+						<div class="dynamicContainer" transition:fade>
+							<h5 class="preview-header">
+								{categoryCollection[checkedItem.categoryId].category.categoryName}
+							</h5>
+							{#each checkedItem.itemId as itemPerCategory}
+								<!-- {#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id} -->
+								<input class="form-check-input previewCheck" type="checkbox" />
+								{itemCollection[itemPerCategory - 1].checkitem.item}<br />
+								<!-- {/if} -->
+							{/each}
+						</div>
+					{/if}
 				{/each}
 			</div>
 		</div>
@@ -306,6 +322,7 @@ import { tick } from 'svelte';
 	.preview-container {
 		padding: 1%;
 		width: 100%;
+		background-color: rgba(222, 204, 231, 0.562);
 	}
 	.hidden {
 		display: none;
@@ -313,5 +330,69 @@ import { tick } from 'svelte';
 	.visible {
 		display: flex;
 		visibility: visible;
+	}
+
+	/* Tootltips */
+	[data-tooltip] {
+		position: relative;
+		z-index: 2;
+		display: block;
+	}
+
+	[data-tooltip]:before,
+	[data-tooltip]:after {
+		visibility: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition: 0.2s ease-out;
+		transform: translate(-50%, 5px);
+	}
+
+	[data-tooltip]:before {
+		position: left;
+		bottom: 100%;
+		left: 50%;
+		margin-bottom: 5px;
+		padding: 7px;
+		width: 100%;
+		min-width: 70px;
+		max-width: 250px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		background-color: #000;
+		background-color: hsla(0, 0%, 20%, 0.9);
+		color: #fff;
+		content: attr(data-tooltip);
+		text-align: center;
+		font-size: 14px;
+		line-height: 1.2;
+		transition: 0.2s ease-out;
+	}
+
+	[data-tooltip]:after {
+		position: left;
+		bottom: 100%;
+		left: 50%;
+		width: 0;
+		border-top: 5px solid #000;
+		border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+		border-right: 5px solid transparent;
+		border-left: 5px solid transparent;
+		/* content: ' '; */
+		font-size: 0;
+		line-height: 0;
+	}
+
+	[data-tooltip]:hover:before,
+	[data-tooltip]:hover:after {
+		visibility: visible;
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+	[data-tooltip='false']:hover:before,
+	[data-tooltip='false']:hover:after {
+		visibility: hidden;
+		opacity: 0;
 	}
 </style>
