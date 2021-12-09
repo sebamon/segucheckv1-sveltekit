@@ -142,7 +142,8 @@
 			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
 
 			// Guardamos item en base de datos
-
+			
+			
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
