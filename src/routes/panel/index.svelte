@@ -1,10 +1,10 @@
 <script context="module">
-	export async function load() {
+	export async function load({fetch, page}) {
 		const data = await Promise.all([
-			fetch('../usuarios/usuarios'),
-			fetch('../operarios/operarios'),
-			fetch('../vehiculos/vehiculos'),
-			fetch('../trabajos/trabajos')
+			fetch('../panel/usuarios/usuarios'),
+			fetch('../panel/operarios/operarios'),
+			fetch('../panel/vehiculos/vehiculos'),
+			fetch('../panel/trabajos/trabajos')
 		]).then(async (result) => {
 			const userData = await result[0].json();
 			const operatorData = await result[1].json();
@@ -12,6 +12,7 @@
 			const jobsData = await result[3].json();
 
 			return { userData, operatorData, vehiclesData, jobsData };
+
 		});
 		return {
 			props: {
@@ -36,24 +37,24 @@
 		high: string;
 	};
 
-	let operatorData = data.operatorData;
-	let vehicleData = data.vehicleData;
-	let userData = data.userData;
-	let jobData = data.jobData;
+	let operatorData = data.operatorData.operators;
+	let vehicleData = data.vehiclesData.vehicles;
+	let userData = data.userData.users;
+	let jobData = data.jobsData.jobs;
 	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
 
-	operatorData.operators.forEach((element) => {
-		console.log('Operador: ', element.users);
-	});
-	vehicleData.vehicles.forEach((element) => {
-		console.log('Vehículo: ', element);
-	});
-	userData.users.forEach((element) => {
-		console.log('Usuario: ', element);
-	});
-	jobData.jobs.forEach((element) => {
-		console.log('Trabajo: ', element);
-	});
+	// operatorData.forEach((element) => {
+	// 	console.log('Operador: ', element.users);
+	// });
+	// vehicleData.forEach((element) => {
+	// 	console.log('Vehículo: ', element);
+	// });
+	// userData.forEach((element) => {
+	// 	console.log('Usuario: ', element);
+	// });
+	// jobData.forEach((element) => {
+	// 	console.log('Trabajo: ', element);
+	// });
 
 	// Datos de usuario - Ver si esto lo maneja un hook
 	let currentUser = 'Juan Perez';
@@ -76,6 +77,13 @@
 <svelte:head>
 	<title>Resumen - SeguCheck</title>
 </svelte:head>
+<!-- operatorData{JSON.stringify(operatorData)}
+<hr>
+vehicleData{JSON.stringify(vehicleData)}
+<hr>
+userData{JSON.stringify(userData)}
+<hr>
+jobData{JSON.stringify(jobData)} -->
 
 <!-- Encabezado -->
 <header>
@@ -122,7 +130,7 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">10</p>
+				<p class="fs-1 text-center text-primary fw-bolder">{userData.length}</p>
 			</div>
 			<CardTitle class="fw-bold">Usuarios activos</CardTitle>
 			<CardSubtitle>

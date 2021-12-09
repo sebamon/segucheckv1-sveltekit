@@ -301,7 +301,7 @@
 <svelte:head>
 	<title>Nueva Checklist - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(itemCheckedCollection)}
+<!-- {JSON.stringify(itemCheckedCollection)} -->
 {#if itemCollection}
 	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
 		<i class="fas fa-save {titleEdit}" />

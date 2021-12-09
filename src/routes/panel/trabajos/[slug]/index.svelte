@@ -14,7 +14,6 @@
 				console.log(jobDetails , locationFetch , operators)
 				return {jobDetails , locationFetch , operators}
 			})
-
 				return{
 					props: {
 						data
@@ -41,10 +40,7 @@
 	import OperatorManager from '$lib/OperatorManager.svelte';
 	import OperatorsOnJobList from '$lib/Details/OperatorsOnJobList.svelte'
 	import SeguAlert from '$lib/SeguAlert.svelte';
-	import ChecklistsV2 from '$lib/ChecklistsV2.svelte'
-
 	export let data	
-
 	let message = ''
 	let status = ''
 		
@@ -52,13 +48,10 @@
 		job_id : 0,
 	}
 	export let operatorsInJob = jobDetails.job.operatoronjobs 
-
 	export let locationList = data ? data.locationFetch : {}
 	export let operators = data.operators
 	let assingOperatorList = []
 	let newListOperator = []
-
-
 	async function assignOperators(e){
 		assingOperatorList=e.detail.operatorList
 		// console.log('operarios asignados',operatorsInJob)
@@ -73,14 +66,11 @@
         })
     })
 	const data = await submit.json()
-
 	message = data.message
 	status = data.status
 	newListOperator = data.operatorsInJob
-
 	operatorsInJob = newListOperator
 	}
-
 	// Configurar componente JobDetails para solo lectura
 	export let isReadOnly = true;
 </script>
@@ -123,8 +113,7 @@
 			<OperatorsOnJobList {operatorsInJob}/>
 		</TabPane>
 		<TabPane tabId="userHealthInfo" tab="Checklists asignados">
-			<!-- <p class="lead">Checklists...</p> -->
-
+			<p class="lead">Checklists...</p>
 		</TabPane>
 	</TabContent>
 </main>

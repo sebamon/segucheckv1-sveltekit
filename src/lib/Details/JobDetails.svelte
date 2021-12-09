@@ -71,7 +71,7 @@
 		{ checkItemGroup_id: 3, groupName: 'Checkgroup C' }
 	];
 	// Arreglo filtrado según si existe el checkgroup en el arreglo de seleccionados 
-    let checkgroupFilter = checkItemGroupList.filter(item => checkgroupRequired.includes(item.checkItemGroup_id))
+    // let checkgroupFilter = checkItemGroupList.filter(item => checkgroupRequired.includes(item.checkItemGroup_id))
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';

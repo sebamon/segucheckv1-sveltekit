@@ -14,7 +14,6 @@ model checkitem {
   categories   checkcategory[] @relation(references: [category_id])
   verifyItem   verifyItem[]
 
-  
 }
 
 model checkcategory {
