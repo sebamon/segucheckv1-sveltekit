@@ -37,9 +37,9 @@ export async function put(request){
                     },
                     updated_at : new Date(moment.now()),
 
-                    checkitemgroup : {
+                    checklist : {
                         connect : {
-                            checkItemGroup_id: formBody.checkItemGroup.checkItemGroup_id,
+                            checklist_id: 1,
                         }
                     },
                     riskanalysis: {

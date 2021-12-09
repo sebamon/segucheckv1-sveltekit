@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({fetch, page}){
-		const response = await fetch(`http://localhost:3000/api/roles`)
+		const response = await fetch(`../../api/roles`)
 		const data = await response.json()
 		console.log('nuevo load data',data)
 		return {
@@ -16,7 +16,6 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert, FormGroup } from 'sveltestrap';
 	import ImgUpload from '$lib/ImgUpload.svelte'
-	import type { Color } from 'sveltestrap/src/shared';
 	import moment from 'moment';
 
 	// Arreglo de roles - Esto lo lee de la DB:
@@ -40,14 +39,28 @@
 
 	// Controles globales
 	let fileName, fileExtension, readyToUpload;
-	export let prueba
+
+		// export let captureImage
+	export function captureImage(e){
+		console.log('captureImage',e.detail);
+		fileName = e.detail.fileName;
+		fileExtension = e.detail.fileExtension;
+		readyToUpload = e.detail.readyToUpload;
+		profilePic = `${fileName}.${fileExtension}`
+			
+		
+		// setTimeout(()=>{
+		subir(fileName, fileExtension)
+		// }, 6000);
+		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', profilePic: ' + profilePic);
+	}
 
 	const subir = async(fileName, fileExtension) => {
 
 		console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
 		try{
 
-			let url = 'http://localhost:3000/api/driveSet';
+			let url = '../../../api/driveSet';
 			let fileData = {
 				fileName: fileName,
 				fileExtension: fileExtension
@@ -57,19 +70,23 @@
 				method: 'POST',
 				body: JSON.stringify(fileData)
 			});
+			
+			console.log(response)
 			const data = await response.json()
-			// console.log('la imagen subida: ',data)
+			
+			console.log('la imagen subida: ',data)
 			let fileId = {
 				fileId: data.id,
 			};
-			let urlId = 'http://localhost:3000/api/driveGet';
-			let responseId = await fetch(url, {
-				method: 'POST',
-				body: JSON.stringify(fileId)
-			});
-			const dataId = await responseId.json()
-			console.log('Mi link para compartir: ' + JSON.parse(dataId));
-			profilePic = JSON.parse(dataId);
+			console.log('fileID',fileId)
+			// let urlId = 'http://localhost:3000/api/driveGet';
+			// let responseId = await fetch(url, {
+			// 	method: 'POST',
+			// 	body: JSON.stringify(fileId)
+			// });
+			// const dataId = await responseId.json()
+			// console.log('Mi link para compartir: ' + JSON.parse(dataId));
+			// profilePic = JSON.parse(dataId);
 		}catch(e){
 			console.log(e)
 			return 'Sin Datos'
@@ -77,26 +94,16 @@
 		
 	}
 
-	// export let captureImage
-	export function captureImage(e){
-		console.log('captureImage',e.detail);
-		fileName = e.detail.fileName;
-		fileExtension = e.detail.fileExtension;
-		readyToUpload = e.detail.readyToUpload;
-		setTimeout(()=>{
-			subir(fileName, fileExtension)
-		}, 6000);
-		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', profilePic: ' + profilePic);
-	}
+
 	export async function subirImage(e){
 		console.log('subirImagen Nuevo e',e)
 		try{
-			const quehay =  e
-			prueba=quehay
+			// const quehay =  e
+			// prueba=queha
 		console.log('subirImagen',e)
-		console.log('quehayy',quehay)
+		// console.log('quehayy',quehay)
 	}catch(e){
-		console.log(e)
+		console.log('error en subirImage',e)
 	}
 	
 
@@ -106,7 +113,7 @@
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
 		.toISOString()
 		.split('T')[0];
-	let color: Color;
+
 
 	let roles_assigned = {
 		rol1: false,
@@ -154,6 +161,7 @@
 			rol2: false,
 			rol3: false
 		};
+		profilePic = ''
 		$form.profilePic= ''
 	};
 
@@ -175,7 +183,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-import { captureRejectionSymbol } from 'events';
+
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -210,7 +218,6 @@ import { captureRejectionSymbol } from 'events';
 			degree: "",
 			profilePic: "",
 			roles_assigned: roles_assigned,
-			prueba : '',
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -269,13 +276,11 @@ import { captureRejectionSymbol } from 'events';
 			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
-			// console.log('values', values)
-			// console.log('profilePic', profilePic)
-			// console.log('prueba', prueba)
 			// // Realiza la carga de datos al cliquear Enviar
+			
 			values.roles_assigned = roles_assigned
 			values.profilePic = profilePic
-			values.prueba=prueba
+			console.log('SUBMIT VALUES',values)
 			// console.log(values)
 			try {
 				const submit = await fetch('usuarios', {
@@ -287,9 +292,9 @@ import { captureRejectionSymbol } from 'events';
 				const data = await submit.json();
 				message = data.message
 				status = data.status
-
+ 
 				if (data.status === 'NEW') {
-					cleanPage();
+					cleanPage()
 				}
 			} catch (err) {
 				error = err;

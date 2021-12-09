@@ -13,13 +13,14 @@ export async function get(){
                 customer : {
                     select: {
                         contact : true,
-                        customer_id : true
+                        customer_id : true,
+                        businessName : true, 
                     }
                 }
                 
             }
         });
-        
+  
         if(locations.length>0){
             return {
                 body: {

@@ -18,7 +18,7 @@ export async function put(request){
                     province : formBody.province,
                     customer : {
                         connect: {
-                            customer_id : Number(formBody.customer)
+                            customer_id : Number(formBody.customer_id)
                         }
                     }
                 }

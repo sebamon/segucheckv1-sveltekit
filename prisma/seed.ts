@@ -45,7 +45,7 @@ async function main(){
             nationality: 'Argentino',
             studyLevel: 'Universitario completo',
             degree: 'Contador Publico',
-            profilePic: 'url not:found',
+            profilePic: 'f12b9003-c36b-4f42-9618-02f8ed20a0bb.png',
             password: '1234',
         },
         {
@@ -59,7 +59,7 @@ async function main(){
             nationality: 'Argentino',
             studyLevel: 'Universitario completo',
             degree: 'Ingeniero Electrico',
-            profilePic: 'url not:found',
+            profilePic: 'f12b9003-c36b-4f42-9618-02f8ed20a0bb.png',
             password: '1234',
         },
     ]})

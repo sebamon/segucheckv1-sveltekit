@@ -44,7 +44,8 @@
 	export let degree: string;
 	export let profilePic: string;
 	export let usersonroles = []
-	let imagePic=profilePic
+	
+	
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let convertedDateOfBirth = new Date(
 		new Date(dateString).getTime() - new Date().getTimezoneOffset()
@@ -136,6 +137,9 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = false;
 
+	
+	let imgPath = isReadOnly ? '../../../static/img/profile-pics/' : '../../../static/img/profile-pics/'
+	let imagePic=imgPath+profilePic
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
@@ -276,14 +280,14 @@
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<img
-				src={profilePic}
+				src={imgPath+profilePic}
 				class="img-fluid img-thumbnail m-2"
 				alt="Foto de perfil"
 				style="max-width:150px"
 				on:click={toggle}
 			/>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<img src={profilePic} class="img-fluid" alt="Foto de perfil" on:click={toggle} />
+				<img src={imgPath+profilePic} class="img-fluid" alt="Foto de perfil" on:click={toggle} />
 			</Modal>
 		</div>
 		{#if !isReadOnly}

@@ -32,7 +32,8 @@ const CLIENT_ID = "167372284070-oh5osjpqppqd8muhdliu12g7g1jvv185.apps.googleuser
 const CLIENT_SECRET = "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";
 const REDIRECT_URI = "http://localhost:3000/";
 
-const REFRESH_TOKEN = "1//04W5HNJR-YgDECgYIARAAGAQSNwF-L9IrFtQKXxRQttynaeoOc_kfOKt8fNYnI9hxx02KwUGx1-iWs1pcOrA1akiTFxcrbsqfeMc";
+const REFRESH_TOKEN = "1//044c4hCTqSL8nCgYIARAAGAQSNwF-L9Irhz2CcKr_MCz97jygqMpTe7_JAKSryviM2TEcU_KTikK9Yvpy27q7pa83nbxehWt9S-4";
+
 // const ACCESS_TOKEN = "ya29.a0ARrdaM9qu-O64M7BXkpKyng-LtpQwxcpTebcpGbfbXJT8aMeELCx5-Her2YSQ1iDZh59ulhFyNVHOCaQyrNeU4t6hI6U-yPXmsV50C84MSfoTe-9r5OKKrlyXAff6LCKfr0G42oKmOhrqV8f3r5OY_74vy0n"
 
 const oauth2Client = new google.auth.OAuth2(
@@ -50,9 +51,18 @@ const drive = google.drive({
 
 // const {pathname: root} = new URL('../src', import.meta.url)
 
-export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx') {
+export async function uploadFile(fileData,folderId = '1yOmEFValOaKQz6BoMjSvmhk7dE8qnTBx') {
+    console.log('entrando a uploadFile endpoint ')
+    console.log('con fileData', fileData)
+    console.log('con folderId', folderId)
     let fileName = fileData.fileName + '.' + fileData.fileExtension;
-    let filePath = path.join('static/img/temp-pics/', fileName);
+    console.log('--->fileName', fileName)
+
+    console.log('filesPath',fileData.filesPath)
+    const staticFolder = fileData.filesPath.replace('.','static')
+    console.log('staticFolder',staticFolder)
+    let filePath = path.join(`${staticFolder}/`, fileName);
+    console.log('filePaths',filePath)
     try {
         let fileMetadata = {
             'name': fileName,
@@ -66,6 +76,7 @@ export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7
             },
             resource: fileMetadata
         });
+        console.log('----response.data ----',response.data)
         return (response.data);
     } catch (error) {
         console.log(error);
@@ -75,8 +86,19 @@ export async function uploadFile(fileData, folderId = '1yOmEFValOaKQz6BoMjSvmhk7
 
 // Recibiendo info
 export const post = async (request) => {
+    console.log('**** driveset request',request)
+    console.log('request',request.body);
     const fileData = JSON.parse(request.body);
-    // console.log(request.body);
-    ('Request Jasoneado: ' + fileData.fileName);
-    return uploadFile(fileData);
+    console.log('fileData',fileData);
+    // const fileData = request.body;
+    console.log('Request Jasoneado: ' + fileData.fileName);
+    const upload=  uploadFile(fileData)
+
+
+    console.log('upload',upload)
+    return {
+        body: {
+            upload
+        }
+    }
 }

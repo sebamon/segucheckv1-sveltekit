@@ -2,9 +2,10 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
 
 export async function get(request){
+    console.log('** API - LOCACIONES DETALLE : GET**')
     const id_find=Number(request.params.slug)
     console.log(id_find)
-    
+    if(!isNaN(id_find)){
     try {
         const locationDetails = await prisma.location.findUnique({
             where :{
@@ -40,8 +41,8 @@ export async function get(request){
                 locationDetails: {},
                 status : 'ERROR',
                 message : 'Error al intentar buscar locaciones'
-
             }
         }
     }
+}
 }

@@ -13,47 +13,24 @@
 // import { uploadFile } from './api/driveSet';
 	/* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 	import { v4 as uuidV4 } from 'uuid';
-	// import {
-	// 	imgReadyToUpload,
-	// 	imgGoogleDriveAccessLink,
-	// 	imgFileName,
-	// 	imgFileExtension
-	// } from './../stores/fileUploads';
 
 	/* Ruta donde guardaremos dentro del directorio static */
-	export const filesPath = './img/temp-pics'; // in this example: static root
+	export let name // Nombre de la variable profilePic || frontPic || leftSidePic || RightSidePic
+	
+	export let filesPath = './img/profile-pics'; // in this example: static root
 
 	/* The File object from the form */
 	let fileToUpload = false;
 	let avatar;
 	let fileName, fileExtension, readyToUpload, googleDriveAccessLink; //variables globales
 
-	/* Vinculamos las variables globales a sus Stores */
-	// imgReadyToUpload.subscribe((value) => {
-	// 	readyToUpload = value;
-	// });
-	// imgFileName.subscribe(value => {
-	// 	fileName = value;
-	// })
-
-	// imgFileExtension.subscribe(value => {
-	// 	fileExtension = value;
-	// })
-	// imgGoogleDriveAccessLink.subscribe(value => {
-	// 	googleDriveAccessLink = value;
-	// })
-
 	/* Inicializamos el nombre del archivo a guardar */
 	fileName = uuidV4();
-
-	/* Seteamos el nombre con el que se almacenará el archivo de imagen en nuestro store */
-	// imgFileName.set(fileName);
 
 	/* The button status */
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
 	// $: subir = readyToUpload == true
-	
 	
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
@@ -83,7 +60,8 @@
 			// @ts-ignore
 			formData.append('mimeType', fileToUpload.mimeType);
 			formData.append('path', filesPath);
-			console.log('FormData previo al upload: ' + formData);
+			formData.append('folder', filesPath);
+			console.log('FormData previo al upload: ' + JSON.stringify(formData));
 			/* Llamando al plugin 'upload' en el servidor */
 			fetch('http://localhost:3000/upload', {
 				method: 'POST',
@@ -102,7 +80,7 @@
 				})
 				.catch((err) => console.log('Ooops: ' + err));
 		}
-	};
+}
 
 	const onFileSelected = (fileToShow) => {
 		let image = fileToShow;
@@ -123,45 +101,11 @@
 		}
 	};
 
-	// Subir archivo a Drive
-
-	// export const subir = async() => {
-	// // export async function subir() {
-	// 	console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
-	// 	try{
-
-	// 		let url = 'http://localhost:3000/api/driveSet';
-	// 		let fileData = {
-	// 			fileName: fileName,
-	// 			fileExtension: fileExtension
-	// 		};
-			
-	// 		let response = await fetch(url, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify(fileData)
-	// 		});
-	// 		const data = await response.json()
-	// 		// console.log('la imagen subida: ',data)
-	// 		let fileId = {
-	// 			fileId: data.id,
-	// 		};
-	// 		let urlId = 'http://localhost:3000/api/driveGet';
-	// 		let responseId = await fetch(url, {
-	// 			method: 'POST',
-	// 			body: JSON.stringify(fileId)
-	// 		});
-	// 		const dataId = await responseId.json()
-	// 		console.log('Mi link para compartir: ' + JSON.parse(dataId));
-	// 		return data
-	// 	}catch(e){
-	// 		console.log(e)
-	// 		return 'Sin Datos'
-	// 	}
-		
-	// }
 </script>
 
 <div>
+	{JSON.stringify(name)}
+	{JSON.stringify(filesPath)}
 	<!-- Formulario subida de archivo -->
 	<div>
 		<div>
@@ -182,7 +126,7 @@
 		<div class="top-1">
 			<!-- <button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 
 				on:click={() => dispatch('subir',subir())}> -->
-			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})}>
+			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink, name, filesPath})}>
 				Subir imagen
 			</button>
 		</div>

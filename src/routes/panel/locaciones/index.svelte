@@ -71,7 +71,7 @@
 					<th scope="col">Nombre</th>
 					<th scope="col">Cliente</th>
 					<th scope="col">Coordenadas</th>
-					<th scope="col">etc</th>
+					<th scope="col">Nombre de Contacto</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -89,7 +89,7 @@
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
-							{location.customer.contact}
+							{location.customer.businessName}
 						</a>
 					</td>
 					<td>
@@ -99,7 +99,7 @@
 					</td>
 					<td>
 						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
-							Algo
+							{location.customer.contact}
 						</a>
 					</td>
 				</tr>

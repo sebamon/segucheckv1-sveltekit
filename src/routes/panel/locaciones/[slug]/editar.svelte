@@ -1,38 +1,54 @@
 <script context="module">
+
 	export async function load({page , fetch}){
-		let data = await Promise.all([
-			fetch(`./detalle`),
-			fetch(`http://localhost:3000/panel/clientes/clientes`),			
-			])
-			.then(async(result) => {
-				
-				const locationDetails = await result[0].json()
-				const customerList = await result[1].json()
+		console.log(page.params.slug)
+		if(!isNaN(page.params.slug)){
 
-				console.log('ssrrrr',customerList)
-
-				return { locationDetails , customerList }
+			try{
 				
-		})
-		return {
-			props: {
-				data
+				let data = await Promise.all([
+					fetch('http://localhost:3000/panel/clientes/clientes'),
+					fetch(`http://localhost:3000/panel/locaciones/${page.params.slug}/detalle`),
+					
+				])
+				.then(async(result) => {
+					const customerList = await result[0].json()
+					const locationDetails = await result[1].json()
+					
+					// return { customerList }
+					return { customerList , locationDetails }
+				})
+				return {	
+					props: {
+						...data
+					}
+				}
+			}catch(error)
+			{
+				console.log(error)
+				return {
+					props: {
+						status : 'ERROR',
+						message : error
+					}
+				}
 			}
 		}
 	}
-</script>
+</script> 
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import LocationDetails from '$lib/Details/LocationDetails.svelte';
 	import SeguAlert from '$lib/SeguAlert.svelte';
-	import { stringify } from 'querystring';
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	
-	export let data
-	export let locationDetails = data.locationDetails.locationDetails
-	export let customerList = data.customerList.customers
-	console.log('script interno locationDetails', data)
+	// export let data
+	export let locationDetails
+	export let customerList
+
+	// export let status = locationDetails.status || 'ERROR'
+	// export let message = locationDetails.message || 'ERROR'
 	
 	// Configurar componente LocationDetails para editar
 	export let isReadOnly = false;
@@ -58,10 +74,12 @@
 </header>
 
 <main>
-	{#if data.status!=='OK'}
-		<LocationDetails {...locationDetails} {isReadOnly} {customerList} />
-	{:else}
-		<SeguAlert message={data.message} status={data.status} path=locaciones />
-	{/if}
 	<!-- Formulario detalles locación -->
+	{#if locationDetails.status!=='OK'}
+		<SeguAlert message={locationDetails.message} status={locationDetails.status} path=locaciones />
+	{:else}
+		<LocationDetails {...locationDetails.locationDetails} {isReadOnly} {...customerList} />
+	{/if} 
 </main>
+
+<!-- {/await} -->

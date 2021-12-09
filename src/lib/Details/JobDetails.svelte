@@ -4,12 +4,14 @@
 	import SeguAlert from '$lib/SeguAlert.svelte';
 	import moment from 'moment';
 
+
+
 	export let job_id: number;
 	export let startDate: Date;
 	export let finishDate: Date;
 	export let statusJob: string;
 	export let message: string
-	export let status:string
+	export let status:string = 'OK'
 	export let vehicle_id=0
 	export let riskAnalysis
 	export let customer
@@ -138,7 +140,7 @@
 	let modalOpen = false;
 	const toggle = () => (modalOpen = !modalOpen);
 </script>
-{#if status !== 'OK'}
+{#if status !== 'OK'} 
 	<SeguAlert {status} {message} path="trabajos" />
 {/if}
 <form name="formJobDetails" id="formJobDetails" on:submit|preventDefault={handleSubmit}>
@@ -350,7 +352,7 @@
 				{/if}
 			{/if}
 		</div>
-		<div class="col-md-6">
+		<!-- <div class="col-md-6">
 			<label for="checkItemGroup_id" class="form-label">Número de checkgroup</label>
 			{#if isReadOnly}
 				<p class="form-control">
@@ -376,7 +378,7 @@
 					<small class="form-error">{$errors.checkItemGroup_id}</small>
 				{/if}
 			{/if}
-		</div>
+		</div> -->
 	</div>
     {#if !isReadOnly}
 	<div class="row mb-3 g-3">

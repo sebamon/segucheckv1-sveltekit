@@ -12,13 +12,11 @@ export async function get(){
                 location : true,
                 startDate : true,
                 finishDate: true,
-                checkitemgroup : {
-                    include : {
-                        checkitem : true
-                    }
-                },
-        }
-    });
+                
+                }
+
+        
+        });
 
         if(jobs.length>0){
             return {
@@ -62,9 +60,8 @@ export async function post(request){
         statusJob:string ,
         riskAnalysis:string,
         customer: number,
-        location: number,
+        location_id: number,
         internalNumber: number,
-        checkItemGroup_id:number,
         vehicleSelect:number
     }
     
@@ -72,7 +69,7 @@ export async function post(request){
     console.log('objeto',objeto)
 
     // console.log('object', object)
-    const newJob = 'Trabajo'
+    // const newJob = 'Trabajo'
     try {
         const newJob = await prisma.jobs.create({
             include: {
@@ -80,6 +77,7 @@ export async function post(request){
                 location : true,
                 riskanalysis : true,
                 vehicle : true,
+                operatoronjobs : true,
             },
             data: {
                 startDate : new Date(objeto.startDate),
@@ -93,7 +91,7 @@ export async function post(request){
                 // location_id : objeto.location,
                 location : {
                     connect: {
-                        location_id : Number(objeto.location)
+                        location_id : Number(objeto.location),
                     }
                 },
                 
@@ -104,9 +102,12 @@ export async function post(request){
                 // vehicle_id : Number(objeto.vehicleSelected),
 
                 // checkItemGroup_id : objeto.checkItemGroup_id,
-                checkitemgroup : {
-                    connect : {checkItemGroup_id : Number(objeto.checkItemGroup_id)}
-                },
+                // checklist : {
+                //     create : {
+                //         checkListName : 'EL nombre de la lista',
+                        
+                //     },
+                // },
                 
                 // requiredDocumentation_id : objeto.requiredDocumentation_id,
                 // requiereddocumentation : {

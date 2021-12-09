@@ -25,7 +25,6 @@
 <svelte:head>
 	<title>Editar usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>

@@ -1,9 +1,9 @@
 <script context="module">
 	export async function load({fetch, page}){
-		let data = await Promise.all([
-			fetch('http://localhost:3000/panel/clientes/clientes'),
-			fetch('http://localhost:3000/panel/locaciones/locaciones'),
-			fetch('http://localhost:3000/panel/vehiculos/vehiculos'),
+		const data = await Promise.all([
+			fetch('../clientes/clientes'),
+			fetch('../locaciones/locaciones'),
+			fetch('../vehiculos/vehiculos'),
 		])
 		.then(async(result) => {
 			const customerList = await result[0].json()
@@ -64,7 +64,7 @@
 	}
 
 	// Arreglo de checkgroups - Esto lo lee de la DB:
-	let checkItemGroupList = [
+	let checkLists = [
 		{ checkItemGroup_id: 1, groupName: 'Checkgroup A' },
 		{ checkItemGroup_id: 2, groupName: 'Checkgroup B' },
 		{ checkItemGroup_id: 3, groupName: 'Checkgroup C' }
@@ -85,7 +85,7 @@
 			customer: '',
 			location: '',
 			internalNumber: '',
-			checkItemGroup_id: '' ,
+			checkList_id: '' ,
 			vehicleSelect: '',
 		},
 		validationSchema: yup.object().shape({
@@ -111,10 +111,10 @@
 				.mixed()
 				// .oneOf(vehiclesList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.'),
-			checkItemGroup_id: yup
+				checkList_id: yup
 				.mixed()
 				// .oneOf(checkItemGroupList, 'La selección no se encuentra en la lista.'),
-				.required('Debes completar este campo.'),
+				
 		
 		}),
 		onSubmit: async(values) => {
@@ -143,7 +143,7 @@
 		$form.customer = ''
 		$form.location = ''
 		$form.internalNumber = ''
-		$form.checkItemGroup_id = ''
+		$form.checkList_id = ''
 		$form.vehicleSelect = ''
 	}
 
@@ -174,6 +174,7 @@
 	</div>
 </header>
 
+{#await data then data} 
 {#if status}
 	<SeguAlert message={message} status={status} path=trabajos />
 {/if}
@@ -323,26 +324,7 @@
 			{#if $errors.vehicleSelect}
 				<small class="form-error">{$errors.internalNumber}</small>
 			{/if}
-		</div>
-		<div class="col-md-6">
-			<label for="checkItemGroup_id" class="form-label">Número de checkgroup</label>
-			<select
-				id="checkItemGroup_id"
-				class="form-select"
-				aria-label="Número de checkgroup"
-				bind:value={$form.checkItemGroup_id}
-				
-				class:invalid={$errors.checkItemGroup_id}
-			>
-				<option selected disabled>Elija una opción...</option>
-				{#each checkItemGroupList as { checkItemGroup_id, groupName }}
-					<option value={checkItemGroup_id}>{groupName}</option>
-				{/each}
-			</select>
-			{#if $errors.checkItemGroup_id}
-				<small class="form-error">{$errors.checkItemGroup_id}</small>
-			{/if}
-		</div>
+		</div>	
 	</div>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6" />
@@ -357,3 +339,4 @@
 		</div>
 	</div>
 </form>
+{/await}
