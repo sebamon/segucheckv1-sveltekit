@@ -30,7 +30,7 @@
 		{
 			documentation_id: 15,
 			documentType: { documentType_id: 2, description: 'Carnet de Manejo Defensivo' },
-			urlPdf: '/docs/doc-placeholder.pdf',
+			urlPdf: '/docs/doc-placeholder2.pdf',
 			status: 'Estado 2',
 			created_at: new Date('2021-08-31'),
 			updated_at: new Date('2021-08-31'),
@@ -66,7 +66,7 @@
 				{
 					documentation_id: 25,
 					documentType: { documentType_id: 6, description: 'Registro Único Transporte Automotor' },
-					urlPdf: '/docs/doc-placeholder.pdf',
+					urlPdf: '/docs/doc-placeholder2.pdf',
 					status: 'Estado 2',
 					created_at: new Date('2021-08-31'),
 					updated_at: new Date('2021-08-31'),
@@ -101,7 +101,7 @@
 				{
 					documentation_id: 25,
 					documentType: { documentType_id: 6, description: 'Registro Único Transporte Automotor' },
-					urlPdf: '/docs/doc-placeholder.pdf',
+					urlPdf: '/docs/doc-placeholder2.pdf',
 					status: 'Estado 2',
 					created_at: new Date('2021-08-31'),
 					updated_at: new Date('2021-08-31'),
@@ -136,7 +136,7 @@
 				{
 					documentation_id: 25,
 					documentType: { documentType_id: 6, description: 'Registro Único Transporte Automotor' },
-					urlPdf: '/docs/doc-placeholder.pdf',
+					urlPdf: '/docs/doc-placeholder2.pdf',
 					status: 'Estado 2',
 					created_at: new Date('2021-08-31'),
 					updated_at: new Date('2021-08-31'),
