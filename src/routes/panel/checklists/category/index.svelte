@@ -18,6 +18,7 @@
 
 	export let data
 	export let categories = data.categories
+	console.log('categorias: ', categories);
 
 </script>
 
@@ -78,8 +79,6 @@
 				{/each}
 			</tbody>
 		</table>
-	</div>
-	<div id="checktest">
 	</div>
 </main>
 

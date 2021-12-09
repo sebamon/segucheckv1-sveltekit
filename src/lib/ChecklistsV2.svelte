@@ -1,0 +1,399 @@
+<script lang="ts">
+	/* 
+		Elementos para la renderización
+		- Tabs para el sistema de pestañas
+		- MultiSelect para el manejo de etiquetas 
+	*/
+
+	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
+	import MultiSelect from '$lib/MultiSelect.svelte';
+	import { fade } from 'svelte/transition';
+
+	/* 
+		Declaración de tipos
+	*/
+
+	type itemCompound = {
+		checkitem: checkItem;
+		selectedCategory: checkcategory;
+		active: string;
+		checked: boolean;
+		isNew: boolean;
+	};
+
+	type categoryCompound = {
+		category: checkcategory;
+		isNew: boolean;
+	};
+
+	type checkedItemCompound = {
+		itemId: number[];
+		categoryId: number;
+	};
+
+	/* 
+		Declaración de Variables
+	*/
+
+	/* 
+		Datos exportados
+	*/
+	export let data; // Viene de la vista que invoca el componente. Debe contener un arreglo de elementos `checkcategory`
+	let categories = data.categories; // Toma las categorías asignadas traídas por `data`
+
+	/* 
+		Colecciones
+	*/
+	let categoryCollection: categoryCompound[] = []; // Colección de las categorías `checkcategory` actuales y nuevas
+	let itemCollection: itemCompound[] = []; // Colección de los items `checkcitem` actuales y nuevos
+	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario desea cargar a la checklist
+
+	/*
+		Variables auxiliares
+	*/
+	let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
+	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
+	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
+	let selectedCategory: checkcategory;
+	let itemVerification: verifyItem[]; // Colección creada para inicializar una checklist
+	let verification: verify = {
+		// Variable creada para inicializar una checklist
+		verify_id: null,
+		list: itemVerification
+	};
+	let thisChecklist: checkList = {
+		checkList_id: null,
+		checkListName: 'Nombre de la Checklist',
+		verify: verification
+	};
+	let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
+	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
+	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
+
+	/*
+		Declaración de funciones
+	*/
+
+	/*
+		Alterna la edición del título
+	*/
+	const toggle = () => {
+		if (titleH2 == 'visible') {
+			titleH2 = 'hidden';
+			titleEdit = 'visible';
+		} else {
+			titleH2 = 'visible';
+			titleEdit = 'hidden';
+		}
+	};
+
+	/*
+		Crea una categoría nueva
+	*/
+	const addCategory = () => {
+		if (newCategoryNameToAdd != '') {
+			let newCategory: checkcategory = {
+				category_id: categoryCollection.length,
+				categoryName: newCategoryNameToAdd,
+				checkItems: []
+			};
+			categoryCollection = [
+				...categoryCollection,
+				{
+					category: newCategory,
+					isNew: true
+				}
+			];
+			itemCheckedCollection[newCategory.category_id] = {
+				// asigno la nueva categoría a la colección de elementos chequeados
+				categoryId: newCategory.category_id,
+				itemId: []
+			};
+			console.log('Colección de chequeados', itemCheckedCollection);
+			newCategoryNameToAdd = 'Categoría nueva';
+		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
+	};
+
+	/*
+		Crea un ítem nuevo
+	*/
+	const addItem = () => {
+		if (newItemNameToAdd != '') {
+			let newItem: checkItem = {
+				checkItem_id: itemCollection.length + 1,
+				item: newItemNameToAdd,
+				description: 'Nueva descripción',
+				categories: [selectedCategory]
+			};
+			itemCollection = [
+				...itemCollection,
+				{
+					checkitem: newItem,
+					selectedCategory: selectedCategory,
+					active: '',
+					checked: false,
+					isNew: true
+				}
+			];
+			// Actualizamos la colección de Categorías
+			let categoryIndex = selectedCategory.category_id;
+			let categoryItemCol = categoryCollection[categoryIndex].category.checkItems;
+			categoryItemCol = [...categoryItemCol, newItem];
+			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
+
+			// Guardamos item en base de datos
+			
+			
+			// Reestablecemos el nombre por defecto
+			newItemNameToAdd = 'Item nuevo';
+		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
+	};
+
+	const removeItemField = (item_id) => {
+		itemCollection[item_id].active = 'hidden';
+	};
+
+	const submit = () => {
+		alert('Yey! Vamos a enviar ésto!');
+	};
+
+	/*
+	 * Carga inicial de datos provenientes del controlador
+	 * Se generan dos arrays (itemCollection y categoryCollection), encargados de
+	 * almacenar todos los items y categorías existentes y nuevos
+	 */
+	categories.forEach((element) => {
+		if (!element.checkItems) {
+			if (element.checkitems) {
+				let repairedElement: checkcategory = {
+					category_id: element.category_id,
+					categoryName: element.categoryName,
+					checkItems: element.checkitems
+				};
+				element = repairedElement;
+			}
+			element.category_id = categoryCollection.length; // Se modifica el id de la categoría para tratamiento interno
+
+			itemCheckedCollection[element.category_id] = {
+				// asigno la nueva categoría a la colección de elementos chequeados
+				categoryId: element.category_id,
+				itemId: []
+			};
+		}
+		let myItemList = element.checkItems;
+		myItemList.forEach((thisCheckitem) => {
+			if (!itemCollection.includes(thisCheckitem)) {
+				thisCheckitem.item_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
+
+				itemCollection = [
+					...itemCollection,
+					{
+						checkitem: thisCheckitem,
+						selectedCategory: element,
+						active: '',
+						checked: false,
+						isNew: false
+					}
+				];
+			}
+		});
+		categoryCollection = [
+			...categoryCollection,
+			{
+				category: element,
+				isNew: false
+			}
+		];
+	});
+</script>
+
+<svelte:head>
+	<title>Nueva Checklist - SeguCheck</title>
+</svelte:head>
+
+{#if itemCollection}
+	<div id="dynamicChecklistName" data-tooltip="Doble click para editar ⇩">
+		<input
+			type="text"
+			class="form-control {titleEdit}"
+			on:keydown={({ key }) => key === 'Enter' && toggle()}
+			bind:value={thisChecklist.checkListName}
+		/>
+		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
+	</div>
+	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
+		<div id="panel" class="col-8">
+			<Tabs>
+				<!-- <svelte:component this={Tabs} {tabInfoProps}> -->
+				<TabList>
+					{#each categoryCollection as categoryCompound}
+						<Tab>{categoryCompound.category.categoryName}</Tab>
+					{/each}
+				</TabList>
+
+				{#each categoryCollection as categoryCompound}
+					<TabPanel>
+						<!--  -->
+						<h3>{categoryCompound.category.categoryName}</h3>
+						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
+						<MultiSelect
+							id="itemsSelected"
+							bind:value={itemCheckedCollection[categoryCompound.category.category_id].itemId}
+						>
+							{#each categoryCompound.category.checkItems as item}
+								<option class="form-select" value={item.checkItem_id}>{item.item}</option>
+							{/each}
+						</MultiSelect>
+					</TabPanel>
+				{/each}
+			</Tabs>
+		</div>
+		<div id="preview" class="col-4">
+			<h3>Vista Previa</h3>
+			<div class="dynamicContainer border preview-container">
+				<h4 class="preview-header"><strong>{thisChecklist.checkListName}</strong></h4>
+				<!-- <p>Categoría (colección): {JSON.stringify(categoryCollection)}</p> -->
+				{#each itemCheckedCollection as checkedItem}
+					{#if checkedItem.itemId.length != 0}
+						<div class="dynamicContainer" transition:fade>
+							<h5 class="preview-header">
+								{categoryCollection[checkedItem.categoryId].category.categoryName}
+							</h5>
+							{#each checkedItem.itemId as itemPerCategory}
+								<!-- {#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id} -->
+								<input class="form-check-input previewCheck" type="checkbox" />
+								{itemCollection[itemPerCategory - 1].checkitem.item}<br />
+								<!-- {/if} -->
+							{/each}
+						</div>
+					{/if}
+				{/each}
+			</div>
+		</div>
+	</div>
+
+	<div id="addCatsAndItems" class="row mb-3 g-3 justify-content dynamicContainer">
+		<div id="listCreation" class="col-6">
+			<div class="dynamicContainer">
+				<div class="row">
+					<div class="col-9">
+						<input type="text" class="form-control addedButton" bind:value={newCategoryNameToAdd} />
+					</div>
+					<div class="col-3">
+						<button class="btn btn-primary" on:click={addCategory}>Crear categoría</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="dynamicItem" class="col-6">
+			<div class="dynamicContainer">
+				<div class="row">
+					<div class="col-9">
+						<input type="text" class="form-control addedButton" bind:value={newItemNameToAdd} />
+						<select bind:value={selectedCategory}>
+							{#each categoryCollection as categoryCompound}
+								<option class="form-select" value={categoryCompound.category}
+									>{categoryCompound.category.categoryName}</option
+								>
+							{/each}
+						</select>
+					</div>
+					<div class="col-3">
+						<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="checklistPreview" class="col-5" />
+	</div>
+
+	<button class="btn btn-primary" on:click={submit}>Crear checklist</button>
+{/if}
+
+<!-- Thanks a lot, Exodus!! -->
+<style>
+	.dynamicContainer {
+		margin-top: 1rem;
+	}
+	.preview-header {
+		text-align: center;
+	}
+	.preview-container {
+		padding: 1%;
+		width: 100%;
+		background-color: rgba(222, 204, 231, 0.562);
+	}
+	.hidden {
+		display: none;
+	}
+	.visible {
+		display: flex;
+		visibility: visible;
+	}
+
+	/* Tootltips */
+	[data-tooltip] {
+		position: relative;
+		z-index: 2;
+		display: block;
+	}
+
+	[data-tooltip]:before,
+	[data-tooltip]:after {
+		visibility: hidden;
+		opacity: 0;
+		pointer-events: none;
+		transition: 0.2s ease-out;
+		transform: translate(-50%, 5px);
+	}
+
+	[data-tooltip]:before {
+		position: left;
+		bottom: 100%;
+		left: 50%;
+		margin-bottom: 5px;
+		padding: 7px;
+		width: 100%;
+		min-width: 70px;
+		max-width: 250px;
+		-webkit-border-radius: 3px;
+		-moz-border-radius: 3px;
+		border-radius: 3px;
+		background-color: #000;
+		background-color: hsla(0, 0%, 20%, 0.9);
+		color: #fff;
+		content: attr(data-tooltip);
+		text-align: center;
+		font-size: 14px;
+		line-height: 1.2;
+		transition: 0.2s ease-out;
+	}
+
+	[data-tooltip]:after {
+		position: left;
+		bottom: 100%;
+		left: 50%;
+		width: 0;
+		border-top: 5px solid #000;
+		border-top: 5px solid hsla(0, 0%, 20%, 0.9);
+		border-right: 5px solid transparent;
+		border-left: 5px solid transparent;
+		/* content: ' '; */
+		font-size: 0;
+		line-height: 0;
+	}
+
+	[data-tooltip]:hover:before,
+	[data-tooltip]:hover:after {
+		visibility: visible;
+		opacity: 1;
+		transform: translate(-50%, 0);
+	}
+	[data-tooltip='false']:hover:before,
+	[data-tooltip='false']:hover:after {
+		visibility: hidden;
+		opacity: 0;
+	}
+</style>
