@@ -49,8 +49,8 @@ export async function get(){
     //         checkListName : formBody.checklistName,
     //         verify : formBody.verify,
     //     }
-    //     console.log('category postman',category)
-    //     category.checkItems.map((item) => {
+    //     console.log('checklist postman',checklist)
+    //     checklist.checkItems.map((item) => {
     //         return {
     //             where : {item : item.item},
     //             create : {item : item.item},

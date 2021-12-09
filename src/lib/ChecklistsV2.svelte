@@ -145,9 +145,7 @@
 				} catch (error) {}
 			};
 			submitCat(values);
-			console.log('Colección items: ', itemCollection);
-			console.log('Colección items checkeados: ', itemCheckedCollection);
-			console.log('Colección categorías: ', categoryCollection);
+
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -159,7 +157,7 @@
 			let newItem: checkItem = {
 				checkItem_id: itemCollection.length, // cambié acá el +1
 				item: newItemNameToAdd,
-				description: 'Nueva descripción',
+				description: `Descripción para ${newItemNameToAdd}`,
 				categories: [selectedCategory]
 			};
 			itemCollection = [
@@ -212,9 +210,6 @@
 				} catch (error) {}
 			};
 			submitItem(values);
-			console.log('Colección items: ', itemCollection);
-			console.log('Colección items checkeados: ', itemCheckedCollection);
-			console.log('Colección categorías: ', categoryCollection);
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -275,9 +270,6 @@
 			}
 		];
 	});
-	console.log('Colección items: ', itemCollection);
-	console.log('Colección items checkeados: ', itemCheckedCollection);
-	console.log('Colección categorías: ', categoryCollection);
 </script>
 
 <svelte:head>
