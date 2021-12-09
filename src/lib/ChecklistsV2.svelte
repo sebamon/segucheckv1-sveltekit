@@ -133,15 +133,21 @@
 			};
 			const submitCat = async (values) => {
 				try {
-					let response = await fetch('../../../api/category', { //http://localhost:3000/api/category
+					let response = await fetch('../../../api/category', {
+						//http://localhost:3000/api/category
 						method: 'POST',
 						body: JSON.stringify(values)
 					});
 
-					const data = await response.json().then(() => console.log('Retorno de submitCat: ' + data));
+					const data = await response
+						.json()
+						.then(() => console.log('Retorno de submitCat: ' + data));
 				} catch (error) {}
 			};
 			submitCat(values);
+			console.log('Colección items: ', itemCollection);
+			console.log('Colección items checkeados: ', itemCheckedCollection);
+			console.log('Colección categorías: ', categoryCollection);
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -151,7 +157,7 @@
 	const addItem = () => {
 		if (newItemNameToAdd != '') {
 			let newItem: checkItem = {
-				checkItem_id: itemCollection.length + 1,
+				checkItem_id: itemCollection.length, // cambié acá el +1
 				item: newItemNameToAdd,
 				description: 'Nueva descripción',
 				categories: [selectedCategory]
@@ -194,15 +200,21 @@
 			const submitItem = async (values) => {
 				try {
 					// console.log('dentro del try, envío: ', values);
-					let response = await fetch('../../../api/checkItem', { //http://localhost:3000/api/checkItem
+					let response = await fetch('../../../api/checkItem', {
+						//http://localhost:3000/api/checkItem
 						method: 'POST',
 						body: JSON.stringify(values)
 					});
 
-					const data = await response.json().then(() => console.log('Retorno de submitItem: ' + data));
+					const data = await response
+						.json()
+						.then(() => console.log('Retorno de submitItem: ' + data));
 				} catch (error) {}
 			};
 			submitItem(values);
+			console.log('Colección items: ', itemCollection);
+			console.log('Colección items checkeados: ', itemCheckedCollection);
+			console.log('Colección categorías: ', categoryCollection);
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -211,9 +223,7 @@
 	};
 
 	const submit = () => {
-		itemCheckedCollection.forEach((item) => {
-			
-		})
+		itemCheckedCollection.forEach((item) => {});
 		// alert('Yey! Vamos a enviar ésto!');
 	};
 
@@ -243,7 +253,7 @@
 		let myItemList = element.checkItems;
 		myItemList.forEach((thisCheckitem) => {
 			if (!itemCollection.includes(thisCheckitem)) {
-				thisCheckitem.item_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
+				thisCheckitem.checkItem_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
 
 				itemCollection = [
 					...itemCollection,
@@ -265,6 +275,9 @@
 			}
 		];
 	});
+	console.log('Colección items: ', itemCollection);
+	console.log('Colección items checkeados: ', itemCheckedCollection);
+	console.log('Colección categorías: ', categoryCollection);
 </script>
 
 <svelte:head>
@@ -324,7 +337,7 @@
 							{#each checkedItem.itemId as itemPerCategory}
 								<!-- {#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id} -->
 								<input class="form-check-input previewCheck" type="checkbox" />
-								{itemCollection[itemPerCategory - 1].checkitem.item}<br />
+								{itemCollection[itemPerCategory].checkitem.item}<br />
 								<!-- {/if} -->
 							{/each}
 						</div>
