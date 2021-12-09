@@ -1,33 +1,79 @@
+<script context="module">
+	export async function load() {
+		const responseOp = await fetch('http://localhost:3000/panel/operarios/operarios');
+		const operatorData = await responseOp.json();
+		const responseVh = await fetch('http://localhost:3000/panel/vehiculos/vehiculos');
+		const vehicleData = await responseVh.json();
+		const responseUs = await fetch('http://localhost:3000/panel/usuarios/usuarios');
+		const userData = await responseUs.json();
+		const responseJob = await fetch('http://localhost:3000/panel/trabajos/trabajos');
+		const jobData = await responseJob.json();
+
+		return {
+			props: {
+				data: {
+					operatorData,
+					vehicleData,
+					userData,
+					jobData
+				}
+			}
+		};
+	}
+</script>
+
 <script lang="ts">
-// import { onMount } from 'svelte';
-// import { authenticated } from 'src/stores/auth';
+	// import { onMount } from 'svelte';
+	// import { authenticated } from 'src/stores/auth';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
+	export let data;
 
-	
+	type warning = {
+		none: number;
+		low: number;
+		medium: number;
+		high: number;
+	};
+
+	let operatorData = data.operatorData;
+	let vehicleData = data.vehicleData;
+	let userData = data.userData;
+	let jobData = data.jobData;
+	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
+
+	operatorData.operators.forEach((element) => {
+		console.log('Operador: ', element.users);
+	});
+	vehicleData.vehicles.forEach((element) => {
+		console.log('Vehículo: ', element);
+	});
+	userData.users.forEach((element) => {
+		console.log('Usuario: ', element);
+	});
+	jobData.jobs.forEach((element) => {
+		console.log('Trabajo: ', element);
+	});
+
 	// Datos de usuario - Ver si esto lo maneja un hook
-	let actualUser = 'Juan Perez';
-	let message = ''
+	let currentUser = 'Juan Perez';
+	let message = '';
 
-	// onMount(async () =>{
-	// 	try{
+	const dateDifference = (date1, date2) => {
+		// var date1 = new Date('06/30/2019');
+		// var date2 = new Date('07/30/2019');
 
-	// 		const response = await fetch('', {
-	// 			headers: {'Content-Type' : 'application/json'},
-	// 			credentials : 'include'
-	// 		})
-	// 		const content = await response.json()
-	// 		actualUser = `${content.user.firstName} ${content.user.lastName}`
-	// 		message= `Bienvenido ${actualUser}}`
-	// 		authenticated.set(true)
-	// 	}catch(e){
-	// 		message = 'No estas logueado'
-	// 		authenticated.set(false)
-		
-	// 	}
-	// })
-	
+		// To calculate the time difference of two dates
+		var difference_In_Time = date2.getTime() - date1.getTime();
+
+		// To calculate the no. of days between two dates
+		var difference_In_Days = difference_In_Time / (1000 * 3600 * 24);
+
+		return difference_In_Days
+	};
+
+
 </script>
 
 <svelte:head>
@@ -40,7 +86,7 @@
 		<BreadcrumbItem active>Inicio</BreadcrumbItem>
 	</Breadcrumb>
 	<h1><i class="fas fa-home me-4" />Resumen</h1>
-	<p class="lead">Bienvenido de nuevo, {actualUser}</p>
+	<p class="lead">Bienvenido de nuevo, {currentUser}</p>
 </header>
 
 <main class="row g-2">

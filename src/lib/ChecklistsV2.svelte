@@ -31,6 +31,11 @@
 		categoryId: number;
 	};
 
+	type checkedItemCollection = {
+		item: checkItem[];
+		category: checkcategory;
+	};
+
 	/* 
 		Declaración de Variables
 	*/
@@ -46,12 +51,12 @@
 	*/
 	let categoryCollection: categoryCompound[] = []; // Colección de las categorías `checkcategory` actuales y nuevas
 	let itemCollection: itemCompound[] = []; // Colección de los items `checkcitem` actuales y nuevos
-	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario desea cargar a la checklist
+	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario carga a la vista previa
 
 	/*
 		Variables auxiliares
 	*/
-	let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
+	// let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
 	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
 	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
 	let selectedCategory: checkcategory;
@@ -66,7 +71,7 @@
 		checkListName: 'Nombre de la Checklist',
 		verify: verification
 	};
-	let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
+	// let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
 	let nameTooltip = 'Doble click para editar';
@@ -76,7 +81,7 @@
 	*/
 
 	/*
-		Alterna la edición del título
+		toggle - Alterna la edición del título
 	*/
 	const toggle = () => {
 		if (titleH2 == 'visible') {
@@ -91,7 +96,7 @@
 	};
 
 	/*
-		Crea una categoría nueva
+		addCategory - Crea una categoría nueva
 	*/
 	const addCategory = () => {
 		if (newCategoryNameToAdd != '') {
@@ -145,12 +150,11 @@
 				} catch (error) {}
 			};
 			submitCat(values);
-
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
 	/*
-		Crea un ítem nuevo
+		addItem - Crea un ítem nuevo
 	*/
 	const addItem = () => {
 		if (newItemNameToAdd != '') {
@@ -213,13 +217,43 @@
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
-	const removeItemField = (item_id) => {
-		itemCollection[item_id].active = 'hidden';
-	};
+	/**
+	 *  submit - Guarda la checklist en la base de datos
+	 */
+	const submit = async() => {
+		let values;
+		let itemsCollection = [];
+		itemCheckedCollection.forEach((elemento) => {
+			if (elemento.itemId.length != 0) {
+				let thisCategory = categoryCollection[elemento.categoryId].category;
+				let thisItemCol = [];
+				elemento.itemId.forEach((item) => {
+					thisItemCol = [...thisItemCol, itemCollection[item].checkitem];
+				});
 
-	const submit = () => {
-		itemCheckedCollection.forEach((item) => {});
-		// alert('Yey! Vamos a enviar ésto!');
+				let thisCheckedElement: checkedItemCollection = {
+					item: thisItemCol,
+					category: thisCategory
+				};
+
+				itemsCollection = [...itemsCollection, thisCheckedElement];
+			}
+		});
+		values = {
+			checklistName: thisChecklist.checkListName,
+			itemCollection: itemsCollection
+		};
+		// console.log(value);
+		try {
+			const submitChecklist = await fetch('./checklist', {
+				method: 'POST',
+				body: JSON.stringify(values)
+			});
+
+			const data = await submitChecklist
+				.json()
+				.then(() => console.log('Retorno de submit: ' + data));
+		} catch (error) {}
 	};
 
 	/*
@@ -390,7 +424,8 @@
 	.preview-container {
 		padding: 1%;
 		width: 100%;
-		background-color: rgba(222, 204, 231, 0.562);
+		background-color: #f9f8fc;
+		/* background-color: rgba(222, 204, 231, 0.562); */
 	}
 	.hidden {
 		display: none;

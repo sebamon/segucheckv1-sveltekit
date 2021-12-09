@@ -115,7 +115,7 @@
 				.mixed()
 				// .oneOf(vehiclesList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.'),
-			/* checkgroupRequired: yup
+			 checkgroupRequired: yup
 				.mixed()
 				// .oneOf(checkItemGroupList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.')
@@ -422,5 +422,5 @@
 			</button>
 		</div>
 	</div>
-    {/if}
+    <!-- {/if} -->
 </form>

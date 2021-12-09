@@ -3,52 +3,147 @@ const prisma = new PrismaClient()
 
 
 
-export async function get(){
-    try{
+export async function get() {
+    try {
         const checkList = await prisma.checkcategory.findMany({
             include: {
-                checkitems : true
+                checkitems: true
             }
         })
-        if(checkList){
+        if (checkList) {
             return {
-                body : {
-                    checkList : checkList,
-                    message : 'Checklist encontradas',
-                    status : 'OK'
+                body: {
+                    checkList: checkList,
+                    message: 'Checklist encontradas',
+                    status: 'OK'
                 }
             }
-        }else{
+        } else {
             return {
-                body : {
-                    checkList : {},
+                body: {
+                    checkList: {},
                     message: 'No hay Checklist cargadas',
-                    status : 'INFO'
+                    status: 'INFO'
                 }
             }
         }
-    }catch(error){
+    } catch (error) {
 
         console.log(error)
-            return {
-                body : {
-                    checkList : {},
-                    message : 'Error al buscar checklist',
-                    status : 'ERROR'
-                }
+        return {
+            body: {
+                checkList: {},
+                message: 'Error al buscar checklist',
+                status: 'ERROR'
             }
         }
     }
+}
 
-    // export async function post(request){
+export async function post(request) {
+    console.log('llegamo, nene!!');
+    const formBody = JSON.parse(request.body);
+
+    console.log('FormBody.itemcollection: ', formBody.itemCollection)
+
+    let verifyItems = [];
+    let verify: verify;
+
+    formBody.itemCollection.forEach(checkItem => {
+        verifyItems = [...verifyItems, {
+            verifyItem_id: null,
+            checkItem: checkItem,
+            checked: false,
+            observation: '',
+        }]
+    });
+
+    verify = {
+        verify_id: null,
+        list: verifyItems
+    }
+
+    const checklist: checkList = {
+        checkList_id:null,
+        checkListName: formBody.checklistName,
+        verify: verify,
+    }
+
+        console.log('verifyItems', JSON.stringify(verifyItems))
+        console.log('verify', JSON.stringify(verify))
+        console.log('checklist', JSON.stringify(checklist))    
+        // const newVerify = await prisma.verify.create({
+    //     data: {
+    //         checklist: {
+    //             create: {
+    //                 checkListName: checklist.checkListName,
+
+    //             }
+    //         }
+    //     }
+    // })
+
+    const newChecklist = await prisma.checklist.create({
+        include : {
+            verify : {
+                include : {
+                    list : {
+                        include : {
+                            checkItem : true
+                        }
+                    }
+                }
+            }
+        },
+        data : {
+            checkListName : checklist.checkListName,
+            verify : {
+                create : {
+                    list : {
+                        createMany : {
+                            // data : [{
+                            //     checkItem_id : checklist.verify.list[0].checkItem.checkItem_id,
+                            //     checked : false,
+                            //     observation : '',
+                            // }]
+                            data : checklist.verify.list.map((element)=>{
+                                return {
+                                    checkItem_id : element.checkItem.checkItem_id,
+                                    checked : false,
+                                    observation : '',
+                                }
+                            })
+                        },
+                    },
+                },
+            }
+        }
+    })
+                    //     createMany : [{
+                    //         data : {                                
+                    //             checkItem_id : checklist.verify.list[0].checkItem.checkItem_id,
+                    //             checked : false,
+                    //             observation : '',
+                    //             verifyItem_id: null,                                
+                    //     },
+                    //     {
+
+                    //     },
+                        
+                    // }]
+
+    return {
+        body: {
+            message: 'no fuimoooo',
+            status: 'OK'
+        }
+    };
+}
+
     //     console.log('request.body', request.body)
     //     const formBody = JSON.parse(request.body)
-    
-    //     const checklist : checkList = {
-    //         checklist_id : formBody.checklist_id,
-    //         checkListName : formBody.checklistName,
-    //         verify : formBody.verify,
-    //     }
+
+
     //     console.log('checklist postman',checklist)
     //     checklist.checkItems.map((item) => {
     //         return {
@@ -102,10 +197,10 @@ export async function get(){
     //                 category : {},
     //                 message : 'Error al cargar Categoria - '+ e.code,
     //                 status : 'ERROR',
-                  
+
     //             }
     //         }
     //     }
-    
-    
+
+
     // }
