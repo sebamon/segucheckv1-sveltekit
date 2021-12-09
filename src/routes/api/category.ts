@@ -53,7 +53,7 @@ export async function get(){
 
 export async function post(request){
     console.log('request.body', request.body)
-    const formBody = request.body
+    const formBody = JSON.parse(request.body)
 
     const category : checkcategory = {
         category_id : formBody.category_id,

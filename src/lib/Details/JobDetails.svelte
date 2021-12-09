@@ -58,12 +58,20 @@
 		{ vehicle_id: 2, internalNumber: 1001, domain: 'CC456DD', brand: 'Marca B', model: 'Modelo Y' },
 		{ vehicle_id: 3, internalNumber: 1002, domain: 'EE789FF', brand: 'Marca C', model: 'Modelo Z' }
 	];
+	// Arreglo de operadores - Esto lo lee de la DB:
+	let operatorsList = [
+		{ cuit: 1234567890, firstName: 'Nombre A', lastName: 'Apellido A' },
+		{ cuit: 1234567891, firstName: 'Nombre B', lastName: 'Apellido B' },
+		{ cuit: 1234567892, firstName: 'Nombre C', lastName: 'Apellido C' },
+	];
 	// Arreglo de checkgroups - Esto lo lee de la DB:
 	let checkItemGroupList = [
 		{ checkItemGroup_id: 1, groupName: 'Checkgroup A' },
 		{ checkItemGroup_id: 2, groupName: 'Checkgroup B' },
 		{ checkItemGroup_id: 3, groupName: 'Checkgroup C' }
 	];
+	// Arreglo filtrado según si existe el checkgroup en el arreglo de seleccionados 
+    let checkgroupFilter = checkItemGroupList.filter(item => checkgroupRequired.includes(item.checkItemGroup_id))
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
@@ -107,7 +115,7 @@
 				.mixed()
 				// .oneOf(vehiclesList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.'),
-			checkItemGroup_id: yup
+			 checkgroupRequired: yup
 				.mixed()
 				// .oneOf(checkItemGroupList, 'La selección no se encuentra en la lista.')
 				.required('Debes completar este campo.')
@@ -145,14 +153,14 @@
 {/if}
 <form name="formJobDetails" id="formJobDetails" on:submit|preventDefault={handleSubmit}>
 	{#if isReadOnly}
-    <div class="hstack gap-3">
-			<h2 class="my-4"><i class="fas fa-info me-4"/>Datos básicos</h2>
+		<div class="hstack gap-3">
+			<h2 class="my-4"><i class="fas fa-info me-4" />Datos básicos</h2>
 			<div class="ms-auto">
 				<a class="btn btn-primary" href="/panel/trabajos/{job_id}/editar">
 					<i class="fas fa-pen me-2" />Editar
 				</a>
 			</div>
-	</div>
+		</div>
 	{:else}
 		<h2><i class="fas fa-info me-4" />{job_id}</h2>
 		<p class="lead">Indique los detalles a continuación</p>
@@ -231,7 +239,7 @@
 		<div class="col-md-6">
 			<label for="riskAnalysis" class="form-label">Análisis de riesgos</label>
 			{#if isReadOnly}
-            <br/>
+				<br />
 				<button type="button" on:click={toggle} class="btn btn-primary">
 					<i class="fas fa-eye me-2" />Ver adjunto
 				</button>
@@ -264,7 +272,7 @@
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<label for="customer" class="form-label">Cliente</label>
 			{#if isReadOnly}
 				<p class="form-control">
@@ -292,7 +300,7 @@
 				{/if}
 			{/if}
 		</div>
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<label for="location" class="form-label">Locación</label>
 			{#if isReadOnly}
 				<p class="form-control">
@@ -318,9 +326,7 @@
 				{/if}
 			{/if}
 		</div>
-	</div>
-	<div class="row mb-3 g-3">
-		<div class="col-md-6">
+		<div class="col-md-4">
 			<label for="internalNumber" class="form-label">Número interno de vehículo</label>
 			{#if isReadOnly}
 				<p class="form-control">
@@ -362,25 +368,48 @@
 				</p>
 			{:else}
 				<select
-					id="checkItemGroup_id"
+					id="operatorsAssigned"
 					class="form-select"
 					aria-label="Número de checkgroup"
 					bind:value={$form.checkItemGroup_id}
 					
 					class:invalid={$errors.checkItemGroup_id}
 				>
-					<option selected disabled>Elija una opción...</option>
-					{#each checkItemGroupList as { checkItemGroup_id, groupName }}
-						<option value={checkItemGroup_id}>{groupName}</option>
-					{/each}
+				{#each operatorsList as { cuit, firstName, lastName }}
+					{#if operatorsAssigned.includes(cuit) }
+						<option value={cuit} selected>{firstName} {lastName}</option>
+					{:else}
+						<option value={cuit}>{firstName} {lastName}</option>
+					{/if}
+				{/each}
 				</select>
-				{#if $errors.checkItemGroup_id}
-					<small class="form-error">{$errors.checkItemGroup_id}</small>
+				{#if $errors.operatorsAssigned}
+					<small class="form-error">{$errors.operatorsAssigned}</small>
 				{/if}
+		</div>
+		<div class="col-md-6">
+			<label for="checkgroupRequired" class="form-label">Checkgroups requeridos</label>
+			<select
+				id="checkgroupRequired"
+				class="form-select"
+				aria-label="Checkgroups requeridos"
+				bind:value={$form.checkgroupRequired}
+				on:blur={handleChange}
+				multiple
+			>
+			{#each checkItemGroupList as { checkItemGroup_id, groupName }}
+				{#if checkgroupRequired.includes(checkItemGroup_id) }
+				<option value={checkItemGroup_id} selected>{groupName}</option>
+				{:else}
+				<option value={checkItemGroup_id}>{groupName}</option>
+				{/if}
+			{/each}
+			</select>
+			{#if $errors.checkgroupRequired}
+				<small class="form-error">{$errors.checkgroupRequired}</small>
 			{/if}
 		</div> -->
 	</div>
-    {#if !isReadOnly}
 	<div class="row mb-3 g-3">
 		<div class="col-md-6" />
 		<div class="col-md-6 d-flex justify-content-end">
@@ -393,5 +422,5 @@
 			</button>
 		</div>
 	</div>
-    {/if}
+    <!-- {/if} -->
 </form>

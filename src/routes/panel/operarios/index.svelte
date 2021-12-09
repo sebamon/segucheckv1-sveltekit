@@ -122,11 +122,15 @@
 							</td>
 							<td>
 								<a
-									class="text-decoration-none text-dark"
+									class="text-decoration-none text-dark text-center"
 									href="./operarios/{operator.users.user_id}"
 								>
-									Habilitado
-								</a>
+								{#if operator.users.active}
+										<i class="fas fa-check-circle me-2 text-success" />
+									{:else}
+										<i class="fas fa-times-circle me-2 text-danger" />
+									{/if}
+							</a>
 							</td>
 						</tr>
 					{/each}

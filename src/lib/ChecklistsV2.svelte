@@ -31,6 +31,11 @@
 		categoryId: number;
 	};
 
+	type checkedItemCollection = {
+		item: checkItem[];
+		category: checkcategory;
+	};
+
 	/* 
 		Declaración de Variables
 	*/
@@ -46,12 +51,12 @@
 	*/
 	let categoryCollection: categoryCompound[] = []; // Colección de las categorías `checkcategory` actuales y nuevas
 	let itemCollection: itemCompound[] = []; // Colección de los items `checkcitem` actuales y nuevos
-	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario desea cargar a la checklist
+	let itemCheckedCollection: checkedItemCompound[] = []; // // Colección de los items que el usuario carga a la vista previa
 
 	/*
 		Variables auxiliares
 	*/
-	let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
+	// let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
 	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
 	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
 	let selectedCategory: checkcategory;
@@ -66,29 +71,32 @@
 		checkListName: 'Nombre de la Checklist',
 		verify: verification
 	};
-	let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
+	// let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
+	let nameTooltip = 'Doble click para editar';
 
 	/*
 		Declaración de funciones
 	*/
 
 	/*
-		Alterna la edición del título
+		toggle - Alterna la edición del título
 	*/
 	const toggle = () => {
 		if (titleH2 == 'visible') {
 			titleH2 = 'hidden';
 			titleEdit = 'visible';
+			nameTooltip = '<Enter> para guardar';
 		} else {
 			titleH2 = 'visible';
 			titleEdit = 'hidden';
+			nameTooltip = 'Doble click para editar';
 		}
 	};
 
 	/*
-		Crea una categoría nueva
+		addCategory - Crea una categoría nueva
 	*/
 	const addCategory = () => {
 		if (newCategoryNameToAdd != '') {
@@ -109,21 +117,51 @@
 				categoryId: newCategory.category_id,
 				itemId: []
 			};
-			console.log('Colección de chequeados', itemCheckedCollection);
+			// Reestablecemos el nombre por defecto
 			newCategoryNameToAdd = 'Categoría nueva';
-			
+
+			// Guardamos categoría en base de datos
+			let items = [];
+			newCategory.checkItems.forEach((item) => {
+				items = [
+					...items,
+					{
+						item: item.item,
+						description: item.description
+					}
+				];
+			});
+			let values = {
+				category_id: null,
+				categoryName: newCategory.categoryName,
+				checkItems: items
+			};
+			const submitCat = async (values) => {
+				try {
+					let response = await fetch('../../../api/category', {
+						//http://localhost:3000/api/category
+						method: 'POST',
+						body: JSON.stringify(values)
+					});
+
+					const data = await response
+						.json()
+						.then(() => console.log('Retorno de submitCat: ' + data));
+				} catch (error) {}
+			};
+			submitCat(values);
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
 	/*
-		Crea un ítem nuevo
+		addItem - Crea un ítem nuevo
 	*/
 	const addItem = () => {
 		if (newItemNameToAdd != '') {
 			let newItem: checkItem = {
-				checkItem_id: itemCollection.length + 1,
+				checkItem_id: itemCollection.length, // cambié acá el +1
 				item: newItemNameToAdd,
-				description: 'Nueva descripción',
+				description: `Descripción para ${newItemNameToAdd}`,
 				categories: [selectedCategory]
 			};
 			itemCollection = [
@@ -142,20 +180,80 @@
 			categoryItemCol = [...categoryItemCol, newItem];
 			categoryCollection[categoryIndex].category.checkItems = categoryItemCol;
 
-			// Guardamos item en base de datos
-			
-			
 			// Reestablecemos el nombre por defecto
 			newItemNameToAdd = 'Item nuevo';
+
+			// Guardamos item en base de datos
+			let categories = [];
+			newItem.categories.forEach((category) => {
+				categories = [
+					...categories,
+					{
+						categoryName: category.categoryName
+					}
+				];
+			});
+			let values = {
+				checkItem_id: null,
+				item: newItem.item,
+				description: newItem.description,
+				categories: categories
+			};
+			const submitItem = async (values) => {
+				try {
+					// console.log('dentro del try, envío: ', values);
+					let response = await fetch('../../../api/checkItem', {
+						//http://localhost:3000/api/checkItem
+						method: 'POST',
+						body: JSON.stringify(values)
+					});
+
+					const data = await response
+						.json()
+						.then(() => console.log('Retorno de submitItem: ' + data));
+				} catch (error) {}
+			};
+			submitItem(values);
 		} else alert('El nombre del item no puede estar vacío'); // reemplazar por validador
 	};
 
-	const removeItemField = (item_id) => {
-		itemCollection[item_id].active = 'hidden';
-	};
+	/**
+	 *  submit - Guarda la checklist en la base de datos
+	 */
+	const submit = async() => {
+		let values;
+		let itemsCollection = [];
+		itemCheckedCollection.forEach((elemento) => {
+			if (elemento.itemId.length != 0) {
+				let thisCategory = categoryCollection[elemento.categoryId].category;
+				let thisItemCol = [];
+				elemento.itemId.forEach((item) => {
+					thisItemCol = [...thisItemCol, itemCollection[item].checkitem];
+				});
 
-	const submit = () => {
-		alert('Yey! Vamos a enviar ésto!');
+				let thisCheckedElement: checkedItemCollection = {
+					item: thisItemCol,
+					category: thisCategory
+				};
+
+				itemsCollection = [...itemsCollection, thisCheckedElement];
+			}
+		});
+		values = {
+			checklistName: thisChecklist.checkListName,
+			itemCollection: itemsCollection
+		};
+		// console.log(value);
+		try {
+			const submitChecklist = await fetch('./checklist', {
+				method: 'POST',
+				body: JSON.stringify(values)
+			});
+
+			const data = await submitChecklist
+				.json()
+				.then(() => console.log('Retorno de submit: ' + data));
+		} catch (error) {}
 	};
 
 	/*
@@ -184,7 +282,7 @@
 		let myItemList = element.checkItems;
 		myItemList.forEach((thisCheckitem) => {
 			if (!itemCollection.includes(thisCheckitem)) {
-				thisCheckitem.item_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
+				thisCheckitem.checkItem_id = itemCollection.length; // Se modifica el id del checkitem para tratamiento interno
 
 				itemCollection = [
 					...itemCollection,
@@ -213,17 +311,19 @@
 </svelte:head>
 <!-- {JSON.stringify()} -->
 {#if itemCollection}
-	<div id="dynamicChecklistName" data-tooltip="Doble click para editar ⇩">
+	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
+		<i class="fas fa-save {titleEdit}" />
 		<input
 			type="text"
 			class="form-control {titleEdit}"
 			on:keydown={({ key }) => key === 'Enter' && toggle()}
 			bind:value={thisChecklist.checkListName}
 		/>
+		<i class="fas fa-edit {titleH2}" on:dblclick={toggle} />
 		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
 	</div>
 	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
-		<div id="panel" class="col-8">
+		<div id="panel" class="col-8 ">
 			<Tabs>
 				<!-- <svelte:component this={Tabs} {tabInfoProps}> -->
 				<TabList>
@@ -236,7 +336,7 @@
 					<TabPanel>
 						<!--  -->
 						<h3>{categoryCompound.category.categoryName}</h3>
-						<input type="text" bind:value={categoryCompound.category.categoryName} /><br />
+						<!-- <input type="text" bind:value={categoryCompound.category.categoryName} /><br /> -->
 						<MultiSelect
 							id="itemsSelected"
 							bind:value={itemCheckedCollection[categoryCompound.category.category_id].itemId}
@@ -263,7 +363,7 @@
 							{#each checkedItem.itemId as itemPerCategory}
 								<!-- {#if itemCompound.selectedCategory.category_id == categoryCompound.category.category_id} -->
 								<input class="form-check-input previewCheck" type="checkbox" />
-								{itemCollection[itemPerCategory - 1].checkitem.item}<br />
+								{itemCollection[itemPerCategory].checkitem.item}<br />
 								<!-- {/if} -->
 							{/each}
 						</div>
@@ -324,7 +424,8 @@
 	.preview-container {
 		padding: 1%;
 		width: 100%;
-		background-color: rgba(222, 204, 231, 0.562);
+		background-color: #f9f8fc;
+		/* background-color: rgba(222, 204, 231, 0.562); */
 	}
 	.hidden {
 		display: none;
