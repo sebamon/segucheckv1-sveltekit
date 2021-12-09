@@ -111,6 +111,7 @@
 			};
 			console.log('Colección de chequeados', itemCheckedCollection);
 			newCategoryNameToAdd = 'Categoría nueva';
+			
 		} else alert('El nombre de la categoría no puede estar vacío'); // reemplazar por validador
 	};
 
@@ -210,7 +211,7 @@
 <svelte:head>
 	<title>Nueva Checklist - SeguCheck</title>
 </svelte:head>
-
+<!-- {JSON.stringify()} -->
 {#if itemCollection}
 	<div id="dynamicChecklistName" data-tooltip="Doble click para editar ⇩">
 		<input

@@ -1,4 +1,5 @@
 import { PrismaClient } from '@prisma/client'
+import { NavItem } from 'sveltestrap'
 const prisma = new PrismaClient()
 
 
@@ -38,4 +39,29 @@ export async function get(){
                 }
             }
         }
+    }
+
+export async function post(request) {
+
+    const newCheckLis = await prisma.checklist.create({
+        data : {
+            verify : {
+                create  : {
+                    list : {
+                        connectOrCreate: {
+                            where: {
+                                verifyItem_id : 1
+                            },
+                            create : {
+                                verifyItem_id : 1,
+                                checked : false,
+                                
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    })
+
     }

@@ -48,14 +48,8 @@
 		verify: verify;
 	};
 
-	
-
-	/* Modales!! */
-	let open = false;
-	const toggle = () => {
-		open = !open;
 	type itemCompound = {
-		checkitem: checkitem;
+		checkitem: checkItem;
 		itemButton: number;
 		selectedCategory: checkcategory;
 		active: boolean;
@@ -80,7 +74,8 @@
 	const addCategory = () => {
 		let newCategory: checkcategory = {
 			category_id: categoryCollection.length,
-			categoryName: 'Categoría nueva'
+			categoryName: 'Categoría nueva',
+			checkItems : []
 		};
 		categoryCollection = [
 			...categoryCollection,
@@ -92,16 +87,17 @@
 	};
 
 	const addItem = () => {
-		let newItem: checkitem = {
+		let newItem: checkItem = {
 			checkItem_id: itemCollection.length,
 			item: 'Item nuevo',
-			description: 'Descripción del ítem'
+			description: 'Descripción del ítem',
+			categories : []
 		};
 		itemCollection = [
 			...itemCollection,
 			{
 				checkItem: newItem,
-				itemButton: newItem.checkItem_id,
+				itemButton: Number(newItem.checkItem_id),
 				selectedCategory: categoryCollection[0].category,
 				active: true
 			}
