@@ -1,13 +1,13 @@
 <script context="module">
-	export async function load() {
-		const response = await fetch('http://localhost:3000/api/category');
-		const data = await response.json();
-		//console.log(data)
+	export async function load({fetch ,page}){
+		const response = await fetch('./checklist')
+		console.log(response)
+		const data = await response.json()
 		return {
 			props: {
 				data
 			}
-		};
+		}
 	}
 </script>
 
@@ -15,14 +15,15 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import Checklists from '$lib/ChecklistsV2.svelte';
+import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 
 	export let data;
+
 </script>
 
 <svelte:head>
 	<title>Nuevo checklist - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -39,5 +40,5 @@
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
-<Checklists {data}/>
+<ChecklistsV2 {data}/>
 

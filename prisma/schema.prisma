@@ -46,7 +46,7 @@ model checklist {
   checkListName String
   verify_id     Int
   verify        verify @relation(fields: [verify_id], references: [verify_id])
-  jobs          jobs[]
+  jobs          jobs[]?
 }
 
 model customer {

@@ -220,31 +220,41 @@
 	/**
 	 *  submit - Guarda la checklist en la base de datos
 	 */
-	 const submit = async() => {
-        let values;
-        let itemsCollection = [];
-        itemCheckedCollection.forEach((elemento) => {
-            elemento.itemId.forEach((item)=>{
-                itemCollection[item].checkitem.categories = [categoryCollection[elemento.categoryId].category]
-                itemsCollection = [...itemsCollection, itemCollection[item].checkitem];
-            })
-        });
-        values = {
-            checklistName: thisChecklist.checkListName,
-            itemCollection: itemsCollection
-        };
-        console.log(values);
-        try {
-            const submitChecklist = await fetch('./checklist', {
-                method: 'POST',
-                body: JSON.stringify(values)
-            });
+	const submit = async() => {
+		let values;
+		let itemsCollection = [];
+		itemCheckedCollection.forEach((elemento) => {
+			if (elemento.itemId.length != 0) {
+				let thisCategory = categoryCollection[elemento.categoryId].category;
+				let thisItemCol = [];
+				elemento.itemId.forEach((item) => {
+					thisItemCol = [...thisItemCol, itemCollection[item].checkitem];
+				});
 
-            const data = await submitChecklist
-                .json()
-                .then(() => console.log('Retorno de submit: ' + data));
-        } catch (error) {}
-    }
+				let thisCheckedElement: checkedItemCollection = {
+					item: thisItemCol,
+					category: thisCategory
+				};
+
+				itemsCollection = [...itemsCollection, thisCheckedElement];
+			}
+		});
+		values = {
+			checklistName: thisChecklist.checkListName,
+			itemCollection: itemsCollection
+		};
+		// console.log(value);
+		try {
+			const submitChecklist = await fetch('./checklist', {
+				method: 'POST',
+				body: JSON.stringify(values)
+			});
+
+			const data = await submitChecklist
+				.json()
+				.then(() => console.log('Retorno de submit: ' + data));
+		} catch (error) {}
+	};
 
 	/*
 	 * Carga inicial de datos provenientes del controlador
@@ -299,7 +309,7 @@
 <svelte:head>
 	<title>Nueva Checklist - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(itemCheckedCollection)}
+<!-- {JSON.stringify()} -->
 {#if itemCollection}
 	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
 		<i class="fas fa-save {titleEdit}" />

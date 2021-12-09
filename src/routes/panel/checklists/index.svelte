@@ -1,6 +1,7 @@
 <script context="module">
-	export async function load({fetch ,paage}){
+	export async function load({fetch ,page}){
 		const response = await fetch('./checklists/checklist')
+		console.log(response)
 		const data = await response.json()
 		return {
 			props: {
@@ -18,7 +19,7 @@
 	import SeguCheck from '$lib/SeguCheck.svelte';
 
 	export let data
-	let checkList = data.checkList
+	let checkList = data.categories
 
 </script>
 
