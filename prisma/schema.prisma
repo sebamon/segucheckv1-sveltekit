@@ -17,9 +17,9 @@ model checkitem {
 }
 
 model checkcategory {
-  category_id         Int           @id @default(autoincrement())
-  categoryName        String        @unique
-  checkitems          checkitem[]   @relation(references: [checkItem_id])
+  category_id  Int         @id @default(autoincrement())
+  categoryName String      @unique
+  checkitems   checkitem[] @relation(references: [checkItem_id])
 }
 
 model verifyItem {
@@ -29,15 +29,16 @@ model verifyItem {
   checked       Boolean
   observation   String
 
-  verify          verify? @relation(fields: [verifyVerify_id], references: [verify_id])
-  verifyVerify_id Int?
+  verify          verify @relation(fields: [verifyVerify_id], references: [verify_id])
+  verifyVerify_id Int
 }
 
 model verify {
   verify_id    Int          @id @default(autoincrement())
   checklist_id Int
-  list         verifyItem[]
-  checklist    checklist[]
+  itemList     verifyItem[]
+
+  checklist checklist[]
 }
 
 model checklist {
@@ -45,7 +46,7 @@ model checklist {
   checkListName String
   verify_id     Int
   verify        verify @relation(fields: [verify_id], references: [verify_id])
-  jobs          jobs[]?
+  jobs          jobs[]
 }
 
 model customer {

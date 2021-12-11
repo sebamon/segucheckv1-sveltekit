@@ -40,5 +40,5 @@ import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
-<ChecklistsV2 {data}/>
+<!-- <ChecklistsV2 {data}/> -->
 

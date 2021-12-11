@@ -16,12 +16,13 @@
 </script>
 <script lang="ts">
     import CustomerDetails from '$lib/Details/CustomerDetails.svelte';
-	import { dataset_dev } from 'svelte/internal';
+	
 	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
+	import CheckListV2 from '$lib/CheckListV2.svelte';
 
     export let data
-    export let checkGroup = data.checkGroup
+    export let checkList = data.checkList
     export let isReadOnly = true
     let message = data.message
     let status = data.status
@@ -29,7 +30,7 @@
 </script>
 
 <svelte:head>
-    <title>CheckList: {checkGroup.groupName} - SeguCheck</title>
+    <title>CheckList: {checkList.checkListName} - SeguCheck</title>
 </svelte:head>
 <!-- Encabezado -->
 
@@ -42,12 +43,12 @@
 			<a href="/panel/checklists">CheckList</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/checklists/{checkGroup.checkItemGroup_id}">{checkGroup.checkItemGroup_id}</a>
+			<a href="/panel/checklists/{checkList.checkListName}">{checkList.checkList_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalle</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-industry me-4" />{checkGroup.groupName}</h1>
+		<h1><i class="fas fa-industry me-4" />{checkList.checkListName}</h1>
 		<p class="lead">Detalles del CheckGroup</p>
 	</div>
 </header>
@@ -57,4 +58,4 @@
 {JSON.stringify(data)}
 
 <br>
-ACA VA EL COMPONENTE DE CHECKLIST
+<CheckListV2 />
