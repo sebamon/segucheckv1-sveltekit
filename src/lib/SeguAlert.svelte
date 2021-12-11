@@ -15,6 +15,7 @@
         'usuarios' : 'Usuario',
         'locaciones' : 'Locación',
         'trabajos' : 'Trabajo',
+        'checklists': 'Checklists'
     }
     const DEFAULT_COLOR='secondary'
     const COLOR = {

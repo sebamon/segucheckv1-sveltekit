@@ -19,7 +19,7 @@
 	import SeguCheck from '$lib/SeguCheck.svelte';
 
 	export let data
-	let checkList = data.categories
+	let checkList = data.checkList
 
 </script>
 
@@ -65,30 +65,30 @@
 				</tr>
 			</thead>
 			<tbody>
-				{#each checkList as checkgroup }
+				{#each checkList as aCheckList }
 				<tr>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							{checkgroup.checkItemGroup_id}
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
+							{aCheckList.checklist_id}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
-							{checkgroup.groupName}
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
+							{aCheckList.checkListName}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
 							Personalizable
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
 							Personalizable
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{checkgroup.checkItemGroup_id}">
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
 							Personalizable
 						</a>
 					</td>

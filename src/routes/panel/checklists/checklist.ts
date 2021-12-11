@@ -5,15 +5,19 @@ const prisma = new PrismaClient()
 
 export async function get() {
     try{
-        const categories = await prisma.checkcategory.findMany({
+        const checkList = await prisma.checklist.findMany({
+            where : {
+                
+            },
             include: {
-                checkitems : true
+                verify : true,
+
             }
         })
-        if(categories){
+        if(checkList){
             return {
                 body : {
-                    categories : categories,
+                    checkList : checkList,
                     message : 'Categorias encontradas',
                     status : 'OK'
                 }
@@ -21,7 +25,7 @@ export async function get() {
         }else{
             return {
                 body : {
-                    categories : {},
+                    checkList : {},
                     message: 'No hay categorias cargadas',
                     status : 'INFO'
                 }
@@ -32,13 +36,49 @@ export async function get() {
         console.log(error)
             return {
                 body : {
-                    categories : {},
+                    checkList : {},
                     message : 'Error al buscar categorias',
                     status : 'ERROR'
                 }
             }
         }
     }
+// export async function get() {
+//     try{
+//         const categories = await prisma.checkcategory.findMany({
+//             include: {
+//                 checkitems : true
+//             }
+//         })
+//         if(categories){
+//             return {
+//                 body : {
+//                     categories : categories,
+//                     message : 'Categorias encontradas',
+//                     status : 'OK'
+//                 }
+//             }
+//         }else{
+//             return {
+//                 body : {
+//                     categories : {},
+//                     message: 'No hay categorias cargadas',
+//                     status : 'INFO'
+//                 }
+//             }
+//         }
+//     }catch(error){
+
+//         console.log(error)
+//             return {
+//                 body : {
+//                     categories : {},
+//                     message : 'Error al buscar categorias',
+//                     status : 'ERROR'
+//                 }
+//             }
+//         }
+//     }
 
 
 export async function post(request) {
@@ -52,6 +92,26 @@ export async function post(request) {
     let verify: verify;
     let itemCollection = formBody.itemCollection
     let listaItems = []
+
+
+    const newCheckList = await prisma.checklist.create({
+        data: {
+            checkListName : formBody.checkList,
+            verify : {
+                create : {
+                    itemList : {
+                        connect : {
+                            verifyItem_id : 1, //reemplazar por foreach   
+                        }
+                    }
+                }
+            },
+        },
+        include : {
+            verify : true,
+
+        }
+    })
 
     itemCollection.map((e)=>{
         listaItems = [listaItems , {
@@ -125,37 +185,37 @@ itemCollection.map((item)=>{
         console.log('verify', JSON.stringify(verify))
         console.log('checklist', JSON.stringify(checklist))    
 
-        const newVerifyItem  = await prisma.verifyItem.create({
-            include :{
-                checkItem : true,
-            },
-            data : {
-                checkItem : {
-                    connectOrCreate : {
-                        where : {
-                            item : 'nombre Item',
-                        },
-                        create : {
-                            item : '',
-                            description : '',
-                            categories : {
-                                connectOrCreate : {
-                                    where : {
-                                        categoryName : '',
-                                    },
-                                    create : {
-                                        categoryName : '',
+        // const newVerifyItem  = await prisma.verifyItem.create({
+        //     include :{
+        //         checkItem : true,
+        //     },
+        //     data : {
+        //         checkItem : {
+        //             connectOrCreate : {
+        //                 where : {
+        //                     item : 'nombre Item',
+        //                 },
+        //                 create : {
+        //                     item : '',
+        //                     description : '',
+        //                     categories : {
+        //                         connectOrCreate : {
+        //                             where : {
+        //                                 categoryName : '',
+        //                             },
+        //                             create : {
+        //                                 categoryName : '',
                                     
-                                    }
-                                },
-                            },
-                        },
-                    }
-                },
-                checked : false,
-                observation : '',
-            }
-        })
+        //                             }
+        //                         },
+        //                     },
+        //                 },
+        //             }
+        //         },
+        //         checked : false,
+        //         observation : '',
+        //     }
+        // })
     // const newChecklist = await prisma.checklist.create({
     //     include : {
     //         verify : {

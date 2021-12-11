@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({fetch ,page}){
-		const response = await fetch('http://localhost:3000/api/category')
+		const response = await fetch('../../api/category')
 		const data = await response.json()
 		return {
 			props: {
@@ -25,7 +25,7 @@
 <svelte:head>
 	<title>Checkgroups - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(categories)}
+<!-- {JSON.stringify(categories)} -->
 
 <header class="row">
 	<Breadcrumb>

@@ -5,17 +5,20 @@ export async function get(request){
     let id_find = Number(request.params.slug)
     if(!isNaN(id_find)){
         try {
-            const checkGroup = await prisma.checkitemgroup.findUnique({
+            const checkList = await prisma.checklist.findUnique({
                 where: {
-                    checkItemGroup_id : id_find,
+                    checklist_id : id_find,
+                },
+                include: {
+                    verify : true,
                 }
             })
 
-            console.log(checkGroup)
-            if(!checkGroup){
+            console.log(checkList)
+            if(!checkList){
                 return {
                     body: {
-                        checkGroup : {},
+                        checkList : {},
                         message: 'CheckItemGroup no Encontrado',
                         status : 'INFO'
                     }
@@ -23,7 +26,7 @@ export async function get(request){
             }else{
                 return {
                     body: {
-                        checkGroup : checkGroup,
+                        checkList : checkList,
                         message: 'CheckItemGroup Encontrado',
                         status : 'OK'
                     }
@@ -48,20 +51,20 @@ export async function put(request){
 
     if(!isNaN(id_find)){
         try {
-            const checkGroup = await prisma.checkitemgroup.update({
+            const checkList = await prisma.checklist.update({
                 where: {
-                    checkItemGroup_id : id_find,
+                    checklist_id : id_find,
                 },
                 data : {
-                    groupName : formBody.groupName,
+                    checkListName : formBody.checkListName,
                 }
             })
 
-            console.log(checkGroup)
-            if(!checkGroup){
+            console.log(checkList)
+            if(!checkList){
                 return {
                     body: {
-                        checkGroup : {},
+                        checkList : {},
                         message: 'CheckItemGroup no Encontrado',
                         status : 'INFO'
                     }
@@ -69,8 +72,8 @@ export async function put(request){
             }else{
                 return {
                     body: {
-                        checkGroup : checkGroup,
-                        message: 'CheckItemGroup Encontrado',
+                        checkList : checkList,
+                        message: 'checkLista Encontrada',
                         status : 'OK'
                     }
                 }
@@ -80,7 +83,7 @@ export async function put(request){
             return {
                 body : {
                     customer : {},
-                    message: 'Se produjo un error al buscar CheckItemGroup',
+                    message: 'Se produjo un error al buscar CheckList',
                     status: 'ERROR'
                 }
             }
