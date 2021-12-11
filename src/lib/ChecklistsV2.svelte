@@ -8,6 +8,7 @@
 	import { Tabs, TabList, TabPanel, Tab } from '../routes/api/tabs';
 	import MultiSelect from '$lib/MultiSelect.svelte';
 	import { fade } from 'svelte/transition';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 
 	/* 
 		Declaración de tipos
@@ -75,6 +76,10 @@
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
 	let nameTooltip = 'Doble click para editar';
+	let response = {
+		status: '',
+		message: ''
+	};
 
 	/*
 		Declaración de funciones
@@ -220,17 +225,21 @@
 	/**
 	 *  submit - Guarda la checklist en la base de datos
 	 */
-	const submit = async() => {
+	const submit = async () => {
 		let values;
 		let itemsCollection = [];
-		console.log("itemchecked collection: ", itemCheckedCollection)
-		itemCheckedCollection.forEach((elemento) => { // {categoryId: number, itemId: [number]}
-			elemento.itemId.forEach((itemId)=>{ // itemId
+		console.log('itemchecked collection: ', itemCheckedCollection);
+		itemCheckedCollection.forEach((elemento) => {
+			// {categoryId: number, itemId: [number]}
+			elemento.itemId.forEach((itemId) => {
+				// itemId
 				// console.log('itemCollection[itemId]', itemCollection[itemId])
-				itemCollection[itemId].checkitem.categories = [categoryCollection[elemento.categoryId].category]
+				itemCollection[itemId].checkitem.categories = [
+					categoryCollection[elemento.categoryId].category
+				];
 				itemCollection[itemId].checkitem.categories[0].checkItems = null;
 				itemsCollection = [...itemsCollection, itemCollection[itemId].checkitem];
-			})
+			});
 		});
 		values = {
 			checklistName: thisChecklist.checkListName,
@@ -242,12 +251,17 @@
 				method: 'POST',
 				body: JSON.stringify(values)
 			});
-			const data = await submitChecklist
-				.json()
-				.then(() => console.log('Retorno de submit: ' + data));
+			const data = await submitChecklist.json().then(() => {
+				response.message = data.body.message;
+				response.status = data.body.status;
+				setTimeout(() => history.back(), 2500);
+			});
 		} catch (error) {
-			console.log(error);
+			response.message = 'Todavía no terminamos de crear ésto';
+			response.status = 'ERROR';
+			//setTimeout(() => history.back(), 2500);
 		}
+		// let declarar constante que reciba el resultado de la operacion de carga, y asignar a segualert
 	};
 
 	/*
@@ -303,7 +317,12 @@
 <svelte:head>
 	<title>Nueva Checklist - SeguCheck</title>
 </svelte:head>
-<!-- {JSON.stringify(itemCheckedCollection)} -->
+
+<!-- Segualert! -->
+{#if response.status !== ''}
+<SeguAlert message={response.message} status={response.status} path="checklists" />
+{/if}
+
 {#if itemCollection}
 	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
 		<i class="fas fa-save {titleEdit}" />
@@ -408,6 +427,7 @@
 {/if}
 
 <!-- Thanks a lot, Exodus!! -->
+
 <style>
 	.dynamicContainer {
 		margin-top: 1rem;
