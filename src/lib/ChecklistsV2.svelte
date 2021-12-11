@@ -57,22 +57,10 @@
 	/*
 		Variables auxiliares
 	*/
-	// let itemSelectedCatToAdd: checkcategory; // Categoría temporal para creación de nuevos items
 	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
 	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
 	let selectedCategory: checkcategory;
-	let itemVerification: verifyItem[]; // Colección creada para inicializar una checklist
-	let verification: verify = {
-		// Variable creada para inicializar una checklist
-		verify_id: null,
-		list: itemVerification
-	};
-	let thisChecklist: checkList = {
-		checkList_id: null,
-		checkListName: 'Nombre de la Checklist',
-		verify: verification
-	};
-	// let value = []; // Utilizado por DnDAction para cargar los componentes seleccionados
+	let checkListName = 'Nombre de la Checklist';
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
 	let nameTooltip = 'Doble click para editar';
@@ -228,7 +216,7 @@
 	const submit = async () => {
 		let values;
 		let itemsCollection = [];
-		console.log('itemchecked collection: ', itemCheckedCollection);
+		// console.log('itemchecked collection: ', itemCheckedCollection);
 		itemCheckedCollection.forEach((elemento) => {
 			// {categoryId: number, itemId: [number]}
 			elemento.itemId.forEach((itemId) => {
@@ -242,10 +230,10 @@
 			});
 		});
 		values = {
-			checklistName: thisChecklist.checkListName,
+			checklistName: checkListName,
 			itemCollection: itemsCollection
 		};
-		//console.log('Valores a enviar', JSON.stringify(values));
+		console.log('Valores a enviar', JSON.stringify(values));
 		try {
 			const submitChecklist = await fetch('./checklist', {
 				method: 'POST',
@@ -330,10 +318,10 @@
 			type="text"
 			class="form-control {titleEdit}"
 			on:keydown={({ key }) => key === 'Enter' && toggle()}
-			bind:value={thisChecklist.checkListName}
+			bind:value={checkListName}
 		/>
 		<i class="fas fa-edit {titleH2}" on:dblclick={toggle} />
-		<h2 class={titleH2} on:dblclick={toggle}>{thisChecklist.checkListName}</h2>
+		<h2 class={titleH2} on:dblclick={toggle}>{checkListName}</h2>
 	</div>
 	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
 		<div id="panel" class="col-8 ">
@@ -365,7 +353,7 @@
 		<div id="preview" class="col-4">
 			<h3>Vista Previa</h3>
 			<div class="dynamicContainer border preview-container">
-				<h4 class="preview-header"><strong>{thisChecklist.checkListName}</strong></h4>
+				<h4 class="preview-header"><strong>{checkListName}</strong></h4>
 				<!-- <p>Categoría (colección): {JSON.stringify(categoryCollection)}</p> -->
 				{#each itemCheckedCollection as checkedItem}
 					{#if checkedItem.itemId.length != 0}
