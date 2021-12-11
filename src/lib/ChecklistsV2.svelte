@@ -223,23 +223,25 @@
 	const submit = async() => {
 		let values;
 		let itemsCollection = [];
-		itemCheckedCollection.forEach((elemento) => {
-			elemento.itemId.forEach((item)=>{
-				itemCollection[item].checkitem.categories = [categoryCollection[elemento.categoryId].category]
-				itemsCollection = [...itemsCollection, itemCollection[item].checkitem];
+		console.log("itemchecked collection: ", itemCheckedCollection)
+		itemCheckedCollection.forEach((elemento) => { // {categoryId: number, itemId: [number]}
+			elemento.itemId.forEach((itemId)=>{ // itemId
+				// console.log('itemCollection[itemId]', itemCollection[itemId])
+				itemCollection[itemId].checkitem.categories = [categoryCollection[elemento.categoryId].category]
+				itemCollection[itemId].checkitem.categories[0].checkItems = null;
+				itemsCollection = [...itemsCollection, itemCollection[itemId].checkitem];
 			})
 		});
 		values = {
 			checklistName: thisChecklist.checkListName,
 			itemCollection: itemsCollection
 		};
-		console.log(values);
+		//console.log('Valores a enviar', JSON.stringify(values));
 		try {
 			const submitChecklist = await fetch('./checklist', {
 				method: 'POST',
 				body: JSON.stringify(values)
 			});
-			console.log('Al try entró');
 			const data = await submitChecklist
 				.json()
 				.then(() => console.log('Retorno de submit: ' + data));
