@@ -1,28 +1,3 @@
-<!-- <script context="module">
-	export async function load({fetch, page}){
-		try{
-			const response = await fetch(`../../../api/roles`)
-			const data = await response.json()
-			console.log('nuevo load data',data)
-			return {
-				props: {
-					data : data
-				}
-			}
-		}catch(e){
-			console.log(e)
-			let rolesList =[
-							{ rol_id: 1, rolDescription: 'Gestor documental' },
-							{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-							{ rol_id: 3, rolDescription: 'Operario' },
-							]
-			return {
-				data : rolesList
-			}
-		};
-	}
-</script> -->
-
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Image, Modal } from 'sveltestrap';
@@ -91,7 +66,7 @@
 	};
 
 	onMount(() => {
-		console.log('holaMount',usersonroles)
+		// console.log('holaMount',usersonroles)
 		usersonroles.forEach(rol => {
 			if(rol.rol_id==1){
 				roles_assigned['rol1'] = true
@@ -148,8 +123,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-	import { page } from '$app/stores';
-	import { pathToFileURL } from 'url';
+
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos

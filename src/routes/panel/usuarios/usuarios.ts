@@ -107,6 +107,7 @@ export const post = async (request) => {
 				profilePic: formBody.profilePic,
 				password: '1234'
 			}
+
 		});
 	  
 		const newUserId = newUser.user_id;
@@ -121,11 +122,53 @@ export const post = async (request) => {
 			if (element.rol_id == 3) {
 				let operator = await prisma.operator.create({
 					data: {
-						user_id: newUserId,						
+						user_id: newUserId,
+						useraddress: {
+							create: {
+								countryOfOrigin : '',
+								stateOfOrigin : '',
+								cityOfOrigin : '',
+								zipCodeOfOrigin : '',
+								addressOfOrigin : '',
+								phoneOfOrigin : '',
+								countryOfResidence : '',
+								stateOfResidence : '',
+								cityOfResidence : '',
+								zipCodeOfResidence : '',
+								addressOfResidence : '',
+								phoneOfResidence : '',
+							}
+						},
+						userhealthinfo : {
+							create : {
+								allergies : '',
+								bloodType : '',
+								rh : false,
+							}
+						},
+						userworkinfo : {
+							create : {
+								dischargeDate : new Date(),
+								employementRel : '',
+								hiringMode : '',
+								job : '',
+								unionAgreement : '',
+							}
+						},
+
+
+					},
+					include : {
+						useraddress: true,
+						userworkinfo : true,
+						userhealthinfo :true,
+							
+						
 					}
 				});
 			}
 		});
+
 		if(newUserId){
 			return {
 				body: {

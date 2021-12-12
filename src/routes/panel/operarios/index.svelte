@@ -25,7 +25,7 @@
 
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte'; 
 	export let data;
 	export let operators = data.operators;
@@ -63,6 +63,7 @@
 </header>
 
 <main>
+	{JSON.stringify(operators)}
 	{#if data.status !== 'OK'}
 		<SeguAlert status={data.status} message={data.message} path=operarios/>
 	{/if}
@@ -91,7 +92,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.user_id}
 								</a>
@@ -99,7 +100,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.cuit}
 								</a>
@@ -107,7 +108,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.firstName}
 								</a>
@@ -115,7 +116,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.lastName}
 								</a>
@@ -123,7 +124,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark text-center"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 								{#if operator.users.active}
 										<i class="fas fa-check-circle me-2 text-success" />
