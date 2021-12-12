@@ -2,12 +2,6 @@ import { PrismaClient } from '@prisma/client'
 
 const prisma = new PrismaClient()
 
-export const post = (request) => {
-    const formBody = JSON.parse(request.body)
-    const email = formBody.email
-    const password = formBody.password
-}
-
 export const get = async () => {
     try{
         const operators = await prisma.operator.findMany({
@@ -70,3 +64,17 @@ export const get = async () => {
 //         body: ''
 // }      
 // }
+export const post = async (request) => {
+	console.log('** API OPERARIOS - POST **')
+	const formBody = JSON.parse(request.body).values;
+    console.log(formBody);
+
+    /* Implementar carga de archivos */
+
+    return {
+        body: {
+            message: 'Estamos yendo por buen camino, mi hermano',
+            status: 'OK'
+        }
+    }
+}

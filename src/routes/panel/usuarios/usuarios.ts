@@ -15,7 +15,7 @@ type user = {
 };
 
 export async function get() {
-	console.log('** API USUARIOS - GET **')
+	console.log('** API USUARIOS - GET (seguro es este?) **')
 	try {
 		const users = await prisma.users.findMany({
 			where: {},

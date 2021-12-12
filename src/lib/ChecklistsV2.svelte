@@ -59,12 +59,12 @@
 	*/
 	let newCategoryNameToAdd: string = 'Categoría nueva'; // Nombre de la categoría nueva a cargar
 	let newItemNameToAdd: string = 'Item nuevo'; // Nombre del item nuevo a cargar
-	let selectedCategory: checkcategory;
-	let checkListName = 'Nombre de la Checklist';
+	let selectedCategory: checkcategory; // Categoría elegida para un item nuevo a crear
+	let checkListName = 'Nombre de la Checklist'; // Nombre para un item nuevo a crear
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
-	let nameTooltip = 'Doble click para editar';
-	let response = {
+	let nameTooltip = 'Doble click para editar'; // Tooltip para la edición del título
+	let response = { // Almacena la respuesta del enspoint al momento de guardar una lista. Se utiliza para disparar el SeguAlert.
 		status: '',
 		message: ''
 	};

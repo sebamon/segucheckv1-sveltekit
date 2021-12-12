@@ -14,7 +14,6 @@
 		"test": "jest src",
 		"test:watch": "npm run test -- --watch",
 		"debug:dev": "node --inspect node_modules/@sveltejs/kit/dist/cli.js dev",
-		
 		"debug:start": "node --inspect node_modules/@sveltejs/kit/dist/cli.js start"
 	},
 	"devDependencies": {
@@ -60,6 +59,7 @@
 		"jsonwebtoken": "^8.5.1",
 		"moment": "^2.29.1",
 		"path": "^0.12.7",
+		"pdf.js": "^0.1.0",
 		"sk-auth": "^0.3.7",
 		"svelecte": "^3.4.0",
 		"svelte-copy-to-clipboard": "^0.2.5",
@@ -74,9 +74,12 @@
 	},
 	"jest": {
 		"transform": {
-		   "^.+\\.js$": "babel-jest",
-		  "^.+\\.svelte$": "svelte-jester"
+			"^.+\\.js$": "babel-jest",
+			"^.+\\.svelte$": "svelte-jester"
 		},
-		"moduleFileExtensions": ["js", "svelte"]
+		"moduleFileExtensions": [
+			"js",
+			"svelte"
+		]
 	}
 }
