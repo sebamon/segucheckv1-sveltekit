@@ -14,8 +14,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	import Checklists from '$lib/ChecklistsV2.svelte';
-import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
+	import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 
 	export let data;
 

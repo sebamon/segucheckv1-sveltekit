@@ -1,3 +1,5 @@
+<!-- Falta validar el select del tipo de habilitación -->
+
 <script context="module">
 	/* Configurar!
 	export async function load({fetch , page}){
@@ -33,8 +35,12 @@
 		lastName: 'Perez'
 	};
 	let documentTypeList = [
-		{ documentType_id: 1, description: 'Certificación para Trabajo en Altura' },
-		{ documentType_id: 2, description: 'Carnet de Manejo Defensivo' }
+		{ documentType_id: 1, description: 'Persona competente para Trabajo en Altura'},
+		{ documentType_id: 2, description: 'Carnet de Manejo Defensivo' },
+		{ documentType_id: 3, description: 'Certificación de trabajo en atmósferas con presencia de H2S' },
+		{ documentType_id: 4, description: 'Analista de Gases' },
+		{ documentType_id: 5, description: 'Licencia de conducir' },
+		{ documentType_id: 6, description: 'Transporte de cargas peligrosas' }
 	];
 	let isReadOnly = false; // Configurar componente AddressDetails para editar
 	let fileName, fileExtension, readyToUpload; // Controles globales
@@ -63,8 +69,7 @@
 		};
 		let error, message, status;
 
-		console.log('Doc type sel: ', documentTypeSelected, ', document: ', document, ', expiration date: ', expirationDate);
-		values.documentType = documentTypeSelected;
+		values.documentType = JSON.stringify(documentTypeList[documentTypeSelected-1]);
 		values.document = document;
 		values.expirationDate = expirationDate;
 		try {
