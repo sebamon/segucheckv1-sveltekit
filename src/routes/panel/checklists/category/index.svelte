@@ -18,14 +18,12 @@
 
 	export let data
 	export let categories = data.categories
-	console.log('categorias: ', categories);
 
 </script>
 
 <svelte:head>
 	<title>Checkgroups - SeguCheck</title>
 </svelte:head>
-<!-- {JSON.stringify(categories)} -->
 
 <header class="row">
 	<Breadcrumb>
