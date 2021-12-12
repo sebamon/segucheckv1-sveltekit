@@ -1,8 +1,17 @@
 <script context="module">
 	export async function load({fetch ,page}){
-		const response = await fetch('./checklist')
-		console.log(response)
-		const data = await response.json()
+		const data = await Promise.all([
+			fetch('./checklist'),
+			fetch('../../api/category'),
+			
+		])
+		.then(async(result) => {
+			const checkList = await result[0].json()
+			const categoryList = await result[1].json()
+
+			return {checkList , categoryList}
+		})
+			
 		return {
 			props: {
 				data
@@ -14,7 +23,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
-	import Checklists from '$lib/ChecklistsV2.svelte';
+
 import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 
 	export let data;
@@ -25,6 +34,7 @@ import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 	<title>Nuevo checklist - SeguCheck</title>
 </svelte:head>
 <!-- Encabezado -->
+<!-- {JSON.stringify(data.categoryList)} -->
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -40,5 +50,5 @@ import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 		<p class="lead">Ingrese los detalles a continuación.</p>
 	</div>
 </header>
-<!-- <ChecklistsV2 {data}/> -->
+<ChecklistsV2 data={data.categoryList}/>
 

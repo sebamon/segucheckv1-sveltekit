@@ -8,12 +8,11 @@ datasource db {
 }
 
 model checkitem {
-  checkItem_id Int             @id @default(autoincrement())
-  item         String          @unique
-  description  String
-  categories   checkcategory[] @relation(references: [category_id])
-  verifyItem   verifyItem[]
-
+  checkItem_id    Int               @id @default(autoincrement())
+  item            String            @unique
+  description     String
+  categories      checkcategory[]   @relation(references: [category_id])
+  VerifyCheckList verifychecklist[]
 }
 
 model checkcategory {
@@ -22,31 +21,23 @@ model checkcategory {
   checkitems   checkitem[] @relation(references: [checkItem_id])
 }
 
-model verifyItem {
-  verifyItem_id Int       @id @default(autoincrement())
-  checkItem_id  Int
-  checkItem     checkitem @relation(fields: [checkItem_id], references: [checkItem_id])
-  checked       Boolean
-  observation   String
-
-  verify          verify @relation(fields: [verifyVerify_id], references: [verify_id])
-  verifyVerify_id Int
-}
-
-model verify {
-  verify_id    Int          @id @default(autoincrement())
-  checklist_id Int
-  itemList     verifyItem[]
-
-  checklist checklist[]
-}
-
 model checklist {
-  checklist_id  Int    @id @default(autoincrement())
-  checkListName String
-  verify_id     Int
-  verify        verify @relation(fields: [verify_id], references: [verify_id])
-  jobs          jobs[]
+  checkList_id    Int               @id @default(autoincrement())
+  checkListName   String
+  VerifyCheckList verifychecklist[]
+  jobs            jobs[]
+}
+
+model verifychecklist {
+  checkList_id Int
+  checkItem_id Int
+  checkList    checklist @relation(fields: [checkList_id], references: [checkList_id])
+  checkItem    checkitem @relation(fields: [checkItem_id], references: [checkItem_id])
+  checked      Boolean   @default(false)
+  observation  String?
+
+
+  @@id([checkList_id, checkItem_id])
 }
 
 model customer {
@@ -100,10 +91,10 @@ model jobs {
   customer_id              Int
   vehicle_id               Int?
   requiredDocumentation_id Int?
-  checklist_id             Int?
+  checkList_id             Int?
   created_at               DateTime                @default(now())
   updated_at               DateTime?
-  checklist                checklist?              @relation(fields: [checklist_id], references: [checklist_id], map: "Jobs_checklist_id_id_fkey")
+  checklist                checklist?              @relation(fields: [checkList_id], references: [checkList_id], map: "Jobs_checklist_id_id_fkey")
   customer                 customer                @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
   location                 location                @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
   requiereddocumentation   requiereddocumentation? @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")

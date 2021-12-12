@@ -7,10 +7,24 @@ export async function get(request){
         try {
             const checkList = await prisma.checklist.findUnique({
                 where: {
-                    checklist_id : id_find,
+                    checkList_id : id_find,
                 },
                 include: {
-                    verify : true,
+                    VerifyCheckList: {
+                        include: {
+                            checkItem : {
+                                include: {
+                                    categories: {
+                                        orderBy : {
+                                            categoryName: 'asc',
+                                        }
+                                    }
+                                }
+                            }
+                            
+                        }
+                    }
+
                 }
             })
 

@@ -12,7 +12,7 @@ export async function get(){
     try{
         const checkItem = await prisma.checkitem.findMany({
             include: {
-                checkitemgroup : true,
+                categories : true,
             
             },
         })

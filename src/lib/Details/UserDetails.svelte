@@ -1,7 +1,7 @@
-<script context="module">
+<!-- <script context="module">
 	export async function load({fetch, page}){
 		try{
-			const response = await fetch(`http://localhost:3000/api/roles`)
+			const response = await fetch(`../../../api/roles`)
 			const data = await response.json()
 			console.log('nuevo load data',data)
 			return {
@@ -21,7 +21,7 @@
 			}
 		};
 	}
-</script>
+</script> -->
 
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/

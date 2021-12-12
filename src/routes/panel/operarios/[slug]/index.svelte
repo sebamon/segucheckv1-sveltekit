@@ -1,7 +1,7 @@
 <script context="module">
 	export async function load({page,fetch}){
 		
-		const response = await fetch(`http://localhost:3000/panel/operarios/${page.params.slug}/detalle`)
+		const response = await fetch(`./${page.params.slug}/detalle`)
 
 		const data = await response.json()
 

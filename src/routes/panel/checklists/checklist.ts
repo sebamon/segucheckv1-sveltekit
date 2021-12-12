@@ -9,10 +9,7 @@ export async function get() {
             where : {
                 
             },
-            include: {
-                verify : true,
-
-            }
+            
         })
         if(checkList){
             return {
@@ -82,8 +79,8 @@ export async function get() {
 
 
 export async function post(request) {
-    console.log('llegamo, nene!!');
     const formBody = JSON.parse(request.body);
+    console.log('llegamo, nene!!',formBody );
 
     console.log('FormBody.itemcollection: ', formBody.itemCollection)
 
@@ -93,248 +90,62 @@ export async function post(request) {
     let itemCollection = formBody.itemCollection
     let listaItems = []
 
+console.log('itemCollection', itemCollection)
+try{
 
     const newCheckList = await prisma.checklist.create({
-        data: {
-            checkListName : formBody.checkList,
-            verify : {
-                create : {
-                    itemList : {
-                        connect : {
-                            verifyItem_id : 1, //reemplazar por foreach   
-                        }
-                    }
-                }
-            },
-        },
-        include : {
-            verify : true,
-
-        }
-    })
-
-    itemCollection.map((e)=>{
-        listaItems = [listaItems , {
+        data : {
+            checkListName : formBody.checklistName,
             
-        }]
+        }
     })
     
-    formBody.itemCollection.forEach(checkItem => {
-        verifyItems = [...verifyItems, {
-            verifyItem_id: null,
-            checkItem: checkItem,
-            checked: false,
-            observation: '',
-        }]
-    });
-itemCollection.map((item)=>{
-    return {
-        where: {
-            item: '',
-        },
-        create: {
-            item: "",
-            description: "",
-            categories: {
-                connectOrCreate: {
-                    where: {
-                        categoryName: ""
+    formBody.itemCollection.map(async(item)=> {
+        const newVerifyCheckList = await prisma.verifychecklist.create({
+            data: {
+                checkList : 
+                {
+                    connect : { checkList_id : newCheckList.checkList_id},
+                },
+                checkItem : {
+                    connect : {
+                        item : item.item,
                     },
-                    create: {
-                        categoryName: ""
-                    }
-                }
+                },
+                checked : false,
+                observation : '',
+            }
+            
+        })
+    })
+    
+    if(newCheckList)  {
+        return {
+            body: {
+                message: 'CheckList Creada con Exito',
+                status: 'OK',
+            }
+        };
+    }
+    else {
+        return {
+            body : {
+                newCheckList : {},
+                message: 'Error al crear checkList',
+                status: 'ERROR',
+
             }
         }
     }
-})
-    verify = {
-        verify_id: null,
-        list: verifyItems
-    }
-
-    const checklist: checkList = {
-        checkList_id:null,
-        checkListName: formBody.checklistName,
-        verify: verify,
-    }
-
-
-    const consulta =  {
-        connectOrCreate: {
-            where: {
-                item: "nombre Item"
-            },
-            create: {
-                item: "",
-                description: "",
-                categories: {
-                    connectOrCreate: {
-                        where: {
-                            categoryName: ""
-                        },
-                        create: {
-                            categoryName: ""
-                        }
-                    }
-                }
-            }
-      }
-    }
-        console.log('verifyItems', JSON.stringify(verifyItems))
-        console.log('verify', JSON.stringify(verify))
-        console.log('checklist', JSON.stringify(checklist))    
-
-        // const newVerifyItem  = await prisma.verifyItem.create({
-        //     include :{
-        //         checkItem : true,
-        //     },
-        //     data : {
-        //         checkItem : {
-        //             connectOrCreate : {
-        //                 where : {
-        //                     item : 'nombre Item',
-        //                 },
-        //                 create : {
-        //                     item : '',
-        //                     description : '',
-        //                     categories : {
-        //                         connectOrCreate : {
-        //                             where : {
-        //                                 categoryName : '',
-        //                             },
-        //                             create : {
-        //                                 categoryName : '',
-                                    
-        //                             }
-        //                         },
-        //                     },
-        //                 },
-        //             }
-        //         },
-        //         checked : false,
-        //         observation : '',
-        //     }
-        // })
-    // const newChecklist = await prisma.checklist.create({
-    //     include : {
-    //         verify : {
-    //             include : {
-    //                 list : {
-    //                     include : {
-    //                         checkItem : true
-    //                     }
-    //                 }
-    //             }
-    //         }
-    //     },
-    //     data : {
-    //         checkListName : checklist.checkListName,
-    //         verify : {
-    //             create : {
-    //                 list : {
-    //                     createMany : {
-    //                         // data : [{
-    //                         //     checkItem_id : checklist.verify.list[0].checkItem.checkItem_id,
-    //                         //     checked : false,
-    //                         //     observation : '',
-    //                         // }]
-    //                         data : checklist.verify.list.map((element)=>{
-    //                             return {
-    //                                 checkItem_id : element.checkItem.checkItem_id,
-    //                                 checked : false,
-    //                                 observation : '',
-    //                             }
-    //                         })
-    //                     },
-    //                 },
-    //             },
-    //         }
-    //     }
-    // })
-                    //     createMany : [{
-                    //         data : {                                
-                    //             checkItem_id : checklist.verify.list[0].checkItem.checkItem_id,
-                    //             checked : false,
-                    //             observation : '',
-                    //             verifyItem_id: null,                                
-                    //     },
-                    //     {
-
-                    //     },
-                        
-                    // }]
-
+}catch(error){
+    console.log(error)
     return {
-        body: {
-            message: 'no fuimoooo',
-            status: 'OK'
-        }
-    };
-
+        body : {
+            message: 'Problemas al intentar crear la checkList',
+            status: 'ERROR',
+        }        
+    }
 }
-
-    //     console.log('request.body', request.body)
-    //     const formBody = JSON.parse(request.body)
-
-
-    //     console.log('checklist postman',checklist)
-    //     checklist.checkItems.map((item) => {
-    //         return {
-    //             where : {item : item.item},
-    //             create : {item : item.item},
-    //         };
-    //     })
-    //     // const { category_id , categoryName, checkItems } = category
-    //     try{
-    //         const newCategory = await prisma.checkcategory.create({
-    //             data: {
-    //                 categoryName: category.categoryName,
-    //                 checkitems : {
-    //                     connectOrCreate : category.checkItems.map((item) => {
-    //                         return {
-    //                             where : {item : item.item},
-    //                             create : {item : item.item ,description: item.description},
-    //                         };
-    //                     })
-    //                 },
-    //             },
-    //             include: {
-    //                 checkitems : {
-    //                     select : {
-    //                         checkItem_id : true,
-    //                         item : true,
-    //                         description :true
-    //                     }
-    //                 },
-    //             }
-    //         })
-    //         console.log('Objeto creado',newCategory)
-    //         if(newCategory){
-    //             return {
-    //                 category : newCategory,
-    //                 message: "Categoria Creada Exitosamente",
-    //                 result: "NEW"                
-    //             }
-    //         }
-    //         else{
-    //             return {
-    //                 category : newCategory,
-    //                 message: "No pudo crearse la Categoria",
-    //                 status: "INFO",
-    //             }
-    //         }
-    //     }catch(e){
-    //         console.log(e)
-    //         return {
-    //             body: {
-    //                 category : {},
-    //                 message : 'Error al cargar Categoria - '+ e.code,
-    //                 status : 'ERROR',
-
-    //             }
-    //         }
-    //     }
-
-
-    // }
+    
+}
+  

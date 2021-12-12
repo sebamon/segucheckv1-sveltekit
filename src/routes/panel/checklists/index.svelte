@@ -26,7 +26,7 @@
 <svelte:head>
 	<title>Checkgroups - SeguCheck</title>
 </svelte:head>
-{JSON.stringify(checkList)}
+
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -35,7 +35,7 @@
 		<BreadcrumbItem active>Checkgroups</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
-		<h1><i class="fas fa-clipboard-check me-4" />Checkgroups</h1>
+		<h1><i class="fas fa-clipboard-check me-4" />CheckList</h1>
 		<h5>Descripción breve</h5>
 	</div>
 	<div class="col-2 ms-auto">
@@ -57,7 +57,7 @@
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 				</tr>
 				<tr>
-					<th scope="col">ID checkgroup</th>
+					<th scope="col">ID CheckList</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">etc1</th>
 					<th scope="col">etc2</th>
@@ -68,12 +68,12 @@
 				{#each checkList as aCheckList }
 				<tr>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
-							{aCheckList.checklist_id}
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checkList_id}">
+							{aCheckList.checkList_id}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
+						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checkList_id}">
 							{aCheckList.checkListName}
 						</a>
 					</td>

@@ -214,6 +214,7 @@
 	 *  submit - Guarda la checklist en la base de datos
 	 */
 	const submit = async () => {
+		
 		let values;
 		let itemsCollection = [];
 		// console.log('itemchecked collection: ', itemCheckedCollection);
@@ -239,11 +240,12 @@
 				method: 'POST',
 				body: JSON.stringify(values)
 			});
-			const data = await submitChecklist.json().then(() => {
-				response.message = data.body.message;
-				response.status = data.body.status;
-				setTimeout(() => history.back(), 2500);
-			});
+			const data = await submitChecklist.json()
+
+			console.log('submitCheckList',data)
+			response.message = data.message;
+			response.status = data.status;
+			console.log(response)
 		} catch (error) {
 			response.message = 'Todavía no terminamos de crear ésto';
 			response.status = 'ERROR';
@@ -308,7 +310,7 @@
 
 <!-- Segualert! -->
 {#if response.status !== ''}
-<SeguAlert message={response.message} status={response.status} path="checklists" />
+	<SeguAlert message={response.message} status={response.status} path="checklists" />
 {/if}
 
 {#if itemCollection}
