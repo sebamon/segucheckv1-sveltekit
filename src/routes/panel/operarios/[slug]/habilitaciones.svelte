@@ -16,7 +16,7 @@
 </script>
 
 <script lang="ts">
-	import { dataset_dev } from 'svelte/internal';
+	// import { dataset_dev } from 'svelte/internal';
 	import PdfUpload from '$lib/PdfUpload.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
@@ -36,10 +36,53 @@
 		{ documentType_id: 1, description: 'Certificación para Trabajo en Altura' },
 		{ documentType_id: 2, description: 'Carnet de Manejo Defensivo' }
 	];
-	export let fileName;
+	let isReadOnly = false; // Configurar componente AddressDetails para editar
+	let fileName, fileExtension, readyToUpload; // Controles globales
+	let disabled = true;
+	let document, documentTypeSelected, expirationDate;
 
-	// Configurar componente AddressDetails para editar
-	let isReadOnly = false;
+	export function captureDocument(e) {
+		console.log('captureImage', e.detail);
+		fileName = e.detail.fileName;
+		fileExtension = e.detail.fileExtension;
+		disabled = !e.detail.readyToUpload;
+		document = `${fileName}.${fileExtension}`;
+
+		// setTimeout(()=>{
+		//subir(fileName, fileExtension)
+		// }, 6000);
+		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', document: ' + document);
+	}
+
+	const handleSubmit = async () => {
+		// // Realiza la carga de datos al cliquear Enviar
+		let values = {
+			documentType: '',
+			document: '',
+			expirationDate: ''
+		};
+		let error, message, status;
+
+		console.log('Doc type sel: ', documentTypeSelected, ', document: ', document, ', expiration date: ', expirationDate);
+		values.documentType = documentTypeSelected;
+		values.document = document;
+		values.expirationDate = expirationDate;
+		try {
+			const submit = await fetch('../operarios', {
+				method: 'POST',
+				body: JSON.stringify({
+					values
+				})
+			});
+			console.log('Antes de mandar: ', values);
+			const data = await submit.json();
+			message = data.message;
+			status = data.status;
+			console.log(message, status);
+		} catch (err) {
+			error = err;
+		}
+	};
 </script>
 
 <svelte:head>
@@ -66,11 +109,17 @@
 </header>
 
 <main>
-	<form name="formUserDoc" id="formUserDoc">
+	<form name="formUserDoc" id="formUserDoc" on:submit|preventDefault={handleSubmit}>
 		<div class="row mb-3 g-3">
 			<div class="col-md-6">
 				<label for="documentType" class="form-label">Tipo de documento</label>
-				<select id="documentType" class="form-select" aria-label="Tipo de documento" required>
+				<select
+					id="documentType"
+					class="form-select"
+					aria-label="Tipo de documento"
+					bind:value={documentTypeSelected}
+					required
+				>
 					<option disabled selected>Elija una opción...</option>
 					{#each documentTypeList as documentType}
 						<option value={documentType.documentType_id}>
@@ -79,6 +128,20 @@
 					{/each}
 				</select>
 			</div>
+			<div class="col-md-6">
+				<label for="expirated_at" class="form-label">Vencimiento</label>
+				<input
+					type="date"
+					id="expirated_at"
+					name="expirated_at"
+					class="form-control"
+					aria-label="Vencimiento"
+					bind:value={expirationDate}
+					required
+				/>
+			</div>
+		</div>
+		<div class="row mb-3 g-3">
 			<div class="col-md-6">
 				<label for="urlPdf" class="form-label">Adjunto</label>
 				<!-- Acepta documentos, planillas, presentaciones, imágenes y sus variantes libres-->
@@ -97,26 +160,13 @@
 					id="urlPdf"
 					required
 				/> -->
-				<PdfUpload />
-			</div>
-		</div>
-		<div class="row mb-3 g-3">
-			<div class="col-md-6">
-				<label for="expirated_at" class="form-label">Vencimiento</label>
-				<input
-					type="date"
-					id="expirated_at"
-					name="expirated_at"
-					class="form-control"
-					aria-label="Vencimiento"
-					required
-				/>
+				<PdfUpload on:loadDocument={captureDocument} />
 			</div>
 		</div>
 		<div class="row mb-3 g-3">
 			<div class="col" />
 			<div class="col-md-6 d-flex justify-content-end">
-				<button type="submit" class="btn btn-primary">
+				<button type="submit" class="btn btn-primary" {disabled}>
 					<i class="fas fa-plus me-2" />Subir archivo
 				</button>
 			</div>
