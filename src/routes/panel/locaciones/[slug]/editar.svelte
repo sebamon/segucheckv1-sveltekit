@@ -67,7 +67,7 @@
 			<a href="/panel/locaciones">Locaciones</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/locaciones/{locationDetails.location_id}/">{locationDetails.locationName}</a>
+			<a href="/panel/locaciones/{locationDetails.locationDetails.location_id}/">{locationDetails.locationDetails.locationName}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Editar</BreadcrumbItem>
 	</Breadcrumb>

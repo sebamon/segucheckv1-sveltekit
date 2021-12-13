@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { checkPrime } from 'crypto';
+    
 import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher()
 export let operators

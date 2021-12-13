@@ -4,14 +4,16 @@
 			fetch('../panel/usuarios/usuarios'),
 			fetch('../panel/operarios/operarios'),
 			fetch('../panel/vehiculos/vehiculos'),
-			fetch('../panel/trabajos/trabajos')
+			fetch('../panel/trabajos/trabajos'),
+			fetch('../panel/panel')
 		]).then(async (result) => {
 			const userData = await result[0].json();
 			const operatorData = await result[1].json();
 			const vehiclesData = await result[2].json();
 			const jobsData = await result[3].json();
+			const dashboard = await result[4].json();
 
-			return { userData, operatorData, vehiclesData, jobsData };
+			return { userData, operatorData, vehiclesData, jobsData ,dashboard};
 
 		});
 		return {
@@ -37,10 +39,11 @@
 		high: string;
 	};
 
-	let operatorData = data.operatorData.operators;
-	let vehicleData = data.vehiclesData.vehicles;
-	let userData = data.userData.users;
-	let jobData = data.jobsData.jobs;
+	export let operatorData = data.operatorData.operators;
+	export let vehicleData = data.vehiclesData.vehicles;
+	export let userData = data.userData.users;
+	export let jobData = data.jobsData.jobs;
+	export let dashboard = data.dashboard.dashboard;
 	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
 
 	// operatorData.forEach((element) => {
@@ -93,6 +96,17 @@ jobData{JSON.stringify(jobData)} -->
 	<h1><i class="fas fa-home me-4" />Resumen</h1>
 	<p class="lead">Bienvenido de nuevo, {currentUser}</p>
 </header>
+
+operatorData{JSON.stringify(operatorData)}
+<hr>
+vehicleData{JSON.stringify(vehicleData)}
+<hr>
+userData{JSON.stringify(userData)}
+<hr>
+jobData{JSON.stringify(jobData)}
+<hr>
+dashboard{JSON.stringify(dashboard)}
+<hr>
 
 <main class="row g-2">
 	<Card class="col-xl-3 col-md-6">

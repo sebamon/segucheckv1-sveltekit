@@ -102,7 +102,7 @@
 					'La selección no se encuentra en la lista.'
 				)
 				.required('Debes completar este campo.'),
-			riskAnalysis: yup.mixed().required('Debes adjuntar el archivo.'),
+			riskAnalysis: yup.mixed(),
 			customer: yup
 				.mixed(),
 				// .oneOf(customerList, 'La selección no se encuentra en la lista.')

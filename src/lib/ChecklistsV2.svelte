@@ -132,7 +132,6 @@
 			const submitCat = async (values) => {
 				try {
 					let response = await fetch('../../../api/category', {
-						//http://localhost:3000/api/category
 						method: 'POST',
 						body: JSON.stringify(values)
 					});

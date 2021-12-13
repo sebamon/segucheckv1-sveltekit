@@ -62,8 +62,7 @@
 	</div>
 </header>
 
-<main>
-	{JSON.stringify(operators)}
+<main>	
 	{#if data.status !== 'OK'}
 		<SeguAlert status={data.status} message={data.message} path=operarios/>
 	{/if}

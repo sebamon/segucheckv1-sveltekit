@@ -80,7 +80,7 @@ export async function get() {
 
 export async function post(request) {
     const formBody = JSON.parse(request.body);
-    console.log('llegamo, nene!!',formBody );
+    console.log('** API CHECKLIST - POST - ** ',formBody );
 
     console.log('FormBody.itemcollection: ', formBody.itemCollection)
 
