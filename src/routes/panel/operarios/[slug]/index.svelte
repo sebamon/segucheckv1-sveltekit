@@ -133,7 +133,7 @@
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/operarios/{userDetails.user_id}/">{userDetails.user_id}</a>
+			<a href="/panel/operarios/{data.workInfo.operator_id}/">{data.workInfo.operator_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>

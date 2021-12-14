@@ -6,16 +6,37 @@ const prisma = new PrismaClient()
 export const get = async () =>{
     console.log('** API : Vehiculos : GET **')
     try{
+        // const vehicles = await prisma.vehicle.findMany({
+        //     select: {
+        //         vehicle_id : true,
+        //         domain : true,
+        //         brand : true,
+        //         model : true,
+        //         type: true,
+        //         status: true,
+                
+        //     },
+        // })
+
         const vehicles = await prisma.vehicle.findMany({
-            select: {
-                vehicle_id : true,
-                domain : true,
-                brand : true,
-                model : true,
-                type: true,
-                status: true,
+            include : {
+                vehicleonvehiclerequirement : {
+                    select : {
+                        current : true,
+
+                        vehiclerequirements : true
+                    },
+                }
+
             }
         })
+        // const vehicles2 = await prisma.vehiclerequirements.findMany({
+        //     include: {
+        //         vehicleonvehiclerequirement : true
+        //     }
+        // })
+        // console.log('vehicles2',JSON.stringify(vehicles2))
+        // console.log('v3',JSON.stringify(v3))
         if(vehicles.length>0){
             return {
                 body: {

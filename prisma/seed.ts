@@ -249,9 +249,11 @@ async function main(){
             categories : true
         }
     })
-
-     await prisma.vehicle.createMany({
-         data:[{
+     await prisma.vehicle.create({
+        include : {
+            vehicleonvehiclerequirement : true,
+        },
+        data : {
             domain : 'AB105RD',
             brand : 'TOYOYA',
             model : 'HILUX',
@@ -260,26 +262,106 @@ async function main(){
             internNumber: 1,
             chasisNumber : 'ASA8D1A2',
             motorNumber : '2ASDA8S1',
-            frontPicUrl : 'url',
+            frontPicUrl : 'ed875566-d8fd-4963-a139-2bd62113c069.jpeg',
             leftSidePicUrl : 'url',
             rightSidePicUrl : 'url',
             backPicUrl : 'url',
-         },
-         {
-            domain : 'AC457DA',
+            vehicleonvehiclerequirement : {
+                create : {
+                    vehiclerequirements : {
+                        create : {
+                            expirated_At : new Date('2022/05/01'),
+                            requirementDescription : 'Seguro Flota',
+                            requirementName : 'Seguro',
+                            urlPdf : 'url.pdf',
+                        },                        
+                    },
+                    current : true,
+                },
+            },
+        },
+    })
+
+    await prisma.vehicleonvehiclerequirement.create({
+        include : {
+            vehiclerequirements : true
+        },
+        data : {
+            vehicle : {
+                connect : {
+                    vehicle_id : 1,
+                }
+            },
+            vehiclerequirements : {
+                create : {
+                        expirated_At : new Date('2020/01/01'),
+                        requirementDescription : 'Verificación Técnica Obligatoria',
+                        requirementName : 'VTO',
+                        urlPdf : 'url.pdf',
+                    },
+                },
+                current : false,
+        }
+    })
+    await prisma.vehicleonvehiclerequirement.create({
+        include : {
+            vehiclerequirements : true
+        },
+        data : {
+            vehicle : {
+                connect : {
+                    vehicle_id : 1,
+                }
+            },
+            vehiclerequirements : {
+                create : {
+                        expirated_At : new Date('2022/01/01'),
+                        requirementDescription : 'Chequeo mensual de cubiertas y auxilio',
+                        requirementName : 'Gomería - Control Mensual',
+                        urlPdf : 'url.pdf',
+                    },
+                },
+                current : true,
+        }
+    })
+
+    await prisma.vehicle.create({
+        include : {
+            vehicleonvehiclerequirement : true,
+        },
+        data : {
+            domain : 'AC995HY',
             brand : 'TOYOTA',
             model : 'ETIOS',
             type : 'Rodados - Automóvil',
-            year : 2020,
-            internNumber: 2,
-            chasisNumber : 'ASASA132',
-            motorNumber : 'NB8AS5D28QD5',
-            frontPicUrl : 'url',
+            year : 2014,
+            internNumber: 3,
+            chasisNumber : 'BOWPSALKA24P1KL',
+            motorNumber : 'PPASDO10409A',
+            frontPicUrl : 'd24feb33-be0a-41ac-aba0-5754987142cc.jpeg',
             leftSidePicUrl : 'url',
             rightSidePicUrl : 'url',
             backPicUrl : 'url',
-         },
-         {
+            vehicleonvehiclerequirement : {
+                create : {
+                    vehiclerequirements : {
+                        create : {
+                            expirated_At : new Date('2021/12/17'),
+                            requirementDescription : 'Seguro Flota',
+                            requirementName : 'Seguro',
+                            urlPdf : 'url.pdf',
+                        },
+                    },
+                    current : true,
+                },
+            },
+        },
+    })
+    await prisma.vehicle.create({
+        include : {
+            vehicleonvehiclerequirement : true,
+        },
+        data : {
             domain : 'NNO778',
             brand : 'FIAT',
             model : 'TORO',
@@ -288,13 +370,25 @@ async function main(){
             internNumber: 3,
             chasisNumber : 'SABASD78A2A2',
             motorNumber : 'AS85GF4A88GA',
-            frontPicUrl : 'url',
+            frontPicUrl : '670fafc2-89bf-4d94-bdce-b7772bdc531c.jpeg',
             leftSidePicUrl : 'url',
             rightSidePicUrl : 'url',
             backPicUrl : 'url',
-         }
-        ]
-     })
+            vehicleonvehiclerequirement : {
+                create : {
+                    vehiclerequirements : {
+                        create : {
+                            expirated_At : new Date('2021/12/25'),
+                            requirementDescription : 'Seguro Flota',
+                            requirementName : 'Seguro',
+                            urlPdf : 'url.pdf',
+                        },
+                    },
+                    current : true,
+                },
+            },
+        },
+    })
 
       await prisma.operator.createMany({
          data:[{

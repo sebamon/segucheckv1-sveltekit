@@ -25,11 +25,10 @@
 </script>
 
 <script lang="ts">
-	// import { onMount } from 'svelte';
-	// import { authenticated } from 'src/stores/auth';
-
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
+
+
+import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
 	export let data;
 
 	type warning = {
@@ -46,6 +45,16 @@
 	export let dashboard = data.dashboard.dashboard;
 	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
 
+	let operariosActivos = 0
+	function dashboardOperariosActivos(){
+		operatorData.forEach(element => {
+			if(element.users.active){
+				operariosActivos++
+			}
+			console.log('element', element.users.active)
+		});
+		return operariosActivos
+	}
 	// operatorData.forEach((element) => {
 	// 	console.log('Operador: ', element.users);
 	// });
@@ -97,6 +106,8 @@ jobData{JSON.stringify(jobData)} -->
 	<p class="lead">Bienvenido de nuevo, {currentUser}</p>
 </header>
 
+operariosActivos{JSON.stringify((dashboardOperariosActivos()))}
+<hr>
 operatorData{JSON.stringify(operatorData)}
 <hr>
 vehicleData{JSON.stringify(vehicleData)}
@@ -160,6 +171,22 @@ dashboard{JSON.stringify(dashboard)}
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
+				<p class="fs-1 text-center text-primary fw-bolder">{operariosActivos}</p>
+			</div>
+			<CardTitle class="fw-bold">Operarios activos</CardTitle>
+			<CardSubtitle>
+				Puede registrar nuevos operarios, modificar sus datos o realizar la baja de los mismos
+			</CardSubtitle>
+			<p class="text-end">
+				<a href="/panel/operarios" class="text-decoration-none fw-bold">
+					Gestionar operarios <i class="fas fa-arrow-right me-2" />
+				</a>
+			</p>
+		</CardBody>
+	</Card>
+	<Card class="col-xl-3 col-md-6">
+		<CardBody>
+			<div class="align-content-center" style="height:200px;">
 				<p class="fs-1 text-center text-primary fw-bolder">Etc</p>
 			</div>
 			<CardTitle class="fw-bold">Historial de trabajos</CardTitle>
@@ -171,4 +198,5 @@ dashboard{JSON.stringify(dashboard)}
 			</p>
 		</CardBody>
 	</Card>
+	
 </main>

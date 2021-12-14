@@ -274,17 +274,17 @@ model vehicle {
 
 model vehicleonvehiclerequirement {
   vehicle_id            Int
-  vehicleRequiriment_id Int
-  vehiclerequirements   vehiclerequirements @relation(fields: [vehicleRequiriment_id], references: [vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
+  vehicleRequirement_id Int
+  vehiclerequirements   vehiclerequirements @relation(fields: [vehicleRequirement_id], references: [vehicleRequirement_id], map: "VehicleOnVehicleRequirement_vehicleRequirement_id_fkey")
   vehicle               vehicle             @relation(fields: [vehicle_id], references: [vehicle_id], map: "VehicleOnVehicleRequirement_vehicle_id_fkey")
-
-  @@id([vehicle_id, vehicleRequiriment_id])
-  @@index([vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
+  current               Boolean             @default(true)
+  @@id([vehicle_id, vehicleRequirement_id])
+  @@index([vehicleRequirement_id], map: "VehicleOnVehicleRequirement_vehicleRequirement_id_fkey")
 }
 
 model vehiclerequirements {
-  vehicleRequiriment_id       Int                           @id @default(autoincrement())
-  requirimentName             String
+  vehicleRequirement_id       Int                           @id @default(autoincrement())
+  requirementName             String
   requirementDescription      String
   urlPdf                      String
   created_at                  DateTime                      @default(now())

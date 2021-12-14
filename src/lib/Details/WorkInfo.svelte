@@ -1,13 +1,22 @@
 <script lang="ts">
 	import moment from 'moment';
 	// Datos laborales a mostrar
-	export let user_id = 1;
-	export let dischargeDate = new Date();
-	export let employementRel = '';
-	export let hiringMode = '';
-	export let unionAgreement = '';
-	export let job = '';
-	export let dateString = moment.utc(dischargeDate).format('DD/MM/YYYY');
+	// export let user_id = 1;
+	// export let dischargeDate = new Date();
+	// export let employementRel = '';
+	// export let hiringMode = '';
+	// export let unionAgreement = '';
+	// export let job = '';
+	
+	export let user_id
+export let dischargeDate
+export let employementRel
+export let hiringMode
+export let unionAgreement
+export let job
+
+	export let dateString = moment.utc(dischargeDate).format('YYYY/MM/DD');
+
 	let convertedDischargeDate = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
 	.toISOString()
 	.split('T')[0];
@@ -87,7 +96,7 @@
 					class="form-control"
 					placeholder="21/08/2019"
 					aria-label="Fecha de alta"
-					bind:value={convertedDischargeDate}
+					bind:value={$form.dischargeDate}
 					readonly={isReadOnly}
 				/>
 			{:else}
@@ -98,7 +107,7 @@
 					class="form-control"
 					placeholder="1980-12-31"
 					aria-label="Fecha de alta"
-					bind:value={convertedDischargeDate}
+					bind:value={$form.dischargeDate}
 					readonly={isReadOnly}
 					class:invalid={$errors.dischargeDate}
 				/>

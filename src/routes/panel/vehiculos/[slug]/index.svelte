@@ -22,7 +22,7 @@
 <script lang="ts">
 	// Importar secciones de detalles:
 	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
-	import DocDetails from '$lib/Details/DocDetails.svelte';
+	import VehicleDocDetails from '$lib/Details/VehicleDocDetails.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -60,7 +60,7 @@
 	// export const message = data.message
 		export let vehicleDetails = data.vehicleDetails;
 	export let isReadOnly = true;
-	let vehicleDocumentation = [
+	let vehicleDocumentation = vehicleDetails.vehicleonvehiclerequirement || [
 		{
 			documentation_id: 20,
 			documentType: { documentType_id: 5, description: 'Verificación Técnica Vehicular' },
@@ -104,7 +104,7 @@
 <svelte:head>
 	<title>Vehículo: {vehicleDetails.domain} - SeguCheck</title>
 </svelte:head>
-
+<!-- {JSON.stringify(vehicleDetails.vehicleonvehiclerequirement)} -->
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -163,7 +163,8 @@
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-						<DocDetails {...thisDoc} />
+					<!-- {JSON.stringify(thisDoc)} -->
+						<VehicleDocDetails {thisDoc} />
 					{/each}
 				</div>
 			{/if}
