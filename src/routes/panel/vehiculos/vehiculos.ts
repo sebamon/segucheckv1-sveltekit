@@ -66,7 +66,7 @@ export const post = async (request) => {
                 internNumber : Number(formBody.internNumber), //No esta definido en Prisma
                 chasisNumber : formBody.chasisNumber,
                 motorNumber : formBody.motorNumber,
-                // frontPicUrl : formBody.frontPic,
+                frontPicUrl : formBody.frontPic,
                 // rightSidePicUrl : formBody.rightSidePic,
                 // leftSidePicUrl : formBody.leftSidePic,
             }

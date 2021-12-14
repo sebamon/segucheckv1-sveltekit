@@ -60,6 +60,7 @@
 	// export const message = data.message
 		export let vehicleDetails = data.vehicleDetails;
 	export let isReadOnly = true;
+	console.log('Mis datos de vehículo traídos: ', vehicleDetails);
 	let vehicleDocumentation = [
 		{
 			documentation_id: 20,
@@ -121,7 +122,7 @@
 			fluid
 			thumbnail
 			src={vehicleDetails.frontPicUrl}
-			alt="Foto de perfil"
+			alt="Foto del vehículo"
 			class="m-2"
 			style="max-width:150px"
 		/>
@@ -168,7 +169,7 @@
 				</div>
 			{/if}
 		</TabPane>
-		<TabPane tabId="vehiclePictures" tab="Fotos">
+		<!-- <TabPane tabId="vehiclePictures" tab="Fotos">
 			<h2 class="my-4">Fotos</h2>
 			<div class="d-grid gap-2 col-6 mx-auto">
 				<Carousel dark {items} bind:activeIndex>
@@ -184,6 +185,6 @@
 					<CarouselControl direction="next" bind:activeIndex {items} />
 				</Carousel>
 			</div>
-		</TabPane>
+		</TabPane> -->
 	</TabContent>
 </main>
