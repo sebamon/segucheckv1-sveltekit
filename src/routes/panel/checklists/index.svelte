@@ -36,7 +36,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-clipboard-check me-4" />CheckList</h1>
-		<h5>Descripción breve</h5>
+		<h5>Mostrando todos los elementos.</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/checklists/nuevo">
@@ -53,51 +53,35 @@
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 				</tr>
 				<tr>
 					<th scope="col">ID CheckList</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">etc1</th>
-					<th scope="col">etc2</th>
-					<th scope="col">etc3</th>
+					<th scope="col">Fecha</th>
 				</tr>
 			</thead>
 			<tbody>
-				{#each checkList as aCheckList }
+				{#each checkList as thisCheckList }
 				<tr>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checkList_id}">
-							{aCheckList.checkList_id}
+						<a class="text-decoration-none text-dark" href="./checklists/{thisCheckList.checkList_id}">
+							{thisCheckList.checkList_id}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checkList_id}">
-							{aCheckList.checkListName}
+						<a class="text-decoration-none text-dark" href="./checklists/{thisCheckList.checkList_id}">
+							{thisCheckList.checkListName}
 						</a>
 					</td>
 					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
-							Personalizable
-						</a>
-					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
-							Personalizable
-						</a>
-					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{aCheckList.checklist_id}">
-							Personalizable
+						<a class="text-decoration-none text-dark" href="./checklists/{thisCheckList.checklist_id}">
+							Fecha
 						</a>
 					</td>
 				</tr>
 				{/each}
 			</tbody>
 		</table>
-	</div>
-	<div id="checktest">
 	</div>
 </main>
 
