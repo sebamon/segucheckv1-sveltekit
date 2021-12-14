@@ -42,7 +42,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-map-marked me-4" />Locaciones</h1>
-		<h5>Descripción breve</h5>
+		<h5>Mostrando todos los elementos.</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/locaciones/nuevo">
