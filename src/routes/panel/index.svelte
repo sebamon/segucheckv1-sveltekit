@@ -41,18 +41,32 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 	export let operatorData = data.operatorData.operators;
 	export let vehicleData = data.vehiclesData.vehicles;
 	export let userData = data.userData.users;
-	export let jobData = data.jobsData.jobs;
+	export let jobData = data.jobsData;
 	export let dashboard = data.dashboard.dashboard;
 	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
 
-	let operariosActivos = 0
-	function dashboardOperariosActivos(){
-		operatorData.forEach(element => {
-			if(element.users.active){
-				operariosActivos++
-			}
-			console.log('element', element.users.active)
+	let documentacionAvencer = 0
+
+	function dashboardVehiculosAvencer(){
+		console.log(vehicleData)
+		vehicleData.forEach(element => {
+			console.log(element)
 		});
+
+	}
+
+	let operariosActivos = 0
+
+	const dashboardOperariosActivos = () =>{
+		if(operatorData.length>0){
+			
+			operatorData.forEach(element => {
+				if(element.users.active){
+					operariosActivos++
+				}
+				console.log('element', element.users.active)
+			});
+		}
 		return operariosActivos
 	}
 	// operatorData.forEach((element) => {
@@ -72,6 +86,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 	let currentUser = 'Juan Perez';
 	let message = '';
 
+
 	const dateDifference = (date1, date2) => {
 		// var date1 = new Date('06/30/2019');
 		// var date2 = new Date('07/30/2019');
@@ -84,20 +99,16 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 
 		return difference_In_Days;
 	};
+
+	dashboardOperariosActivos()
+	dashboardVehiculosAvencer()
 </script>
 
 <svelte:head>
 	<title>Resumen - SeguCheck</title>
 </svelte:head>
-<!-- operatorData{JSON.stringify(operatorData)}
-<hr>
-vehicleData{JSON.stringify(vehicleData)}
-<hr>
-userData{JSON.stringify(userData)}
-<hr>
-jobData{JSON.stringify(jobData)} -->
-
 <!-- Encabezado -->
+
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem active>Inicio</BreadcrumbItem>
@@ -105,20 +116,6 @@ jobData{JSON.stringify(jobData)} -->
 	<h1><i class="fas fa-home me-4" />Resumen</h1>
 	<p class="lead">Bienvenido de nuevo, {currentUser}</p>
 </header>
-
-operariosActivos{JSON.stringify((dashboardOperariosActivos()))}
-<hr>
-operatorData{JSON.stringify(operatorData)}
-<hr>
-vehicleData{JSON.stringify(vehicleData)}
-<hr>
-userData{JSON.stringify(userData)}
-<hr>
-jobData{JSON.stringify(jobData)}
-<hr>
-dashboard{JSON.stringify(dashboard)}
-<hr>
-
 <main class="row g-2">
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
@@ -139,8 +136,8 @@ dashboard{JSON.stringify(dashboard)}
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<a href="/panel/vehiculos?filter=vencePronto">
-					<p class="fs-1 text-center text-primary fw-bolder">15</p>
+				<a href="/panel/vehiculos/2">
+					<p class="fs-1 text-center text-primary fw-bolder">1</p>
 				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en vehículos</CardTitle>
@@ -155,7 +152,13 @@ dashboard{JSON.stringify(dashboard)}
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">{userData.length}</p>
+				<p class="fs-1 text-center text-primary fw-bolder">
+				{#if userData.length>0}
+					{userData.length}
+				{:else}
+					0	
+				{/if}
+				</p>
 			</div>
 			<CardTitle class="fw-bold">Usuarios activos</CardTitle>
 			<CardSubtitle>

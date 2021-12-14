@@ -31,7 +31,7 @@ async function main(){
             nationality: 'Argentino',
             studyLevel: 'Post universitario incompleto',
             degree: 'Tecnico Universitario en Desarrollo web',
-            profilePic: 'url:not found',
+            profilePic: 'e8b48250-a087-4c5a-85b2-fa226bff5770.jpeg', 
             password: '1234',
         },
         {
@@ -44,7 +44,7 @@ async function main(){
             phone: '2996478214',
             nationality: 'Argentino',
             studyLevel: 'Universitario completo',
-            degree: 'Contador Publico',
+            degree: 'Operador Workover',
             profilePic: 'f12b9003-c36b-4f42-9618-02f8ed20a0bb.png',
             password: '1234',
         },
@@ -59,7 +59,7 @@ async function main(){
             nationality: 'Argentino',
             studyLevel: 'Universitario completo',
             degree: 'Ingeniero Electrico',
-            profilePic: 'f12b9003-c36b-4f42-9618-02f8ed20a0bb.png',
+            profilePic: '6e089b13-963b-4bd9-8ebb-5efc2306ade1.jpeg',
             password: '1234',
         },
         {
@@ -73,8 +73,9 @@ async function main(){
             nationality: 'Argentino',
             studyLevel: 'Universitario completo',
             degree: 'Ingeniero Electrico',
-            profilePic: 'd5979379-611e-4e22-8acc-c59cb30ad116.jpg',
+            profilePic: '2f447775-97a2-479e-9273-3df53db0dc32.jpeg',
             password: '1234',
+            active : false
         },
     ]})
 
@@ -396,6 +397,9 @@ async function main(){
 
          },{
             user_id: 2,
+        },
+        {
+          user_id : 4,  
         },]
 
      })

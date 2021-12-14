@@ -14,7 +14,8 @@ export const get = async () => {
                         cuit : true,
                         active : true,
                     }
-                }
+                },
+                
             }
         })
 

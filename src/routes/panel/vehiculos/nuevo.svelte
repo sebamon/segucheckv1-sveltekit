@@ -240,11 +240,6 @@ const subir = async(fileName, fileExtension, filesPath) => {
 <svelte:head>
 	<title>Nuevo vehículo - SeguCheck</title>
 </svelte:head>
-leftSidePic: {JSON.stringify(leftSidePic)}
-<hr>
-rightSidePic: {JSON.stringify(rightSidePic)}
-<hr>
-frontPic: {JSON.stringify(frontPic)}
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>

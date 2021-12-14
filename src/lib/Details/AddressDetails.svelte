@@ -119,7 +119,7 @@
 		}),
 		onSubmit: (values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			// alert(JSON.stringify(values));
 		}
 	});
 </script>

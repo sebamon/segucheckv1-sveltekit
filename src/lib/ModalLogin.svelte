@@ -48,7 +48,7 @@
 		}),
 		onSubmit: async (values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			// alert(JSON.stringify(values));
 			const response = await fetch('./auth/login', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -126,7 +126,7 @@
 				</button>
 				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
 			</div>
-			{JSON.stringify(message)}
+			<!-- {JSON.stringify(message)} -->
 		</form>
 	</ModalBody>
 	<ModalFooter>

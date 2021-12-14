@@ -122,7 +122,7 @@
 							</td>
 							<td>
 								<a
-									class="text-decoration-none text-dark text-center"
+									class="text-decoration-none text-dark px-5"
 									href="./operarios/{operator.operator_id}"
 								>
 								{#if operator.users.active}

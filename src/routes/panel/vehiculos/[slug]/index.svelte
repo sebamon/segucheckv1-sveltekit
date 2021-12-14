@@ -105,7 +105,7 @@
 <svelte:head>
 	<title>Vehículo: {vehicleDetails.domain} - SeguCheck</title>
 </svelte:head>
-<!-- {JSON.stringify(vehicleDetails.vehicleonvehiclerequirement)} -->
+
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -164,7 +164,7 @@
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-					<!-- {JSON.stringify(thisDoc)} -->
+					
 						<VehicleDocDetails {thisDoc} />
 					{/each}
 				</div>

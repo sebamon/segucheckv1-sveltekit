@@ -48,5 +48,5 @@
 
 <div class="tabs">
 	<slot></slot>
-	<!-- {JSON.stringify(tabInfoProps)} -->
+	
 </div>
