@@ -64,7 +64,8 @@
 	let titleH2 = 'visible'; // Afecta la visibilidad del input del nombre de la lista
 	let titleEdit = 'hidden'; // Afecta la visibilidad del input del nombre de la lista
 	let nameTooltip = 'Doble click para editar'; // Tooltip para la edición del título
-	let response = { // Almacena la respuesta del enspoint al momento de guardar una lista. Se utiliza para disparar el SeguAlert.
+	let response = {
+		// Almacena la respuesta del enspoint al momento de guardar una lista. Se utiliza para disparar el SeguAlert.
 		status: '',
 		message: ''
 	};
@@ -213,7 +214,6 @@
 	 *  submit - Guarda la checklist en la base de datos
 	 */
 	const submit = async () => {
-		
 		let values;
 		let itemsCollection = [];
 		// console.log('itemchecked collection: ', itemCheckedCollection);
@@ -239,12 +239,12 @@
 				method: 'POST',
 				body: JSON.stringify(values)
 			});
-			const data = await submitChecklist.json()
+			const data = await submitChecklist.json();
 
-			console.log('submitCheckList',data)
+			console.log('submitCheckList', data);
 			response.message = data.message;
 			response.status = data.status;
-			console.log(response)
+			console.log(response);
 		} catch (error) {
 			response.message = 'Todavía no terminamos de crear ésto';
 			response.status = 'ERROR';
@@ -303,10 +303,6 @@
 	});
 </script>
 
-<svelte:head>
-	<title>Nueva Checklist - SeguCheck</title>
-</svelte:head>
-
 <!-- Segualert! -->
 {#if response.status !== ''}
 	<SeguAlert message={response.message} status={response.status} path="checklists" />
@@ -314,18 +310,26 @@
 
 {#if itemCollection}
 	<div id="dynamicChecklistName" data-tooltip="{nameTooltip} ⇩">
-		<i class="fas fa-save {titleEdit}" />
-		<input
-			type="text"
-			class="form-control {titleEdit}"
-			on:keydown={({ key }) => key === 'Enter' && toggle()}
-			bind:value={checkListName}
-		/>
-		<i class="fas fa-edit {titleH2}" on:dblclick={toggle} />
-		<h2 class={titleH2} on:dblclick={toggle}>{checkListName}</h2>
+		<!-- Título editable -->
+		<div class="input-group mb-3 {titleEdit}">
+			<input
+				type="text"
+				class="form-control"
+				aria-label="Editar nombre de la checklist"
+				title="Editar nombre de la checklist"
+				on:keydown={({ key }) => key === 'Enter' && toggle()}
+				bind:value={checkListName}
+			/>
+			<button class="input-group-text" on:click={toggle}><i class="fas fa-save" /></button>
+		</div>
+		<!-- Título visible -->
+		<h2 class={titleH2} on:dblclick={toggle}>
+			{checkListName}
+			<i role="button" tabindex="0" class="fas fa-edit mx-4" on:click={toggle} />
+		</h2>
 	</div>
-	<div id="generalContainer" class="row mb-3 g-3 justify-content dynamicContainer">
-		<div id="panel" class="col-8 ">
+	<div id="generalContainer" class="row mb-3 g-3 mt-2">
+		<div id="panel" class="col-md-8 p-2">
 			<Tabs>
 				<!-- <svelte:component this={Tabs} {tabInfoProps}> -->
 				<TabList>
@@ -336,8 +340,7 @@
 
 				{#each categoryCollection as categoryCompound}
 					<TabPanel>
-						<!--  -->
-						<h3>{categoryCompound.category.categoryName}</h3>
+						<h3 class="m-3">{categoryCompound.category.categoryName}</h3>
 						<!-- <input type="text" bind:value={categoryCompound.category.categoryName} /><br /> -->
 						<MultiSelect
 							id="itemsSelected"
@@ -351,14 +354,14 @@
 				{/each}
 			</Tabs>
 		</div>
-		<div id="preview" class="col-4">
+		<div id="preview" class="col-md-4 p-2">
 			<h3>Vista Previa</h3>
-			<div class="dynamicContainer border preview-container">
+			<div class="mt-2 p-2 border preview-container">
 				<h4 class="preview-header"><strong>{checkListName}</strong></h4>
 				<!-- <p>Categoría (colección): {JSON.stringify(categoryCollection)}</p> -->
 				{#each itemCheckedCollection as checkedItem}
 					{#if checkedItem.itemId.length != 0}
-						<div class="dynamicContainer" transition:fade>
+						<div class="mt-2" transition:fade>
 							<h5 class="preview-header">
 								{categoryCollection[checkedItem.categoryId].category.categoryName}
 							</h5>
@@ -375,52 +378,64 @@
 		</div>
 	</div>
 
-	<div id="addCatsAndItems" class="row mb-3 g-3 justify-content dynamicContainer">
-		<div id="listCreation" class="col-6">
-			<div class="dynamicContainer">
-				<div class="row">
-					<div class="col-9">
-						<input type="text" class="form-control addedButton" bind:value={newCategoryNameToAdd} />
-					</div>
-					<div class="col-3">
-						<button class="btn btn-primary" on:click={addCategory}>Crear categoría</button>
-					</div>
+	<div id="addCatsAndItems" class="row mb-3 g-3 justify-content mt-2">
+		<hr />
+		<h3>Agregar elementos</h3>
+		<div id="listCreation" class="col-md-6">
+			<div class="mt-2">
+				<div class="input-group">
+					<input
+						type="text"
+						class="form-control addedButton"
+						bind:value={newCategoryNameToAdd}
+						placeholder="Nombre de categoría"
+						aria-label="Nombre de categoría"
+					/>
+					<button class="input-group-text btn btn-primary" on:click={addCategory}>
+						<i class="fas fa-plus me-2" />Categoría
+					</button>
 				</div>
 			</div>
 		</div>
 
-		<div id="dynamicItem" class="col-6">
-			<div class="dynamicContainer">
-				<div class="row">
-					<div class="col-9">
-						<input type="text" class="form-control addedButton" bind:value={newItemNameToAdd} />
-						<select bind:value={selectedCategory}>
+		<div id="dynamicItem" class="col-md-6">
+			<div class="mt-2">
+				<div class="input-group">
+					<div class="input-group">
+						<input
+							type="text"
+							class="form-control addedButton"
+							bind:value={newItemNameToAdd}
+							placeholder="Nombre del ítem"
+							aria-label="Nombre del ítem"
+						/>
+						<button class="input-group-text btn btn-primary" on:click={addItem}>
+							<i class="fas fa-plus me-2" />Item
+						</button>
+					</div>
+					<div class="input-group">
+						<span class="input-group-text">En categoría</span>
+						<select class="form-select" bind:value={selectedCategory}>
 							{#each categoryCollection as categoryCompound}
-								<option class="form-select" value={categoryCompound.category}
-									>{categoryCompound.category.categoryName}</option
-								>
+								<option class="form-select" value={categoryCompound.category}>
+									{categoryCompound.category.categoryName}
+								</option>
 							{/each}
 						</select>
 					</div>
-					<div class="col-3">
-						<button class="btn btn-primary" on:click={addItem}>Nuevo item</button>
-					</div>
 				</div>
 			</div>
 		</div>
-
-		<div id="checklistPreview" class="col-5" />
 	</div>
-
-	<button class="btn btn-primary" on:click={submit}>Crear checklist</button>
+	<div class="d-flex justify-content-end">
+		<button class="btn btn-primary" on:click={submit}>
+			<i class="fas fa-check me-2" />Crear checklist
+		</button>
+	</div>
 {/if}
 
 <!-- Thanks a lot, Exodus!! -->
-
 <style>
-	.dynamicContainer {
-		margin-top: 1rem;
-	}
 	.preview-header {
 		text-align: center;
 	}
