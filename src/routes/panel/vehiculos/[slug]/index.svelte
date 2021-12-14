@@ -99,6 +99,7 @@
 		status = 'Hola';
 		console.log('event', event);
 	}
+	
 </script>
 
 <svelte:head>
@@ -120,7 +121,7 @@
 		<Image
 			fluid
 			thumbnail
-			src={vehicleDetails.frontPicUrl}
+			src={'/static/img/vehicle-pics/'+vehicleDetails.frontPicUrl}
 			alt="Foto del vehículo"
 			class="m-2"
 			style="max-width:150px"
