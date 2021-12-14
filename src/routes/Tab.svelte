@@ -19,11 +19,11 @@
 		border-bottom: 2px solid white;
 		border-radius: 0;
 		margin: 0;
-		color: #ccc;
+		color: #868e96;
 	}
 
 	.selected {
-		border-bottom: 2px solid teal;
-		color: #333;
+		border-bottom: 2px solid #593196;
+		color: #17141f;
 	}
 </style>

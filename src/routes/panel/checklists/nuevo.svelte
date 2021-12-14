@@ -47,7 +47,7 @@ import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1>Nuevo checklist</h1>
-		<p class="lead">Ingrese los detalles a continuación.</p>
+		<p class="lead">Ingrese los detalles a continuación: Ingrese a una categoría y luego seleccione los items en cada uno. A la derecha puede visualizar el checklist generado. Si lo necesita, abajo puede crear más categorías e items.</p>
 	</div>
 </header>
 <ChecklistsV2 data={data.categoryList}/>
