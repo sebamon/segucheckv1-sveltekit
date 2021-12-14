@@ -31,7 +31,7 @@
 <!-- Hero a pantalla completa -->
 <header class="py-4">
 	<div class="container row mt-4 align-items-center justify-content-around">
-		<div class="col-12 col-md-8 col-lg-9">
+		<div class="col-12 col-sm-8">
 			<img src="img/segucheck-logo.svg" alt="Logo SeguCheck" id="logoHeader" class="m-5" />
 			<h1 class="fw-bold">Tus documentos de forma más eficiente</h1>
 			<h3 class="lead col-md-8">
@@ -44,7 +44,7 @@
 				<button href="/descargar" class="btn btn-secondary btn-lg px-4">Descargar app</button>
 			</div>
 		</div>
-		<div class="col-6 col-md-4 col-lg-3" id="showCarousel">
+		<div class="col-6 col-sm-4" id="showCarousel">
 			<svelte:component
 				this={Carousel}
 				autoplay
