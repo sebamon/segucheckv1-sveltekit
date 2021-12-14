@@ -199,7 +199,7 @@
 					class="form-control"
 					placeholder="Pickup"
 					aria-label="Tipo de vehículo"
-					bind:value={$form.domain}
+					bind:value={$form.type}
 					readonly
 				/>
 			{:else}

@@ -16,6 +16,7 @@
 
 	/* Ruta donde guardaremos dentro del directorio static */
 	export let name // Nombre de la variable profilePic || frontPic || leftSidePic || RightSidePic
+	export let picturePlaceholder = '/static/img/pic-upload.png';
 	
 	export let filesPath = './img/profile-pics'; // in this example: static root
 
@@ -119,7 +120,7 @@
 		{#if avatar}
 			<img class="avatar" src={avatar} alt="foto de perfil" />
 		{:else}
-			<img class="avatar" src="/static/img/usr-await.png" alt="foto de perfil sin cargar" />
+			<img class="avatar" src="{picturePlaceholder}" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
 			<!-- <button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadImage', {fileName, fileExtension, readyToUpload, googleDriveAccessLink})} 

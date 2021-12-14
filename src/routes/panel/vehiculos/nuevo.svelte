@@ -73,6 +73,9 @@
 	let frontPic: string;
 	let rightSidePic: string;
 	let leftSidePic : string;
+	let fileName: string;
+	let fileExtension: string;
+	let filesPath: string;
 
 	let status: string;
 	let message: string;
@@ -115,7 +118,7 @@
 			domain: yup
 				.string()
 				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.matches(regexAZNum, `Este campo solo permite letras y números, sin símbolos.`)
 				.required('Debes completar este campo.'),
 			brand: yup
 				.string()
@@ -152,7 +155,8 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
 		onSubmit: async (values) => {
-			// console.log(JSON.stringify(values))
+			values.frontPic = `/img/vehicle-pics/${fileName}.${fileExtension}`;
+			console.log(JSON.stringify(values));
 			// formVehicleDetails = document.getElementById('formVehicleDetails');
 		try {
 			const submit = await fetch('vehiculos', {
@@ -178,9 +182,9 @@
 	export function captureImage(e){
 		console.log('captureImage',e);
 		let name = e.detail.name
-		let fileName = e.detail.fileName
-		let fileExtension = e.detail.fileExtension
-		let filesPath = e.detail.filesPath
+		fileName = e.detail.fileName
+		fileExtension = e.detail.fileExtension
+		filesPath = e.detail.filesPath
 		if(name === 'frontPic'){
 			frontPic = `${e.detail.fileName}.${e.detail.fileExtension}`;
 		}
@@ -190,8 +194,8 @@
 		if(name === 'rightPic'){
 			rightSidePic = `${e.detail.fileName}.${e.detail.fileExtension}`;
 		}				
-		subir(fileName, fileExtension, filesPath)
-		console.log('file: ' + fileName + ', fileExt: ' + fileExtension );
+		//subir(fileName, fileExtension, filesPath)
+		console.log('Dentro de captureImage(e) file: ' + fileName + ', fileExt: ' + fileExtension );
 	}
 const subir = async(fileName, fileExtension, filesPath) => {
 

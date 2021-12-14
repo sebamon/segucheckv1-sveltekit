@@ -123,6 +123,7 @@
 	export let message = '';
 	export let status = '';
 	export let error = '';
+	export let picturePlaceholder = "/static/img/usr-await.png"; // imagen a mostrar como placeholder para el componente ImgUpload
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -550,7 +551,7 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<ImgUpload on:loadImage={captureImage}/>
+			<ImgUpload {picturePlaceholder} on:loadImage={captureImage}/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
