@@ -105,7 +105,7 @@
 <svelte:head>
 	<title>Vehículo: {vehicleDetails.domain} - SeguCheck</title>
 </svelte:head>
-<!-- {JSON.stringify(vehicleDetails.vehicleonvehiclerequirement)} -->
+
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -150,7 +150,7 @@
 				<div class="ms-auto">
 					<a
 						class="btn btn-primary"
-						href="/panel/vehiculos/{vehicleDetails.user_id}/habilitaciones"
+						href="/panel/vehiculos/{vehicleDetails.vehicle_id}/habilitaciones"
 					>
 						<i class="fas fa-plus me-2" />Nuevo
 					</a>
@@ -164,7 +164,7 @@
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-					<!-- {JSON.stringify(thisDoc)} -->
+					
 						<VehicleDocDetails {thisDoc} />
 					{/each}
 				</div>

@@ -40,6 +40,7 @@
 		<title>Usuario: Inexistente - SeguCheck</title>
 	{/if}
 </svelte:head>
+
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem>

@@ -98,9 +98,9 @@
 	// Arreglo de géneros:
 	let genderText: string;
 	if (gender == 'M') {
-		genderText = 'Varón';
+		genderText = 'Masculino';
 	} else if (gender == 'F') {
-		genderText = 'Mujer';
+		genderText = 'Femenino';
 	} else {
 		genderText = gender;
 	}

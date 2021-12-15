@@ -67,7 +67,7 @@ export let job
 			}),
 			onSubmit: (values) => {
 				// Realiza la carga de datos al cliquear Enviar
-				alert(JSON.stringify(values));
+				// alert(JSON.stringify(values));
 			}
 		});
 	// Por defecto, el componente se llama como solo lectura:

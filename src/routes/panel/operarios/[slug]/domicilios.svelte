@@ -66,7 +66,7 @@
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/{userAddress.user_id}">{userAddress.user_id}</a>
+			<a href="/panel/operarios/{userAddress.user_id}">{userAddress.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Domicilios</BreadcrumbItem>
 	</Breadcrumb>

@@ -105,7 +105,7 @@
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/{userDetails.user_id}">{userDetails.user_id}</a>
+			<a href="/panel/operarios/{userDetails.user_id}">{userDetails.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Habilitaciones</BreadcrumbItem>
 	</Breadcrumb>

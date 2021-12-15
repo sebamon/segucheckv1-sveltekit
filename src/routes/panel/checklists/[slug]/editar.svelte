@@ -54,7 +54,6 @@
 {#if status !== 'OK'}
     <SeguAlert {message} {status} path='checklists' />
 {/if}
-{JSON.stringify(data)}
 
-<br>
-ACA VA EL COMPONENTE DE CHECKLIST
+
+

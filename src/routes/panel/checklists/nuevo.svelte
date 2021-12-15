@@ -34,7 +34,7 @@ import ChecklistsV2 from '$lib/ChecklistsV2.svelte';
 	<title>Nuevo checklist - SeguCheck</title>
 </svelte:head>
 <!-- Encabezado -->
-<!-- {JSON.stringify(data.categoryList)} -->
+
 <header class="row">
 	<Breadcrumb>
 		<BreadcrumbItem>

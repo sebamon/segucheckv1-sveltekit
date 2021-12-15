@@ -55,7 +55,7 @@
 		}),
 		onSubmit: async (values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			// alert(JSON.stringify(values));
 			const response = await fetch('./auth/login', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -75,7 +75,7 @@
 
 <main class="container py-4">
 	<!-- m -->
-	{JSON.stringify(message)}
+	
 	<!-- <h1>{authenticated}</h1> -->
 	<Card class="shadow-lg">
 		<CardHeader>Ingresar a SeguCheck</CardHeader>

@@ -43,11 +43,11 @@ function selectOperator(e){
     <table class="table table-striped table-hover align-middle">
         <thead>
             <tr>
-                <th scope="col"><input type="search" placeholder="Filtrar" />Nro Operario</th>
-                <th scope="col"><input type="search" placeholder="Filtrar" />Apellido y Nombre</th>
-                <th scope="col"><input type="search" placeholder="Filtrar" />Cuit</th>
-                <th scope="col"><input type="search" placeholder="Filtrar" />Activo</th>            
-                <th scope="col"><input type="search" placeholder="Filtrar" />Seleccionar</th>            
+                <th scope="col">Nro Operario</th>
+                <th scope="col">Apellido y Nombre</th>
+                <th scope="col">Cuit</th>
+                <th scope="col">Activo</th>            
+                <th scope="col">Seleccionar</th>            
             </tr>
         </thead>
         <tbody>

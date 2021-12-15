@@ -71,7 +71,7 @@
 				</tr>
 				<tr>
 					<th scope="col">ID Cuenta</th>
-					<th scope="col">DNI</th>
+					<th scope="col">CUIL</th>
 					<th scope="col">Nombre</th>
 					<th scope="col">Apellido</th>
 					<th scope="col">Email</th>

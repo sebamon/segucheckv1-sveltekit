@@ -13,7 +13,11 @@ export async function get(request){
                 useraddress : true,
                 userhealthinfo : true,
                 userworkinfo : true,
-                users : true
+                users : {
+                    include : {
+                        usersonroles :true
+                    }
+                }
             }
         })
 

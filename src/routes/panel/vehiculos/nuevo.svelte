@@ -155,7 +155,7 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
 		onSubmit: async (values) => {
-			values.frontPic = `/img/vehicle-pics/${fileName}.${fileExtension}`;
+			values.frontPic = `${fileName}.${fileExtension}`;
 			console.log(JSON.stringify(values));
 			// formVehicleDetails = document.getElementById('formVehicleDetails');
 		try {
@@ -240,11 +240,6 @@ const subir = async(fileName, fileExtension, filesPath) => {
 <svelte:head>
 	<title>Nuevo vehículo - SeguCheck</title>
 </svelte:head>
-leftSidePic: {JSON.stringify(leftSidePic)}
-<hr>
-rightSidePic: {JSON.stringify(rightSidePic)}
-<hr>
-frontPic: {JSON.stringify(frontPic)}
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
