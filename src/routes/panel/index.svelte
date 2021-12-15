@@ -121,7 +121,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
 				<a href="/panel/operarios?filter=vencePronto">
-					<p class="fs-1 text-center text-primary fw-bolder">18</p>
+					<p class="fs-1 text-center text-primary fw-bolder">3</p>
 				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en operarios</CardTitle>
@@ -160,7 +160,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 				{/if}
 				</p>
 			</div>
-			<CardTitle class="fw-bold">Usuarios activos</CardTitle>
+			<CardTitle class="fw-bold">Usuarios registrados</CardTitle>
 			<CardSubtitle>
 				Puede registrar nuevos usuarios, modificar sus datos o realizar la baja de los mismos
 			</CardSubtitle>
@@ -174,7 +174,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">{operariosActivos}</p>
+				<p class="fs-1 text-center text-primary fw-bolder">{operariosActivos}/{operatorData.length}</p>
 			</div>
 			<CardTitle class="fw-bold">Operarios activos</CardTitle>
 			<CardSubtitle>
@@ -187,7 +187,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 			</p>
 		</CardBody>
 	</Card>
-	<Card class="col-xl-3 col-md-6">
+	<!-- <Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
 				<p class="fs-1 text-center text-primary fw-bolder">Etc</p>
@@ -200,6 +200,6 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } f
 				</a>
 			</p>
 		</CardBody>
-	</Card>
+	</Card> -->
 	
 </main>

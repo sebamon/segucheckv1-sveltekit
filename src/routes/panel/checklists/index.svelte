@@ -32,7 +32,7 @@
 		<BreadcrumbItem>
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem active>Checkgroups</BreadcrumbItem>
+		<BreadcrumbItem active>CheckList</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-clipboard-check me-4" />CheckList</h1>
@@ -52,12 +52,12 @@
 				<tr>
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
 					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+					<!-- <th scope="col"><input type="search" placeholder="Filtrar" /></th> -->
 				</tr>
 				<tr>
 					<th scope="col">ID CheckList</th>
 					<th scope="col">Nombre</th>
-					<th scope="col">Fecha</th>
+					<!-- <th scope="col">Fecha</th> -->
 				</tr>
 			</thead>
 			<tbody>
@@ -73,11 +73,7 @@
 							{thisCheckList.checkListName}
 						</a>
 					</td>
-					<td>
-						<a class="text-decoration-none text-dark" href="./checklists/{thisCheckList.checklist_id}">
-							Fecha
-						</a>
-					</td>
+					
 				</tr>
 				{/each}
 			</tbody>

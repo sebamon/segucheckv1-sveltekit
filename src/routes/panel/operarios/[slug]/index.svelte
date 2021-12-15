@@ -39,6 +39,7 @@
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
+
 	
 	export let data
 

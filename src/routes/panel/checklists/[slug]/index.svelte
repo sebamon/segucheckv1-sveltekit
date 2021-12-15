@@ -64,7 +64,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-industry me-4" />{checkList.checkListName}</h1>
-		<p class="lead">Detalles del CheckGroup</p>
+		<p class="lead">Detalles del CheckList</p>
 	</div>
 </header>
 {#if status !== 'OK'}

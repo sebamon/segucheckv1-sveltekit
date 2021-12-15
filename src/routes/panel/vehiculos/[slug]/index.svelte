@@ -150,7 +150,7 @@
 				<div class="ms-auto">
 					<a
 						class="btn btn-primary"
-						href="/panel/vehiculos/{vehicleDetails.user_id}/habilitaciones"
+						href="/panel/vehiculos/{vehicleDetails.vehicle_id}/habilitaciones"
 					>
 						<i class="fas fa-plus me-2" />Nuevo
 					</a>

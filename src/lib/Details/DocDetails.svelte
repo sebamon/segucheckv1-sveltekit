@@ -1,6 +1,7 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Accordion, AccordionItem, Modal } from 'sveltestrap';
+
+import { Accordion, AccordionItem, Modal } from 'sveltestrap';
 
 	// Datos del documento a mostrar
 	export let documentation_id = 0;
@@ -40,8 +41,14 @@
 		</h5>
 		<ul>
 			<li>ID Documento: {documentation_id}</li>
-			<li>Estado: {status}</li>
-			<li>Enlace: {urlPdf}</li>
+			<li>Estado: 
+				{#if status == 'Estado 1'}
+					Vigente
+				{:else}
+					Vencido
+				{/if}
+			</li>
+			<!-- <li>Enlace: {urlPdf}</li> -->
 			<li>Creado: {created_at.toLocaleDateString()}</li>
 			<li>Actualizado: {updated_at.toLocaleDateString()}</li>
 			<li>Vencimiento: <span class={textColor}>{expirated_at.toLocaleDateString()}</span></li>

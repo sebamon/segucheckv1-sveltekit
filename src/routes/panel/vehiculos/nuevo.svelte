@@ -155,7 +155,7 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
 		onSubmit: async (values) => {
-			values.frontPic = `/img/vehicle-pics/${fileName}.${fileExtension}`;
+			values.frontPic = `${fileName}.${fileExtension}`;
 			console.log(JSON.stringify(values));
 			// formVehicleDetails = document.getElementById('formVehicleDetails');
 		try {
