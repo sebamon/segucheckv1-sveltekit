@@ -1,7 +1,9 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-	import type { Color } from 'sveltestrap/src/shared';
+	import SeguAlert from '$lib/SeguAlert.svelte'
+	import ImgUpload from '$lib/ImgUpload.svelte'
+
 	// Arreglo de tipo de vehículos:
 	let vehicleTypeList = [
 		'Aeronaves - Avión Comercial',
@@ -60,40 +62,36 @@
 	];
 
 	let formVehicleDetails;
-	let vehicle_id: number;
 	let domain: string;
 	let brand: string;
 	let model: string;
 	let type: string;
 	let year: number;
-	let internal_id: number;
+	let internNumber: number;
 	let chasisNumber: string;
 	let motorNumber: string;
-	let frontPic: FileReader;
-	let rightSidePic: ImageData;
-	let leftSidePic = [];
+	let frontPic: string;
+	let rightSidePic: string;
+	let leftSidePic : string;
+	let fileName: string;
+	let fileExtension: string;
+	let filesPath: string;
 
-	export let status: string;
-	export let message: string;
-	export let color: Color;
-
-	const submitForm = async (): Promise<any> => {
-
-	};
+	let status: string;
+	let message: string;
 
 	function cleanPage() {
-		vehicle_id = null;
-		domain = '';
-		brand = '';
-		model = null;
-		type = '';
-		year = 0;
-		internal_id = null;
-		chasisNumber = '';
-		motorNumber = '';
-		frontPic = null;
-		rightSidePic = null;
-		leftSidePic = null;
+		$form.domain = '';
+		$form.brand = '';
+		$form.model = '';
+		$form.type = '';
+		$form.year = '';
+		$form.internNumber = '';
+		$form.chasisNumber = '';
+		$form.motorNumber = '';
+		$form.frontPic = '';
+		$form.rightSidePic = '';
+		$form.leftSidePic = '';
 	}
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
@@ -109,7 +107,7 @@
 			model: '',
 			type: '',
 			year: '',
-			internal_id: '',
+			internNumber: '',
 			chasisNumber: '',
 			motorNumber: '',
 			frontPic: '',
@@ -120,7 +118,7 @@
 			domain: yup
 				.string()
 				.max(7, 'Este campo debe ser de hasta ${max} caracteres')
-				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
+				.matches(regexAZNum, `Este campo solo permite letras y números, sin símbolos.`)
 				.required('Debes completar este campo.'),
 			brand: yup
 				.string()
@@ -141,8 +139,8 @@
 				.max(9999, 'El año es demasiado alto.')
 				.integer("El número debe ser entero.")
 				.required('Debes completar este campo.'),
-			internal_id: yup
-				.string()
+			internNumber: yup
+				.number()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.required('Debes completar este campo.'),
 			chasisNumber: yup
@@ -157,51 +155,91 @@
 				.matches(regexAZNum, 'Este campo solo permite letras y números, sin símbolos.')
 		}),
 		onSubmit: async (values) => {
-			console.log(JSON.stringify(values))
-			formVehicleDetails = document.getElementById('formVehicleDetails');
+			values.frontPic = `${fileName}.${fileExtension}`;
+			console.log(JSON.stringify(values));
+			// formVehicleDetails = document.getElementById('formVehicleDetails');
 		try {
 			const submit = await fetch('vehiculos', {
 				method: 'POST',
-				headers: {
-					'Contex-Type': 'application/json'
-				},
 				body: JSON.stringify({
-					domain,
-					brand,
-					model,
-					type,
-					year,
-					internal_id,
-					chasisNumber,
-					motorNumber,
-					frontPic,
-					rightSidePic,
-					leftSidePic
+					values
 				})
 			});
 			const data = await submit.json();
 			message = data.message;
 			status = data.status;
 
-			if (data.status === 'OK') {
+			if (status === 'NEW') {
 				cleanPage();
 			}
-			color = data.status === 'OK' ? 'success' : 'danger';
 
-			if (data.status === 200) {
-				console.log('message', message);
-			}
 		} catch (err) {
 			throw new Error();
 		}
 		}
 	});
+
+	export function captureImage(e){
+		console.log('captureImage',e);
+		let name = e.detail.name
+		fileName = e.detail.fileName
+		fileExtension = e.detail.fileExtension
+		filesPath = e.detail.filesPath
+		if(name === 'frontPic'){
+			frontPic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}
+		if(name === 'leftPic'){
+			leftSidePic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}
+		if(name === 'rightPic'){
+			rightSidePic = `${e.detail.fileName}.${e.detail.fileExtension}`;
+		}				
+		//subir(fileName, fileExtension, filesPath)
+		console.log('Dentro de captureImage(e) file: ' + fileName + ', fileExt: ' + fileExtension );
+	}
+const subir = async(fileName, fileExtension, filesPath) => {
+
+	console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+	try{
+
+		let url = '../../../api/driveSet';
+		let fileData = {
+			fileName: fileName,
+			fileExtension: fileExtension,
+			filesPath : filesPath
+		};
+		console.log('subir file fileData',fileData)
+		let response = await fetch(url, {
+			method: 'POST',
+			body: JSON.stringify(fileData)
+		});
+		
+		console.log(response)
+		const data = await response.json()
+		
+		console.log('la imagen subida: ',data)
+		let fileId = {
+			fileId: data.id,
+		};
+		console.log('fileID',fileId)
+		// let urlId = 'http://localhost:3000/api/driveGet';
+		// let responseId = await fetch(url, {
+		// 	method: 'POST',
+		// 	body: JSON.stringify(fileId)
+		// });
+		// const dataId = await responseId.json()
+		// console.log('Mi link para compartir: ' + JSON.parse(dataId));
+		// profilePic = JSON.parse(dataId);
+	}catch(e){
+		console.log(e)
+		return 'Sin Datos'
+	}
+}
 </script>
 
 <svelte:head>
 	<title>Nuevo vehículo - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -220,11 +258,7 @@
 </header>
 
 {#if status}
-	<Alert {color}>
-		<h4 class="alert-heading text-capitalize">{status}</h4>
-		{message}
-		<p><a href="/panel/vehiculos" class="alert-link"> Volver al listado </a></p>
-	</Alert>
+	<SeguAlert {message} {status} path='vehiculos' />
 {/if}
 
 <!-- Formulario nuevo usuario -->
@@ -327,20 +361,20 @@
 			{/if}
 		</div>
 		<div class="col-md-6">
-			<label for="internal_id" class="form-label">Número interno</label>
+			<label for="internNumber" class="form-label">Número interno</label>
 			<input
 				type="text"
-				id="internal_id"
-				name="internal_id"
+				id="internNumber"
+				name="internNumber"
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				bind:value={$form.internal_id}
+				bind:value={$form.internNumber}
 				on:blur={handleChange}
-				class:invalid={$errors.internal_id}
+				class:invalid={$errors.internNumber}
 			/>
-			{#if $errors.internal_id}
-				<small class="form-error">{$errors.internal_id}</small>
+			{#if $errors.internNumber}
+				<small class="form-error">{$errors.internNumber}</small>
 			{/if}
 		</div>
 	</div>
@@ -381,37 +415,25 @@
 		</div>
 	</div>
 	<div class="row mb-3 g-3">
-		<div class="col-md-6">
-			<div class="mb-3">
+		<div class="col-md-12 col-lg-12">
+			<div class="mb-2">
 				<label for="frontPic" class="form-label">Foto del frente</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="frontPic"
-					bind:value={frontPic}
-				/>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'frontPic'}/>
 			</div>
-			<div class="mb-3">
+			<!-- <div class="mb-2">
 				<label for="leftSidePic" class="form-label">Foto del lado izquierdo</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="leftSidePic"
-					bind:value={leftSidePic}
-				/>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'leftSidePic'}/>
 			</div>
-			<div class="mb-3">
+			<div class="mb-2">
 				<label for="rigthSidePic" class="form-label">Foto del lado derecho</label>
-				<input
-					class="form-control"
-					type="file"
-					accept="image/*"
-					id="rigthSidePic"
-					bind:value={rightSidePic}
-				/>
-			</div>
+				<ImgUpload filesPath={'./img/vehicle-pics'}
+				on:loadImage={captureImage}
+				name={'rigthSidePic'}/>
+			</div> -->
 		</div>
 		<div class="col-md-6 d-flex justify-content-end">
 			<button type="submit" class="btn btn-primary" disabled={!$isValid}>

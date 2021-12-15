@@ -1,54 +1,127 @@
+<script context="module">
+	export async function load({fetch, page}) {
+		const data = await Promise.all([
+			fetch('../panel/usuarios/usuarios'),
+			fetch('../panel/operarios/operarios'),
+			fetch('../panel/vehiculos/vehiculos'),
+			fetch('../panel/trabajos/trabajos'),
+			fetch('../panel/panel')
+		]).then(async (result) => {
+			const userData = await result[0].json();
+			const operatorData = await result[1].json();
+			const vehiclesData = await result[2].json();
+			const jobsData = await result[3].json();
+			const dashboard = await result[4].json();
+
+			return { userData, operatorData, vehiclesData, jobsData ,dashboard};
+
+		});
+		return {
+			props: {
+				data
+			}
+		};
+	}
+</script>
+
 <script lang="ts">
-// import { onMount } from 'svelte';
-// import { authenticated } from 'src/stores/auth';
-
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
 
-	
+
+import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardSubtitle, CardTitle } from 'sveltestrap';
+	export let data;
+
+	type warning = {
+		none: string;
+		low: string;
+		medium: string;
+		high: string;
+	};
+
+	export let operatorData = data.operatorData.operators;
+	export let vehicleData = data.vehiclesData.vehicles;
+	export let userData = data.userData.users;
+	export let jobData = data.jobsData;
+	export let dashboard = data.dashboard.dashboard;
+	let operatorWarning, vehicleWarning, userWarning, jobWarning: warning;
+
+	let documentacionAvencer = 0
+
+	function dashboardVehiculosAvencer(){
+		console.log(vehicleData)
+		vehicleData.forEach(element => {
+			console.log(element)
+		});
+
+	}
+
+	let operariosActivos = 0
+
+	const dashboardOperariosActivos = () =>{
+		if(operatorData.length>0){
+			
+			operatorData.forEach(element => {
+				if(element.users.active){
+					operariosActivos++
+				}
+				console.log('element', element.users.active)
+			});
+		}
+		return operariosActivos
+	}
+	// operatorData.forEach((element) => {
+	// 	console.log('Operador: ', element.users);
+	// });
+	// vehicleData.forEach((element) => {
+	// 	console.log('Vehículo: ', element);
+	// });
+	// userData.forEach((element) => {
+	// 	console.log('Usuario: ', element);
+	// });
+	// jobData.forEach((element) => {
+	// 	console.log('Trabajo: ', element);
+	// });
+
 	// Datos de usuario - Ver si esto lo maneja un hook
-	let actualUser = 'Juan Perez';
-	let message = ''
+	let currentUser = 'Juan Perez';
+	let message = '';
 
-	// onMount(async () =>{
-	// 	try{
 
-	// 		const response = await fetch('', {
-	// 			headers: {'Content-Type' : 'application/json'},
-	// 			credentials : 'include'
-	// 		})
-	// 		const content = await response.json()
-	// 		actualUser = `${content.user.firstName} ${content.user.lastName}`
-	// 		message= `Bienvenido ${actualUser}}`
-	// 		authenticated.set(true)
-	// 	}catch(e){
-	// 		message = 'No estas logueado'
-	// 		authenticated.set(false)
-		
-	// 	}
-	// })
-	
+	const dateDifference = (date1, date2) => {
+		// var date1 = new Date('06/30/2019');
+		// var date2 = new Date('07/30/2019');
+
+		// Calcula la diferencia de tiempo entre dos fechas
+		var difference_In_Time = date2.getTime() - date1.getTime();
+
+		// Convierte el dato anterior en diferencia en días
+		var difference_In_Days = difference_In_Time / (1000 * 3600 * 24);
+
+		return difference_In_Days;
+	};
+
+	dashboardOperariosActivos()
+	dashboardVehiculosAvencer()
 </script>
 
 <svelte:head>
 	<title>Resumen - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
+
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem active>Inicio</BreadcrumbItem>
 	</Breadcrumb>
 	<h1><i class="fas fa-home me-4" />Resumen</h1>
-	<p class="lead">Bienvenido de nuevo, {actualUser}</p>
+	<p class="lead">Bienvenido de nuevo, {currentUser}</p>
 </header>
-
 <main class="row g-2">
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
 				<a href="/panel/operarios?filter=vencePronto">
-					<p class="fs-1 text-center text-primary fw-bolder">18</p>
+					<p class="fs-1 text-center text-primary fw-bolder">3</p>
 				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en operarios</CardTitle>
@@ -63,8 +136,8 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<a href="/panel/vehiculos?filter=vencePronto">
-					<p class="fs-1 text-center text-primary fw-bolder">15</p>
+				<a href="/panel/vehiculos/2">
+					<p class="fs-1 text-center text-primary fw-bolder">1</p>
 				</a>
 			</div>
 			<CardTitle class="fw-bold">Próximos vencimientos en vehículos</CardTitle>
@@ -79,9 +152,15 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
-				<p class="fs-1 text-center text-primary fw-bolder">10</p>
+				<p class="fs-1 text-center text-primary fw-bolder">
+				{#if userData.length>0}
+					{userData.length}
+				{:else}
+					0	
+				{/if}
+				</p>
 			</div>
-			<CardTitle class="fw-bold">Usuarios activos</CardTitle>
+			<CardTitle class="fw-bold">Usuarios registrados</CardTitle>
 			<CardSubtitle>
 				Puede registrar nuevos usuarios, modificar sus datos o realizar la baja de los mismos
 			</CardSubtitle>
@@ -95,6 +174,22 @@
 	<Card class="col-xl-3 col-md-6">
 		<CardBody>
 			<div class="align-content-center" style="height:200px;">
+				<p class="fs-1 text-center text-primary fw-bolder">{operariosActivos}/{operatorData.length}</p>
+			</div>
+			<CardTitle class="fw-bold">Operarios activos</CardTitle>
+			<CardSubtitle>
+				Puede registrar nuevos operarios, modificar sus datos o realizar la baja de los mismos
+			</CardSubtitle>
+			<p class="text-end">
+				<a href="/panel/operarios" class="text-decoration-none fw-bold">
+					Gestionar operarios <i class="fas fa-arrow-right me-2" />
+				</a>
+			</p>
+		</CardBody>
+	</Card>
+	<!-- <Card class="col-xl-3 col-md-6">
+		<CardBody>
+			<div class="align-content-center" style="height:200px;">
 				<p class="fs-1 text-center text-primary fw-bolder">Etc</p>
 			</div>
 			<CardTitle class="fw-bold">Historial de trabajos</CardTitle>
@@ -105,5 +200,6 @@
 				</a>
 			</p>
 		</CardBody>
-	</Card>
+	</Card> -->
+	
 </main>

@@ -1,4 +1,6 @@
 import preprocess from 'svelte-preprocess';
+import { uploadPlugin } from './src/lib/uploadPlugin.mjs';
+
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -23,6 +25,8 @@ const config = {
 		},
 
         vite: {
+            // The File Upload plugin
+            plugins: [uploadPlugin],
             css: {
                 preprocessorOptions: {
                     scss: {

@@ -3,7 +3,6 @@
 		try {
 			const response = await fetch('./locaciones/locaciones')
 			const data = await response.json()
-			console.log(data)
 			return {
 				props: {
 					data
@@ -27,7 +26,6 @@
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
 	export let data
-	console.log(data)
 	export let locations = data.locations
 </script>
 
@@ -44,7 +42,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-map-marked me-4" />Locaciones</h1>
-		<h5>Descripción breve</h5>
+		<h5>Mostrando todos los elementos.</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/locaciones/nuevo">
@@ -73,17 +71,37 @@
 					<th scope="col">Nombre</th>
 					<th scope="col">Cliente</th>
 					<th scope="col">Coordenadas</th>
-					<th scope="col">etc</th>
+					<th scope="col">Nombre de Contacto</th>
 				</tr>
 			</thead>
 			<tbody>
 				{#each locations as location}
 				<tr>
-					<td>{location.location_id}</td>
-					<td>{location.locationName}</td>
-					<td>{location.customer}</td>
-					<td>hola</td>
-					<td>chau</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
+							{location.location_id}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
+							{location.locationName}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
+							{location.customer.businessName}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
+							{location.coordinates}
+						</a>
+					</td>
+					<td>
+						<a class="text-decoration-none text-dark" href="./locaciones/{location.location_id}">
+							{location.customer.contact}
+						</a>
+					</td>
 				</tr>
 				{/each}
 			</tbody>

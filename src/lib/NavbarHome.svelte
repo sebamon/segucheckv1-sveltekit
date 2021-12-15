@@ -30,10 +30,10 @@
 
 <Navbar color="light" light expand="md" class="border-bottom">
 	<NavbarBrand href="/">
-		<img src="/img/segucheck-logo.svg" height="36" alt="logo" />
+		<img src="/img/segucheck-logo.svg" height="36" alt="Logo Segucheck" />
 		<span class="mx-2 text-dark" id="text-logo">SeguCheck </span>
 	</NavbarBrand>
-	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
+	<NavbarToggler on:click={() => (isOpen = !isOpen)} aria-label="Desplegar menú" />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
 			<NavItem class="mx-2">
@@ -54,8 +54,8 @@
 				<NavLink href="#contacto" class="text-primary">Contacto</NavLink>
 			</NavItem>
 			<NavItem class="ms-2">
-				<Button color="primary" on:click={() => (modalOpen = !modalOpen)}>Iniciar sesión</Button>
-				<Button color="warning" href="/panel" title="placeholder">Ir al panel</Button>
+				<!-- <Button color="primary" on:click={() => (modalOpen = !modalOpen)}>Iniciar sesión</Button> -->
+				<Button color="warning" href="/panel">Ir al panel</Button>
 			</NavItem>
 		</Nav>
 	</Collapse>

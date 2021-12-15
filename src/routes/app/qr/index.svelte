@@ -2,8 +2,6 @@
 	import { resolve } from 'path/posix';
 	import CopyToClipboard from 'svelte-copy-to-clipboard';
 	import { Toast, Alert, Button } from 'sveltestrap';
-	import dotenv from 'dotenv';
-	dotenv.config();
 
 	// Datos del usuario a mostrar (reemplazar con fetch):
 	const userDetails = {
@@ -16,66 +14,67 @@
 	let isClicked = false;
 	// Generar link con ID usuario + token de acceso temporal:
 	const token = '1234';
-	const urlToProfile =
-		'http://localhost:3000/panel/operarios/' + userDetails.user_id + '?auth=' + token;
-	/*	Versión para Google Charts:
-		const imageQR = 'https://chart.googleapis.com/chart?cht=qr&chs=500x500&chld=L|2&chl='+encodeURIComponent(urlToProfile);
-	*/
-	const getQR = async () => {
-		// Toma los datos del formulario y los envía por metodo POST
-		const response = await fetch('https://qrcode3.p.rapidapi.com/qrcode/text', {
-			method: 'POST',
-			headers: {
-				Accept: 'image/svg+xml',
-				'Content-Type': 'application/json',
-				'x-rapidapi-host': 'qrcode3.p.rapidapi.com',
-				'x-rapidapi-key': process.env['QR-API-KEY']
-			},
-			body: JSON.stringify({
-				data: urlToProfile,
-				image: {
-					uri: 'https://i.imgur.com/QYfrqU1.png',
-					modules: false
-				},
-				style: {
-					module: {
-						color: '#32155C',
-						shape: 'lightround'
-					},
-					inner_eye: {
-						shape: 'lightround'
-					},
-					outer_eye: {
-						shape: 'lightround'
-					}
-					// background: {
-					// 	color: "#c2fce6"
-					// }
-				},
-				size: {
-					width: 500,
-					quiet_zone: 2,
-					error_correction: 'M'
-				},
-				output: {
-					filename: 'qrcode',
-					format: 'png'
-				}
-			})
-		});
-		console.log('response: ', response);
-		let imageQR = '';
-		if (response.status == 200) {
-			// Si recibe correctamente, genera la imagen:
-			const blob = await response.blob();
-			imageQR = URL.createObjectURL(blob);
-		} else {
-			// Si hubo un error con la API (cualquier otro status), retorna un código 'error':
-			imageQR = 'error';
-		}
-		console.log(imageQR);
-		return imageQR;
-	};
+	const urlToProfile = 'http://localhost:3000/ver?user=' + userDetails.user_id + '&token=' + token;
+	// 	Versión para Google Charts:
+	const imageQR =
+		'https://chart.googleapis.com/chart?cht=qr&chs=500x500&chld=L|2&chl=' +
+		encodeURIComponent(urlToProfile);
+	//
+	// const getQR = async () => {
+	// 	// Toma los datos del formulario y los envía por metodo POST
+	// 	const response = await fetch('https://qrcode3.p.rapidapi.com/qrcode/text', {
+	// 		method: 'POST',
+	// 		headers: {
+	// 			Accept: 'image/svg+xml',
+	// 			'Content-Type': 'application/json',
+	// 			'x-rapidapi-host': 'qrcode3.p.rapidapi.com',
+	// 			'x-rapidapi-key': process.env['QR-API-KEY']
+	// 		},
+	// 		body: JSON.stringify({
+	// 			data: urlToProfile,
+	// 			image: {
+	// 				uri: 'https://i.imgur.com/QYfrqU1.png',
+	// 				modules: false
+	// 			},
+	// 			style: {
+	// 				module: {
+	// 					color: '#32155C',
+	// 					shape: 'lightround'
+	// 				},
+	// 				inner_eye: {
+	// 					shape: 'lightround'
+	// 				},
+	// 				outer_eye: {
+	// 					shape: 'lightround'
+	// 				}
+	// 				// background: {
+	// 				// 	color: "#c2fce6"
+	// 				// }
+	// 			},
+	// 			size: {
+	// 				width: 500,
+	// 				quiet_zone: 2,
+	// 				error_correction: 'M'
+	// 			},
+	// 			output: {
+	// 				filename: 'qrcode',
+	// 				format: 'png'
+	// 			}
+	// 		})
+	// 	});
+	// 	console.log('response: ', response);
+	// 	let imageQR = '';
+	// 	if (response.status == 200) {
+	// 		// Si recibe correctamente, genera la imagen:
+	// 		const blob = await response.blob();
+	// 		imageQR = URL.createObjectURL(blob);
+	// 	} else {
+	// 		// Si hubo un error con la API (cualquier otro status), retorna un código 'error':
+	// 		imageQR = 'error';
+	// 	}
+	// 	console.log(imageQR);
+	// 	return imageQR;
+	// };
 	// Alternar mensaje en texto copiado:
 	let isOpen = false;
 	const copied = () => {
@@ -91,9 +90,8 @@
 		operario.
 	</p>
 </header>
-<main>
-	{process.env['QR-API-KEY']}
 
+<main>
 	<div class="row justify-content-center">
 		{#if !isClicked}
 			<div class="qr m-4">
@@ -110,7 +108,7 @@
 		{:else}
 			<div class="qr m-4">
 				<!-- Versión para LinQR -->
-				{#await getQR()}
+				<!-- {#await getQR()}
 					<Alert color="secondary">
 						<i class="fas fa-spinner fa-pulse fs-1 me-2" />Cargando QR...
 					</Alert>
@@ -137,15 +135,15 @@
 						</h4>
 						<p>Es posible que el servidor no esté disponible, o estés sin conexión.</p>
 					</Alert>
-				{/await}
-				<!-- Versión para Google Charts --
-					<img
-						src="{imageQR}"
-						class="mx-auto d-block m-4"
-						alt="Código QR"
-						title="¡Escanea este código!"
-					/>
-				-- Fin versión para Google Charts -->
+				{/await} -->
+				<!-- Versión para Google Charts -- -->
+				<img
+					src={imageQR}
+					class="mx-auto d-block m-4"
+					alt="Código QR"
+					title="¡Escanea este código!"
+				/>
+				<!-- -- Fin versión para Google Charts -->
 			</div>
 		{/if}
 	</div>

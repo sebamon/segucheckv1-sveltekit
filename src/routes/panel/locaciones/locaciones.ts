@@ -1,18 +1,26 @@
 import { PrismaClient } from '@prisma/client'
-import type { string } from 'yup';
 
 const prisma = new PrismaClient()
 
 export async function get(){
+    console.log('** API : Locaciones : GET **')
     try {
         const locations = await prisma.location.findMany({
             select : {
                 location_id : true,
                 locationName : true,
-                customer : true,
+                coordinates : true,
+                customer : {
+                    select: {
+                        contact : true,
+                        customer_id : true,
+                        businessName : true, 
+                    }
+                }
+                
             }
         });
-
+  
         if(locations.length>0){
             return {
                 body: {
@@ -51,13 +59,13 @@ export async function post(request){
 
     type LocationType ={
         locationName:string,
-        coordenites:string,
+        coordinates:string,
         customer_id:number,
         province:string
     }
     let object:LocationType = {
         locationName : formBody.locationName,
-        coordenites : formBody.coordenites,
+        coordinates : formBody.coordinates,
         customer_id :  formBody.customer,
         province : formBody.province,
     }
@@ -66,7 +74,7 @@ export async function post(request){
         const newLocation = await prisma.location.create({
             data: {
                 locationName : object.locationName,                
-                coordenites : object.coordenites,
+                coordinates : object.coordinates,
                 province : object.province,
                 customer : {
                     connect: {
@@ -75,17 +83,27 @@ export async function post(request){
                 }
             }
         })
-        console.log('Nueva Locacion:', newLocation)
-        const body = newLocation 
-        ? {locations: newLocation, message: 'Locacion Creada con Exito', status: 'OK'}
-        : {locations: {}, message: 'No se pudo crear la locación verificar los datos', status: 'ERROR'}
+        // console.log('Nueva Locacion:', newLocation)
+        // const body = newLocation 
+        // ? {locations: newLocation, message: 'Locacion Creada con Exito', status: 'OK'}
+        // : {locations: {}, message: 'No se pudo crear la locación verificar los datos', status: 'ERROR'}
 
-        console.log(body)
-        return {
-            body: {
-               location : newLocation,
-               status : 'NEW',
-               message: 'Locación Creada',
+        // console.log(body)
+        if(newLocation){
+            return {
+                body: {
+                    location : newLocation,
+                    status : 'NEW',
+                    message: 'Locación Creada',
+                }
+            }
+        }else{
+            return {
+                body: {
+                    location : {},
+                    status : 'INFO',
+                    message: 'No se pudo crear la Locación',
+                }
             }
         }
 

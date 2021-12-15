@@ -8,20 +8,36 @@ datasource db {
 }
 
 model checkitem {
-  checkItem_id   Int              @id @default(autoincrement())
-  item           String
-  description    String
-  checkitemgroup checkitemgroup[]
+  checkItem_id    Int               @id @default(autoincrement())
+  item            String            @unique
+  description     String
+  categories      checkcategory[]   @relation(references: [category_id])
+  VerifyCheckList verifychecklist[]
 }
 
-model checkitemgroup {
-  checkItemGroup_id Int       @id @default(autoincrement())
-  groupName         String
-  checkItem_id      Int
-  checkitem         checkitem @relation(fields: [checkItem_id], references: [checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
-  jobs              jobs[]
+model checkcategory {
+  category_id  Int         @id @default(autoincrement())
+  categoryName String      @unique
+  checkitems   checkitem[] @relation(references: [checkItem_id])
+}
 
-  @@index([checkItem_id], map: "CheckItemGroup_checkItem_id_fkey")
+model checklist {
+  checkList_id    Int               @id @default(autoincrement())
+  checkListName   String
+  VerifyCheckList verifychecklist[]
+  jobs            jobs[]
+}
+
+model verifychecklist {
+  checkList_id Int
+  checkItem_id Int
+  checkList    checklist @relation(fields: [checkList_id], references: [checkList_id])
+  checkItem    checkitem @relation(fields: [checkItem_id], references: [checkItem_id])
+  checked      Boolean   @default(false)
+  observation  String?
+
+
+  @@id([checkList_id, checkItem_id])
 }
 
 model customer {
@@ -66,27 +82,26 @@ model folder {
 }
 
 model jobs {
-  job_id                   Int                    @id @default(autoincrement())
+  job_id                   Int                     @id @default(autoincrement())
   startDate                DateTime
   finishDate               DateTime
-  status                   String
-  riskAnalysis_id          Int
+  statusJob                String
+  riskAnalysis_id          Int?
   location_id              Int
   customer_id              Int
-  vehicle_id               Int
-  checkItemGroup_id        Int
-  requiredDocumentation_id Int
-  created_at               DateTime               @default(now())
+  vehicle_id               Int?
+  requiredDocumentation_id Int?
+  checkList_id             Int?
+  created_at               DateTime                @default(now())
   updated_at               DateTime?
-  checkitemgroup           checkitemgroup         @relation(fields: [checkItemGroup_id], references: [checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
-  customer                 customer               @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
-  location                 location               @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
-  requiereddocumentation   requiereddocumentation @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
-  riskanalysis             riskanalysis           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
-  vehicle                  vehicle                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
+  checklist                checklist?              @relation(fields: [checkList_id], references: [checkList_id], map: "Jobs_checklist_id_id_fkey")
+  customer                 customer                @relation(fields: [customer_id], references: [customer_id], map: "Jobs_customer_id_fkey")
+  location                 location                @relation(fields: [location_id], references: [location_id], map: "Jobs_location_id_fkey")
+  requiereddocumentation   requiereddocumentation? @relation(fields: [requiredDocumentation_id], references: [requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
+  riskanalysis             riskanalysis?           @relation(fields: [riskAnalysis_id], references: [riskAnalysis_id], map: "Jobs_riskAnalysis_id_fkey")
+  vehicle                  vehicle?                @relation(fields: [vehicle_id], references: [vehicle_id], map: "Jobs_vehicle_id_fkey")
   operatoronjobs           operatoronjobs[]
 
-  @@index([checkItemGroup_id], map: "Jobs_checkItemGroup_id_fkey")
   @@index([customer_id], map: "Jobs_customer_id_fkey")
   @@index([location_id], map: "Jobs_location_id_fkey")
   @@index([requiredDocumentation_id], map: "Jobs_requiredDocumentation_id_fkey")
@@ -97,11 +112,11 @@ model jobs {
 model location {
   location_id  Int      @id @default(autoincrement())
   locationName String
-  coordenites  String?
+  coordinates  String?
   customer_id  Int
   customer     customer @relation(fields: [customer_id], references: [customer_id], map: "Location_customer_id_fkey")
   jobs         jobs[]
-  province    String
+  province     String
 
   @@index([customer_id], map: "Location_customer_id_fkey")
 }
@@ -125,6 +140,7 @@ model operatoronjobs {
 
   @@id([job_id, operator_id])
   @@index([operator_id], map: "OperatorOnJobs_operator_id_fkey")
+  @@index([job_id], map: "Delete All by job_id")
 }
 
 model requierddocumentationitem {
@@ -207,9 +223,9 @@ model users {
   active       Boolean        @default(true)
   operator     operator?
   usersonroles usersonroles[]
-  deleted Boolean @default(false)
-  @@unique(fields: [cuit, password], name: "credentials")
+  deleted      Boolean        @default(false)
 
+  @@unique(fields: [cuit, password], name: "credentials")
 }
 
 model usersonroles {
@@ -236,36 +252,39 @@ model userworkinfo {
 
 model vehicle {
   vehicle_id                  Int                           @id @default(autoincrement())
-  domain                      String
+  domain                      String                        @unique
   brand                       String
   model                       String
   type                        String
   year                        Int
+  internNumber                Int
   chasisNumber                String?
   motorNumber                 String?
   frontPicUrl                 String?
   leftSidePicUrl              String?
   rightSidePicUrl             String?
   backPicUrl                  String?
+  status                      Boolean                       @default(true)
   created_at                  DateTime                      @default(now())
   updated_at                  DateTime?
   jobs                        jobs[]
   vehicleonvehiclerequirement vehicleonvehiclerequirement[]
+
 }
 
 model vehicleonvehiclerequirement {
   vehicle_id            Int
-  vehicleRequiriment_id Int
-  vehiclerequirements   vehiclerequirements @relation(fields: [vehicleRequiriment_id], references: [vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
+  vehicleRequirement_id Int
+  vehiclerequirements   vehiclerequirements @relation(fields: [vehicleRequirement_id], references: [vehicleRequirement_id], map: "VehicleOnVehicleRequirement_vehicleRequirement_id_fkey")
   vehicle               vehicle             @relation(fields: [vehicle_id], references: [vehicle_id], map: "VehicleOnVehicleRequirement_vehicle_id_fkey")
-
-  @@id([vehicle_id, vehicleRequiriment_id])
-  @@index([vehicleRequiriment_id], map: "VehicleOnVehicleRequirement_vehicleRequiriment_id_fkey")
+  current               Boolean             @default(true)
+  @@id([vehicle_id, vehicleRequirement_id])
+  @@index([vehicleRequirement_id], map: "VehicleOnVehicleRequirement_vehicleRequirement_id_fkey")
 }
 
 model vehiclerequirements {
-  vehicleRequiriment_id       Int                           @id @default(autoincrement())
-  requirimentName             String
+  vehicleRequirement_id       Int                           @id @default(autoincrement())
+  requirementName             String
   requirementDescription      String
   urlPdf                      String
   created_at                  DateTime                      @default(now())

@@ -3,14 +3,13 @@ import { PrismaClient , Prisma } from '@prisma/client'
 const prisma = new PrismaClient()
 
 export const put = async (request) =>{
-    console.log('hola')
     let id_find = Number(request.params.slug)
     const formBody = JSON.parse(request.body).values
     console.log(formBody)
     try{
         const vehicleEdit = await prisma.vehicle.update({
             where: {
-                vehicle_id: formBody.internal_id,
+                vehicle_id: formBody.vehicle_id,
             },
             data: {
                 domain : formBody.domain,
@@ -18,7 +17,7 @@ export const put = async (request) =>{
                 model : formBody.model,
                 type : formBody.type,
                 year : Number(formBody.year),
-                // intNumber : formBody.intNumber,
+                internNumber : Number(formBody.internNumber),
                 chasisNumber : formBody.chasisNumber,
                 motorNumber : formBody.motorNumber,
                 // frontPicUrl : formBody.frontPic,
@@ -31,7 +30,7 @@ export const put = async (request) =>{
             body: {
                 vehicleEdit,
                 message: 'Vehiculo Modificado',
-                status: 'OK'
+                status: 'UPDATE'
             }
         }
     }catch(e){

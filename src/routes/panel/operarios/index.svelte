@@ -25,7 +25,7 @@
 
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Button, Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte'; 
 	export let data;
 	export let operators = data.operators;
@@ -53,7 +53,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-walking me-4" />Operarios</h1>
-		<h5>Descripción breve</h5>
+		<h5>Mostrando todos los elementos.</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/usuarios/nuevo">
@@ -62,9 +62,9 @@
 	</div>
 </header>
 
-<main>
-	{#if data.status}
-	<SeguAlert status={data.status} message={data.message} path=operarios/>
+<main>	
+	{#if data.status !== 'OK'}
+		<SeguAlert status={data.status} message={data.message} path=operarios/>
 	{/if}
 	{#if operators.length > 0}
 		<div class="table-responsive">
@@ -91,7 +91,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.user_id}
 								</a>
@@ -99,7 +99,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.cuit}
 								</a>
@@ -107,7 +107,7 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.firstName}
 								</a>
@@ -115,18 +115,22 @@
 							<td>
 								<a
 									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									href="./operarios/{operator.operator_id}"
 								>
 									{operator.users.lastName}
 								</a>
 							</td>
 							<td>
 								<a
-									class="text-decoration-none text-dark"
-									href="./operarios/{operator.users.user_id}"
+									class="text-decoration-none text-dark px-5"
+									href="./operarios/{operator.operator_id}"
 								>
-									Habilitado
-								</a>
+								{#if operator.users.active}
+										<i class="fas fa-check-circle me-2 text-success" />
+									{:else}
+										<i class="fas fa-times-circle me-2 text-danger" />
+									{/if}
+							</a>
 							</td>
 						</tr>
 					{/each}

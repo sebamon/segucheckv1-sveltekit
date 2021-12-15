@@ -50,7 +50,7 @@
 	</Breadcrumb>
 	<div class="col-auto">
 		<h1><i class="fas fa-industry me-4" />Clientes</h1>
-		<h5>Descripción breve</h5>
+		<h5>Mostrando todos los elementos.</h5>
 	</div>
 	<div class="col-2 ms-auto">
 		<Button color="primary" href="/panel/clientes/nuevo">
@@ -61,7 +61,7 @@
 
 <main>
 {#if data.status!=='OK'}
-<SeguAlert status={data.status} message={data.message} path=clientes/>
+	<SeguAlert status={data.status} message={data.message} path=clientes/>
 {/if}
 
 {#if customers.length > 0}
@@ -111,9 +111,8 @@
 							{customer.phone}
 						</a>
 					</td>
-					</tr>
-			{/each}
-					
+				</tr>
+			{/each}		
 			</tbody>
 		</table>
 	</div>

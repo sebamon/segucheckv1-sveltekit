@@ -1,5 +1,4 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import { stringify } from 'querystring';
 
 const prisma = new PrismaClient();
 
@@ -16,6 +15,7 @@ type user = {
 };
 
 export async function get() {
+	console.log('** API USUARIOS - GET (seguro es este?) **')
 	try {
 		const users = await prisma.users.findMany({
 			where: {},
@@ -59,9 +59,9 @@ export async function get() {
 			}
 			return {
 				body: {
+					users: {},
 					status: 'ERROR',
 					message: 'El Usuario no se pudo crear, email ya existente',
-					users: {}
 				}
 			};
 		}
@@ -70,7 +70,9 @@ export async function get() {
 }
 
 export const post = async (request) => {
+	console.log('** API USUARIOS - POST **')
 	const formBody = JSON.parse(request.body).values;
+	console.log('formBody ', formBody)
 	let roles = [];
 	try {
 		if (formBody.roles_assigned['rol1'] === true) {
@@ -82,7 +84,15 @@ export const post = async (request) => {
 		if (formBody.roles_assigned['rol3'] === true) {
 			roles.push({ rol_id: 3, assignedBy: 1, user_id: 1 });
 		}
-		const result = await prisma.users.create({
+		if(!formBody.profilePic){
+			formBody.profilePic = {
+				fileName : 'Error',
+				fileExtension : 'error'
+			}
+		}
+
+		console.log('formBody post usuarios', formBody)
+		const newUser = await prisma.users.create({
 			data: {
 				firstName: formBody.firstName,
 				lastName: formBody.lastName,
@@ -94,11 +104,13 @@ export const post = async (request) => {
 				nationality: formBody.nationality,
 				studyLevel: formBody.studyLevel,
 				dateOfBirth: new Date(formBody.dateOfBirth),
-				profilePic: 'Not Load',
-				password: ''
+				profilePic: formBody.profilePic,
+				password: '1234'
 			}
+
 		});
-		const newUserId = result.user_id;
+	  
+		const newUserId = newUser.user_id;
 		roles.forEach(async (element) => {
 			let rolInsert = await prisma.usersonroles.create({
 				data: {
@@ -110,20 +122,70 @@ export const post = async (request) => {
 			if (element.rol_id == 3) {
 				let operator = await prisma.operator.create({
 					data: {
-						user_id: newUserId
+						user_id: newUserId,
+						useraddress: {
+							create: {
+								countryOfOrigin : '',
+								stateOfOrigin : '',
+								cityOfOrigin : '',
+								zipCodeOfOrigin : '',
+								addressOfOrigin : '',
+								phoneOfOrigin : '',
+								countryOfResidence : '',
+								stateOfResidence : '',
+								cityOfResidence : '',
+								zipCodeOfResidence : '',
+								addressOfResidence : '',
+								phoneOfResidence : '',
+							}
+						},
+						userhealthinfo : {
+							create : {
+								allergies : '',
+								bloodType : '',
+								rh : false,
+							}
+						},
+						userworkinfo : {
+							create : {
+								dischargeDate : new Date(),
+								employementRel : '',
+								hiringMode : '',
+								job : '',
+								unionAgreement : '',
+							}
+						},
+
+
+					},
+					include : {
+						useraddress: true,
+						userworkinfo : true,
+						userhealthinfo :true,
+							
+						
 					}
 				});
 			}
 		});
-		return {
-			body: {
-				status: 'NEW',
-				message: 'Usuario creado con éxito',
-				data: {
-					user_id: result.user_id
+
+		if(newUserId){
+			return {
+				body: {
+					users: newUser,
+					status: 'NEW',
+					message: 'Usuario creado con éxito',
 				}
 			}
-		};
+		}else{
+			return {
+				body: {
+					users: {},
+					status: 'INFO',
+					message: 'No se pudo crear el usuario',
+				}
+			}
+		}
 	} catch (e) {
 		if (e instanceof Prisma.PrismaClientKnownRequestError) {
 			// The .code property can be accessed in a type-safe manner
@@ -137,7 +199,7 @@ export const post = async (request) => {
 				body: {
 					status: 'ERROR',
 					message: 'El usuario no se pudo crear, email ya existente',
-					data: e
+					users: e
 				}
 			};
 		}

@@ -1,34 +1,119 @@
+<script context="module">
+	export async function load({fetch, page}){
+		const response = await fetch(`../../api/roles`)
+		const data = await response.json()
+		console.log('nuevo load data',data)
+		return {
+			props: {
+				data
+			}
+		}
+	}
+</script>
 <script lang="ts">
+	export let data
+	export let rolesList= data.roles
+	// Importar por nombre de componentes: https://sveltestrap.js.org/
+	import { Breadcrumb, BreadcrumbItem, Alert, FormGroup } from 'sveltestrap';
+	import ImgUpload from '$lib/ImgUpload.svelte'
 	import moment from 'moment';
 
-	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-	import type { Color } from 'sveltestrap/src/shared';
-
 	// Arreglo de roles - Esto lo lee de la DB:
-	let rolesList = [
-		{ rol_id: 1, rolDescription: 'Gestor documental' },
-		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
-		{ rol_id: 3, rolDescription: 'Operario' }
-	];
+	// let rolesList = [
+	// 	{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 	{ rol_id: 2, rolDescription: 'Personal de seguridad' },
+	// 	{ rol_id: 3, rolDescription: 'Operario' }
+	// ];
 
 	let firstName: string;
 	let lastName: string;
 	let cuit: string;
 	let email: string;
 	let phone: string;
-	let dateOfBirth: Date = new Date('1989/09/02');
+	let dateOfBirth: Date = new Date('2000/01/01');
 	let degree: string;
 	let gender: string;
 	let nationality: string;
 	let studyLevel: string;
-	let profilePic: string;
+	let profilePic;
 
-	let dateString = moment.utc(dateOfBirth).format('DD/MM/YYYY');
+	// Controles globales
+	let fileName, fileExtension, readyToUpload;
+
+		// export let captureImage
+	export function captureImage(e){
+		console.log('captureImage',e.detail);
+		fileName = e.detail.fileName;
+		fileExtension = e.detail.fileExtension;
+		readyToUpload = e.detail.readyToUpload;
+		profilePic = `${fileName}.${fileExtension}`
+			
+		
+		// setTimeout(()=>{
+		//subir(fileName, fileExtension)
+		// }, 6000);
+		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', profilePic: ' + profilePic);
+	}
+
+	const subir = async(fileName, fileExtension) => {
+
+		console.log('entrando al subir. FileName: ' + fileName + ', FileExtension: ' + fileExtension);
+		try{
+
+			let url = '../../../api/driveSet';
+			let fileData = {
+				fileName: fileName,
+				fileExtension: fileExtension
+			};
+			
+			let response = await fetch(url, {
+				method: 'POST',
+				body: JSON.stringify(fileData)
+			});
+			
+			console.log(response)
+			const data = await response.json()
+			
+			console.log('la imagen subida: ',data)
+			let fileId = {
+				fileId: data.id,
+			};
+			console.log('fileID',fileId)
+			// let urlId = 'http://localhost:3000/api/driveGet';
+			// let responseId = await fetch(url, {
+			// 	method: 'POST',
+			// 	body: JSON.stringify(fileId)
+			// });
+			// const dataId = await responseId.json()
+			// console.log('Mi link para compartir: ' + JSON.parse(dataId));
+			// profilePic = JSON.parse(dataId);
+		}catch(e){
+			console.log(e)
+			return 'Sin Datos'
+		}
+		
+	}
+
+
+	export async function subirImage(e){
+		console.log('subirImagen Nuevo e',e)
+		try{
+			// const quehay =  e
+			// prueba=queha
+		console.log('subirImagen',e)
+		// console.log('quehayy',quehay)
+	}catch(e){
+		console.log('error en subirImage',e)
+	}
+	
+
+	}
+
+	let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let newDate = new Date(new Date(dateString).getTime() - new Date().getTimezoneOffset() * 60000)
 		.toISOString()
 		.split('T')[0];
-	let color: Color;
+
 
 	let roles_assigned = {
 		rol1: false,
@@ -38,6 +123,7 @@
 	export let message = '';
 	export let status = '';
 	export let error = '';
+	export let picturePlaceholder = "/static/img/usr-await.png"; // imagen a mostrar como placeholder para el componente ImgUpload
 	// Arreglo de nivel de estudios:
 	let studyLevelList = [
 		'Primario incompleto',
@@ -59,32 +145,29 @@
 		{ genderLetter: 'X', genderName: 'No binario' }
 	];
 
-	const submitForm = async (): Promise<void> => {
-		//funcion que toma los datos del formulario y lo envia por metodo post
-
-	};
-
 	//Funcion para limpiar el formulario (se ejecuta cuando se registra exitosamente un usuario)
-	const cleanPage = () => {
-		firstName = '';
-		lastName = '';
-		cuit = '';
-		email = '';
-		phone = '';
-		// dateOfBirth = new Date('now()')
-		degree = '';
-		gender = '';
-		nationality = '';
-		studyLevel = '';
+	function cleanPage(){
+		$form.firstName = '';
+		$form.lastName = '';
+		$form.cuit = '';
+		$form.email = '';
+		$form.phone = '';
+		$form.newDate = ''
+		$form.degree = '';
+		$form.gender = '';
+		$form.nationality = '';
+		$form.studyLevel = '';
 		roles_assigned = {
 			rol1: false,
 			rol2: false,
 			rol3: false
 		};
+		profilePic = ''
+		$form.profilePic= ''
 	};
 
 	//Funcion para asignar roles
-	const assign_rol = (id: any) => {
+	function assign_rol(id){
 		if (id.rol_id === 1 || id.rol_id === '1') {
 			roles_assigned['rol1'] = !roles_assigned['rol1'];
 		}
@@ -95,11 +178,13 @@
 			roles_assigned['rol3'] = !roles_assigned['rol3'];
 		}
 	};
+	
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
+
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -133,7 +218,7 @@
 			studyLevel: "",
 			degree: "",
 			profilePic: "",
-			roles_assigned: ""
+			roles_assigned: roles_assigned,
 		},
 		validationSchema: yup.object().shape({
 			cuit: yup
@@ -170,6 +255,7 @@
 				.string()
 				.oneOf(['M', 'F', 'X'], 'El género debe ser únicamente M, F ó X'),
 			newDate: yup.date().required('Debes completar este campo.'),
+			dateOfBirth: yup.date().required('Debes completar este campo.'),
 			nationality: yup
 				.string()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
@@ -187,29 +273,33 @@
 				.matches(
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
-				)
+				),
+			 roles_assigned: yup.object(),
 		}),
 		onSubmit: async(values) => {
-			// Realiza la carga de datos al cliquear Enviar
-			console.log(values)
+			// // Realiza la carga de datos al cliquear Enviar
+			
+			values.roles_assigned = roles_assigned
+			values.profilePic = profilePic
+			console.log('SUBMIT VALUES',values)
+			// console.log(values)
 			try {
-			const submit = await fetch('usuarios', {
-				method: 'POST',
-				body: JSON.stringify({
-					values
-				})
-			});
-			const data = await submit.json();
-			message = data.message;
-			status = data.status;
-
-			if (data.status === 'OK') {
-				cleanPage();
+				const submit = await fetch('usuarios', {
+					method: 'POST',
+					body: JSON.stringify({
+						values
+					})
+				});
+				const data = await submit.json();
+				message = data.message
+				status = data.status
+				//subir(fileName, fileExtension);
+				if (data.status === 'NEW') {
+					cleanPage()
+				}
+			} catch (err) {
+				error = err;
 			}
-			color = data.status === 'OK' ? 'secondary' : 'warning';
-		} catch (err) {
-			error = err;
-		}
 		}
 	});
 </script>
@@ -254,14 +344,14 @@
 	</Alert>
 {/if}
 <!-- Formulario nuevo usuario -->
-<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
+<form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit} >
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
-			<label for="firstname" class="form-label">Nombre</label>
+			<label for="firstName" class="form-label">Nombre</label>
 			<input
 				type="text"
-				id="firstname"
-				name="firstname"
+				id="firstName"
+				name="firstName"
 				class="form-control"
 				placeholder="Juan"
 				aria-label="Nombre"
@@ -461,7 +551,7 @@
 		</div>
 		<div class="col-md-6">
 			<label for="profilePic" class="form-label">Foto de perfil</label>
-			<input class="form-control" type="file" accept="image/*" id="profilePic" />
+			<ImgUpload {picturePlaceholder} on:loadImage={captureImage}/>
 		</div>
 	</div>
 	<div class="row mb-3 g-3">

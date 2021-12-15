@@ -84,7 +84,7 @@
 						</div>
 					</div>
 				</div>
-				<div class="list-group list-group-flush text-center">
+				<nav class="list-group list-group-flush text-center">
 					<a class="list-group-item list-group-item-action list-group-item p-3" href="/panel">
 						<i class="fas fa-home me-4" />Resumen
 					</a>
@@ -130,7 +130,7 @@
 					>
 						<i class="fas fa-industry me-4" />Clientes
 					</a>
-				</div>
+				</nav>
 			</div>
 		{/if}
 

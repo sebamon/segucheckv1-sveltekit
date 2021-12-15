@@ -31,6 +31,7 @@
 							id="emailNewsletter"
 							class="form-control"
 							placeholder="Deja tu correo electrónico"
+							aria-label="Deja tu correo electrónico"
 							required
 						/>
 					</div>
@@ -43,7 +44,7 @@
 		<div class="row justify-content-around">
 			<div class="col-md-4">
 				<h4 class="my-4">
-					<img src="/img/segucheck-logo.svg" height="36" alt="logo" class="me-3" />SeguCheck © 2021
+					<img src="/img/segucheck-logo.svg" height="36" alt="Logo SeguCheck" class="me-3" />SeguCheck © 2021
 				</h4>
 				<p>
 					Desarrollado por
@@ -65,7 +66,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="/descargar" class="text-decoration-none" class:text-secondary={isDarkMode}>
+						<a href="/info/descargar" class="text-decoration-none" class:text-secondary={isDarkMode}>
 							Descargar app
 						</a>
 					</li>
@@ -90,21 +91,21 @@
 			<div class="col-auto">
 				<h5>Nuestras redes sociales</h5>
 				<a
-					href="#!"
+					href="https://www.facebook.com/"
 					class="text-decoration-none fs-1"
 					alt="Facebook"
 					title="Facebook"
 					class:text-secondary={isDarkMode}><i class="fab fa-facebook-square me-1" /></a
 				>
 				<a
-					href="#!"
+					href="https://www.twitter.com/"
 					class="text-decoration-none fs-1"
 					alt="Twitter"
 					title="Twitter"
 					class:text-secondary={isDarkMode}><i class="fab fa-twitter-square me-1" /></a
 				>
 				<a
-					href="#!"
+					href="https://www.linkedin.com/"
 					class="text-decoration-none fs-1"
 					alt="LinkedIn"
 					title="LinkedIn"

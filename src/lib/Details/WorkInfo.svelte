@@ -1,11 +1,26 @@
 <script lang="ts">
+	import moment from 'moment';
 	// Datos laborales a mostrar
-	export let user_id = 1;
-	export let dischargeDate = new Date();
-	export let employementRel = '';
-	export let hiringMode = '';
-	export let unionAgreement = '';
-	export let job = '';
+	// export let user_id = 1;
+	// export let dischargeDate = new Date();
+	// export let employementRel = '';
+	// export let hiringMode = '';
+	// export let unionAgreement = '';
+	// export let job = '';
+	
+	export let user_id
+export let dischargeDate
+export let employementRel
+export let hiringMode
+export let unionAgreement
+export let job
+
+	export let dateString = moment.utc(dischargeDate).format('YYYY/MM/DD');
+
+	let convertedDischargeDate = new Date(new Date(dateString).getTime()- new Date().getTimezoneOffset())
+	.toISOString()
+	.split('T')[0];
+
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
@@ -21,7 +36,7 @@
 	const { form, errors, isValid, isSubmitting, handleChange, handleSubmit } =
 		createForm({
 			initialValues: {
-				dischargeDate: dischargeDate,
+				dischargeDate: convertedDischargeDate,
 				employementRel: employementRel,
 				hiringMode: hiringMode,
 				unionAgreement: unionAgreement,
@@ -52,7 +67,7 @@
 			}),
 			onSubmit: (values) => {
 				// Realiza la carga de datos al cliquear Enviar
-				alert(JSON.stringify(values));
+				// alert(JSON.stringify(values));
 			}
 		});
 	// Por defecto, el componente se llama como solo lectura:
@@ -81,7 +96,7 @@
 					class="form-control"
 					placeholder="21/08/2019"
 					aria-label="Fecha de alta"
-					value={dischargeDate.toLocaleDateString()}
+					bind:value={$form.dischargeDate}
 					readonly={isReadOnly}
 				/>
 			{:else}

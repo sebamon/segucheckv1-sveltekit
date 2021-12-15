@@ -1,22 +1,23 @@
 <script lang="ts">
 	import { format } from 'path/posix';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	// import { createEventDispatcher, validate_store } from 'svelte/internal';
-	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher();
+	// import { createEventDispatcher } from 'svelte';
+	// const dispatch = createEventDispatcher();
 
-	function submit() {
-		dispatch('showAlert', {
-			status: status,
-			message: message
-		});
-	}
+	// function submit() {
+	// 	dispatch('showAlert', {
+	// 		status: status,
+	// 		message: message
+	// 	});
+	// }
 
-	function showAlert() {
-		dispatch('showAlert', {
-			status: status,
-			message: message
-		});
-	}
+	// function showAlert() {
+	// 	dispatch('showAlert', {
+	// 		status: status,
+	// 		message: message
+	// 	});
+	// }
 	// Datos del usuario a mostrar
 	export let vehicle_id: number;
 	export let domain = '';
@@ -24,16 +25,14 @@
 	export let brand: string;
 	export let model: string;
 	export let year: number;
-	export let internal_id = vehicle_id;
+	export let internNumber = vehicle_id;
 	export let chasisNumber = 0;
 	export let motorNumber = 0;
 
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = true;
 
-	let error: string;
 	let message: string;
-	let color;
 	let status;
 
 	// Arreglo de tipo de vehículos:
@@ -92,53 +91,6 @@
 		'Rodados Cargas Peligrosas - Tanque Cargas Peligrosas',
 		'Rodados Cargas Peligrosas - Tractor Cargas Peligrosas'
 	];
-	// const submitForm = async (): Promise<void> => {
-	// 		const submit = await fetch(`editar`,{
-	// 		method : 'PUT',
-	// 		body: JSON.stringify({
-	// 			domain,
-	// 			brand,
-	// 			model,
-	// 			type,
-	// 			year,
-	// 			internal_id,
-	// 			chasisNumber,
-	// 			motorNumber
-	// 		})
-	// 	})
-
-	// 	console.log('submit',submit)
-	// 		const data = await submit.json()
-	// 		// console.log('data',data)
-	// 		message = data.message
-	// 		error = data.error
-	// 		if(data.status==='OK') {
-	// 				color='success'
-	// 			}
-	// 			if(data.status==='ERROR') color='danger'
-	// 	// Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
-	// 	const formBody = JSON.stringify({
-	// 		domain,
-	// 		brand,
-	// 		model,
-	// 		type,
-	// 		year,
-	// 		internal_id,
-	// 		chasisNumber,
-	// 		motorNumber
-
-	// 	});
-
-	// 			if(data.status===200)
-	// 			{
-	// 				console.log('message', message)
-	// 			}
-	// 			dispatch('showAlert', {
-	// 		status:status,
-	// 		message:message
-	// 	})
-	// };
-
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
@@ -153,7 +105,7 @@
 			model: model,
 			type: type,
 			year: year,
-			internal_id: internal_id,
+			internNumber: internNumber,
 			chasisNumber: chasisNumber,
 			motorNumber: motorNumber
 			// frontPic: frontPic,
@@ -185,8 +137,8 @@
 				.max(9999, 'El año es demasiado alto.')
 				.integer('El número debe ser entero.')
 				.required('Debes completar este campo.'),
-			internal_id: yup
-				.string()
+			internNumber: yup
+				.number()
 				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
 				.required('Debes completar este campo.'),
 			chasisNumber: yup
@@ -208,39 +160,15 @@
 					values
 				})
 			});
-
-			console.log('submit', submit);
 			const data = await submit.json();
 			message = data.message;
-			error = data.error;
-			if (data.status === 'OK') {
-				color = 'success';
-			}
-			if (data.status === 'ERROR') color = 'danger';
-			// // Protip: Pasar domain, chasisNumber y motorNumber a uppercase!
-			// const formBody = JSON.stringify({
-			// 	domain,
-			// 	brand,
-			// 	model,
-			// 	type,
-			// 	year,
-			// 	internal_id,
-			// 	chasisNumber,
-			// 	motorNumber
-
-			// });
-
-			if (data.status === 200) {
-				console.log('message', message);
-			}
-			dispatch('showAlert', {
-				status: status,
-				message: message
-			});
+			status = data.status		
 		}
 	});
 </script>
-
+{#if status}
+	<SeguAlert {message} {status} path='vehiculos' />
+{/if}
 <form name="formVehicleDetails" id="formVehicleDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="row mb-3 g-3">
 		<div class="col-md-6">
@@ -264,16 +192,16 @@
 		<div class="col-md-6">
 			<label for="type" class="form-label">Tipo de vehículo</label>
 			{#if isReadOnly}
-			<input
-				type="text"
-				id="type"
-				name="type"
-				class="form-control"
-				placeholder="Pickup"
-				aria-label="Tipo de vehículo"
-				bind:value={$form.domain}
-				readonly
-			/>
+				<input
+					type="text"
+					id="type"
+					name="type"
+					class="form-control"
+					placeholder="Pickup"
+					aria-label="Tipo de vehículo"
+					bind:value={$form.type}
+					readonly
+				/>
 			{:else}
 				<select
 					id="type"
@@ -359,21 +287,21 @@
 			{/if}
 		</div>
 		<div class="col-md-6">
-			<label for="internal_id" class="form-label">Número interno</label>
+			<label for="internNumber" class="form-label">Número interno</label>
 			<input
 				type="text"
-				id="internal_id"
-				name="internal_id"
+				id="internNumber"
+				name="internNumber"
 				class="form-control"
 				placeholder="001234"
 				aria-label="Número interno"
-				bind:value={$form.internal_id}
+				bind:value={$form.internNumber}
 				on:blur={handleChange}
-				class:invalid={$errors.internal_id}
+				class:invalid={$errors.internNumber}
 				readonly={isReadOnly}
 			/>
-			{#if $errors.internal_id}
-				<small class="form-error">{$errors.internal_id}</small>
+			{#if $errors.internNumber}
+				<small class="form-error">{$errors.internNumber}</small>
 			{/if}
 		</div>
 	</div>

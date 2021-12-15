@@ -1,10 +1,10 @@
 <script lang="ts">
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Modal } from 'sveltestrap';
+	import { Image, Modal } from 'sveltestrap';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	import { onMount } from 'svelte';
 	import moment from 'moment';
-	// export let useronroles
-	export const userDetails: object = {};
+	// export const userDetails: object = {};
 	// Datos del usuario a mostrar
 	export let user_id: number;
 	export let cuit: number;
@@ -18,7 +18,9 @@
 	export let studyLevel: string;
 	export let degree: string;
 	export let profilePic: string;
-	let imagePic = profilePic;
+	export let usersonroles = []
+	
+	
 	export let dateString = moment.utc(dateOfBirth).format('YYYY/MM/DD');
 	let convertedDateOfBirth = new Date(
 		new Date(dateString).getTime() - new Date().getTimezoneOffset()
@@ -26,29 +28,57 @@
 		.toISOString()
 		.split('T')[0];
 	// export let usersonroles = []
+	
+	
+	export let data
+	// console.log('srr data', JSON.parse(data.roles))
+	// export let usersonroles = []
+	let message: string;
+	let error: string;
+	let status = 'OK';
+	// export let rolesList = data 
+	// console.log('useronroles',usersonroles)
+	// console.log('data roles', rolesList)
 
-	let message;
-	let error;
-	let color;
 	// Arreglo de roles - Esto lo lee de la DB:
 	let rolesList = [
 		{ rol_id: 1, rolDescription: 'Gestor documental' },
 		{ rol_id: 2, rolDescription: 'Personal de seguridad' },
 		{ rol_id: 3, rolDescription: 'Operario' },
-		{ rol_id: 4, rolDescription: 'Operario' }
 	];
 
-	onMount(async () => {
-		// console.log('hola')
-		let url = '/api/roles';
-		// console.log(url)
-		fetch(url)
-			.then((response) => response.json())
-			.then((data) => {
-				const rolesList = data.roles;
-				// console.log(rolesList)
-			});
-	});
+	let roles_assigned = {
+		rol1: false,
+		rol2: false,
+		rol3: false
+	};
+
+	function assign_rol(id){
+		if (id.rol_id === 1 || id.rol_id === '1') {
+			roles_assigned['rol1'] = !roles_assigned['rol1'];
+		}
+		if (id.rol_id === 2 || id.rol_id === '2') {
+			roles_assigned['rol2'] = !roles_assigned['rol2'];
+		}
+		if (id.rol_id === 3 || id.rol_id === '3') {
+			roles_assigned['rol3'] = !roles_assigned['rol3'];
+		}
+	};
+
+	onMount(() => {
+		// console.log('holaMount',usersonroles)
+		usersonroles.forEach(rol => {
+			if(rol.rol_id==1){
+				roles_assigned['rol1'] = true
+			}
+			if(rol.rol_id==2){
+				roles_assigned['rol2'] = true
+			}
+			if(rol.rol_id==3){
+				roles_assigned['rol3'] = true
+			}
+		})
+	})
 
 	// // console.log('rolesList',{rolesList})
 	// let rolesList=
@@ -68,9 +98,9 @@
 	// Arreglo de géneros:
 	let genderText: string;
 	if (gender == 'M') {
-		genderText = 'Varón';
+		genderText = 'Masculino';
 	} else if (gender == 'F') {
-		genderText = 'Mujer';
+		genderText = 'Femenino';
 	} else {
 		genderText = gender;
 	}
@@ -82,36 +112,9 @@
 	// Por defecto, el componente se llama como solo lectura:
 	export let isReadOnly = false;
 
-	// const submitForm = async (): Promise<void> => {
-	// 	const submit = await fetch(`editar`, {
-	// 		method: 'PUT',
-	// 		body: JSON.stringify({
-	// 			firstName,
-	// 			lastName,
-	// 			cuit,
-	// 			email,
-	// 			phone,
-	// 			dateOfBirth,
-	// 			degree,
-	// 			gender,
-	// 			nationality,
-	// 			studyLevel
-	// 			// roles_assigned,
-	// 		})
-	// 	});
-	// 	const data = await submit.json();
-	// 	message = data.message;
-	// 	error = data.error;
-	// 	if (data.status === 'OK') {
-	// 		color = 'success';
-	// 	}
-	// 	if (data.status === 'ERROR') color = 'danger';
-
-	// 	if (data.status === 200) {
-	// 		console.log('message', message);
-	// 	}
-	// };
-
+	
+	let imgPath = isReadOnly ? '../../../static/img/profile-pics/' : '../../../static/img/profile-pics/'
+	let imagePic=imgPath+profilePic
 	// Abrir modal para ver foto:
 	let modalProfile = false;
 	const toggle = () => (modalProfile = !modalProfile);
@@ -120,8 +123,7 @@
 	import { createForm } from 'svelte-forms-lib';
 	import * as yup from 'yup';
 	import es from 'yup-es';
-	import { page } from '$app/stores';
-	import { pathToFileURL } from 'url';
+
 	yup.setLocale(es);
 	/* regexName: Cualquier nombre con tildes y caracteres latinos (no japonés, hebreo, árabe, etc.).
 	Permite espacios, comas puntos y guiones para nombres complejos. Excepto números y otros símbolos
@@ -142,14 +144,14 @@
 			studyLevel: studyLevel,
 			degree: degree,
 			profilePic: profilePic,
-			convertedDateOfBirth: convertedDateOfBirth
+			convertedDateOfBirth: convertedDateOfBirth,
+			roles : roles_assigned,
 		},
-		validationSchema: yup.object().shape({
-			cuit: yup
+		validationSchema: yup.object().shape({			cuit: yup
 				.string()
 				.required('Debes completar este campo.')
 				.min(3, 'Este campo debe ser de al menos ${min} caracteres.')
-				.max(12, 'Este campo debe ser de hasta ${max} caracteres.'),
+				.max(11, 'Este campo debe ser de hasta ${max} caracteres.'),
 			firstName: yup
 				.string()
 				.required('Debes completar este campo.')
@@ -201,34 +203,42 @@
 					regexName,
 					'Este campo solo permite letras y espacios, no números ni otros símbolos.'
 				)
-				.max(190, 'Este campo debe ser de hasta ${max} caracteres.')
+				.max(190, 'Este campo debe ser de hasta ${max} caracteres.'),
+			roles: yup
+				.mixed()
 		}),
 		onSubmit: async (values) => {
-			console.log('values', values);
-
 			const submit = await fetch(`editar`, {
 				method: 'PUT',
 				body: JSON.stringify({
 					values
 				})
 			});
-			// console.log('submit',submit)
 			const data = await submit.json();
-			console.log(data);
-			// console.log('data',data)
-
 			message = data.message;
 			error = data.error;
-			if (data.status === 'OK') {
-				color = 'success';
-			}
-			if (data.status === 'ERROR') color = 'danger';
-			if (data.status === 200) {
-				console.log('message', message);
-			}
+			status = data.status;
+			// status==='NEW' ? cleanPage() : null
 		}
 	});
+	function cleanPage() {
+		user_id = null;
+		cuit = null;
+		firstName = '';
+		lastName = '';
+		email = '';
+		phone = '';
+		gender = '';
+		dateOfBirth = '';
+		nationality = '';
+		studyLevel = '';
+		degree = '';
+		profilePic = '';
+	}
 </script>
+{#if status !== 'OK'}
+	<SeguAlert {status} {message} path="usuarios" />
+{/if}
 
 <form name="formUserDetails" id="formUserDetails" on:submit|preventDefault={handleSubmit}>
 	<div class="hstack gap-3">
@@ -244,14 +254,14 @@
 	<div class="row mb-3 g-3 align-items-end">
 		<div class="col-md-6">
 			<img
-				src={profilePic}
+				src={imgPath+profilePic}
 				class="img-fluid img-thumbnail m-2"
 				alt="Foto de perfil"
 				style="max-width:150px"
 				on:click={toggle}
 			/>
 			<Modal isOpen={modalProfile} {toggle} body header={firstName + ' ' + lastName}>
-				<img src={profilePic} class="img-fluid" alt="Foto de perfil" on:click={toggle} />
+				<img src={imgPath+profilePic} class="img-fluid" alt="Foto de perfil" on:click={toggle} />
 			</Modal>
 		</div>
 		{#if !isReadOnly}
@@ -506,10 +516,16 @@
 					<!-- Revisar cómo comprobar cuáles roles tiene -->
 					<input
 						type="checkbox"
-						id="r2ol{rol_id}"
+						id="rol{rol_id}"
 						name="roles"
+						
 						class="form-check-input"
 						role="switch"
+						bind:value={rol_id}	
+						checked={roles_assigned['rol'+rol_id]}
+						readonly={isReadOnly}
+						on:click={assign_rol({ rol_id })}
+						
 					/>
 					<label class="form-check-label" for="rol{rol_id}">{rolDescription}</label>
 				</div>

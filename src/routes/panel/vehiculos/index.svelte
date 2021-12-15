@@ -3,12 +3,6 @@
 		try{
 
 			const response = await fetch('./vehiculos/vehiculos')
-			// const response = await fetch('./vehiculos/vehiculos',{
-			// 	method : "GET",
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-			// 	},
-			// })
 			const data = await response.json()
 
 			return {
@@ -30,14 +24,7 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
-import { string } from 'yup/lib/locale';
-	// type vehicle = {
-	// 	vehicle_id : number,
-	// 	domain : string,
-	// 	type : string,
-	// 	brand : string,
-	// 	model : string,
-	// }
+
 	export let data
 	export let vehicles = data.vehicles
 </script>
@@ -56,7 +43,7 @@ import { string } from 'yup/lib/locale';
 	<div class="row">
 		<div class="col-auto">
 			<h1><i class="fas fa-car me-4" />Vehículos</h1>
-			<h5>Descripción breve</h5>
+			<h5>Mostrando todos los elementos.</h5>
 		</div>
 		<div class="col-2 ms-auto">
 			<Button color="primary" href="/panel/vehiculos/nuevo">
@@ -67,7 +54,7 @@ import { string } from 'yup/lib/locale';
 </header>
 <main>
 	{#if data.status!=='OK'}
-	<SeguAlert status={data.status} message={data.message} path=vehiculos/>
+		<SeguAlert status={data.status} message={data.message} path=vehiculos/>
 	{/if}
 	{#if vehicles.length > 0}
 	<div class="table-responsive">
@@ -111,7 +98,15 @@ import { string } from 'yup/lib/locale';
 									{vehicle.model}
 								</a>
 							</td>
-							<td>text</td>
+							<td>
+								<a class="text-decoration-none text-dark text-center" href="./vehiculos/{vehicle.vehicle_id}">
+									{#if vehicle.status }
+										<i class="fas fa-check-circle me-2 text-success" />
+									{:else}
+										<i class="fas fa-times-circle me-2 text-danger" />
+									{/if}
+								</a>
+							</td>
 						</tr>
 				{/each}
 			</tbody>

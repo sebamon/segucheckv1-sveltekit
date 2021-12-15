@@ -1,3 +1,34 @@
+<script context="module">
+	export async function load({page,fetch}){
+		
+		const response = await fetch(`./${page.params.slug}/detalle`)
+
+		const data = await response.json()
+
+		// let data = await Promise.all([
+		// 	fetch(`http://localhost:3000/panel/operarios/${page.params.slug}/detalle`),
+		// 	// fetch(`http://localhost:3000/panel/locaciones/locaciones`),
+		// 	// fetch(`http://localhost:3000/panel/vehiculos/vehiculos`),
+		// ])
+		// .then(async(result) => {
+		// 	const userData = await result[0].json()
+		// 	// const locationList = await result[1].json()
+		// 	// const vehiclesList = await result[2].json()
+		// 	console.log('La user data',userData)
+		// 	// console.log('La locacion',locationList)
+		// 	return {userData}
+		// 	// return {userData , locationList, vehiclesList}
+		// })
+
+
+		return {
+			props: {
+				data
+			}
+		}
+	}
+</script>
+
 <script lang="ts">
 	// Importar secciones de detalles:
 	import UserDetails from '$lib/Details/UserDetails.svelte';
@@ -9,25 +40,32 @@
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, TabContent, TabPane } from 'sveltestrap';
 
-	// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
-	let userDetails = {
-		user_id: 1234,
-		cuit: 20301001008,
-		firstName: 'Juan',
-		lastName: 'Perez',
-		email: 'juan.perez@ejemplo.com',
-		phone: '2993334444',
-		gender: 'M',
-		dateOfBirth: new Date('1980/01/12'),
-		nationality: 'Argentina',
-		studyLevel: 'Universitario completo',
-		degree: 'Licenciado',
-		profilePic: 'https://avatars.dicebear.com/api/micah/1234.svg',
-		roles: [
-			{ rol_id: 1, rolDescription: 'Gestor documental' },
-			{ rol_id: 2, rolDescription: 'Personal de seguridad' }
-		]
-	};
+	
+	export let data
+
+	console.log('sueperererer workinfo', data)
+	export let userDetails = data.workInfo.users
+	
+		
+		// Info usuario placeholder (esto lo recibe del servidor en estructura similar):
+	// 	let userDetails = {
+	// 	user_id: 1234,
+	// 	cuit: 20301001008,
+	// 	firstName: 'Juan',
+	// 	lastName: 'Perez',
+	// 	email: 'juan.perez@ejemplo.com',
+	// 	phone: '2993334444',
+	// 	gender: 'M',
+	// 	dateOfBirth: new Date('1980/01/12'),
+	// 	nationality: 'Argentina',
+	// 	studyLevel: 'Universitario completo',
+	// 	degree: 'Licenciado',
+	// 	profilePic: 'https://avatars.dicebear.com/api/micah/1234.svg',
+	// 	roles: [
+	// 		{ rol_id: 1, rolDescription: 'Gestor documental' },
+	// 		{ rol_id: 2, rolDescription: 'Personal de seguridad' }
+	// 	]
+	// };
 	let userDocumentation = [
 		{
 			documentation_id: 10,
@@ -48,14 +86,18 @@
 			expirated_at: new Date('2021-09-31')
 		}
 	];
-	let userWorkInfo = {
+	export let userWorkInfo = data.workInfo.userworkinfo ||
+	// let userWorkInfo = 
+	{
 		dischargeDate: new Date('2019-08-21'),
 		employementRel: 'Relación de dependencia',
 		hiringMode: 'A tiempo completo',
 		unionAgreement: 'Federación Sindicatos Unidos Petroleros',
 		job: 'Técnico Vertical'
 	};
-	let userAddress = {
+	export let userAddress = data.workInfo.useraddress || 
+	// let userAddress = {
+		{
 		user_id: 1234,
 		countryOfOrigin: 'Estados Unidos',
 		stateOfOrigin: 'Texas',
@@ -70,7 +112,9 @@
 		addressOfResidence: 'Roca 893',
 		phoneOfResidence: '299-412-3469'
 	};
-	let userHealthInfo = {
+	export let userHealthInfo = data.workInfo.userhealthinfo ||
+	// let userHealthInfo = {}
+	{
 		bloodType: 'A',
 		rh: true,
 		allergies: 'Ninguno'
@@ -90,7 +134,7 @@
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/operarios/{userDetails.user_id}">{userDetails.user_id}</a>
+			<a href="/panel/operarios/{data.workInfo.operator_id}/">{data.workInfo.operator_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>

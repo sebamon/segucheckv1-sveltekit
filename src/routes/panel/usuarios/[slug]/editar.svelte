@@ -1,13 +1,6 @@
 <script context="module">
 	export async function load({ fetch, page }) {
 		const response = await fetch(`./detalle`);
-		// const response = await fetch(`./detalle`, {
-		// 	method: "GET",
-		// 	headers: {
-		// 		'Content-Type': 'application/json',
-		// 	},
-		// 	body: JSON.stringify(page.params.slug),
-		// })
 		const data = await response.json();
 		return {
 			props: {
@@ -19,15 +12,12 @@
 
 <script lang="ts">
 	import UserDetails from '$lib/Details/UserDetails.svelte';
-	import { dataset_dev } from 'svelte/internal';
+	import SeguAlert from '$lib/SeguAlert.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
-	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-
+	import { Breadcrumb, BreadcrumbItem} from 'sveltestrap';
 	export let data;
 	export let userDetails = data.userDetails;
-	let color = 'success';
-
 	// Configurar componente UserDetails para editar
 	let isReadOnly = false;
 </script>
@@ -35,7 +25,6 @@
 <svelte:head>
 	<title>Editar usuario: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
 <header class="row">
 	<Breadcrumb>
@@ -57,5 +46,6 @@
 </header>
 
 <main>
+
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

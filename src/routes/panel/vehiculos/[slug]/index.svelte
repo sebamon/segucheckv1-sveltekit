@@ -1,27 +1,28 @@
 <script context="module">
 	export async function load({ fetch, page }) {
-		const id_find = page.params.slug;
-		const response = await fetch(`./${page.params.slug}/detalle`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json'
-			},
-			request: page.params.slug
-		});
-		const data = await response.json();
-		console.log('response', data);
-		return {
-			props: {
-				data
+		try{
+			const response = await fetch(`./${page.params.slug}/detalle`);
+			const data = await response.json();
+			console.log('response', data);
+			
+			return {
+				props: {
+					data
+				}
+			};
+		}catch(e){
+			console.log('catch error: ',e)
+			return {
+				props:{}
 			}
-		};
+		}
 	}
 </script>
 
 <script lang="ts">
 	// Importar secciones de detalles:
 	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
-	import DocDetails from '$lib/Details/DocDetails.svelte';
+	import VehicleDocDetails from '$lib/Details/VehicleDocDetails.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import {
@@ -57,11 +58,9 @@
 	// };
 	export let data;
 	// export const message = data.message
-	export let status = data.status;
-
-	export let vehicleDetails = data.vehicleDetails;
+		export let vehicleDetails = data.vehicleDetails;
 	export let isReadOnly = true;
-	let vehicleDocumentation = [
+	let vehicleDocumentation = vehicleDetails.vehicleonvehiclerequirement || [
 		{
 			documentation_id: 20,
 			documentType: { documentType_id: 5, description: 'Verificación Técnica Vehicular' },
@@ -79,7 +78,8 @@
 			created_at: new Date('2021-08-31'),
 			updated_at: new Date('2021-08-31'),
 			expirated_at: new Date('2021-09-31')
-		}
+		},
+
 	];
 
 	// Fotos del vehículo para carrusel:
@@ -99,6 +99,7 @@
 		status = 'Hola';
 		console.log('event', event);
 	}
+	
 </script>
 
 <svelte:head>
@@ -120,8 +121,8 @@
 		<Image
 			fluid
 			thumbnail
-			src={vehicleDetails.frontPicUrl}
-			alt="Foto de perfil"
+			src={'/static/img/vehicle-pics/'+vehicleDetails.frontPicUrl}
+			alt="Foto del vehículo"
 			class="m-2"
 			style="max-width:150px"
 		/>
@@ -149,7 +150,7 @@
 				<div class="ms-auto">
 					<a
 						class="btn btn-primary"
-						href="/panel/vehiculos/{vehicleDetails.user_id}/habilitaciones"
+						href="/panel/vehiculos/{vehicleDetails.vehicle_id}/habilitaciones"
 					>
 						<i class="fas fa-plus me-2" />Nuevo
 					</a>
@@ -163,12 +164,13 @@
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-						<DocDetails {...thisDoc} />
+					
+						<VehicleDocDetails {thisDoc} />
 					{/each}
 				</div>
 			{/if}
 		</TabPane>
-		<TabPane tabId="vehiclePictures" tab="Fotos">
+		<!-- <TabPane tabId="vehiclePictures" tab="Fotos">
 			<h2 class="my-4">Fotos</h2>
 			<div class="d-grid gap-2 col-6 mx-auto">
 				<Carousel dark {items} bind:activeIndex>
@@ -184,6 +186,6 @@
 					<CarouselControl direction="next" bind:activeIndex {items} />
 				</Carousel>
 			</div>
-		</TabPane>
+		</TabPane> -->
 	</TabContent>
 </main>

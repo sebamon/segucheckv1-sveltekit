@@ -1,5 +1,6 @@
 .DS_Store
 node_modules
+android
 /build
 /.svelte-kit
 /package
@@ -7,3 +8,4 @@ node_modules
 /src/loshooks.ts
 /src/loshooks3.ts
 .env
+/static

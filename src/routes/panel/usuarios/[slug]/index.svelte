@@ -1,8 +1,10 @@
 <script context="module">
-	export async function load({ page, fetch }) {
+	export async function load({ fetch , page }) {
 		try {
+			// const response = await fetch(`./${page.params.slug}/detalle`);
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();
+			console.log('** SSR LOAD Usuarios slug**', data);
 			return {
 				props: {
 					data
@@ -18,12 +20,13 @@
 </script>
 
 <script lang="ts">
-	import UserDetails from '$lib/Details/UserDetails.svelte';
+	import UserDetails from '$lib/Details/UserDetails.svelte'
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 
 	export let data;
-	// console.log(data);
+	// let data
+	console.log('data en usuario slug', data);
 	export let userDetails = data.userDetails;
 	export let isReadOnly = true;
 	// let f = new Date(data.userDetails.dateOfBirth)
@@ -37,6 +40,7 @@
 		<title>Usuario: Inexistente - SeguCheck</title>
 	{/if}
 </svelte:head>
+
 <header>
 	<Breadcrumb>
 		<BreadcrumbItem>
@@ -55,10 +59,6 @@
 </header>
 
 <main>
-	<p>
-		{isReadOnly}
-		{data.message}
-	</p>
 	<!-- Formulario detalles usuario -->
 	<UserDetails {...userDetails} {isReadOnly} />
 </main>

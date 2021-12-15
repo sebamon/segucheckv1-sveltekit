@@ -79,7 +79,7 @@
 				.required('Debes completar este campo.'),
 		}),
 		onSubmit: async(values) => {
-			alert(JSON.stringify(values))
+			
 			try {
 				const submit = await fetch('clientes',{
 					method : 'POST',
@@ -91,13 +91,11 @@
 				message = data.message
 				status=data.status
 
-				if(data.status===200){
-					businessName= ''
-					contact= ''
-					phone= ''
-					email= ''
-				}
-				color = status === 'OK' ? 'success' : 'danger';
+				$form.businessName = ''
+				$form.contact = ''
+				$form.phone = ''
+				$form.email = ''
+				
 			} catch (error) {
 				
 			}

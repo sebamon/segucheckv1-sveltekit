@@ -21,8 +21,9 @@
 	import { emitWarning } from 'process';
 	import type { subscribe } from 'svelte/internal';
 	export let message = '';
+	/* Oculto sin usar (error TS):
 	export let status = '';
-	export let error = '';
+	export let error = ''; */
 
 	// Validación de formularios: https://svelte-forms-lib-sapper-docs.vercel.app/
 	import { createForm } from 'svelte-forms-lib';
@@ -47,7 +48,7 @@
 		}),
 		onSubmit: async (values) => {
 			// Realiza la carga de datos al cliquear Enviar
-			alert(JSON.stringify(values));
+			// alert(JSON.stringify(values));
 			const response = await fetch('./auth/login', {
 				method: 'POST',
 				body: JSON.stringify({
@@ -125,7 +126,7 @@
 				</button>
 				<a class="small" href="/recuperar"> ¿Olvidó su contraseña? </a>
 			</div>
-			{JSON.stringify(message)}
+			<!-- {JSON.stringify(message)} -->
 		</form>
 	</ModalBody>
 	<ModalFooter>

@@ -17,7 +17,7 @@
 
 <script lang="ts">
 	import WorkInfo from '$lib/Details/WorkInfo.svelte';
-	import { dataset_dev } from 'svelte/internal';
+
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
@@ -50,7 +50,6 @@
 		>Editar datos laborales: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title
 	>
 </svelte:head>
-
 <!-- Encabezado -->
 <header>
 	<Breadcrumb>
@@ -61,7 +60,7 @@
 			<a href="/panel/operarios">Operarios</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/{userWorkInfo.user_id}">{userWorkInfo.user_id}</a>
+			<a href="/panel/operarios/{userWorkInfo.user_id}">{userWorkInfo.user_id}</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem active>Laborales</BreadcrumbItem>
 	</Breadcrumb>
