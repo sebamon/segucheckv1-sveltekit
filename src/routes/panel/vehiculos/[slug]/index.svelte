@@ -1,6 +1,6 @@
 <script context="module">
 	export async function load({ fetch, page }) {
-		try {
+		// try {
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();
 			console.log('response', data);
@@ -9,13 +9,13 @@
 				props: {
 					data
 				}
-			};
-		} catch (e) {
-			console.log('catch error: ', e);
-			return {
-				props: {}
-			};
-		}
+			}
+		// } catch (e) {
+		// 	console.log('catch error: ', e);
+		// 	return {
+		// 		props: {}
+		// 	};
+		// }
 	}
 </script>
 

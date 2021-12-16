@@ -142,10 +142,7 @@
 	<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 	<p class="lead">Detalles del operario</p>
 </header>
-<!-- {JSON.stringify(qualification)} -->
-<!-- {#each qualification as q}
-	{JSON.stringify(q.documentation)}
-{/each} -->
+
 <main>
 	<TabContent>
 		<TabPane tabId="userDetails" tab="Datos básicos" active>
@@ -168,7 +165,6 @@
 			{:else}
 				<div class="row g-3">
 					{#each qualification as thisDoc}
-					<!-- {JSON.stringify(thisDoc)} -->
 						<DocDetails {...thisDoc.documentation} />
 					{/each}
 				</div>

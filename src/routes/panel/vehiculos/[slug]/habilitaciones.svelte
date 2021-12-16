@@ -12,22 +12,17 @@
 	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
 	import VehicleDocDetails from '$lib/Details/VehicleDocDetails.svelte';
 
+	import SeguAlert from '$lib/SeguAlert.svelte';
 	import PdfUpload from '$lib/PdfUpload.svelte';
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
+import { stringify } from 'querystring';
 
 	/* export let data;
 	export let userDetails=data.userDetails
 	let color = 'success' */
 
-	// Datos placeholder:
-	// let vehicleDetails = {
-	// 	vehicle_id: 1,
-	// 	domain: 'Juan',
-	// 	model: 'Perez',
-	// 	brand: 'Perez'
-	// };
 	let documentTypeList = [
 		{ documentType_id: 1, description: 'Seguro del Automotor' },
 		{ documentType_id: 2, description: 'Verificación Técnica Vehicular' },
@@ -55,6 +50,7 @@
 		console.log('file: ' + fileName + ', fileExt: ' + fileExtension + ', document: ' + document);
 	}
 
+	let error, message, status='';
 	const handleSubmit = async () => {
 		// // Realiza la carga de datos al cliquear Enviar
 		let values = {
@@ -62,19 +58,19 @@
 			document: '',
 			expirationDate: ''
 		};
-		let error, message, status;
 
 		values.documentType = JSON.stringify(documentTypeList[documentTypeSelected - 1]);
 		values.document = document;
 		values.expirationDate = expirationDate;
+		values
 		try {
-			const submit = await fetch('../vehiculos', {
+			const submit = await fetch('habilitaciones', {
 				method: 'POST',
 				body: JSON.stringify({
 					values
 				})
 			});
-			console.log('Antes de mandar: ', JSON.stringify(values));
+			
 			const data = await submit.json();
 			message = data.message;
 			status = data.status;
@@ -107,6 +103,9 @@
 	<p class="lead">Indique los detalles a continuación.</p>
 </header>
 
+{#if status!==''}
+<SeguAlert message={message} status={status} path=vehiculos />
+{/if}
 <main>
 	<form name="formUserDoc" id="formUserDoc" on:submit|preventDefault={handleSubmit}>
 		<div class="row mb-3 g-3">
@@ -121,6 +120,7 @@
 				>
 					<option disabled selected>Elija una opción...</option>
 					{#each documentTypeList as documentType}
+				
 						<option value={documentType.documentType_id}>
 							{documentType.description}
 						</option>
@@ -130,8 +130,9 @@
 			<div class="col-md-6">
 				<label for="expirated_at" class="form-label">Vencimiento</label>
 				<input
+				
+					id="expirated_at"	
 					type="date"
-					id="expirated_at"
 					name="expirated_at"
 					class="form-control"
 					aria-label="Vencimiento"

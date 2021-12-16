@@ -25,7 +25,7 @@ import moment from 'moment';
 	let updated_atString =  moment(updated_at).format("DD/MM/YYYY")
 	export let urlPdf
 
-	urlPdf = '../../../static/docs/temp-docs/'+urlPdf
+	urlPdf = '/docs/temp-docs/'+urlPdf
 	// let { urlPdf , status , created_at , updated_at , expirated_at} = [...documentation]
 
 	// Comprobar vencimiento para mostrar ícono y color:

@@ -356,7 +356,7 @@
 			<h3>Vista Previa</h3>
 			<div class="dynamicContainer border preview-container">
 				<h4 class="preview-header"><strong>{checkListName}</strong></h4>
-				<!-- <p>Categoría (colección): {JSON.stringify(categoryCollection)}</p> -->
+				
 				{#each itemCheckedCollection as checkedItem}
 					{#if checkedItem.itemId.length != 0}
 						<div class="dynamicContainer" transition:fade>

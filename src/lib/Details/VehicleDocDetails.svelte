@@ -3,13 +3,15 @@
 	import { Accordion, AccordionItem, Modal } from 'sveltestrap';
 	import moment from 'moment';
 
-
+	// Abrir modal para ver adjunto:
+	let modalOpen = false;
+	const toggle = () => (modalOpen = !modalOpen);
 
 	export let thisDoc
 	// Datos del documento a mostrar
 	export let documentation_id = 0;
-	export let documentType = { documentType_id: 0, description: '' };
-	export let urlPdf = '';
+	export let documentType = thisDoc.vehiclerequirements.requirementDescription
+	export let urlPdf;
 	export let status = '';
 	// export let created_at = new Date();
 	export let updated_at = new Date();
@@ -27,6 +29,7 @@
 	nextWeek.setDate(today.getDate() + 7);
 	const nextWeekString = moment(nextWeek).format("DD/MM/YYYY").split('T')[0];
 
+	urlPdf = '/docs/temp-docs/'+thisDoc.vehiclerequirements.urlPdf
 
 	// Por defecto y mientras no expire en menos de 7 días, muestra en color verde:
 	let textColor = `text-success`;
@@ -43,10 +46,9 @@
 		textColor = `text-warning`;
 	}
 
-	// Abrir modal para ver adjunto:
-	let modalOpen = false;
-  	const toggle = () => (modalOpen = !modalOpen);
+
 </script>
+
 <Accordion stayOpen class="col-md-6">
 	<AccordionItem>
 		<h5 class="m-0 {textColor}" slot="header">
@@ -62,7 +64,6 @@
 					Estado: Vencido
 				{/if}
 			</li>
-			<li>Enlace: <a href="#">Ver{urlPdf}</a></li>
 			<li>Creado: {created_atString}</li>
 			<!-- <li>Actualizado: {updated_at.toLocaleDateString()}</li> -->
 			<li>Vencimiento: <span class={textColor}>{expirated_AtString}</span></li>
@@ -74,7 +75,6 @@
 		</div>
 	</AccordionItem>
 </Accordion>
-
-<Modal body header="{documentType.description}" isOpen={modalOpen} {toggle} fullscreen>
+<Modal body header="{documentType}" isOpen={modalOpen} {toggle} fullscreen>
     <embed src="{urlPdf}" width="100%" height="100%">
 </Modal>
