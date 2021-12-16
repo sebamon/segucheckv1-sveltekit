@@ -22,7 +22,7 @@ export const get = async ( request ) =>{
                 }
             }      
         })
-        // console.log(vehicleDetails)
+        console.log(vehicleDetails)
         if(vehicleDetails){
             return {
                 body: {

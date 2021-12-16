@@ -7,10 +7,34 @@
 
 	Próximamente: podrá evaluarse el tamaño del documento, tamaños máximos, extensiones aceptadas
  -->
-
 <script>
+	/*
+			RapidAPI
+	*/
+	const pdfPreview = (file) => {
+		const form = new FormData();
+		form.append('file', file);
+
+		fetch('https://thumbnail.p.rapidapi.com/thumbnail/?height=200&width=200', {
+			method: 'POST',
+			headers: {
+				'content-type': 'multipart/form-data; boundary=---011000010111000001101001',
+				'x-rapidapi-host': 'thumbnail.p.rapidapi.com',
+				'x-rapidapi-key': '7c5a2699f4mshacafca1f03092eep1a3e21jsn7e83c48aa02d'
+			}
+		})
+			.then((response) => {
+				console.log(response);
+			})
+			.catch((err) => {
+				console.error(err);
+			});
+	};
+
+	/*****************************************************************/
+
 	import { createEventDispatcher } from 'svelte';
-	const dispatch = createEventDispatcher()
+	const dispatch = createEventDispatcher();
 	// import { uploadFile } from './api/driveSet';
 	import { v4 as uuidV4 } from 'uuid'; /* Se utiliza uuid para generar un nombre de archivo aleatorio temporal */
 
@@ -29,7 +53,7 @@
 	let disabled;
 	$: disabled = !fileToUpload || !fileName ? 'disabled' : '';
 	// $: subir = readyToUpload == true
-	
+
 	/* Handles the input file change event */
 	const handleFileChange = (event) => {
 		if (event.target.files && event.target.files.length > 0) {
@@ -47,7 +71,7 @@
 		/* Verifica que todas las variables se inicialicen */
 		if (fileToUpload && fileName) {
 			readyToUpload = true;
-			console.log('Ready: ' + readyToUpload + ', File: ' + fileName+ '.' + fileExtension);
+			console.log('Ready: ' + readyToUpload + ', File: ' + fileName + '.' + fileExtension);
 			/* Se crea el form data */
 			let formData = new FormData();
 			// @ts-ignore
@@ -78,7 +102,7 @@
 				})
 				.catch((err) => console.log('Ooops: ' + err));
 		}
-}
+	};
 
 	const onFileSelected = (fileToShow) => {
 		let image = fileToShow;
@@ -87,14 +111,13 @@
 			return;
 		}
 		let img = new Image();
-			img.src = URL.createObjectURL(image);
-			let reader = new FileReader();
-			reader.readAsDataURL(image);
-			reader.onload = (e) => {
-				avatar = e.target.result;
-		}
+		img.src = URL.createObjectURL(image);
+		let reader = new FileReader();
+		reader.readAsDataURL(image);
+		reader.onload = (e) => {
+			avatar = e.target.result;
+		};
 	};
-
 </script>
 
 <div>
@@ -116,14 +139,18 @@
 			<img class="avatar" src="/static/img/doc-upload.png" alt="foto de perfil sin cargar" />
 		{/if}
 		<div class="top-1">
-			<button class="btn" {disabled} type="submit" on:click|preventDefault={handleSubmit} on:click={() => dispatch('loadDocument', {fileName, fileExtension, readyToUpload})}>
+			<button
+				class="btn"
+				{disabled}
+				type="submit"
+				on:click|preventDefault={handleSubmit}
+				on:click={() => dispatch('loadDocument', { fileName, fileExtension, readyToUpload })}
+			>
 				Subir documento
 			</button>
 		</div>
 		<div id="doc-placeholder">
-			<canvas id="myCanvas">
-
-			</canvas>
+			<canvas id="myCanvas" />
 		</div>
 	</div>
 </div>

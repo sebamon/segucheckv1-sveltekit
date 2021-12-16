@@ -1,45 +1,47 @@
-<!-- <script context="module">
-	export async function load({fetch , page}){
-		const response = await fetch(`./habilitaciones`)
-		const data  = await response.json()
-		return {
-			props:{
-				data,
-			}	
-		}
+<!-- 
+
+	Se envía al endpoint lo siguiente:
+	{
+   		"documentType":"{\"documentType_id\":4,\"description\":\"Certificado de Estanqueidad e Inspección Ocular\"}",
+   		"document":"00483bad-c148-49c7-9745-cdea28201cf1.pdf",
+   		"expirationDate":"2021-12-17"
 	}
-
-</script> -->
-
-<script lang="ts">
-	import PdfUpload from '$lib/PdfUpload.svelte';
 	
+ -->
+<script lang="ts">
+	import VehicleDetails from '$lib/Details/VehicleDetails.svelte';
+	import VehicleDocDetails from '$lib/Details/VehicleDocDetails.svelte';
+
+	import PdfUpload from '$lib/PdfUpload.svelte';
+
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-	import SeguAlert from '$lib/SeguAlert.svelte'
-	
-	export let data;
-	
+
+	/* export let data;
+	export let userDetails=data.userDetails
+	let color = 'success' */
+
 	// Datos placeholder:
-	let userDetails = {
-		user_id: 1,
-		firstName: 'Juan',
-		lastName: 'Perez'
-	};
+	// let vehicleDetails = {
+	// 	vehicle_id: 1,
+	// 	domain: 'Juan',
+	// 	model: 'Perez',
+	// 	brand: 'Perez'
+	// };
 	let documentTypeList = [
-		{ documentType_id: 1, description: 'Persona competente para Trabajo en Altura'},
-		{ documentType_id: 2, description: 'Carnet de Manejo Defensivo' },
-		{ documentType_id: 3, description: 'Certificación de trabajo en atmósferas con presencia de H2S' },
-		{ documentType_id: 4, description: 'Analista de Gases' },
-		{ documentType_id: 5, description: 'Licencia de conducir' },
-		{ documentType_id: 6, description: 'Transporte de cargas peligrosas' }
+		{ documentType_id: 1, description: 'Seguro del Automotor' },
+		{ documentType_id: 2, description: 'Verificación Técnica Vehicular' },
+		{ documentType_id: 3, description: 'Cédula Verde' },
+		{ documentType_id: 4, description: 'Certificado de Estanqueidad e Inspección Ocular' },
+		{ documentType_id: 5, description: 'Certificado de Secretaría de Energía de la Nación' },
+		{ documentType_id: 6, description: 'Habilitación Provincial de Transporte de Pasajeros' },
+		{ documentType_id: 7, description: 'Habilitación Nacional de Transporte de Pasajeros (CNRT)' }
 	];
 	let isReadOnly = false; // Configurar componente AddressDetails para editar
 	let fileName, fileExtension, readyToUpload; // Controles globales
 	let disabled = true;
 	let document, documentTypeSelected, expirationDate;
-	let error, message, status='';
-	
+
 	export function captureDocument(e) {
 		console.log('captureImage', e.detail);
 		fileName = e.detail.fileName;
@@ -60,18 +62,19 @@
 			document: '',
 			expirationDate: ''
 		};
+		let error, message, status;
 
-		values.documentType = JSON.stringify(documentTypeList[documentTypeSelected-1]);
+		values.documentType = JSON.stringify(documentTypeList[documentTypeSelected - 1]);
 		values.document = document;
 		values.expirationDate = expirationDate;
 		try {
-			const submit = await fetch('habilitaciones', {
+			const submit = await fetch('../vehiculos', {
 				method: 'POST',
 				body: JSON.stringify({
 					values
 				})
 			});
-			console.log('Antes de mandar: ', values);
+			console.log('Antes de mandar: ', JSON.stringify(values));
 			const data = await submit.json();
 			message = data.message;
 			status = data.status;
@@ -83,8 +86,7 @@
 </script>
 
 <svelte:head>
-	<title>Nueva habilitación: {userDetails.firstName + ' ' + userDetails.lastName} - SeguCheck</title
-	>
+	<title>Nueva habilitación - SeguCheck</title>
 </svelte:head>
 
 <!-- Encabezado -->
@@ -94,11 +96,11 @@
 			<a href="/panel/">Inicio</a>
 		</BreadcrumbItem>
 		<BreadcrumbItem>
-			<a href="/panel/operarios">Operarios</a>
+			<a href="/panel/vehiculos">Vehículos</a>
 		</BreadcrumbItem>
-		<BreadcrumbItem>
-			<a href="/panel/operarios/{userDetails.user_id}">{userDetails.user_id}</a>
-		</BreadcrumbItem>
+		<!-- <BreadcrumbItem>
+			<a href="/panel/vehiculos/{vehicleDetails.vehicle_id}">{vehicleDetails.vehicle_id}</a>
+		</BreadcrumbItem> -->
 		<BreadcrumbItem active>Habilitaciones</BreadcrumbItem>
 	</Breadcrumb>
 	<h1><i class="fas fa-paperclip me-4" />Nueva habilitación</h1>
@@ -106,9 +108,6 @@
 </header>
 
 <main>
-	{#if status!==''}
-		<SeguAlert message={message} status={status} path=operarios />
-	{/if}
 	<form name="formUserDoc" id="formUserDoc" on:submit|preventDefault={handleSubmit}>
 		<div class="row mb-3 g-3">
 			<div class="col-md-6">
