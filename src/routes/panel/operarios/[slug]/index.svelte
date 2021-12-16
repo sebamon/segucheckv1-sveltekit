@@ -66,6 +66,7 @@
 	// 		{ rol_id: 2, rolDescription: 'Personal de seguridad' }
 	// 	]
 	// };
+	let qualification = data.workInfo.folder
 	let userDocumentation = [
 		{
 			documentation_id: 10,
@@ -141,7 +142,10 @@
 	<h1><i class="fas fa-walking me-4" />{userDetails.firstName + ' ' + userDetails.lastName}</h1>
 	<p class="lead">Detalles del operario</p>
 </header>
-
+<!-- {JSON.stringify(qualification)} -->
+<!-- {#each qualification as q}
+	{JSON.stringify(q.documentation)}
+{/each} -->
 <main>
 	<TabContent>
 		<TabPane tabId="userDetails" tab="Datos básicos" active>
@@ -163,8 +167,9 @@
 				</div>
 			{:else}
 				<div class="row g-3">
-					{#each userDocumentation as thisDoc}
-						<DocDetails {...thisDoc} />
+					{#each qualification as thisDoc}
+					<!-- {JSON.stringify(thisDoc)} -->
+						<DocDetails {...thisDoc.documentation} />
 					{/each}
 				</div>
 			{/if}

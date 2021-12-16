@@ -17,6 +17,15 @@ export async function get(request){
                     include : {
                         usersonroles :true
                     }
+                },
+                folder : {
+                    include : {
+                        documentation : {
+                            include : {
+                                documenttype : true
+                            }
+                        }                      
+                    }
                 }
             }
         })
@@ -49,5 +58,4 @@ export async function get(request){
             }
         }
     }
-    
 }

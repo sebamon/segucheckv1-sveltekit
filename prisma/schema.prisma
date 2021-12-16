@@ -57,7 +57,7 @@ model documentation {
   urlPdf           String
   status           String
   created_at       DateTime     @default(now())
-  updated_at       DateTime?
+  updated_at       DateTime?    @default(now())
   expirated_at     DateTime?
   documenttype     documenttype @relation(fields: [documentType_id], references: [documentType_id], map: "Documentation_documentType_id_fkey")
   folder           folder[]
@@ -67,8 +67,10 @@ model documentation {
 
 model documenttype {
   documentType_id Int             @id @default(autoincrement())
-  description     String
-  documentation   documentation[]
+  description     String          @unique
+  documentation   documentation[] 
+  @@index([description], map: "documentation_description")
+
 }
 
 model folder {
@@ -269,7 +271,7 @@ model vehicle {
   updated_at                  DateTime?
   jobs                        jobs[]
   vehicleonvehiclerequirement vehicleonvehiclerequirement[]
-
+  
 }
 
 model vehicleonvehiclerequirement {

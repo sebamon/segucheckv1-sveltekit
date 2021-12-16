@@ -1,12 +1,6 @@
-<!-- Falta validar el select del tipo de habilitación -->
-
-<script context="module">
-	/* Configurar!
+<!-- <script context="module">
 	export async function load({fetch , page}){
-		const response = await fetch(`./${page.params.slug}/detalle.json`, {
-			method: "GET",
-			request: page.params.slug
-		})
+		const response = await fetch(`./habilitaciones`)
 		const data  = await response.json()
 		return {
 			props:{
@@ -14,20 +8,19 @@
 			}	
 		}
 	}
-    */
-</script>
+
+</script> -->
 
 <script lang="ts">
 	// import { dataset_dev } from 'svelte/internal';
 	import PdfUpload from '$lib/PdfUpload.svelte';
-
+	
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-
-	/* export let data;
-	export let userDetails=data.userDetails
-	let color = 'success' */
-
+	import SeguAlert from '$lib/SeguAlert.svelte'
+	
+	export let data;
+	
 	// Datos placeholder:
 	let userDetails = {
 		user_id: 1,
@@ -46,7 +39,8 @@
 	let fileName, fileExtension, readyToUpload; // Controles globales
 	let disabled = true;
 	let document, documentTypeSelected, expirationDate;
-
+	let error, message, status='';
+	
 	export function captureDocument(e) {
 		console.log('captureImage', e.detail);
 		fileName = e.detail.fileName;
@@ -67,13 +61,12 @@
 			document: '',
 			expirationDate: ''
 		};
-		let error, message, status;
 
 		values.documentType = JSON.stringify(documentTypeList[documentTypeSelected-1]);
 		values.document = document;
 		values.expirationDate = expirationDate;
 		try {
-			const submit = await fetch('../operarios', {
+			const submit = await fetch('habilitaciones', {
 				method: 'POST',
 				body: JSON.stringify({
 					values
@@ -114,6 +107,9 @@
 </header>
 
 <main>
+	{#if status!==''}
+		<SeguAlert message={message} status={status} path=operarios />
+	{/if}
 	<form name="formUserDoc" id="formUserDoc" on:submit|preventDefault={handleSubmit}>
 		<div class="row mb-3 g-3">
 			<div class="col-md-6">
