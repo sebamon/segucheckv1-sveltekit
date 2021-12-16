@@ -1,20 +1,20 @@
 <script context="module">
 	export async function load({ fetch, page }) {
-		try{
+		try {
 			const response = await fetch(`./${page.params.slug}/detalle`);
 			const data = await response.json();
 			console.log('response', data);
-			
+
 			return {
 				props: {
 					data
 				}
 			};
-		}catch(e){
-			console.log('catch error: ',e)
+		} catch (e) {
+			console.log('catch error: ', e);
 			return {
-				props:{}
-			}
+				props: {}
+			};
 		}
 	}
 </script>
@@ -58,7 +58,7 @@
 	// };
 	export let data;
 	// export const message = data.message
-		export let vehicleDetails = data.vehicleDetails;
+	export let vehicleDetails = data.vehicleDetails;
 	export let isReadOnly = true;
 	let vehicleDocumentation = vehicleDetails.vehicleonvehiclerequirement || [
 		{
@@ -78,8 +78,7 @@
 			created_at: new Date('2021-08-31'),
 			updated_at: new Date('2021-08-31'),
 			expirated_at: new Date('2021-09-31')
-		},
-
+		}
 	];
 
 	// Fotos del vehículo para carrusel:
@@ -99,7 +98,6 @@
 		status = 'Hola';
 		console.log('event', event);
 	}
-	
 </script>
 
 <svelte:head>
@@ -121,7 +119,7 @@
 		<Image
 			fluid
 			thumbnail
-			src={'/static/img/vehicle-pics/'+vehicleDetails.frontPicUrl}
+			src={'/static/img/vehicle-pics/' + vehicleDetails.frontPicUrl}
 			alt="Foto del vehículo"
 			class="m-2"
 			style="max-width:150px"
@@ -158,13 +156,15 @@
 			</div>
 			{#if vehicleDocumentation.length == 0}
 				<div class="alert alert-secondary" role="alert">
-					<h5><i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta ahora.</h5>
+					<h5>
+						<i class="fas fa-exclamation-triangle me-2" /> No hay ninguna documentación cargada hasta
+						ahora.
+					</h5>
 					Haz click en Editar para subir archivos.
 				</div>
 			{:else}
 				<div class="row g-3">
 					{#each vehicleDocumentation as thisDoc}
-					
 						<VehicleDocDetails {thisDoc} />
 					{/each}
 				</div>

@@ -1,23 +1,21 @@
 <script context="module">
-	export async function load ({fetch , page}){
-		try{
-
-			const response = await fetch('./vehiculos/vehiculos')
-			const data = await response.json()
+	export async function load({ fetch, page }) {
+		try {
+			const response = await fetch('./vehiculos/vehiculos');
+			const data = await response.json();
 
 			return {
 				props: {
 					data
 				}
-			}
-		}catch(e){
-			console.log('error',e)
+			};
+		} catch (e) {
+			console.log('error', e);
 			return {
-				props:
-					{}
-			}
+				props: {}
+			};
 		}
-}
+	}
 </script>
 
 <script lang="ts">
@@ -25,8 +23,8 @@
 	import { Button, Breadcrumb, BreadcrumbItem } from 'sveltestrap';
 	import SeguAlert from '$lib/SeguAlert.svelte';
 
-	export let data
-	export let vehicles = data.vehicles
+	export let data;
+	export let vehicles = data.vehicles;
 </script>
 
 <svelte:head>
@@ -53,30 +51,30 @@
 	</div>
 </header>
 <main>
-	{#if data.status!=='OK'}
-		<SeguAlert status={data.status} message={data.message} path=vehiculos/>
+	{#if data.status !== 'OK'}
+		<SeguAlert status={data.status} message={data.message} path="vehiculos" />
 	{/if}
 	{#if vehicles.length > 0}
-	<div class="table-responsive">
-		<table class="table table-striped table-hover align-middle">
-			<thead>
-				<tr>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-					<th scope="col"><input type="search" placeholder="Filtrar" /></th>
-				</tr>
-				<tr>
-					<th scope="col">Patente</th>
-					<th scope="col">Tipo</th>
-					<th scope="col">Marca</th>
-					<th scope="col">Modelo</th>
-					<th scope="col">Estado Habilitación</th>
-				</tr>
-			</thead>
-			<tbody>
-				{#each vehicles as vehicle}	
+		<div class="table-responsive">
+			<table class="table table-striped table-hover align-middle">
+				<thead>
+					<tr>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+						<th scope="col"><input type="search" placeholder="Filtrar" /></th>
+					</tr>
+					<tr>
+						<th scope="col">Patente</th>
+						<th scope="col">Tipo</th>
+						<th scope="col">Marca</th>
+						<th scope="col">Modelo</th>
+						<th scope="col">Estado Habilitación</th>
+					</tr>
+				</thead>
+				<tbody>
+					{#each vehicles as vehicle}
 						<tr>
 							<td>
 								<a class="text-decoration-none text-dark" href="./vehiculos/{vehicle.vehicle_id}">
@@ -99,8 +97,11 @@
 								</a>
 							</td>
 							<td>
-								<a class="text-decoration-none text-dark text-center" href="./vehiculos/{vehicle.vehicle_id}">
-									{#if vehicle.status }
+								<a
+									class="text-decoration-none text-dark text-center"
+									href="./vehiculos/{vehicle.vehicle_id}"
+								>
+									{#if vehicle.status}
 										<i class="fas fa-check-circle me-2 text-success" />
 									{:else}
 										<i class="fas fa-times-circle me-2 text-danger" />
@@ -108,11 +109,11 @@
 								</a>
 							</td>
 						</tr>
-				{/each}
-			</tbody>
-		</table>
-	</div>
-{/if}
+					{/each}
+				</tbody>
+			</table>
+		</div>
+	{/if}
 </main>
 
 <style>
