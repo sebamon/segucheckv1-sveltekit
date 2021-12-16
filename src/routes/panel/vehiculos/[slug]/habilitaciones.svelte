@@ -17,7 +17,8 @@
 
 	// Importar por nombre de componentes: https://sveltestrap.js.org/
 	import { Breadcrumb, BreadcrumbItem, Alert } from 'sveltestrap';
-import { stringify } from 'querystring';
+
+
 
 	/* export let data;
 	export let userDetails=data.userDetails
@@ -84,7 +85,6 @@ import { stringify } from 'querystring';
 <svelte:head>
 	<title>Nueva habilitación - SeguCheck</title>
 </svelte:head>
-
 <!-- Encabezado -->
 <header>
 	<Breadcrumb>
@@ -95,7 +95,7 @@ import { stringify } from 'querystring';
 			<a href="/panel/vehiculos">Vehículos</a>
 		</BreadcrumbItem>
 		<!-- <BreadcrumbItem>
-			<a href="/panel/vehiculos/{vehicleDetails.vehicle_id}">{vehicleDetails.vehicle_id}</a>
+			<a href="/panel/vehiculos/{vehicle_id}">{vehicle_id}</a>
 		</BreadcrumbItem> -->
 		<BreadcrumbItem active>Habilitaciones</BreadcrumbItem>
 	</Breadcrumb>

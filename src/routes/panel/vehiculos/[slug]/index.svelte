@@ -113,6 +113,9 @@
 		<BreadcrumbItem>
 			<a href="/panel/vehiculos">Vehículos</a>
 		</BreadcrumbItem>
+		<BreadcrumbItem>
+			<a href="/panel/vehiculos/{vehicleDetails.vehicle_id}/">{vehicleDetails.vehicle_id}</a>
+		</BreadcrumbItem>
 		<BreadcrumbItem active>Detalles</BreadcrumbItem>
 	</Breadcrumb>
 	<div class="col-md-3">
