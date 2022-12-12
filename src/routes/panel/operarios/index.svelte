@@ -1,5 +1,5 @@
 <script context="module">
-	export async function load({ fetch, page }) {
+	export async function load({ fetch }) {
 		try {
 			const response = await fetch('./operarios/operarios', {
 				method: 'GET',

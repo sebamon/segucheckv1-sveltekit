@@ -133,14 +133,14 @@
 				on:change={handleFileChange}
 			/>
 		</div>
-		{#if avatar}
-			<img class="avatar" src="/static/img/pdf-generic-thumbnail.jpg" alt="documento a cargar" />
-		{:else}
+		<!-- {#if avatar} -->
+			<!-- <img class="avatar" src="/static/img/pdf-generic-thumbnail.jpg" alt="documento a cargar" /> -->
+		<!-- {:else} -->
 			<img class="avatar" src="/static/img/doc-upload.png" alt="foto de perfil sin cargar" />
-		{/if}
+		<!-- {/if} -->
 		<div class="top-1">
 			<button
-				class="btn"
+				class="btn btn-secondary"
 				{disabled}
 				type="submit"
 				on:click|preventDefault={handleSubmit}

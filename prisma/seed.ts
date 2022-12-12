@@ -1,7 +1,6 @@
 // import  { PrismaClient } from "@prisma/client";
 // import { links } from 
 import pkg from '@prisma/client';
-import { now } from 'moment';
 const { PrismaClient } = pkg;
 
 const prisma = new PrismaClient();
@@ -12,7 +11,7 @@ async function main(){
         data:[{
             rolDescription : 'Gestor Documental'
         },{
-            rolDescription : 'Tecnico Seguridad'
+            rolDescription : 'Técnico Seguridad'
         },
         {
             rolDescription : 'Operador'
@@ -30,7 +29,7 @@ async function main(){
             phone: '2995103456',
             nationality: 'Argentino',
             studyLevel: 'Post universitario incompleto',
-            degree: 'Tecnico Universitario en Desarrollo web',
+            degree: 'Técnico Universitario en Desarrollo web',
             profilePic: 'e8b48250-a087-4c5a-85b2-fa226bff5770.jpeg', 
             password: '1234',
         },
