@@ -24,6 +24,8 @@ Por lo tanto, esta aplicación permitirá:
 * Registrar los "checklists" o listas de verificación de los requisitos y elementos necesario para el trabajo
 * Generar un código QR con acceso de invitado para ver la documentación en línea
 
+![Ejemplo de interfaz](https://i.imgur.com/AbvsWxW.jpg "Ejemplo de interfaz")
+
 ## Instalación
 
 Sigue estos pasos:
